@@ -1,3 +1,3 @@
-## Alpha 2.4.3
-- Added AddAssetDialog
-- Added workflow launcher
+## Alpha 2.4.4
+- Added save workflow
+- AssetService helper patch
