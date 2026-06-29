@@ -1,3 +1,7 @@
-## Alpha 2.4.4
-- Added save workflow
-- AssetService helper patch
+## Sprint 3 Package 1
+- Added InventoryService
+- Added DashboardService
+- Added SearchService
+- Added BackupService
+- Added PortfolioService
+- Added FinanceService
