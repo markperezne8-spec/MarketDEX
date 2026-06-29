@@ -1,8 +1,7 @@
-from app.repositories.asset_repository import AssetRepository
-
 class AssetService:
-    def __init__(self):
-        self.repo=AssetRepository()
-
-    def assets(self):
-        return self.repo.all()
+    def __init__(self, repository):
+        self.repository=repository
+    def save_asset(self, asset):
+        if not asset.name.strip():
+            raise ValueError("Asset name required")
+        return self.repository.add(asset)
