@@ -1,4 +1,4 @@
-## Alpha 2.1
-- Added PageManager
-- Added Dashboard page
-- Added Inventory page
+## Alpha 2.2
+- Added dashboard layout
+- Added activity panel
+- Added market pulse panel

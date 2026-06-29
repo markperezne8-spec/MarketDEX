@@ -1,2 +1,2 @@
-# Alpha 2.1 Navigation Engine
-Adds a reusable page manager and placeholder pages.
+# Alpha 2.2 Professional Dashboard
+Adds a richer Mission Control dashboard.
