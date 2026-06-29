@@ -1,2 +1,1 @@
-# Alpha 2.2 Professional Dashboard
-Adds a richer Mission Control dashboard.
+# Alpha 2.3 Asset Manager

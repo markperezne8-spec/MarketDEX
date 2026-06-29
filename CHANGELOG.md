@@ -1,4 +1,4 @@
-## Alpha 2.2
-- Added dashboard layout
-- Added activity panel
-- Added market pulse panel
+## Alpha 2.3
+- Asset Manager page
+- Asset table widget
+- Service skeleton
