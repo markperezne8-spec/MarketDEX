@@ -1,4 +1,4 @@
-## Alpha 2.4.1
-- Added AssetRepository
-- Added AssetService
-- Assets table initialization
+## Alpha 2.4.2
+- Added live Asset Manager scaffold
+- Toolbar events
+- Refresh hook
