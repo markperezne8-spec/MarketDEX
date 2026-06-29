@@ -1,1 +1,1 @@
-Feature Pack 1.2A - Database & Repository
+Feature Pack 1.2B - Inventory UI
