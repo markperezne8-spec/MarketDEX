@@ -1,4 +1,4 @@
-## Alpha 2.3
-- Asset Manager page
-- Asset table widget
-- Service skeleton
+## Alpha 2.4.1
+- Added AssetRepository
+- Added AssetService
+- Assets table initialization
