@@ -2,10 +2,7 @@ from app.services.asset_service import AssetService
 
 class InventoryService:
     def __init__(self):
-        self.assets = AssetService()
+        self.service=AssetService()
 
-    def total_assets(self):
-        return len(self.assets.get_assets())
-
-    def all(self):
-        return self.assets.get_assets()
+    def inventory_count(self):
+        return len(self.service.assets())

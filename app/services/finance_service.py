@@ -1,5 +1,10 @@
 class FinanceService:
-    def roi(self,purchase,current):
-        if purchase<=0:
+    @staticmethod
+    def profit(asset):
+        return (asset.current_value-asset.purchase_price)*asset.quantity
+
+    @staticmethod
+    def roi(asset):
+        if asset.purchase_price<=0:
             return 0.0
-        return ((current-purchase)/purchase)*100
+        return ((asset.current_value-asset.purchase_price)/asset.purchase_price)*100
