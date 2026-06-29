@@ -1,4 +1,3 @@
-## Alpha 2.4.2
-- Added live Asset Manager scaffold
-- Toolbar events
-- Refresh hook
+## Alpha 2.4.3
+- Added AddAssetDialog
+- Added workflow launcher
