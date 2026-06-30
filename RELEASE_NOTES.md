@@ -1,21 +1,8 @@
-# MarketDEX OS Developer Preview 2.1
+# Release Notes
 
-## Codename: Inventory
+## Upcoming
 
-This release begins the first real UI integration work.
+Release 0.1 - Foundation
 
-### Objectives
-- Inventory toolbar
-- Add Asset entry point
-- Search
-- Cleaner inventory workspace
-
-### Files targeted
-- app/ui/pages/asset_manager_page.py
-- app/ui/dialogs/add_asset_dialog.py
-- app/ui/widgets/asset_table.py
-
-### Git Commit
-git commit -m "Developer Preview 2.1 - Inventory UI"
-
-This package uses your real project as the baseline.
+Includes: - Architecture standards - Documentation - Core platform
+improvements
