@@ -1,0 +1,2 @@
+from .defaults import DEFAULT_SETTINGS
+SETTINGS=DEFAULT_SETTINGS.copy()
