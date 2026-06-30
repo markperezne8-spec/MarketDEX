@@ -1,2 +1,0 @@
-class BackupService:
-    pass

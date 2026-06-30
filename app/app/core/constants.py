@@ -1,2 +1,0 @@
-APP_NAME="MarketDEX OS"
-DB_VERSION=1
