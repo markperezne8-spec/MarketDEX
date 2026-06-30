@@ -1,5 +1,5 @@
 # Database schema versioning
-DATABASE_VERSION = 1
+DATABASE_VERSION = 2
 
 # Schema v1 (Original)
 ASSET_TABLE_V1 = """
