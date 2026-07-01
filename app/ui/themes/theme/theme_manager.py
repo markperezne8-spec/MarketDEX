@@ -1,0 +1,2 @@
+class ThemeManager:
+    current='dark'

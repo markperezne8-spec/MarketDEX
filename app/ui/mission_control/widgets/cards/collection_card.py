@@ -1,0 +1,1 @@
+class CollectionCard: pass

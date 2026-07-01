@@ -1,0 +1,1 @@
+class TasksPanel: pass

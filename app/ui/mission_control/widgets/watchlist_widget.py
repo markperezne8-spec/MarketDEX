@@ -1,0 +1,2 @@
+class WatchlistWidget:
+    pass
