@@ -1,0 +1,4 @@
+APP_NAME="MarketDEX"
+VERSION="0.1.0-alpha.1"
+BUILD="001"
+CHUNK="001"

@@ -1,8 +1,9 @@
-from app.services.asset_service import AssetService
+from app.models.inventory_item import InventoryItem
+from app.repositories.inventory_repository import InventoryRepository
 
 class InventoryService:
     def __init__(self):
-        self.service=AssetService()
+        self.repo=InventoryRepository()
 
-    def inventory_count(self):
-        return len(self.service.assets())
+    def add_item(self,item:InventoryItem):
+        self.repo.add(item)
