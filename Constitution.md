@@ -2,7 +2,7 @@
 
 **Foundation Document**
 
-**Version:** 1.1
+**Version:** 1.2
 
 **Status:** 📁 Repository Ready · 🔒 Design Locked
 
@@ -344,7 +344,7 @@ approved before the repository copy is replaced.
 
 **Permanent Filename:** `Constitution.md`
 
-**Current Version:** 1.1
+**Current Version:** 1.2
 
 **Status:** 📁 Repository Ready · 🔒 Design Locked · 🏁 Checkpoint Complete · 👍 Approved
 
@@ -829,3 +829,52 @@ A known missing business event should own the correction.
 A verified unexplained physical difference may proceed to Inventory Adjustment.
 
 Resolved cases may be reopened only with preserved prior resolution history.
+
+
+---
+
+### Principle 85 — 📊 Proven Business Logic Precedes Software Implementation
+
+MarketDEX business logic should be understood and represented through the approved Spreadsheet Design responsibility before production software implementation begins.
+
+The LibreOffice workbook remains the active proving ground and permanent business continuity system.
+
+Future software should reduce friction around proven knowledge rather than invent business rules during coding.
+
+If implementation exposes a contradiction in approved business logic, the contradiction returns to the appropriate planning responsibility before the locked logic changes.
+
+### Principle 86 — 🎨 Prototype Visuals Explore Presentation, Not Business Truth
+
+Prototype Design may explore how approved MarketDEX responsibilities, workflows, and information could appear in a future application.
+
+A prototype does not become an authoritative business-rule source merely because a screen looks convincing.
+
+Spreadsheet Design remains authoritative for workbook workflows and business logic.
+
+Prototype Design may refine visual hierarchy, interaction concepts, navigation, and future application presentation without silently redefining approved business meaning.
+
+### Principle 87 — 💻 Development Implements Proven Decisions
+
+Development exists to implement approved MarketDEX knowledge.
+
+Production implementation should originate from approved Spreadsheet Design or approved Prototype Design responsibilities.
+
+Development must not redesign workflows, change business logic, or invent unrelated features while coding.
+
+When implementation reveals a potentially better business rule or workflow, the idea returns to the appropriate planning responsibility for review before direction changes.
+
+### Principle 88 — 🐞 Debugging Repairs Without Redesign
+
+Debugging should identify root cause, apply the smallest safe fix, explain why the issue occurred, and verify the correction.
+
+Bug repair must remain focused and isolated.
+
+Debugging must not become a hidden architecture, roadmap, or feature-design process.
+
+### Principle 89 — 📦 Releases Preserve Meaningful Evolution
+
+Completed milestones, releases, packages, and important engineering decisions should be preserved as project history.
+
+Release history documents what MarketDEX became and when.
+
+Release tracking does not replace planning, implementation, or debugging responsibilities.

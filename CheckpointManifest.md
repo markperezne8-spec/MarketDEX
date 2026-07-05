@@ -1,6 +1,6 @@
 # MarketDEX Checkpoint Manifest
 
-**Version:** 1.2
+**Version:** 1.3
 
 **Status:** 📁 Repository Ready · 🔒 Design Locked
 
@@ -113,7 +113,7 @@ Do not create renamed foundation copies such as `_FINAL`, `_NEW`, `_Updated`, or
 
 **Permanent Filename:** `CheckpointManifest.md`
 
-**Current Version:** 1.2
+**Current Version:** 1.3
 
 **Status:** 📁 Repository Ready · 🔒 Design Locked · 🏁 Checkpoint Complete · 👍 Approved
 
@@ -190,3 +190,26 @@ Do not create renamed foundation copies such as `_FINAL`, `_NEW`, `_Updated`, or
 - MarketDEX Visual North Star and authoritative mascot governance verified before execution.
 - Broad pre-build architecture planning frozen enough for LibreOffice Calc Version 0 execution.
 - Next formal project movement established at Calc Version 0 workbook shell and first build milestone.
+
+
+---
+
+## 🏁 Checkpoint 018 — Foundation Synchronization and Project Responsibility Lanes
+
+- MarketDEX project responsibility lanes formally synchronized.
+- Ideas & Parking Lot preserved as capture and clarification responsibility only.
+- Spreadsheet Design established as authoritative for current workbook workflows and business logic.
+- Nothing gets coded until the relevant business responsibility has been discussed in Spreadsheet Design.
+- Prototype Design established as future application visualization responsibility.
+- Prototype Design may explore presentation and interaction without silently redefining business truth.
+- Development restricted to implementation of proven ideas from approved Spreadsheet Design or Prototype Design responsibility.
+- Development must not redesign workflows, change business logic, or invent unrelated features during implementation.
+- Implementation contradictions return to the appropriate planning responsibility before locked logic changes.
+- Debugging restricted to focused bug repair: root cause, smallest safe fix, explanation, and verification.
+- Releases preserved as historical record rather than development or debugging workspace.
+- LibreOffice workbook preserved as the active proving ground, permanent business operating system, and continuity asset.
+- Gradual desktop evolution allowed from proven approved knowledge when Mark authorizes implementation.
+- Beginning desktop implementation does not make the workbook disposable.
+- `DEVELOPMENT_PLAYBOOK.md` synchronized from obsolete code-first workflow to the approved MarketDEX responsibility chain.
+- Foundation synchronization completed without changing the design-locked Inventory, Transformation, Reconciliation, Mission Control, Visual North Star, or authoritative mascot contracts.
+- Next formal project movement remains Calc Version 0 workbook shell and first build milestone through Spreadsheet Design.

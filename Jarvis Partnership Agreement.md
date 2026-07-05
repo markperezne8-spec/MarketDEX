@@ -1,6 +1,6 @@
 # Jarvis Partnership Agreement
 
-**Version:** 1.8\
+**Version:** 1.9\
 **Status:** 📁 Repository Ready · 🔒 Design Locked\
 **Document Type:** Official Living Document\
 **Permanent Filename:** `Jarvis Partnership Agreement.md`
@@ -909,7 +909,7 @@ Architect**
 
 **Permanent Filename:** `Jarvis Partnership Agreement.md`
 
-**Current Version:** 1.8
+**Current Version:** 1.9
 
 **Status:** 📁 Repository Ready · 🔒 Design Locked · 🏁 Checkpoint
 Complete · 👍 Approved
@@ -1303,3 +1303,106 @@ If implementation exposes a real contradiction, the issue returns to Spreadsheet
 Jarvis should protect the approved Visual North Star and authoritative mascot asset throughout execution.
 
 Jarvis should keep merge, replacement, verification, package, and repository instructions explicit and numbered for Mark.
+
+
+---
+
+## 🧭 MarketDEX Project Responsibility Lanes
+
+MarketDEX uses separate project conversations and responsibilities to reduce drift and preserve clear authority.
+
+### 💡 Ideas & Parking Lot
+
+Captures random ideas, feature requests, workflow improvements, business insights, UI thoughts, spreadsheet concepts, and long-term possibilities.
+
+Nothing is built, designed, or coded here.
+
+Ideas are clarified, grouped, checked for duplicates, and preserved until mature enough for the correct planning responsibility.
+
+### 📊 Spreadsheet Design
+
+The authoritative planning responsibility for current MarketDEX business workflows, business logic, workbook responsibilities, tables, calculations, controls, historical records, and LibreOffice Version 0 behavior.
+
+Nothing gets coded until the relevant business responsibility has been discussed here.
+
+The workbook remains the active proving ground.
+
+### 🎨 Prototype Design
+
+Visualizes future MarketDEX application screens.
+
+Prototypes do not need to work, connect to a database, or contain production code.
+
+Prototype Design explores layout, hierarchy, navigation, interaction concepts, and the approved MarketDEX visual language.
+
+It must not silently redefine business logic owned by Spreadsheet Design.
+
+### 💻 Development
+
+Implements proven ideas.
+
+Everything implemented should already exist in approved Spreadsheet Design or Prototype Design responsibility.
+
+Development must not redesign workflows, change business logic, or invent new features.
+
+If implementation reveals a better idea, the issue returns to the appropriate planning responsibility before direction changes.
+
+### 🐞 Debugging
+
+Exists only for bugs.
+
+Debugging identifies root cause, recommends the smallest safe fix, explains why the issue occurred, and verifies the fix.
+
+It does not redesign architecture, alter the roadmap, or add features.
+
+### 📦 Releases
+
+Preserves the historical record of MarketDEX evolution.
+
+Every completed milestone, release, package, and important engineering decision may be organized here.
+
+Nothing is developed or debugged in Releases.
+
+> **Plan in the correct responsibility. Implement proven decisions. Repair bugs without redesign. Preserve meaningful releases.**
+
+---
+
+## 📊 Workbook and Desktop Evolution Rule
+
+MarketDEX is currently built by refining the LibreOffice workbook through real Pokémon TCG business use.
+
+The workbook remains permanent.
+
+Future desktop application work may begin gradually when approved workbook knowledge is mature enough to implement and when Mark deliberately authorizes the movement.
+
+Beginning desktop implementation does not make the workbook disposable and does not transfer business-rule authority into coding.
+
+The evolution path is:
+
+📊 Spreadsheet Design
+
+↓
+
+💼 Real Business Use and Refinement
+
+↓
+
+🔒 Approved Business Responsibility
+
+↓
+
+🎨 Prototype Design when visual exploration adds value
+
+↓
+
+💻 Development of proven behavior
+
+↓
+
+🐞 Focused Debugging
+
+↓
+
+📦 Verified Release History
+
+The objective is one evolving MarketDEX operating system with preserved knowledge across implementations.
