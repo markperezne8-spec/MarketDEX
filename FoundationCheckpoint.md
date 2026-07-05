@@ -1,137 +1,73 @@
-# MarketDEX Foundation Checkpoint 020
+# MarketDEX Foundation Checkpoint 022
 
-**Status:** 🏁 Verified Knowledge Checkpoint — Calc Build Continuity Synchronization
+**Status:** 🏁 Verified Knowledge Checkpoint — Workbook OS Active Continuity
 
 ## Active Phase
-📊 LibreOffice Calc Version 0 workbook execution through Spreadsheet Design.
+📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
 
-## Checkpoint Theme
-🧭 Foundation Synchronization and Project Responsibility Lanes.
+🖥️ DORMANT — Desktop Application Foundation is preserved as historical and future implementation foundation. It is not the active product execution lane.
 
 ## Permanent Product Direction
 - MarketDEX is being proven first through the LibreOffice workbook and Mark's real Pokémon TCG business.
-- The workbook remains the primary active proving ground.
-- The workbook is permanent and remains a business operating system, knowledge asset, and continuity backup.
+- The workbook remains the primary active proving ground, permanent business operating system, knowledge asset, and continuity backup.
 - Future desktop application development may begin gradually from proven approved knowledge when Mark deliberately authorizes implementation.
-- Software does not replace the workbook's historical or continuity value.
 - Knowledge remains the permanent product across implementations.
 
+## Authority Chain
+- `Constitution.md` protects permanent project principles.
+- Spreadsheet Design is authoritative for current workbook workflows and business logic.
+- `FoundationCheckpoint.md` is the single authoritative current checkpoint state.
+- `CheckpointManifest.md` preserves checkpoint history.
+- The latest numbered checkpoint handoff preserves immediate execution continuity.
+- Calc artifacts are execution evidence subordinate to approved business contracts and Mark's final acceptance authority.
+
 ## Project Responsibility Lanes
+💡 Ideas & Parking Lot captures and clarifies ideas only.
 
-### 💡 Ideas & Parking Lot
-Captures and clarifies ideas.
+📊 Spreadsheet Design owns current workbook workflows, business logic, calculations, tables, controls, historical records, and LibreOffice Version 0 responsibilities.
 
-Nothing is built, designed, or coded there.
+🎨 Prototype Design visualizes future application presentation without silently redefining business truth.
 
-### 📊 Spreadsheet Design
-Authoritative for current workbook workflows, business logic, calculations, tables, controls, historical records, and LibreOffice Version 0 responsibilities.
+💻 Development implements proven approved ideas and does not redesign workflows during implementation.
 
-Nothing gets coded until the relevant business responsibility has been discussed in Spreadsheet Design.
+🐞 Debugging repairs focused defects through root cause → smallest safe fix → explanation → verification.
 
-### 🎨 Prototype Design
-Visualizes future application screens and interaction concepts.
-
-Prototypes do not need to work or connect to a database.
-
-Prototype Design must not silently redefine business logic owned by Spreadsheet Design.
-
-### 💻 Development
-Implements proven ideas already approved through Spreadsheet Design or Prototype Design.
-
-Development does not redesign workflows, change business logic, or invent unrelated features.
-
-Implementation contradictions return to the appropriate planning responsibility before direction changes.
-
-### 🐞 Debugging
-Exists only for bugs.
-
-Root cause → smallest safe fix → explanation → verification.
-
-Debugging does not become architecture, roadmap, or feature design.
-
-### 📦 Releases
-Preserves completed milestones, releases, packages, and important engineering decisions.
-
-Nothing is developed or debugged in Releases.
+📦 Releases preserves meaningful milestones, packages, and engineering decisions.
 
 ## Design-Locked Business Contracts Preserved
-🆔 Inventory Identity
-📦 Product Form Taxonomy
-🔢 Quantity + Unit Identity
-💰 Cost Basis + Cost Layers
-📍 Physical Location + Custody
-🟡 Inventory Business State
-🏪 Platform Exposure + Listing Relationship
-📅 Inventory Age + Capital Commitment Clock
-🔗 Inventory Lineage + Transformation
-🔍 Inventory Reconciliation + Adjustment
-🎯 Mission Control five-zone responsibility architecture
-👀 Visual Intelligence contracts
-💰 Capital Health and Capital Origin contracts
-⚠️ Opportunity + Risk boundary
-🎨 MarketDEX Visual North Star
-⚡ Authoritative mascot protection
+Inventory Identity; Product Form Taxonomy; Quantity + Unit Identity; Cost Basis + Cost Layers; Physical Location + Custody; Inventory Business State; Platform Exposure + Listing Relationship; Inventory Age + Capital Commitment Clock; Inventory Lineage + Transformation; Inventory Reconciliation + Adjustment; Mission Control five-zone architecture; Visual Intelligence; Capital Health and Capital Origin; Opportunity + Risk boundary; MarketDEX Visual North Star; authoritative mascot protection.
 
 ## Visual Governance
 `MarketDEX_Mission_Control_Visual_North_Star.png` remains the authoritative approved dashboard visual-direction reference.
 
-`MarketDEX_Official_Mascot.png` remains the authoritative locked MarketDEX mascot asset.
+`MarketDEX_Official_Mascot.png` remains the authoritative locked MarketDEX mascot asset and must not be intentionally redesigned, replaced, recolored, restyled, or substituted unless Mark explicitly unlocks the design.
 
-The mascot must not be intentionally redesigned, replaced, recolored, restyled, have its markings or face altered, change species, or be substituted by a generative variation unless Mark explicitly unlocks the design.
+## Current Calc Continuity
+MarketDEX Calc Version 0 has progressed through approved Build 036.
 
-## Execution Decision
-Foundation governance is synchronized for disciplined workbook execution and gradual future desktop evolution.
+The official repository-preserved Calc baseline is:
 
-The workbook proves the business system.
+`artifacts/calc/MarketDEX_Calc_V0_Build035_Listing_Content_Preparation_Action.ods`
 
-Prototype Design visualizes approved future presentation when useful.
+Build 036 — Price Decision Preparation Action — is approved locally but is not yet repository-preserved.
 
-Development implements proven behavior.
+The proven preparation chain is:
 
-Debugging repairs focused defects.
+`Photos → Condition → Listing Content → Price Decision → Platform`
 
-Releases preserve meaningful evolution.
+Preparation actions resolve one supported blocker at a time. Completing one task cannot silently make inventory READY TO LIST.
 
-A real implementation contradiction returns to the appropriate planning responsibility before locked business logic changes.
+## Current Checkpoint Handoff
+`Checkpoint022Build036Handoff.md` is the current numbered continuity handoff.
 
-## Checkpoint 020 Calc Build Continuity
+Do not rediscover Builds 033–035.
 
-MarketDEX Calc Version 0 has progressed through approved Build 032.
-
-The official preserved Calc baseline is:
-
-`artifacts/calc/MarketDEX_Calc_V0_Build032_Listing_Readiness_Preparation_Gate.ods`
-
-`artifacts/calc` is the approved repository convention for preserved Calc workbook build artifacts.
-
-Calc builds are execution artifacts. They do not replace the Constitution, design-locked contracts, Spreadsheet Design authority, approved calculation contracts, or Mark's final acceptance authority.
-
-Build 032 proves the current workbook workflow through:
-
-- Controlled purchase capture.
-- Review approval.
-- Authoritative inventory promotion.
-- Location assignment and movement history.
-- Hold review.
-- Demo sell simulation.
-- Threshold and action bands.
-- Sell Priority Signal.
-- Listing Readiness Preparation Gate.
-
-Codex is the primary implementation and native ODS/package verification specialist for Calc builds.
-
-Copilot may assist with governance and document cross-checks when useful. Copilot should not independently repeat binary ODS/package inspection already verified by Codex.
-
-Use the smallest sufficient verification path. Avoid redundant tool inspection and repeated approval loops.
-
-Human visual review by Mark remains part of workbook acceptance when visual workbook changes are introduced.
-
-No Build 033 scope is established by this checkpoint.
-
-## Checkpoint 018 Historical Next Movement
-📊 Calc Version 0 workbook shell and first build milestone in Spreadsheet Design.
-
-This line is preserved as Checkpoint 018 historical context. The current continuity state is the approved Build 032 baseline recorded above.
+## Execution and Verification Discipline
+- Use the smallest sufficient verification path.
+- Mark performs visual acceptance for visual workbook changes.
+- Jarvis may implement routine design-locked Calc builds when the actual baseline ODS is available for safe package inspection.
+- Reserve Codex for high-risk native ODS work, difficult debugging, or milestone verification when specialist value materially helps.
+- Maintain emoji-first comprehension, short digestible responses, condensed multi-step batches, low-friction deliverables, BUILD / PLAN / STOP recommendations, and checkpoint rhythm.
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**

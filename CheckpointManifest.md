@@ -230,3 +230,45 @@ Do not create renamed foundation copies such as `_FINAL`, `_NEW`, `_Updated`, or
 - Existing low-friction communication, emoji-first comprehension, short digestible instruction, condensed multi-step batching, and checkpoint rhythm agreements remain in force.
 - Checkpoint 018 workbook-shell and first-build language preserved as historical context rather than silently rewritten.
 - No Build 033 scope established.
+
+---
+
+## 🏁 Checkpoint 021 — Build 033 Listing Preparation Action Handoff
+
+- Build 032 preserved as the approved Listing Readiness Preparation Gate endpoint.
+- Build 033 scope design locked as Listing Preparation Action.
+- Preparation actions protected as one-blocker-at-a-time workflow movements.
+- Photos established as the first demonstrated preparation blocker.
+- Existing communication, implementation, and checkpoint partnership agreements preserved.
+
+---
+
+## 🏁 Checkpoint 022 — Builds 033–035 Preparation Chain Continuity
+
+- Build 033 Listing Preparation Action implemented, visually accepted, architecture-reviewed, and preserved.
+- Build 034 Condition Preparation Action implemented, visually accepted, architecture-reviewed, and preserved.
+- Build 035 Listing Content Preparation Action implemented, visually accepted, architecture-reviewed, and preserved.
+- Official repository-preserved Calc baseline established at `artifacts/calc/MarketDEX_Calc_V0_Build035_Listing_Content_Preparation_Action.ods`.
+- Proven preparation chain recorded as `Photos → Condition → Listing Content → Price Decision`.
+- One-supported-blocker-at-a-time preparation principle locked.
+- Build 036 discovery point established at Price Decision Preparation Action.
+
+---
+
+## 🧹 Repository Hygiene R001 — Generated Artifact Cleanup
+
+- `.gitignore` created.
+- 11 committed `__pycache__/` directories containing 38 `.pyc` generated artifacts removed.
+- Committed runtime log removed.
+- Calc artifacts, checkpoints, foundation documents, dormant desktop code, mascot, and visual authority assets preserved.
+- Ambiguous standards-tree drift intentionally stopped for separate reconciliation.
+
+---
+
+## 📚 Repository Hygiene R002 — Documentation Authority Reconciliation
+
+- `docs/standards/` established as the single canonical standards tree.
+- Accidental `docs/docs/standards/` path removed after file-by-file comparison.
+- Proven unique Engine, Module, Sprint, and Widget rules preserved.
+- All 10 canonical standards retained.
+- No Calc business logic, foundation contract, checkpoint history, or Python source changed.

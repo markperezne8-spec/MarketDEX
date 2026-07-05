@@ -1,64 +1,44 @@
 # Repository Hygiene Verification
 
-**Synchronization:** Foundation Checkpoint 017 Repository Hygiene  
-**Date:** July 4, 2026  
-**Result:** 🟢 PASS  
-**Repository Phase:** 🚀 LibreOffice Calc Version 0 build execution
+**Synchronization:** Repository Reconciliation through R002
+**Date:** July 5, 2026
+**Result:** 🟢 PASS
+**Repository Phase:** 📊 Workbook OS ACTIVE · 🖥️ Desktop Foundation DORMANT
 
 ## Verification Scope
+This verification records repository authority and hygiene state after Repository Hygiene R001 and R002.
 
-This verification checks the repository state used for the Foundation Checkpoint 017 execution handoff.
+## Repository Identity
+- LibreOffice Workbook OS is the active proving and execution lane.
+- Desktop Application Foundation is preserved as a dormant historical and future implementation lane.
+- One permanent repository preserves both lifecycle lanes.
+- Dormant desktop code does not own current workbook business authority.
 
-## Permanent Foundation Files
+## Current-State Authority
+- `FoundationCheckpoint.md` is the single authoritative current checkpoint state.
+- `CheckpointManifest.md` is the permanent checkpoint history and index.
+- `Checkpoint022Build036Handoff.md` is the current numbered execution continuity handoff.
+- Official repository-preserved Calc baseline is Build 035.
+- Build 036 is approved locally and awaits repository preservation.
 
-The following seven permanent foundation files are present exactly once:
+## Repository Hygiene
+- `.gitignore` protects Python caches, virtual environments, runtime logs, test/tool caches, OS/editor residue, temporary files, and LibreOffice lock files.
+- 11 committed `__pycache__/` directories and 38 `.pyc` artifacts were removed in R001.
+- The committed runtime log was removed in R001.
+- `docs/standards/` is the single canonical standards authority after R002.
+- The accidental `docs/docs/standards/` path was removed after evidence review.
+- All 10 canonical standards remain.
 
-- `BusinessQuestions.md`
-- `Constitution.md`
-- `Vision.md`
-- `WorkbookBlueprint.md`
-- `Jarvis Partnership Agreement.md`
-- `CheckpointManifest.md`
-- `FoundationCheckpoint.md`
-
-No `_FINAL`, `_NEW`, `_Updated`, or numbered duplicate living foundation Markdown copies are present.
-
-## Checkpoint Synchronization
-
-- `FoundationCheckpoint.md` identifies Foundation Checkpoint 017.
-- `CheckpointManifest.md` preserves Checkpoint 017 history.
-- The active phase is LibreOffice Calc Version 0 build execution.
-- Inventory Lineage + Transformation remains design locked.
-- Inventory Reconciliation + Adjustment remains design locked.
-- The next formal movement is the Calc Version 0 workbook shell and first build milestone.
-
-## Visual Asset Governance
-
-- `MarketDEX_Mission_Control_Visual_North_Star.png` is present as the authoritative dashboard visual-direction reference.
-- `MarketDEX_Official_Mascot.png` is present as the authoritative locked mascot asset.
-- `VisualAssetGovernance.md` is absent, preventing duplicate living governance authority.
-- Mascot and Visual North Star protection remains governed by the permanent foundation documents.
-- The authoritative visual assets were not altered during this hygiene synchronization.
-
-## Document Version Synchronization
-
-Current living-document versions reflect the Checkpoint 017 content state:
-
-- `BusinessQuestions.md` — Version 2.2
-- `Constitution.md` — Version 1.1
-- `Vision.md` — Version 2.0
-- `WorkbookBlueprint.md` — Version 2.0
-- `Jarvis Partnership Agreement.md` — Version 1.8
-- `CheckpointManifest.md` — Version 1.2
-
-Version and checkpoint identifiers remain inside documents and Git history rather than duplicate filenames.
+## Protected Authority
+- Foundation contracts remain preserved.
+- Calc artifacts remain preserved.
+- Checkpoint history remains preserved.
+- Desktop Python source remains preserved for later reconciliation or development.
+- MarketDEX visual north star and official mascot remain protected authority assets.
 
 ## Final Result
+🟢 Repository hygiene and authority reconciliation pass through R002.
 
-🟢 Repository hygiene passes for Calc Version 0 execution.
+The repository now clearly distinguishes the active Workbook OS lane from the dormant Desktop Application Foundation lane.
 
-The repository foundation, checkpoint state, visual governance, permanent filenames, and living-document version metadata are synchronized at Foundation Checkpoint 017.
-
-Broad pre-build architecture planning is frozen enough to begin the first LibreOffice Calc Version 0 build milestone.
-
-If implementation exposes a real contradiction, the issue returns to the appropriate planning boundary before locked architecture changes.
+The next repository reconciliation movement is R003 preservation of these repaired entry-point and current-state authority documents.
