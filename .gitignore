@@ -1,0 +1,32 @@
+# MarketDEX repository hygiene
+# Python generated artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Runtime logs
+logs/*.log
+*.log
+
+# Test/tool caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# OS/editor residue
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+*~
+
+# LibreOffice temporary/lock files
+.~lock.*#
+*.~lock.*
