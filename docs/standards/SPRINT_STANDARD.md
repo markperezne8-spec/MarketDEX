@@ -1,2 +1,3 @@
 # Sprint Standard
-Objective, Backlog, Deliverables, Acceptance Criteria, Review.
+
+Objective, Backlog, Deliverables, Acceptance Criteria, Testing, Review, Retrospective.
