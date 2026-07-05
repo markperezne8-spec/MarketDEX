@@ -213,3 +213,20 @@ Do not create renamed foundation copies such as `_FINAL`, `_NEW`, `_Updated`, or
 - `DEVELOPMENT_PLAYBOOK.md` synchronized from obsolete code-first workflow to the approved MarketDEX responsibility chain.
 - Foundation synchronization completed without changing the design-locked Inventory, Transformation, Reconciliation, Mission Control, Visual North Star, or authoritative mascot contracts.
 - Next formal project movement remains Calc Version 0 workbook shell and first build milestone through Spreadsheet Design.
+
+---
+
+## 🏁 Checkpoint 020 — Calc Build 032 Continuity Synchronization
+
+- MarketDEX Calc Version 0 progression through approved Build 032 recorded.
+- Official preserved Calc baseline established at `artifacts/calc/MarketDEX_Calc_V0_Build032_Listing_Readiness_Preparation_Gate.ods`.
+- `artifacts/calc` established as the approved repository convention for preserved Calc workbook build artifacts.
+- Calc builds preserved as execution artifacts subordinate to the Constitution, locked contracts, Spreadsheet Design authority, approved calculation contracts, and Mark's final acceptance authority.
+- Build 032 workflow continuity recorded through controlled purchase capture, review approval, authoritative inventory promotion, location assignment and movement history, hold review, demo sell simulation, threshold and action bands, Sell Priority Signal, and Listing Readiness Preparation Gate.
+- Codex established as the primary Calc implementation and native ODS/package verification specialist.
+- Copilot governance and document cross-check assistance preserved without redundant repetition of Codex-verified binary ODS/package inspection.
+- Smallest-sufficient verification path and avoidance of repeated approval loops established.
+- Mark's human visual review preserved as part of acceptance when workbook visual changes are introduced.
+- Existing low-friction communication, emoji-first comprehension, short digestible instruction, condensed multi-step batching, and checkpoint rhythm agreements remain in force.
+- Checkpoint 018 workbook-shell and first-build language preserved as historical context rather than silently rewritten.
+- No Build 033 scope established.

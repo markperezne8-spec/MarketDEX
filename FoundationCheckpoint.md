@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 018
+# MarketDEX Foundation Checkpoint 020
 
-**Status:** 🏁 Verified Knowledge Checkpoint — Foundation Synchronization
+**Status:** 🏁 Verified Knowledge Checkpoint — Calc Build Continuity Synchronization
 
 ## Active Phase
 📊 LibreOffice Calc Version 0 workbook execution through Spreadsheet Design.
@@ -94,8 +94,44 @@ Releases preserve meaningful evolution.
 
 A real implementation contradiction returns to the appropriate planning responsibility before locked business logic changes.
 
-## Next Formal Project Movement
+## Checkpoint 020 Calc Build Continuity
+
+MarketDEX Calc Version 0 has progressed through approved Build 032.
+
+The official preserved Calc baseline is:
+
+`artifacts/calc/MarketDEX_Calc_V0_Build032_Listing_Readiness_Preparation_Gate.ods`
+
+`artifacts/calc` is the approved repository convention for preserved Calc workbook build artifacts.
+
+Calc builds are execution artifacts. They do not replace the Constitution, design-locked contracts, Spreadsheet Design authority, approved calculation contracts, or Mark's final acceptance authority.
+
+Build 032 proves the current workbook workflow through:
+
+- Controlled purchase capture.
+- Review approval.
+- Authoritative inventory promotion.
+- Location assignment and movement history.
+- Hold review.
+- Demo sell simulation.
+- Threshold and action bands.
+- Sell Priority Signal.
+- Listing Readiness Preparation Gate.
+
+Codex is the primary implementation and native ODS/package verification specialist for Calc builds.
+
+Copilot may assist with governance and document cross-checks when useful. Copilot should not independently repeat binary ODS/package inspection already verified by Codex.
+
+Use the smallest sufficient verification path. Avoid redundant tool inspection and repeated approval loops.
+
+Human visual review by Mark remains part of workbook acceptance when visual workbook changes are introduced.
+
+No Build 033 scope is established by this checkpoint.
+
+## Checkpoint 018 Historical Next Movement
 📊 Calc Version 0 workbook shell and first build milestone in Spreadsheet Design.
+
+This line is preserved as Checkpoint 018 historical context. The current continuity state is the approved Build 032 baseline recorded above.
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**

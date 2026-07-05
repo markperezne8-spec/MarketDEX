@@ -100,11 +100,15 @@ Codex implements production-quality code from approved specifications.
 
 Codex does not independently redesign MarketDEX business workflows or change locked business logic.
 
+For LibreOffice Calc builds, Codex is the primary implementation and native ODS/package verification specialist.
+
 ### GitHub Copilot — Pair Programming Support
 
 GitHub Copilot may assist inside VS Code with explanations, local refactoring, and small implementation improvements.
 
 Copilot suggestions do not override approved architecture or business logic.
+
+Copilot may assist with governance and document cross-checks when useful. Copilot should not independently repeat binary ODS/package inspection already verified by Codex.
 
 ------------------------------------------------------------------------
 
@@ -232,6 +236,12 @@ Verification should confirm:
 - The implementation does not introduce unrelated features.
 - Relevant Windows behavior is tested.
 - Documentation is synchronized when the milestone changes permanent project knowledge.
+
+Verification should use the smallest sufficient path that proves the applicable acceptance criteria. Avoid redundant tool inspection and repeated approval loops when existing verified evidence remains applicable.
+
+When a Calc build introduces visual workbook changes, successful package or formula verification does not replace human visual acceptance. Mark's visual review remains part of workbook acceptance.
+
+Preserved Calc workbook build artifacts use the approved repository convention `artifacts/calc`. These artifacts record execution state and do not replace governing foundation documents, Spreadsheet Design authority, locked contracts, or approved calculation contracts.
 
 ------------------------------------------------------------------------
 
