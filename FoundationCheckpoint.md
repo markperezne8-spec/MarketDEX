@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 031
+# MarketDEX Foundation Checkpoint 032
 
-**Status:** 🏁 Mandatory Preservation Checkpoint — Inventory Action Center Operating Contract
+**Status:** 🏁 Mandatory Preservation Checkpoint — State-Driven Inventory Action Center Routing
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
@@ -52,9 +52,7 @@ Safe repository text maintenance:
 Mark is not expected to perform implementation or repository steps Jarvis can reasonably and safely complete.
 
 ## Calc Artifact Retention Rule
-`artifacts/calc/` preserves one current approved Calc baseline only.
-
-When a newer Calc build is visually accepted and repository-preserved, the previous Calc artifact is deleted from the current repository tree. Historical progression remains preserved through Git commit history and `CheckpointManifest.md`.
+`artifacts/calc/` preserves one current approved Calc baseline only. A newer visually accepted and repository-preserved Calc build replaces the previous active artifact; Git history and checkpoint history preserve progression.
 
 ## Cost, Tool, and Technology Preference
 - Offline-first.
@@ -72,75 +70,75 @@ Inventory Identity; Product Form Taxonomy; Quantity + Unit Identity; Cost Basis 
 `MarketDEX_Official_Mascot.png` remains the authoritative locked gray-and-white electric dog mascot with yellow lightning sparks and must not be intentionally redesigned, replaced, recolored, restyled, or substituted unless Mark explicitly unlocks the design.
 
 ## Current Calc Continuity
-MarketDEX Calc Version 0 has progressed through approved **Build 063 — Inventory Action Center Gate**.
+MarketDEX Calc Version 0 has progressed through approved **Build 072 — State-Driven Inventory Action Center Gate**.
 
 The sole current repository-preserved Calc baseline is:
-`artifacts/calc/MarketDEX_Calc_V0_Build063_Inventory_Action_Center_Gate.ods`
+`artifacts/calc/MarketDEX_Calc_V0_Build072_State_Driven_Inventory_Action_Center_Gate.ods`
 
-Build 063 is package-verified, visually accepted by Mark, and repository-preserved.
+Build 072 is package-verified, visually accepted by Mark, and repository-preserved.
 
-The full demonstrated Inventory sale lifecycle through `COMPLETE · DEMO` remains preserved as proof and business-contract evidence.
+The full demonstrated Inventory sale lifecycle through `COMPLETE · DEMO` and the Build 055–063 operator-facing Action Center contract remain preserved as proof and business-contract evidence.
 
-### Builds 055–063 — Inventory Action Center Operating Contract
-The first operator-facing Inventory operating contract is now proven:
+### Builds 064–072 — State-Driven Inventory Action Center Routing
+The Action Center routing contract is now proven:
 
-`SELECT RECORD → UNDERSTAND CURRENT STATE → SEE NEXT ACTION → SEE BLOCKER → KNOW REQUIRED EVIDENCE → RECORD EVIDENCE → REVIEW RESULT → PREVIEW SUPPORTED TRANSITION`
+`SELECT RECORD → READ SUPPORTED STATE → ROUTE NEXT ACTION → ROUTE BLOCKER → ROUTE EVIDENCE VOCABULARY → REVIEW → PREVIEW`
 
-Build 055 establishes one selected Inventory record as the active working context without altering Inventory facts.
+Build 064 establishes the controlled lifecycle routing map: one supported current state selects one controlled operator route.
 
-Build 056 shows the selected record's current supported lifecycle state from supported lifecycle evidence.
+Build 065 routes `PREPARATION NEEDED` to the next preparation responsibility, readiness blocker, supported preparation evidence, and advancement preview.
 
-Build 057 derives the next required operator responsibility from current supported state and the locked lifecycle sequence.
+Build 066 routes `READY TO LIST / READY FOR PUBLICATION` to listing-intent or publication-authority responsibility without equating readiness with publication.
 
-Build 058 exposes one explicit unresolved blocker preventing the next supported movement.
+Build 067 routes `PUBLISHED / ACTIVE PLATFORM EXPOSURE` to exposure review or sale observation and requires factual publication, exposure, or sale evidence.
 
-Build 059 tells the operator what factual evidence is required next before entry.
+Build 068 routes `SOLD` to fulfillment preparation and supported packaging plus shipment-path review.
 
-Build 060 proves the first controlled operator-facing evidence input surface using the already-proven delivery outcome vocabulary.
+Build 069 routes `READY FOR SHIPMENT / SHIPPED` to shipment-result or delivery-evidence responsibility using factual shipment or delivery outcomes.
 
-Build 061 explicitly reviews recorded evidence as `SUPPORTED / UNSUPPORTED / PENDING REVIEW / UNKNOWN` before transition support may be presented.
+Build 070 routes `DELIVERED / PAID OUT` to settlement evidence or lifecycle-completion review while preserving factual financial-evidence boundaries.
 
-Build 062 previews the transition that would become supported from reviewed evidence while explicitly preserving `PREVIEW ONLY` and `NOT APPLIED · DEMO`.
+Build 071 protects `COMPLETE` as the terminal state of the proven sale lifecycle: `COMPLETE → NO NEXT LIFECYCLE ACTION`. Review and unknown conditions remain review-bound and are not treated as complete.
 
-Build 063 combines selected record, current state, next action, active blocker, required evidence, controlled input, evidence review, and transition preview into the Inventory Action Center Gate.
+Build 072 combines selected record, supported current state, and the controlled routing map into one State-Driven Inventory Action Center Gate.
 
 Operating boundary:
-`TRANSITION PREVIEW ≠ STATE MUTATION`
+`ROUTING GUIDANCE ≠ STATE MUTATION`
 
-The Action Center does not create automation, macros, buttons, marketplace connectors, or silent state changes.
+`COMPLETE → NO INVENTED NEXT ACTION`
 
-The operator should not need to read the full linear demo chain to understand what to do next.
+The Action Center still creates no buttons, macros, connectors, automatic state writes, or silent state mutation.
 
-## Artifact Hygiene R013
-Build 063 replaced Build 054 as the sole current approved Calc baseline after package verification, Mark's visual acceptance, and repository preservation.
+## Artifact Hygiene R014
+Build 072 replaced Build 063 as the sole current approved Calc baseline after package verification, Mark's visual acceptance, and repository preservation.
 
-Superseded Build 054 was removed from the active `artifacts/calc/` tree. Historical progression remains recoverable through Git history and checkpoint history.
+Superseded Build 063 was removed from the active `artifacts/calc/` tree. Historical progression remains recoverable through Git history and checkpoint history.
 
 ## Pending Repository Maintenance
-`CheckpointManifest.md` requires safe historical reconciliation for Checkpoints 027–031 and Artifact Hygiene R010–R013. Current-state continuity is authoritative here until manifest reconciliation is safely completed.
+`CheckpointManifest.md` requires safe historical reconciliation for Checkpoints 027–032 and Artifact Hygiene R010–R014. Current-state continuity is authoritative here until manifest reconciliation is safely completed.
 
 ## Current Business Boundary
-The proven lifecycle business contracts remain intact. The first operator-facing Action Center contract is now proven, but the surface is still demonstrated with one fixed working record and fixed demo values.
+The Action Center now understands the proven lifecycle at a controlled routing-contract level, but the routing surfaces remain fixed demonstration rows. They do not yet read a structured operator selection or derive route outputs through workbook formulas.
 
-The next responsibility is to prove how the Action Center responds to different supported lifecycle states and selects the correct next action, blocker, evidence vocabulary, review responsibility, and transition preview without duplicating the full linear lifecycle chain.
+The next responsibility is to prove the smallest formula-driven Action Center behavior: one controlled selected-state input should drive derived next action, blocker, evidence needed, and terminal-state guidance while preserving preview-only and no-silent-state-change boundaries.
 
 ## Exact Resume Point
-**Accelerated next-batch discovery from Build 063 — State-Driven Inventory Action Center Routing.**
+**Accelerated next-batch discovery from Build 072 — Formula-Driven Action Center Routing.**
 
-Plan 6–9 adjacent builds when responsibility coherence permits, with one ODS, one visual review, and one preservation push.
+Plan a coherent 6–9 build batch when safe, with one ODS, one package verification, one visual review, and one preservation push.
 
 Discovery questions:
-> What controlled state-to-next-action routing map is required for the proven lifecycle states from PREPARATION NEEDED through COMPLETE?
+> What is the smallest controlled selected-state input surface that LibreOffice Calc can safely use as the Action Center routing source?
 
-> How should the Action Center distinguish terminal COMPLETE from actionable states and review/unknown conditions?
+> Which route outputs should be formula-derived first: next action, active blocker, evidence needed, terminal guidance, and transition preview?
 
-> How should blocker, evidence-needed, controlled-input vocabulary, and transition preview change from one selected current state without silently mutating Inventory?
+> How should unknown, unsupported, blank, or unmapped selected-state values fail safely without inventing an operator path?
 
-Resume from the approved and repository-preserved Build 063 endpoint.
+Resume from the approved and repository-preserved Build 072 endpoint.
 
-Do not rediscover Builds 033–063.
+Do not rediscover Builds 033–072.
 
-Do not build buttons, macros, connectors, or silent state mutation yet.
+Do not build macros, connectors, marketplace automation, or silent state mutation yet.
 
 Use the accelerated batch default and copy-block communication standard.
 
