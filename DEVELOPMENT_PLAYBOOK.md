@@ -1,6 +1,6 @@
 # MarketDEX Development Playbook
 
-**Version:** 2.1
+**Version:** 2.2
 **Status:** 📁 Repository Ready · 🔒 Design Locked
 **Document Type:** Development Governance Living Document
 **Permanent Filename:** `DEVELOPMENT_PLAYBOOK.md`
@@ -55,6 +55,24 @@ Implementation contradictions return to Spreadsheet Design before locked busines
 
 The workbook proves the business system. Later technology may reduce friction around proven knowledge.
 
+## ⚙️ Workflow 2.0 Execution Controls
+Before requesting any input or manual repository action from Mark, inspect repository authority first and apply the **Mark Effort Test**: `Can Jarvis safely do this instead?`
+
+Use direct repository maintenance as the default for supported text authority. Use finished verified binary deliverables when direct binary preservation is unavailable.
+
+Treat approved decisions as one of three continuity states:
+- **🔒 Design Locked** — approved and protected from casual rediscovery.
+- **✅ Operationally Proven** — validated through real use or accepted execution evidence.
+- **🔓 Reopened by Evidence** — deliberately reopened because new evidence, a defect, or Mark's explicit direction justifies review.
+
+Do not create repetitive approval cycles for Design Locked or Operationally Proven decisions.
+
+Every meaningful implementation movement should resolve to one clear recommendation state: 🏗️ BUILD, 📐 PLAN, or 🛑 STOP.
+
+During checkpoint and authority maintenance, check for naming drift, stale current-state references, duplicate continuity files, obsolete instructions, and conflicts with permanent filenames.
+
+Major specialist-lane progress must be condensed into repository authority so 🏛️ Jarvis HQ can resume without reconstructing conversation history.
+
 ## 🏗️ Routine Workbook Build Flow
 `Mark approves → Jarvis builds → Jarvis verifies → Jarvis provides finished downloadable ODS → Mark visually checks → approved build is repository-preserved`
 
@@ -82,7 +100,7 @@ Do not redesign architecture, change business logic, or add unrelated features w
 If a defect reveals a better workflow idea, return that idea to the correct planning responsibility before changing direction.
 
 ## 🧪 Verification Discipline
-Verification should be proportional to risk.
+Verification is proportional to risk.
 
 Routine design-locked workbook builds may use package integrity, native mimetype structure, XML parseability, design-lock evidence checks, and Mark's visual acceptance when appropriate.
 
@@ -95,6 +113,8 @@ Releases preserve meaningful milestones, packages, and engineering decisions. No
 
 Checkpoints preserve current continuity and approved knowledge when enough meaningful progress has accumulated or context risk is increasing.
 
+Meaningful completed build or decision sequences should synchronize `FoundationCheckpoint.md` and `CheckpointManifest.md` directly. Do not create routine duplicate checkpoint handoff files.
+
 Design-locked and repository-preserved work must not be rediscovered unless new evidence, a defect, or Mark explicitly reopens the decision.
 
 ## 🏗️ 📐 🛑 Recommendation Standard
@@ -105,7 +125,7 @@ Design-locked and repository-preserved work must not be rediscovered unless new 
 ## 📁 Document Governance
 **Permanent Filename:** `DEVELOPMENT_PLAYBOOK.md`
 
-**Current Version:** 2.1
+**Current Version:** 2.2
 
 **Status:** 📁 Repository Ready · 🔒 Design Locked · 🏁 Checkpoint Complete · 👍 Approved
 
