@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 051
+# MarketDEX Foundation Checkpoint 052
 
-**Status:** 🏁 Checkpoint Complete — Controlled SOLD Transition Execution Gate
+**Status:** 🏁 Checkpoint Complete — Controlled Financial Truth Cross-Check Gate
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS through Spreadsheet Design.
@@ -20,69 +20,68 @@ Checkpoint headings use `🏁`. Milestones use `⚡🚀✨ MILESTONE`.
 Repository rule: remote checkpoint/progress synchronization occurs only after the accepted Calc baseline is confirmed remote.
 
 ## Current Approved Calc Baseline
-`artifacts/calc/MarketDEX_Calc_V0_Build360_Controlled_SOLD_Transition_Execution_Gate.ods`
+`artifacts/calc/MarketDEX_Calc_V0_Build480_Controlled_Financial_Truth_Cross_Check_Gate.ods`
 
 Remote GitHub blob SHA:
-`2f78ed4dd74d9669f4a408d733cca6a0b790c6de`
+`c0744a2068b0f2b9cff9cc74f8efb0ac7e593113`
 
-Build 360 is accepted and remotely verified. Build 320 remains a superseded repository artifact pending dependency-safe retention cleanup because direct deletion was blocked by repository safety controls.
+Build 480 is accepted and remotely verified.
 
-## Builds 321–360 — Controlled SOLD Transition Execution
-Builds 321–330 establish the Explicit SOLD Transition Request.
+## Builds 361–480 — Authoritative SOLD State to Financial Truth
+Builds 361–380 establish authoritative sale value and revenue evidence.
 
-Builds 331–340 establish SOLD Transition Authority.
+Builds 381–400 establish marketplace fee evidence and fee authority.
 
-Builds 341–350 establish Execution Commit and Controlled SOLD State Write.
+Builds 401–420 establish shipping and packaging cost evidence and controlled sale cost authority.
 
-Builds 351–354 establish append-only SOLD transition history.
+Builds 421–440 establish inventory cost basis evidence and authoritative cost basis cross-check.
 
-Builds 355–359 establish post-write verification and replay protection.
+Builds 441–460 derive net profit from verified financial components.
 
-Build 360 establishes the Controlled SOLD Transition Execution Gate.
+Builds 461–479 establish the financial truth cross-check.
 
-## Accepted Build 360 Proof
-For `INV-000001`:
-- Request Result = `VALID REQUEST`;
-- Authority Result = `GRANTED`;
-- Controlled State Write = `YES`;
-- Derived New State = `SOLD`;
-- transition ID = `TRN-000003`;
-- transition history result = `EXECUTED`;
-- Completion = `COMPLETED`;
-- Replay Result = `ALREADY EXECUTED`;
-- Second Write = `NO`.
+Build 480 establishes the Controlled Financial Truth Cross-Check Gate.
 
-Mark visually verified Inventory rows 884–905 in LibreOffice Calc. Package integrity, OpenFormula hygiene, LibreOffice headless evaluation, and Err:510 scan passed before visual acceptance.
+## Accepted Build 480 Proof
+For `INV-000001` / `SALE-000001`:
+- Cost Basis Result = `COST BASIS VERIFIED`;
+- Net Profit = `32.74`;
+- Profit Status = `PROFIT`;
+- Financial Truth = `VERIFIED`;
+- Total Deductions = `69.26`;
+- Financial Truth Result = `FINANCIAL TRUTH VERIFIED`.
 
-## Permanent SOLD Boundary
-`LISTED ≠ SOLD`
+Mark visually verified Inventory rows 935–957 in LibreOffice Calc. Package integrity, OpenFormula hygiene, LibreOffice headless evaluation, and Err:510 scan passed before visual acceptance.
 
-`SALE CLAIM ≠ VERIFIED SALE`
+## Permanent Financial Truth Boundary
+`SOLD STATE ≠ REVENUE TRUTH`
 
-`VERIFIED SALE ≠ SOLD STATE`
+`SALE CLAIM ≠ AUTHORITATIVE REVENUE`
 
-`ELIGIBILITY ≠ AUTHORITY`
+`FEE CLAIM ≠ AUTHORITATIVE MARKETPLACE FEE`
 
-`AUTHORITY ≠ EXECUTION`
+`COST CLAIM ≠ AUTHORITATIVE FULFILLMENT COST`
 
-`EXECUTION ≠ VERIFIED COMPLETION`
+`INVENTORY COST ≠ VERIFIED COST BASIS`
 
-Verified Sale creates SOLD transition eligibility only. Explicit request, granted authority, execution commit, controlled state write, append-only history, and post-write verification are required. Replay must not create a second write.
+`FINANCIAL COMPONENTS ≠ FINANCIAL TRUTH`
+
+Authoritative financial truth requires verified revenue, verified marketplace fee, verified fulfillment cost, and verified cost basis. Net Profit = Gross Revenue − Marketplace Fee − Fulfillment Cost − Cost Basis.
+
+Build 480 creates no cash settlement authority and no tax authority.
 
 ## Copilot Status
 `COPILOT ACTION = NOT USED`
 
 ## Milestone Progress
-**Milestone:** Authoritative LISTED State to Controlled Sale Evidence
+**Milestone 6:** Authoritative SOLD State to Financial Truth
 
 **Progress:** `[██████████] 100%`
 
-Completed: sale evidence intake; identity and marketplace match; amount and quantity validation; Verified Sale; SOLD eligibility; explicit SOLD transition request; SOLD authority; execution commit; controlled SOLD state write; append-only history; post-write verification; replay protection; Build 360 acceptance and remote verification.
-
-Remaining: repository supersession cleanup is operational housekeeping and does not reopen the closed business milestone.
+Completed: authoritative revenue; marketplace fee evidence; fulfillment cost evidence; inventory cost basis; net profit derivation; financial truth cross-check; Build 480 acceptance and remote verification.
 
 ## Exact Resume Point
-**Spreadsheet Design — define the next Workbook OS milestone and first business responsibility from authoritative SOLD state. Desktop application implementation remains dormant.**
+**Spreadsheet Design — Milestone 7 begins from verified financial truth. First business responsibility: distinguish derived profit from actual marketplace settlement and establish settlement evidence intake without creating tax authority. Desktop application implementation remains dormant.**
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
