@@ -3,65 +3,51 @@
 ## Permanent Progress Reporting Workflow
 Every Spreadsheet Design build plan, completed build review, debugging return, preservation closeout, checkpoint synchronization, and milestone close reports a milestone progress bar.
 
-Format:
-
-`MILESTONE: <name>`
-
-`PROGRESS: [██████░░░░] 60%`
-
-`COMPLETED: <proven responsibilities>`
-
-`REMAINING: <known responsibilities before milestone close>`
-
-`NEXT GATE: <immediate responsibility>`
-
-## Progress Measurement Rule
-Progress percentages are scope-based estimates, not elapsed-time estimates and not promises of delivery dates.
-
-Jarvis calculates progress from the currently defined milestone responsibility map. Proven and accepted responsibilities count as complete. Active debugging blocks the affected gate from closing. Material scope changes are explained.
+Progress percentages are scope-based estimates, not elapsed-time estimates and not delivery-date promises.
 
 ## Reporting and Communication Defaults
-Progress is shown automatically at approved build-plan start, completed build batch, debugging return, build preservation, checkpoint synchronization, and milestone close.
+Communication is short, direct, action-focused, emoji-forward, and moderately narrow. Use `⚡🚀✨ MILESTONE` for milestone recognition. Stack several workflow steps ahead when useful. Every Mark repository action includes exact copy-paste filenames, commit messages, and reply text.
 
-Communication is short, direct, action-focused, and uses moderate narrow reading width with functional emojis. Mark actions are stacked 2–4 steps ahead when useful. Every repository action includes exact copy-paste filenames, commit messages, and reply text.
+## Current Milestone
+**Milestone:** Verified Publication to Controlled LISTED State
 
-## Closed Milestone
-**Milestone:** Workbook OS — Inventory Lifecycle to Controlled Marketplace Publication Boundary
+**Progress:** `[████░░░░░░] 40%`
 
-**Progress:** `[██████████] 100%`
+Build 260 is accepted and remotely preserved as the sole current Calc baseline. Checkpoint 048 records the Controlled Verified Publication Gate.
 
-Checkpoint 047 closes the milestone.
+Completed: Success Evidence Contract; Success Status Validation; Listing ID Requirement; Result Reference Requirement; Result Timestamp Requirement; Identity Chain Revalidation; Complete Success Evidence Gate; Verified Publication = YES; LISTED Eligibility Revalidation; Controlled Verified Publication Gate; Build 260 visual acceptance; remote binary verification; superseded Build 250 removal; Checkpoint 048 synchronization.
 
-Completed: authoritative Inventory identity; two-dimensional Inventory state; readiness evidence; generalized factor-scoped resolution; Full Readiness Cross-Check; controlled READY TO LIST transition authority; controlled transition execution; append-only transition history; post-write verification; idempotent replay protection; Listing Responsibility; platform target; eBay evidence profile; publication readiness; explicit Publication Request; Publication Authority; no-publication/no-connector boundary; Publication Result Evidence Contract; explicit Publication Execution Commit; Publication Attempt ID; Publication Authority Revalidation; Future Connector Responsibility Boundary; Connector Call Performed Evidence; External Publication Result Intake; External Result Received Validation; External Result Status Classification; Marketplace Listing Identity; attempt/platform/record identity matching; External Result Reference Validation; Successful Result Completeness Gate; fail-closed Publication Result Classification; Verified Publication Result Cross-Check; Publication Consequence Derivation; LISTED Transition Eligibility Boundary; Controlled External Publication Result Evidence Gate; full active Inventory OpenFormula hygiene repair; remote repaired Build 250 binary verification; dependency-safe worksheet supersession review.
+Remaining: explicit LISTED transition request; LISTED transition authority; execution commit; controlled state write; append-only LISTED transition history; post-write verification; replay protection; milestone close.
 
-Worksheet supersession decision: **PRESERVE AS-IS**. No row compaction is justified because reviewed surfaces remain active authority, factual-input, operating-gate, audit, formula, or future transition-model dependencies.
-
-Remaining: none for this milestone.
+Next gate: controlled LISTED transition execution build batch.
 
 ## Current Proven Boundary
-`PUBLICATION AUTHORITY = GRANTED`
+`EXTERNAL RESULT RECEIVED = YES`
 
-`EXECUTION COMMIT = EXECUTE PUBLICATION`
+`EXTERNAL RESULT STATUS = SUCCESS`
 
-`PUBLICATION ATTEMPT ID = PUB-000001`
+`SUCCESS EVIDENCE COMPLETE = YES`
 
-`CONNECTOR RESPONSIBILITY = FUTURE CONNECTOR`
+`IDENTITY CHAIN VALID = YES`
 
-`CONNECTOR CALL PERFORMED = NO`
+`VERIFIED PUBLICATION = YES`
 
-`MARKETPLACE WRITE CLAIMED = NO`
+`VERIFICATION RESULT = VERIFIED PUBLISHED`
 
-`EXTERNAL RESULT RECEIVED = NO`
+`PUBLICATION CONSEQUENCE = PUBLICATION VERIFIED`
 
-`CLASSIFIED RESULT = NO RESULT`
-
-`VERIFIED PUBLICATION = NO`
-
-`PUBLICATION CONSEQUENCE = NONE`
-
-`LISTED TRANSITION ELIGIBILITY = NOT ELIGIBLE`
+`LISTED TRANSITION ELIGIBILITY = ELIGIBLE`
 
 `AUTHORITATIVE INVENTORY STATE WRITE = NO`
+
+## Permanent Boundary
+`SUCCESS CLAIM ≠ VERIFIED PUBLICATION`
+
+`VERIFIED PUBLICATION ≠ LISTED`
+
+`ELIGIBILITY ≠ STATE MUTATION`
+
+`AUTHORIZATION ≠ EXECUTION`
 
 ## Copilot Status
 `COPILOT ACTION = NOT USED`
@@ -69,4 +55,4 @@ Remaining: none for this milestone.
 Copilot may be used for debugging and implementation review only when an actual callable Copilot action occurs. It is not business-logic authority.
 
 ## Next Gate
-Define the next Workbook OS milestone and its first business responsibility in Spreadsheet Design. Desktop application implementation remains dormant.
+Plan and build the controlled LISTED transition execution batch from accepted Build 260. Desktop application implementation remains dormant.
