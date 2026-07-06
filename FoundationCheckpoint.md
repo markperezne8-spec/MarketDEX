@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 042
+# MarketDEX Foundation Checkpoint 043
 
-**Status:** 🏁 Checkpoint Complete — Compacted Inventory + Full Readiness Cross-Check Gate
+**Status:** 🏁 Checkpoint Complete — Controlled READY TO LIST Transition Authority Gate
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
@@ -35,7 +35,9 @@ The active workbook is an operating surface, not the historical development arch
 Jarvis evaluates supersession automatically and performs safe worksheet cleanup. Mark is not asked to manually delete worksheet rows. Dependency, authority, factual-input, and formula-reference checks are required before and after compaction. Actual LibreOffice Calc evaluation behavior must be verified.
 
 ## Copilot Status Rule
-Copilot review is recorded only when Copilot actually performs a review through an available workflow. Build 166–180 did not receive an actual Copilot review because the available GitHub connection did not expose a callable Copilot implementation-review action.
+Copilot review is recorded only when Copilot actually performs a review through an available workflow.
+
+Builds 181–195 did not receive an actual Copilot review because no callable Copilot implementation-review action was available in the active workflow.
 
 `COPILOT NOT ACTUALLY USED → SAY NOT USED → DO NOT CLAIM ACCELERATION CONFIDENCE`
 
@@ -45,93 +47,131 @@ Copilot remains an optional implementation/review worker, not business-logic aut
 `artifacts/calc/` preserves one current approved Calc baseline only.
 
 The current approved Calc baseline is:
-`artifacts/calc/MarketDEX_Calc_V0_Build180_Compacted_Inventory_Full_Readiness_Cross_Check_Gate.ods`
+`artifacts/calc/MarketDEX_Calc_V0_Build195_Controlled_Ready_To_List_Transition_Authority_Gate.ods`
 
-Build 180 remote preservation was verified with GitHub blob SHA `915f137b0faccac16579f558868e582b681dc367`.
+Build 195 remote preservation was verified with GitHub blob SHA `c717bda06e1a50e2e8ea720112cf480bfd933864`.
 
-Build 165 is superseded. Jarvis attempted direct remote deletion after Build 180 verification, but the repository delete action was blocked by the active tool safety layer. The deletion remains a repository-maintenance follow-up; Build 180 remains the approved authority. This is not delegated to Mark as fake work unless direct cleanup remains unavailable at the point cleanup is operationally required.
+Build 180 was superseded and directly removed from the active repository tree by Jarvis after Build 195 remote preservation was verified. Git history and checkpoint history preserve progression.
 
-## Builds 166–180 — Worksheet Compaction + Full Readiness Cross-Check
-Builds 166–168 audited worksheet supersession, classified proof/authority/operating surfaces, and preserved formula dependencies.
+## Builds 181–195 — Controlled READY TO LIST Transition Authority
+Permanent responsibility boundary:
 
-Builds 169–171 removed the superseded Build 123–130 preparation proof and Build 131–145 factor-specific resolution proof surfaces. Fifty-one superseded worksheet rows were removed. The Build 165 generalized engine and required authority/factual input surfaces were preserved.
+`ELIGIBILITY ≠ TRANSITION REQUEST ≠ TRANSITION AUTHORITY ≠ AUTHORITATIVE STATE MUTATION`
 
-Build 172 repaired post-compaction formula references.
+Build 181 establishes the explicit lifecycle transition authority contract.
 
-Build 173 verified the generalized engine regression boundary.
+Build 182 establishes the Transition Request surface.
 
-Builds 174–177 established the Full Readiness Cross-Check, applicable-factor evaluation, Condition applicability protection, and missing/unsupported factor fail-closed behavior.
+Build 183 validates the current authoritative lifecycle state.
 
-Build 178 establishes the Full Readiness Passed result contract.
+Build 184 validates the requested target state.
 
-Build 179 exposes `READY TO LIST ELIGIBLE` as a read-only result only.
+Build 185 revalidates current `READY TO LIST ELIGIBLE` status.
 
-Build 180 combines the compacted Inventory operating surface with the Full Readiness Cross-Check Gate.
+Build 186 establishes the Authorized Actor contract.
 
-## Build 180 Debugging and Acceptance
-Initial Build 180 visually passed worksheet compaction and preserved the generalized engine, but the Full Readiness `MISSING FACTOR` formula returned LibreOffice `Err:508`.
+Build 187 establishes required Transition Evidence.
 
-Debugging corrected the compacted Full Readiness formula references and the Err:508 syntax defect without changing the approved Builds 166–180 business contract.
+Build 188 validates Request + Current State + Target State + Eligibility + Actor + Evidence.
 
-Repaired Build 180 was verified in LibreOffice Calc:
-- Photos Ready = `YES`;
-- Condition Applicability = `NOT APPLICABLE`;
-- Condition Evaluated = `NOT APPLICABLE`;
-- Listing Content Ready = `YES`;
-- Price Decision Ready = `NO`;
-- Platform Selected = `NO`;
-- Shipping Path Reviewed = `NO`;
-- Blocking Data-Quality Issue = `NO`;
-- Applicable Factors Supported = `NO`;
-- first missing applicable factor derives as `PRICE DECISION`;
-- cross-check result is `FAILED · REMAIN IN PREPARATION`;
-- eligibility result is `NOT READY TO LIST ELIGIBLE`;
-- Inventory mutation authority is `NONE · READ ONLY`.
+Build 189 fails closed when required authority is missing.
+
+Build 190 protects against stale requests and changed current state.
+
+Build 191 protects against duplicate completed transitions.
+
+Build 192 derives the Controlled Transition Authorization Result.
+
+Build 193 establishes the Transition Audit Evidence surface.
+
+Build 194 cross-checks that Full Readiness, Eligibility, and Action Center remain non-mutation authorities.
+
+Build 195 combines these responsibilities into the Controlled READY TO LIST Transition Authority Gate.
+
+## Build 195 Debugging and Acceptance
+Initial Build 195 visually exposed a stale compacted-row formula-reference chain.
+
+Visible factual inputs correctly showed:
+- `INV-000001`;
+- requested transition `PREPARATION NEEDED → READY TO LIST`;
+- request status `REQUESTED`;
+- requested by `MARK · OPERATOR`;
+- request evidence `FULL READINESS PASSED`;
+- Full Readiness Result `PASSED`;
+- Eligibility Result `READY TO LIST ELIGIBLE`;
+- Eligibility Current `YES`.
+
+The stale formula references incorrectly returned invalid current-state, target-state, eligibility, request, actor, and evidence validation and therefore denied transition authority.
+
+Debugging repaired only the stale compacted-row formula-reference chain. The approved Builds 181–195 business contract remained unchanged.
+
+Repaired Build 195 was verified in LibreOffice Calc:
+- Current State Valid = `YES`;
+- Target State Valid = `YES`;
+- Eligibility Validation = `VALID`;
+- Request Valid = `YES`;
+- Current State Valid = `YES`;
+- Target State Valid = `YES`;
+- Eligibility Valid = `YES`;
+- Actor Valid = `YES`;
+- Evidence Valid = `YES`;
+- Transition Authority = `AUTHORIZED`;
+- State Mutation Authority = `GRANTED`;
+- Authorized Transition = `PREPARATION NEEDED → READY TO LIST`;
+- State Write Performed = `NO`.
 
 Permanent verification rule:
 > **When formula behavior is under test, formula presence is insufficient. Actual LibreOffice evaluation behavior must be verified.**
 
-## Permanent Full Readiness Boundaries
-`ALL APPLICABLE READINESS FACTORS MUST BE FACTUALLY SUPPORTED`
+## Permanent Transition Authority Boundaries
+`FULL READINESS PASSED ≠ TRANSITION REQUEST`
 
-`CONDITION IS EVALUATED ONLY WHEN APPLICABLE`
+`READY TO LIST ELIGIBLE ≠ TRANSITION AUTHORITY`
 
-`FIRST MISSING APPLICABLE FACTOR IS DERIVED IN APPROVED PRIORITY ORDER`
+`ACTION CENTER GUIDANCE ≠ TRANSITION AUTHORITY`
 
-`ANY MISSING / UNSUPPORTED APPLICABLE FACTOR → FULL READINESS FAILS CLOSED`
+`TRANSITION REQUEST ≠ TRANSITION AUTHORITY`
 
-`FULL READINESS PASSED ≠ AUTOMATIC INVENTORY STATE MUTATION`
+`TRANSITION AUTHORITY REQUIRES CURRENT STATE + TARGET STATE + CURRENT ELIGIBILITY + AUTHORIZED ACTOR + REQUIRED EVIDENCE VALIDATION`
 
-`READY TO LIST ELIGIBLE = READ-ONLY ELIGIBILITY RESULT`
+`STALE REQUEST → DENY`
 
-`ACTION CENTER IS READ ONLY`
+`CURRENT STATE CHANGED SINCE REQUEST → DENY`
 
-`NO AUTOMATIC READY TO LIST`
+`DUPLICATE COMPLETED TRANSITION → DENY`
+
+`TRANSITION AUTHORIZED ≠ STATE ALREADY CHANGED`
+
+`STATE MUTATION AUTHORITY = GRANTED ≠ STATE WRITE PERFORMED`
 
 `NO SILENT STATE CHANGE`
 
-No macros, marketplace connectors, publication automation, or automatic Inventory state writes are authorized by the current Calc gate.
+No macros, marketplace connectors, publication automation, or uncontrolled automatic Inventory mutation are authorized by the current Calc gate.
 
 ## Current Business Boundary
-MarketDEX now has a compacted Inventory worksheet operating surface and an explicit Full Readiness Cross-Check contract.
+MarketDEX now has a controlled explicit authority contract for the narrow transition `PREPARATION NEEDED → READY TO LIST`.
 
-For `INV-000001`, the first missing applicable readiness factor is Price Decision. Full Readiness fails closed, the record remains in preparation, and the read-only eligibility result remains `NOT READY TO LIST ELIGIBLE`.
+For the accepted Build 195 proof, visible factual inputs validate the explicit request, current state, target state, current eligibility, authorized actor, and required transition evidence. Stale-request and duplicate-transition protection remain clear. Transition Authority derives `AUTHORIZED`; State Mutation Authority derives `GRANTED`; the authorized transition derives `PREPARATION NEEDED → READY TO LIST`.
 
-The next design question is:
-> **Once Full Readiness passes and READY TO LIST ELIGIBLE is derived read-only, which explicit authority and evidence are required to perform a controlled authoritative lifecycle transition to READY TO LIST without allowing eligibility or Action Center guidance to mutate Inventory state?**
+The authoritative Inventory state is intentionally not written by Build 195. `STATE WRITE PERFORMED = NO` remains the controlling boundary.
+
+## Worksheet Supersession Check
+No additional Inventory proof sections were removed in Builds 181–195.
+
+The Build 180 Full Readiness Cross-Check remains a direct authority input to the accepted Build 195 transition-authority gate. The generalized factor-scoped engine, Full Readiness Cross-Check, and Controlled Transition Authority surfaces remain active operating responsibilities.
+
+Compaction is deferred until the controlled transition-execution layer proves which authority and audit surfaces it consumes.
 
 ## Exact Resume Point
-**Spreadsheet Design — Build 181 discovery: READY TO LIST Eligibility → Explicit Transition Authority → Controlled Authoritative Lifecycle State Change.**
+**Spreadsheet Design — Build 196 discovery: Granted Mutation Authority → Controlled Transition Execution → Authoritative Inventory State Write → Permanent Transition History → Post-Write Verification.**
 
-First inspect the proven Transformation Event and controlled state-transition principles already preserved in project architecture and workbook history.
-
-Then define the narrow boundary between:
-- factual readiness evidence;
-- Full Readiness Passed;
-- read-only `READY TO LIST ELIGIBLE`;
-- explicit transition authority;
-- authoritative lifecycle state mutation;
-- transition evidence and audit history.
+First define the execution boundary between:
+- granted mutation authority;
+- execution request/commit action;
+- authoritative Inventory lifecycle state write;
+- immutable transition history;
+- post-write current-state verification;
+- idempotent replay/duplicate protection.
 
 Run the Copilot availability/status check explicitly. Do not claim Copilot review unless an actual review action is performed.
 
@@ -142,14 +182,19 @@ Preserve:
 - Full Readiness Cross-Check authority;
 - read-only eligibility result;
 - Action Center read-only boundary;
-- explicit mutation authority requirement;
-- fail-closed missing authority behavior;
-- permanent state-transition audit history;
+- explicit Transition Request;
+- explicit Transition Authority validation;
+- State Mutation Authority requirement;
+- stale-request protection;
+- duplicate-transition protection;
+- permanent transition audit evidence;
 - no silent state mutation.
 
-Do not treat `READY TO LIST ELIGIBLE` as mutation authority.
+Do not treat `STATE MUTATION AUTHORITY = GRANTED` as proof that the state write already occurred.
 
-Do not treat Action Center guidance as mutation authority.
+Do not allow execution when current authoritative state no longer matches the authorized From State.
+
+Do not overwrite transition history after execution.
 
 Do not build marketplace connectors, macros, publication automation, or uncontrolled automatic Inventory mutation.
 
@@ -159,4 +204,4 @@ Use one ODS, actual LibreOffice behavior verification, explicit Copilot status r
 > **Enter once. Understand everywhere.**
 
 ## Execution Discipline
-> **Plan in the correct responsibility. Implement proven decisions. Repair bugs without redesign. Preserve meaningful releases. Compact superseded proof surfaces when safe. Never confuse eligibility with mutation authority.**
+> **Plan in the correct responsibility. Implement proven decisions. Repair bugs without redesign. Preserve meaningful releases. Compact superseded proof surfaces when safe. Never confuse authorization with execution.**
