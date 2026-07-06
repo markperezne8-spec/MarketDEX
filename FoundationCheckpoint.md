@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 027
+# MarketDEX Foundation Checkpoint 028
 
-**Status:** 🏁 Verified Knowledge Checkpoint — Workbook OS Active Continuity
+**Status:** 🏁 Mandatory Preservation Checkpoint — Workbook OS Active Continuity
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
@@ -32,6 +32,20 @@ Default to emoji-first comprehension, short digestible responses, condensed step
 Every 📐 PLAN presented to Mark must include a **🐾 Mark — What you do** section with short numbered steps.
 
 Prefer tightly related multi-build batches when adjacent business responsibilities are low-risk and logically sequential. One batch may use one build, one verification cycle, one screenshot, and one preservation movement. Do not batch across an unresolved architecture boundary merely to move faster.
+
+## Mandatory Checkpoint Cadence
+Jarvis must proactively recommend a checkpoint before continuity risk becomes material instead of waiting for Mark to remember.
+
+Default checkpoint triggers:
+- after a meaningful approved multi-build batch is repository-preserved;
+- before beginning the next substantial batch when several builds have accumulated;
+- before a planned work pause or long break;
+- after major repository hygiene, authority, architecture, or workflow changes;
+- whenever current-state continuity has advanced enough that losing chat context would create repetition or rediscovery risk.
+
+Checkpoint reminders are part of the MarketDEX operating workflow. Jarvis should explicitly call out **🏁 CHECKPOINT RECOMMENDED** or **🏁 MANDATORY CHECKPOINT** when a trigger is reached.
+
+A checkpoint is a continuity-preservation action, not a new design phase. It must preserve the exact current baseline, approved workflow boundary, next approved movement, unresolved maintenance items, and exact resume point.
 
 ## Deliverable and Repository Contract
 Routine design-locked workbook work:
@@ -76,20 +90,12 @@ Build 048 is package-verified, visually accepted by Mark, and repository-preserv
 The proven workflow now continues:
 `ACTIVE PLATFORM EXPOSURE → Sale Observation → Sale Relationship Record → Sold Inventory Transition Gate → SOLD`
 
-### Build 046 — Sale Observation
-`REVIEW SALE EVIDENCE → SALE OBSERVED · DEMO → SALE EVIDENCE OBSERVED · DEMO`
+### Builds 046–048 — Approved Sale and Sold Transition Batch
+Build 046 established controlled factual sale observation outcomes: `SALE OBSERVED / NO SALE OBSERVED / PENDING REVIEW / UNKNOWN REVIEW`.
 
-Controlled observation outcomes are `SALE OBSERVED / NO SALE OBSERVED / PENDING REVIEW / UNKNOWN REVIEW`. Active Platform Exposure alone cannot create sale evidence.
+Build 047 established the Inventory ↔ Sale relationship record using supported inventory relationship, platform context, and observed sold quantity. Unknown order or listing references are not invented.
 
-### Build 047 — Sale Relationship Record
-`SALE OBSERVED → RECORD SALE RELATIONSHIP → INVENTORY ↔ SALE RELATIONSHIP RECORDED · DEMO`
-
-Inventory relationship, platform context, and observed sold quantity are recorded from supported evidence. Order or listing references are recorded only when factually known. MarketDEX does not invent buyer, order ID, fees, taxes, payout, or marketplace detail.
-
-### Build 048 — Sold Inventory Transition Gate
-`SALE OBSERVED evidence + Inventory ↔ Sale relationship + observed sold quantity → SUPPORTED FOR SOLD TRANSITION · DEMO → SOLD · DEMO`
-
-Only the supported observed sold quantity may transition toward `SOLD`. Remaining quantity retains its correct inventory state. Historical Platform Exposure evidence remains preserved.
+Build 048 established the Sold Inventory Transition Gate. Only supported observed sold quantity may transition toward `SOLD`; remaining quantity retains its correct state and historical Platform Exposure remains preserved.
 
 Vocabulary contract:
 `ACTIVE PLATFORM EXPOSURE ≠ SALE OBSERVED`
@@ -102,24 +108,44 @@ Build 048 replaced Build 045 as the sole current approved Calc baseline after pa
 
 Superseded Build 045 was removed from the active `artifacts/calc/` tree. Historical progression remains recoverable through Git history and checkpoint history.
 
+## Pending Repository Maintenance
+`CheckpointManifest.md` still requires Checkpoint 027 historical reconciliation for Builds 046–048 and Artifact Hygiene R010. A prior direct update attempt was blocked by the repository action safety layer. Current-state continuity is authoritative here and no milestone history should be invented or considered synchronized until the manifest update is safely completed.
+
+## Approved Next Batch
+Mark approved **Builds 049–051 — Fulfillment and Shipment Boundary** before this mandatory checkpoint.
+
+### Build 049 — Fulfillment Preparation
+`SOLD → REVIEW FULFILLMENT PREPARATION`
+
+Minimum evidence confirms the supported sold quantity has a reviewed packaging and shipment path. This does not buy postage or prove shipment.
+
+### Build 050 — Shipment Event Evidence
+`READY FOR SHIPMENT → RECORD SHIPMENT RESULT`
+
+Controlled outcomes: `SHIPPED / NOT SHIPPED / PENDING REVIEW / UNKNOWN REVIEW`. Carrier, service, tracking, weight, postage, and shipment references are recorded only when factually known.
+
+### Build 051 — Shipped Inventory Transition Gate
+Only factual `SHIPPED` evidence tied to the supported sold quantity may transition that quantity to `SHIPPED · DEMO`. Sale relationship and historical Platform Exposure remain preserved.
+
+Vocabulary boundary:
+`SOLD ≠ READY FOR SHIPMENT ≠ SHIPPED`
+`SHIPPED ≠ DELIVERED / PAID OUT / COMPLETE`
+
 ## Current Business Boundary
 The demonstrated workflow is complete through `SOLD · DEMO` while explicitly remaining not shipped, delivered, paid out, or complete.
 
-The next discovery must define the minimum fulfillment preparation, shipment evidence, and shipped inventory transition responsibilities without assuming a live carrier connector, inventing tracking, or treating SOLD as SHIPPED.
+Builds 049–051 are approved but intentionally not yet built at this checkpoint.
 
 ## Exact Resume Point
-**Build 049–051 discovery batch — Fulfillment and Shipment Boundary**
+**Resume by building the already-approved Batch 049–051 from the repository-preserved Build 048 baseline.**
 
-Business questions:
-> What minimum fulfillment-preparation evidence must exist before a sold quantity is ready to ship?
+Build one `MarketDEX_Calc_V0_Build051` ODS containing Fulfillment Preparation, Shipment Event Evidence, and the Shipped Inventory Transition Gate.
 
-> What minimum factual shipment evidence establishes that a shipment has actually occurred without inventing carrier or tracking details?
-
-> What explicit gate is required before the supported sold quantity may transition from SOLD toward SHIPPED while preserving sale and exposure history?
-
-Resume from the approved and repository-preserved Build 048 endpoint.
+After package verification, Mark performs one visual review, sends one screenshot, and preserves Build 051 with one push. Jarvis then performs artifact cleanup, continuity advancement, and safe manifest reconciliation.
 
 Do not rediscover Builds 033–048.
+
+Do not ask Mark to reapprove Batch 049–051.
 
 Do not treat SOLD as SHIPPED, DELIVERED, PAID OUT, or COMPLETE.
 
