@@ -22,6 +22,7 @@ Knowledge is permanent. Technology may change.
 - 📊 Spreadsheet Design — workbook workflow and business-logic authority.
 - `FoundationCheckpoint.md` — single current-state and exact resume authority.
 - `CheckpointManifest.md` — checkpoint and repository-milestone history.
+- `.github/copilot-instructions.md` — controlled Copilot repository-worker and review boundaries.
 - The repository, not conversation history, is the shared continuity bridge.
 
 ## Frictionless Mark + Jarvis Operating Contract
@@ -51,13 +52,36 @@ Jarvis directs Mark to the smallest relevant workbook area. Row positions must c
 
 This rule remains active immediately and must be incorporated into the next `Jarvis Partnership Agreement.md` version revision.
 
+### 🤖 Copilot Checkpoint Acceleration — Active Rule
+GitHub Copilot is a controlled repository implementation and review worker, not a second architect or business authority.
+
+Permanent authority chain:
+`MARK DECIDES → JARVIS ARCHITECTS + COORDINATES → COPILOT IMPLEMENTS OR REVIEWS NARROW APPROVED WORK → JARVIS VERIFIES CONTRACT COMPLIANCE → MARK PERFORMS HUMAN BUSINESS/VISUAL ACCEPTANCE WHEN REQUIRED`
+
+Copilot instructions are repository-preserved at `.github/copilot-instructions.md`.
+
+Checkpoint planning must now include a **Copilot Acceleration Check**:
+1. Is the business contract already proven?
+2. Are the next responsibilities adjacent and coherent?
+3. Can Copilot implementation or review independently check the added scope?
+4. Can defects still be isolated and rolled back safely?
+5. Does the larger batch preserve required LibreOffice behavior verification and human visual acceptance?
+
+If all applicable checks pass, Jarvis may plan farther ahead and combine more proven implementation steps into one coherent batch.
+
+If a planning boundary, unresolved business question, architecture contradiction, or unproven responsibility exists, Copilot does not authorize skipping it.
+
+`COPILOT REVIEW = ADDITIONAL CONFIDENCE, NOT BLANKET PERMISSION TO SKIP CONTROLS`
+
+This rule is active immediately and must be incorporated into the next `Jarvis Partnership Agreement.md` version revision.
+
 ## Routine Workbook Implementation Contract
-`Mark approves → Jarvis builds a coherent safe batch → Jarvis verifies → finished downloadable ODS → Mark visually checks once → accepted build is repository-preserved once`
+`Mark approves → Jarvis builds a coherent safe batch → Jarvis verifies → Copilot review when materially useful and available → finished downloadable ODS → Mark visually checks once → accepted build is repository-preserved once`
 
 Default accelerated rhythm:
-`checkpoint/approved boundary → plan farther ahead → 6–9 adjacent responsibilities when safe → one ODS → one package verification → one targeted visual review → one preservation event → repository closeout → one pull only at the next required synchronization point`
+`checkpoint/approved boundary → plan farther ahead → run Copilot Acceleration Check → combine adjacent proven responsibilities when safe → one ODS → package/formula verification → Copilot review when it covers material risk → one targeted human visual review → one preservation event → repository closeout → one pull only at the next required synchronization point`
 
-The number 6–9 is a default safe range, not a quota. Responsibility coherence, business uncertainty, architecture boundaries, ODS risk, and continuity risk control batch size.
+The previous 6–9 build range remains a planning reference, not a quota or ceiling. A larger coherent batch is allowed when the contract is proven, added review materially covers the expanded scope, and defect isolation remains practical. Copilot review alone never justifies crossing an unresolved planning boundary.
 
 ## Calc Artifact Retention Rule
 `artifacts/calc/` preserves one current approved Calc baseline only. A newer visually accepted and repository-preserved Calc build replaces the previous active artifact; Git history and checkpoint history preserve progression.
@@ -171,11 +195,19 @@ The next design question is:
 The answer must reuse the existing preparation-factor and blocker contracts and preserve one blocker at a time without silently clearing unrelated blockers.
 
 ## Exact Resume Point
-**Spreadsheet Design — Build 123 discovery: Readiness Evidence → Exact Next Preparation Blocker.**
+**Spreadsheet Design — Approved Builds 123–130: Readiness Evidence → Exact Next Preparation Blocker Gate.**
 
-First inspect the locked preparation-factor priority and blocker-resolution contracts.
+Approved proof chain:
+`PREPARATION NEEDED → READ FACTUAL READINESS EVIDENCE → SKIP NON-APPLICABLE FACTORS → SELECT FIRST UNSATISFIED FACTOR IN PROVEN PRIORITY → PHOTOS → PREPARE PRODUCT PHOTOS`
 
-Then determine the smallest responsibility that derives one exact next readiness blocker for `INV-000001` from the current factual readiness evidence.
+Build 123 establishes exact readiness-blocker derivation.
+Build 124 detects the Photos blocker.
+Build 125 protects the Condition applicability skip gate.
+Build 126 reuses the remaining preparation priority chain.
+Build 127 protects one-blocker-at-a-time selection.
+Build 128 maps exact blocker to exact preparation action.
+Build 129 gives the Action Center exact preparation guidance.
+Build 130 combines the responsibility into the Readiness Evidence → Exact Next Preparation Blocker Gate.
 
 Preserve:
 - one authoritative Inventory Record ID;
@@ -193,7 +225,7 @@ Do not build marketplace connectors, macros, publication automation, or automati
 
 Do not create a second editable Inventory truth surface.
 
-Use the accelerated batch default, one ODS, one targeted visual review with worksheet + exact row range + section heading + verification target, one preservation event, proactive checkpoint cadence, emoji-first comprehension, exact copy-block discipline, real-action-only instructions, and the `Can Jarvis safely do this instead?` test before assigning Mark manual repository work.
+Use the accelerated batch default, the Copilot Acceleration Check, one ODS, one targeted visual review with worksheet + exact row range + section heading + verification target, one preservation event, proactive checkpoint cadence, emoji-first comprehension, exact copy-block discipline, real-action-only instructions, and the `Can Jarvis safely do this instead?` test before assigning Mark manual repository work.
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
