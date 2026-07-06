@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 048
+# MarketDEX Foundation Checkpoint 049
 
-**Status:** 🏁 Checkpoint Complete — Controlled Verified Publication Gate
+**Status:** 🏁 Checkpoint Complete — Controlled LISTED Transition Execution Gate
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
@@ -21,75 +21,86 @@ Communication is short, direct, action-focused, emoji-forward, and moderately na
 
 Checkpoint headings use `🏁`. Milestone reporting uses `⚡🚀✨ MILESTONE` for frictionless recognition.
 
+Repository friction rule: Jarvis must avoid remote checkpoint/progress writes while Mark has a local preservation commit pending. Remote documentation synchronization occurs only after the accepted Calc baseline is confirmed remote, preventing avoidable GitHub Desktop merge/rebase conflicts.
+
 ## Calc Artifact Retention
 `artifacts/calc/` preserves one current approved Calc baseline only.
 
 Current approved Calc baseline:
-`artifacts/calc/MarketDEX_Calc_V0_Build260_Controlled_Verified_Publication_Gate.ods`
+`artifacts/calc/MarketDEX_Calc_V0_Build280_Controlled_LISTED_Transition_Execution_Gate.ods`
 
 Remote GitHub blob SHA:
-`992fa179241a68af7ec534ab7ed2b0ff79447191`
+`2c03419561aa05a206f1812a4a960c7facc2715e`
 
-The local accepted Build 260 Git blob SHA matches the remote blob SHA exactly.
+The superseded Build 260 Calc baseline was directly removed from the active repository tree by Jarvis after Build 280 remote verification. Git history and checkpoint history preserve progression.
 
-The superseded Build 250 Calc baseline was directly removed from the active repository tree by Jarvis after Build 260 remote verification. Git history and checkpoint history preserve progression.
+## Builds 261–280 — Controlled LISTED Transition Execution
+Builds 261–265 establish the Explicit LISTED Transition Request.
 
-## Builds 251–260 — Controlled Verified Publication
-Builds 251–260 establish Success Evidence Contract; Success Status Validation; Listing ID Requirement; Result Reference Requirement; Result Timestamp Requirement; Identity Chain Revalidation; Complete Success Evidence Gate; Verified Publication = YES; LISTED Eligibility Revalidation; and the Controlled Verified Publication Gate.
+Builds 266–270 establish LISTED Transition Authority.
 
-## Accepted Build 260 Proof
-For `INV-000001` / `PUB-000001`:
-- External Result Received = `YES`;
-- External Result Status = `SUCCESS`;
-- Marketplace Listing ID is present;
-- External Result Reference is present;
-- Result Received At is present;
-- Success Status Valid = `YES`;
-- Listing ID Present = `YES`;
-- Result Reference Present = `YES`;
-- Result Time Present = `YES`;
-- Identity Chain Valid = `YES`;
-- Success Evidence Complete = `YES`;
-- Authority Valid = `YES`;
-- Commit Valid = `YES`;
-- Attempt Match = `YES`;
-- Verified Publication = `YES`;
-- Verification Result = `VERIFIED PUBLISHED`;
-- Publication Consequence = `PUBLICATION VERIFIED`;
+Builds 271–275 establish Execution Commit and Controlled State Write.
+
+Builds 276–280 establish append-only LISTED transition history, post-write verification, replay protection, and the final Controlled LISTED Transition Execution Gate.
+
+## Accepted Build 280 Proof
+For `INV-000001`:
 - LISTED Transition Eligibility = `ELIGIBLE`;
-- Authoritative Inventory State Write = `NO`.
+- explicit transition request = `READY TO LIST → LISTED`;
+- Request Status = `REQUESTED`;
+- Requested By = `MARK · OPERATOR`;
+- Request Result = `VALID REQUEST`;
+- Current State Valid = `YES`;
+- Verified Publication Valid = `YES`;
+- Request Valid = `YES`;
+- Actor Authorized = `YES`;
+- Authority Result = `GRANTED`;
+- Execution Commit = `EXECUTE LISTED TRANSITION`;
+- Authority Revalidated = `YES`;
+- Write Eligible = `YES`;
+- Controlled State Write = `YES`;
+- Derived New State = `LISTED`;
+- append-only transition ID = `TRN-000002`;
+- transition history result = `EXECUTED`;
+- History Match = `YES`;
+- Post-Write State Match = `YES`;
+- Completion = `COMPLETED`;
+- Replay Result = `ALREADY EXECUTED`;
+- Second Write = `NO`.
 
-Mark visually verified Inventory rows 805–833 in LibreOffice Calc. Package integrity, OpenFormula hygiene, LibreOffice headless evaluation, and Err:510 scan passed before visual acceptance.
+Mark visually verified Inventory rows 834–855 in LibreOffice Calc. Package integrity, OpenFormula hygiene, LibreOffice headless evaluation, and Err:510 scan passed before visual acceptance.
 
-## Permanent Boundary
-`SUCCESS CLAIM ≠ VERIFIED PUBLICATION`
-
+## Permanent LISTED Boundary
 `VERIFIED PUBLICATION ≠ LISTED`
 
-Complete success evidence plus a valid identity chain and valid publication authority / execution commit may derive Verified Publication.
+`ELIGIBILITY ≠ AUTHORITY`
 
-Verified Publication creates LISTED transition eligibility only. It does not directly mutate authoritative Inventory state.
+`AUTHORITY ≠ EXECUTION`
 
-`ELIGIBILITY ≠ STATE MUTATION`
+`EXECUTION ≠ VERIFIED COMPLETION`
 
-`AUTHORIZATION ≠ EXECUTION`
+Verified Publication creates LISTED transition eligibility only.
+
+An explicit LISTED transition request, granted authority, execution commit, controlled state write, append-only transition history, and post-write verification are required before the transition is complete.
+
+Replay must not create a second state write.
 
 ## Copilot Status
 `COPILOT ACTION = NOT USED`
 
-Copilot remains an optional debugging, pattern-scanning, repetitive-defect detection, and implementation-review worker when an actual callable Copilot action is available. Copilot is not business-logic authority.
+Copilot was not used to resolve the Git conflict. Copilot remains an optional debugging, pattern-scanning, repetitive-defect detection, and implementation-review worker when an actual callable Copilot action is available. Copilot is not business-logic authority.
 
 ## Milestone Progress
 **Milestone:** Verified Publication to Controlled LISTED State
 
-**Progress:** `[████░░░░░░] 40%`
+**Progress:** `[██████████] 100%`
 
-Completed: verified publication success evidence contract; success status validation; required listing identity evidence; result reference evidence; result timestamp evidence; identity chain revalidation; complete success evidence gate; Verified Publication derivation; LISTED eligibility revalidation; Controlled Verified Publication Gate; Build 260 acceptance and remote preservation.
+Completed: verified publication success evidence; complete success evidence gate; Verified Publication derivation; LISTED eligibility; explicit LISTED transition request; LISTED transition authority; execution commit; controlled state write; append-only LISTED transition history; post-write verification; completion; idempotent replay protection; Build 280 acceptance; remote Build 280 verification; sole-baseline retention synchronization.
 
-Remaining: explicit LISTED transition request; LISTED transition authority; execution commit; controlled state write; append-only LISTED transition history; post-write verification; replay protection; milestone close.
+Remaining: none for this milestone.
 
 ## Exact Resume Point
-**Spreadsheet Design — plan and build the controlled LISTED transition execution batch from accepted Build 260. Desktop application implementation remains dormant.**
+**Spreadsheet Design — define the next Workbook OS milestone and its first business responsibility from authoritative LISTED state. Desktop application implementation remains dormant.**
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
