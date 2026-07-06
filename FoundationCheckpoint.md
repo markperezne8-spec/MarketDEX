@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 033
+# MarketDEX Foundation Checkpoint 034
 
-**Status:** 🏁 Mandatory Preservation Checkpoint — Formula-Driven Inventory Action Center Handoff
+**Status:** 🏁 Mandatory Preservation Checkpoint — Controlled Action Center Validation + Frictionless Workflow Synchronization
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
@@ -8,7 +8,9 @@
 🖥️ DORMANT — Desktop Application Foundation remains preserved for future implementation and is not the active product lane.
 
 ## Permanent Product Direction
-MarketDEX is being proven first through the LibreOffice workbook and Mark's real Pokémon TCG business. The workbook remains the active proving ground, permanent business operating system, knowledge asset, and continuity backup. Knowledge is permanent; technology may change.
+MarketDEX is being proven first through the LibreOffice workbook and Mark's real Pokémon TCG business. The workbook remains the active proving ground, permanent business operating system, knowledge asset, continuity backup, and source of proven business responsibilities for future software modules.
+
+Knowledge is permanent. Technology may change.
 
 ## Authority Chain
 - `Constitution.md` — permanent principles.
@@ -28,19 +30,17 @@ Default rhythm:
 
 Use smaller batches at architecture boundaries, uncertain business truth, high-risk ODS manipulation, or evidence requiring Mark's decision. Batch size is controlled by responsibility coherence and continuity risk, not build-count targets.
 
-## Communication and Copy Standard
-Default to emoji-first comprehension, short digestible responses, condensed step batches, and the smallest explanation needed for a confident decision.
-
-Every 📐 PLAN presented to Mark must include a **🐾 Mark — What you do** section with short numbered steps.
-
-Whenever Mark must copy and paste exact text such as a commit summary, reply phrase, path, command, or replacement text, place the exact copyable value in its own fenced code block. Do not place explanatory prose inside copy blocks.
-
-## Mandatory Checkpoint Cadence
-Jarvis proactively recommends or performs continuity checkpoint preservation before risk becomes material.
-
-Default triggers: meaningful repository-preserved multi-build batches; before a substantial next batch after accumulated progress; planned pauses or long breaks; major repository hygiene, authority, architecture, or workflow changes; or whenever lost chat context could cause repetition or rediscovery.
-
-Use **🏁 CHECKPOINT RECOMMENDED** or **🏁 MANDATORY CHECKPOINT** when a trigger is reached.
+## Frictionless Mark + Jarvis Operating Additions
+`Jarvis Partnership Agreement.md` Version 2.2 now protects the following operating behavior:
+- Momentum Default: continue already-authorized work without permission theater.
+- No-Repetition Default: do not repeat or rediscover approved history without a real reason.
+- Inspect Once · Reuse Evidence: reuse unchanged evidence instead of repeatedly requesting it.
+- Zero-Action Mark State: explicitly say when Mark has nothing to do and continue authorized work.
+- Exact Copy-Block Discipline: exact reply text, commands, paths, exact filenames, commit summaries, and replacement text belong alone in fenced copy blocks.
+- Action Vocabulary Precision: say `attach to this chat`, `Push origin`, `Pull origin`, `Download`, or `Replace` according to the actual operation; avoid ambiguous `upload` wording.
+- Real-Action-Only Instructions: mention pull, push, attach, replace, or verification only when that action is currently required.
+- Pull origin is mentioned only after a real remote repository change and at the next required local synchronization point.
+- Formula package presence does not prove LibreOffice formula evaluation; when formula behavior is under test, rendered or recalculated LibreOffice behavior must be verified.
 
 ## Deliverable and Repository Contract
 Routine design-locked workbook work:
@@ -58,7 +58,7 @@ Mark is not expected to perform implementation or repository steps Jarvis can re
 - Offline-first.
 - Prefer free or no-subscription solutions when comparable value exists.
 - Avoid unnecessary dependency on subscriptions, connectors, or a single external data source.
-- Use Codex selectively for high-risk native ODS work, difficult debugging, or milestone verification when specialist value materially helps.
+- Use specialist tooling selectively for high-risk native ODS work, difficult debugging, or milestone verification when it materially improves safety.
 - Use the smallest sufficient verification path.
 
 ## Design-Locked Business Contracts Preserved
@@ -70,43 +70,47 @@ Inventory Identity; Product Form Taxonomy; Quantity + Unit Identity; Cost Basis 
 `MarketDEX_Official_Mascot.png` remains the authoritative locked gray-and-white electric dog mascot with yellow lightning sparks and must not be intentionally redesigned, replaced, recolored, restyled, or substituted unless Mark explicitly unlocks the design.
 
 ## Current Calc Continuity
-MarketDEX Calc Version 0 has progressed through approved **Build 081 — Formula-Driven Inventory Action Center Gate**.
+MarketDEX Calc Version 0 has progressed through accepted **Build 089 — Controlled Formula-Driven Action Center Validation Gate**.
 
-The sole current repository-preserved Calc baseline is:
-`artifacts/calc/MarketDEX_Calc_V0_Build081_Formula_Driven_Inventory_Action_Center_Gate.ods`
+Build 089 was repaired after visual verification exposed that the first multi-state validation matrix visibly failed closed for supported lifecycle states. Debugging identified and repaired the formula-evaluation problem without redesigning the Action Center.
 
-Build 081 is package-verified, visually accepted by Mark, and repository-preserved.
+Repaired Build 089 was visually verified in LibreOffice Calc:
+- supported lifecycle states evaluate to mapped Action Center guidance;
+- `COMPLETE` remains terminal and receives no invented next lifecycle action;
+- blank, unknown, unsupported, and future/unmapped values remain fail closed;
+- no Action Center redesign occurred;
+- formula-derived guidance remains routing context only and does not mutate Inventory state.
 
-The full demonstrated Inventory sale lifecycle through `COMPLETE · DEMO`, the Build 055–063 operator-facing Action Center contract, and the Build 064–072 state-driven routing contract remain preserved as proof and business-contract evidence.
+The repaired accepted artifact is:
+`MarketDEX_Calc_V0_Build089_Controlled_Action_Center_Validation_Gate.ods`
 
-### Builds 073–081 — Formula-Driven Inventory Action Center
-The first formula-driven Action Center routing contract is now proven:
+Repository artifact replacement is the remaining preservation action: repaired Build 089 must replace Build 081 as the sole active file under `artifacts/calc/`.
 
-`SELECT STATE ONCE → FORMULAS DERIVE ACTION + BLOCKER + EVIDENCE + REVIEW + PREVIEW`
+Until that binary replacement is pushed, Build 089 is accepted and visually verified but repository artifact preservation is not complete.
 
-Build 073 establishes one controlled selected-state routing input.
+## Builds 082–089 — Controlled Action Center Interaction + Validation
+The controlled Action Center interaction contract is proven:
 
-Build 074 establishes state normalization through trimmed uppercase routing context and a fail-safe boundary.
+`ONE OPERATOR SELECTION → DERIVED ACTION + BLOCKER + EVIDENCE + REVIEW + PREVIEW`
 
-Build 075 formula-derives Next Action from the controlled selected-state source.
+Build 082 establishes native controlled state selection through LibreOffice Calc Data Validity list interaction.
 
-Build 076 formula-derives Active Blocker.
+Build 083 establishes the supported selectable lifecycle-state vocabulary while preserving independent normalization and fail-safe routing.
 
-Build 077 formula-derives Evidence Needed.
+Build 084 validates representative non-terminal lifecycle routing through the same controlled selection responsibility.
 
-Build 078 formula-derives Review Responsibility.
+Build 085 validates the terminal boundary:
+`COMPLETE → NO INVENTED NEXT ACTION`
 
-Build 079 formula-derives Transition Preview.
+Build 086 validates blank-input fail-closed behavior.
 
-Build 080 protects blank, unknown, unsupported, and unmapped routing values through fail-closed review guidance: `UNMAPPED → REVIEW REQUIRED` and `NO TRANSITION PREVIEW`.
+Build 087 validates unknown and unsupported input fail-closed behavior.
 
-Build 081 combines the controlled selected-state input and formula-derived route outputs into the Formula-Driven Inventory Action Center Gate.
+Build 088 validates structurally plausible but unmapped/future state fail-closed behavior.
 
-Package verification detected 22 formula-bearing cells in the workbook package, including the new Action Center routing formulas.
+Build 089 combines controlled selection, multi-state formula validation, terminal protection, and fail-closed protection into the Controlled Formula-Driven Action Center Validation Gate.
 
-Visual review confirmed the formula-driven surfaces render through Next Action, Active Blocker, Evidence Needed, Review Responsibility, Transition Preview, Fail-Closed Protection, and the Formula-Driven Inventory Action Center Gate.
-
-Operating boundaries:
+Permanent operating boundaries remain:
 `FORMULA-DERIVED GUIDANCE ≠ STATE MUTATION`
 
 `UNMAPPED → REVIEW REQUIRED`
@@ -115,46 +119,52 @@ Operating boundaries:
 
 `NO SILENT STATE CHANGE`
 
-No macros, buttons, connectors, marketplace automation, or automatic Inventory state writes are authorized by Build 081.
+No macros, buttons that mutate Inventory state, connectors, marketplace automation, publication automation, or automatic Inventory state writes are authorized.
 
-## Artifact Hygiene R015
-Build 081 replaced Build 072 as the sole current approved Calc baseline after package verification, Mark's visual acceptance, and repository preservation.
+## Verification Lesson Preserved
+The first Build 089 package verification detected formula-bearing cells and valid ODS package structures but did not prove supported-state formula evaluation in LibreOffice Calc.
 
-Superseded Build 072 was removed from the active `artifacts/calc/` tree. Historical progression remains recoverable through Git history and checkpoint history.
+Mark's visual review exposed the failure.
 
-## Chat Handoff Boundary
-The prior Spreadsheet Design chat is intentionally closed after Build 081 because Mark identified degrading conversation performance and requested a fresh chat.
+Permanent verification rule:
+> **When formula behavior is the responsibility under test, formula presence is insufficient. LibreOffice evaluation behavior must be verified.**
 
-No Build 082 or later construction is authorized in the closed chat.
+## Artifact Hygiene Boundary
+Build 081 remains the repository-preserved Calc artifact only until the accepted repaired Build 089 binary is pushed.
 
-The fresh Spreadsheet Design chat must use this repository checkpoint as continuity authority and must not rely on rediscovering the closed conversation.
+Required artifact hygiene action:
+`replace artifacts/calc/Build 081 with repaired Build 089 → commit once → push once`
 
-## Pending Repository Maintenance
-`CheckpointManifest.md` still requires safe historical reconciliation for Checkpoints 027–033 and Artifact Hygiene R010–R015. Current-state continuity is authoritative here until manifest reconciliation is completed from repository-supported evidence.
+After remote preservation is verified, Build 089 becomes the sole current repository Calc baseline and Build 081 remains recoverable through Git history and checkpoint history.
 
 ## Current Business Boundary
-The Action Center now demonstrates formula-driven routing from one controlled selected-state input. The formulas prove derivation behavior, but the current input remains a fixed demonstration value and the formula map is only partially exercised through the visible SHIPPED demo route.
+The Action Center now proves safe controlled operator selection and multi-state formula-driven guidance across supported, terminal, blank, unknown, unsupported, and unmapped/future conditions.
 
-The next responsibility is not to add more fixed explanation blocks. It is to prove controlled operator interaction with the formula-driven Action Center: a safe selected-state input method and multi-state formula validation across supported, terminal, blank, unknown, unsupported, and unmapped conditions.
+The next Spreadsheet Design responsibility must be discovered from this proven boundary rather than adding more fixed explanation blocks or extending the old linear demo chain.
+
+The next design question is:
+> **What is the smallest safe responsibility that connects the controlled Action Center routing context to a real selected Inventory record while preserving routing guidance as read-only and preventing silent state mutation?**
+
+This question does not authorize state writes, macros, connectors, marketplace automation, publication automation, or automatic Inventory mutation.
 
 ## Exact Resume Point
-**Fresh Spreadsheet Design chat — Build 082 discovery from Build 081: Controlled Action Center State Selection + Multi-State Formula Validation.**
+**Spreadsheet Design — Build 090 discovery from accepted repaired Build 089: Selected Inventory Record → Read-Only Action Center Routing Context.**
 
-Resume from the approved and repository-preserved Build 081 endpoint.
+First determine the smallest safe Calc responsibility for selecting or referencing one real Inventory record as Action Center routing context without duplicating authoritative Inventory truth.
 
-First determine the smallest safe LibreOffice Calc interaction for selecting a controlled supported state without macros or connectors.
+Then determine how the Action Center should read that record's supported current state and derive guidance while preserving:
+- one authoritative Inventory state;
+- read-only routing context;
+- no silent state mutation;
+- fail-closed handling when record identity or state evidence is missing or unsupported.
 
-Then plan a coherent accelerated batch that validates formula outputs across representative lifecycle states, `COMPLETE`, blank input, unknown input, unsupported input, and unmapped input.
-
-The next batch must prove that one operator selection changes derived Action Center guidance correctly and fails closed when the selected-state evidence is not mapped.
-
-Do not rediscover Builds 033–081.
+Do not rediscover Builds 033–089.
 
 Do not build marketplace connectors, macros, publication automation, or silent state mutation.
 
-Do not extend the old linear demo chain merely to add more rows.
+Do not extend the old linear demo chain merely to add rows.
 
-Use the accelerated batch default, one ODS, one visual review, one preservation push, proactive checkpoint cadence, and copy-block communication standard.
+Use the accelerated batch default, one ODS, one visual review, one preservation push, proactive checkpoint cadence, emoji-first comprehension, exact copy-block discipline, and real-action-only instructions.
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
