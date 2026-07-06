@@ -1,4 +1,4 @@
-# MarketDEX Foundation Checkpoint 025
+# MarketDEX Foundation Checkpoint 026
 
 **Status:** 🏁 Verified Knowledge Checkpoint — Workbook OS Active Continuity
 
@@ -31,9 +31,7 @@ Default to emoji-first comprehension, short digestible responses, condensed step
 
 Every 📐 PLAN presented to Mark must include a **🐾 Mark — What you do** section with short numbered steps.
 
-Prefer tightly related multi-build batches when the adjacent business responsibilities are low-risk and logically sequential. One batch may use one build, one verification cycle, one screenshot, and one preservation movement. Do not batch across an unresolved architecture boundary merely to move faster.
-
-Do not repeat approved history, rediscover design-locked work, or ask Mark to recreate preserved information.
+Prefer tightly related multi-build batches when adjacent business responsibilities are low-risk and logically sequential. One batch may use one build, one verification cycle, one screenshot, and one preservation movement. Do not batch across an unresolved architecture boundary merely to move faster.
 
 ## Deliverable and Repository Contract
 Routine design-locked workbook work:
@@ -68,64 +66,63 @@ Inventory Identity; Product Form Taxonomy; Quantity + Unit Identity; Cost Basis 
 `MarketDEX_Official_Mascot.png` remains the authoritative locked gray-and-white electric dog mascot with yellow lightning sparks and must not be intentionally redesigned, replaced, recolored, restyled, or substituted unless Mark explicitly unlocks the design.
 
 ## Current Calc Continuity
-MarketDEX Calc Version 0 has progressed through approved **Build 042 — Publication Readiness Gate**.
+MarketDEX Calc Version 0 has progressed through approved **Build 045 — Platform Exposure Activation**.
 
 The sole current repository-preserved Calc baseline is:
-`artifacts/calc/MarketDEX_Calc_V0_Build042_Publication_Readiness_Gate.ods`
+`artifacts/calc/MarketDEX_Calc_V0_Build045_Platform_Exposure_Activation.ods`
 
-Build 042 is package-verified, visually accepted by Mark, and repository-preserved.
+Build 045 is package-verified, visually accepted by Mark, and repository-preserved.
 
 The proven workflow now continues:
-`Listing Readiness Preparation → Full Listing Readiness Cross-Check → READY TO LIST → Confirm Listing Intent → Listing Record Draft → Publication Readiness Gate → READY FOR PUBLICATION`
+`READY TO LIST → Confirm Listing Intent → Listing Record Draft → Publication Readiness Gate → READY FOR PUBLICATION → Explicit Publication Authorization → Publication Event Evidence → Platform Exposure Review → ACTIVE PLATFORM EXPOSURE`
 
-### Build 040 — Listing Intent Preparation
-`READY TO LIST → CONFIRM LISTING INTENT → PREPARE LISTING · DEMO`
+### Build 043 — Publication Authorization
+`READY FOR PUBLICATION → AUTHORIZE PUBLICATION → SELLER AUTHORIZED PUBLICATION · DEMO → PUBLICATION AUTHORIZED · DEMO`
 
-Confirming listing intent records seller intent only. `READY TO LIST` remains the readiness state. No publication occurs.
+Explicit seller authorization permits a publication attempt. Authorization does not prove marketplace acceptance, publication, or exposure.
 
-### Build 041 — Listing Record Preparation
-`PREPARE LISTING RECORD → LISTING RECORD DRAFT PREPARED · DEMO → DRAFT · DEMO`
+### Build 044 — Publication Event Record
+`AUTHORIZED → RECORD PUBLICATION RESULT → PUBLISHED · DEMO → PUBLICATION EVENT RECORDED · DEMO`
 
-The Listing Record Draft references supported preparation evidence and the Inventory Record relationship. A draft is not listed, published, exposed, sold, or shipped.
+Controlled publication outcomes are `PUBLISHED / FAILED / PENDING REVIEW / UNKNOWN REVIEW`. Publication outcome and platform context are recorded. Listing reference evidence is recorded only when factually known. MarketDEX does not invent listing IDs, URLs, marketplace responses, or publication facts.
 
-### Build 042 — Publication Readiness Gate
-`REVIEW PUBLICATION READINESS → SUPPORTED FOR PUBLICATION · DEMO → READY FOR PUBLICATION · DEMO → NOT PUBLISHED · DEMO`
+### Build 045 — Platform Exposure Activation
+`REVIEW PLATFORM EXPOSURE → factual PUBLISHED evidence → PLATFORM EXPOSURE ACTIVATED · DEMO → ACTIVE · DEMO`
 
-The publication-readiness cross-check uses the Listing Record Draft, supported preparation evidence, and selected platform context.
+Only factual `PUBLISHED` publication evidence may activate Platform Exposure. `FAILED`, `PENDING REVIEW`, or `UNKNOWN REVIEW` cannot silently activate exposure.
 
 Vocabulary contract:
-`READY TO LIST ≠ LISTED`
-`LISTING DRAFT ≠ PUBLISHED`
-`READY FOR PUBLICATION ≠ PUBLISHED`
+`AUTHORIZED ≠ PUBLISHED`
 `PUBLISHED ≠ SOLD`
+`ACTIVE PLATFORM EXPOSURE ≠ SOLD`
 
-`READY FOR PUBLICATION` is permission-state evidence only. MarketDEX does not submit, publish, expose, create an order, buy postage, or mark inventory sold or shipped.
+Active exposure means the item is factually represented as published on a platform. MarketDEX does not create an order, record a sale, buy postage, or mark inventory sold or shipped.
 
-## Artifact Hygiene R008
-Build 042 replaced Build 039 as the sole current approved Calc baseline after package verification, Mark's visual acceptance, and repository preservation.
+## Artifact Hygiene R009
+Build 045 replaced Build 042 as the sole current approved Calc baseline after package verification, Mark's visual acceptance, and repository preservation.
 
-Superseded Build 039 was removed from the active `artifacts/calc/` tree. Historical progression remains recoverable through Git history and checkpoint history.
+Superseded Build 042 was removed from the active `artifacts/calc/` tree. Historical progression remains recoverable through Git history and checkpoint history.
 
 ## Current Business Boundary
-The demonstrated workflow is complete through `READY FOR PUBLICATION · DEMO` while explicitly remaining `NOT PUBLISHED · DEMO`.
+The demonstrated workflow is complete through `ACTIVE PLATFORM EXPOSURE · DEMO` while explicitly remaining not sold.
 
-The next discovery must define the minimum publication or marketplace-exposure responsibility without assuming a live marketplace connector, silently publishing a listing, or conflating publication with sale.
+The next discovery must define the minimum sale-observation, order-evidence, and inventory-state transition responsibilities without assuming a marketplace connector, inventing an order, or treating active exposure as a sale.
 
 ## Exact Resume Point
-**Build 043–045 discovery batch — Publication and Marketplace Exposure Boundary**
+**Build 046–048 discovery batch — Sale Observation and Inventory Transition Boundary**
 
 Business questions:
-> What explicit seller authorization must exist before publication can occur?
+> What minimum factual evidence establishes that a sale or order has actually been observed?
 
-> What minimum publication event evidence should MarketDEX record without requiring a live marketplace connector?
+> How should MarketDEX record an order or sale relationship without inventing marketplace details?
 
-> Once publication is supported, how should Platform Exposure become active without treating the item as sold?
+> What explicit gate is required before inventory may transition from active exposure toward SOLD while preserving quantity and historical exposure evidence?
 
-Resume from the approved and repository-preserved Build 042 endpoint.
+Resume from the approved and repository-preserved Build 045 endpoint.
 
-Do not rediscover Builds 033–042.
+Do not rediscover Builds 033–045.
 
-Do not treat READY FOR PUBLICATION as PUBLISHED, EXPOSED, SOLD, or SHIPPED.
+Do not treat ACTIVE PLATFORM EXPOSURE as SOLD, SHIPPED, or COMPLETE.
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
