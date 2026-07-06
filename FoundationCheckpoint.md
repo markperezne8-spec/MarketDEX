@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 045
+# MarketDEX Foundation Checkpoint 046
 
-**Status:** 🏁 Checkpoint Complete — Controlled eBay Publication Authority Gate
+**Status:** 🏁 Checkpoint Complete — Controlled External Publication Result Evidence Gate
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
@@ -24,41 +24,50 @@ Every workbook visual review identifies `WORKSHEET + EXACT ROW RANGE + SECTION H
 ## Permanent Progress Reporting Workflow
 Every Spreadsheet Design build-plan approval, completed build batch, debugging return, preservation closeout, checkpoint synchronization, and milestone close reports a scope-based milestone progress bar.
 
-Progress is based on proven responsibilities against the currently defined milestone scope. It is not an elapsed-time estimate or delivery-date promise. Material scope changes must be explained when they revise the percentage.
-
-## Permanent Worksheet Supersession and Compaction Rule
-The active workbook is an operating surface, not the historical development archive.
-
-`SUPERSEDED PROOF SURFACE → REMOVE`
-
-`ACTIVE AUTHORITY / FACTUAL INPUT SURFACE → KEEP`
-
-`CURRENT OPERATING GATE → KEEP`
-
-`DEVELOPMENT HISTORY → GIT + CHECKPOINT DOCUMENTS`
-
-Jarvis evaluates supersession automatically and performs safe worksheet cleanup. Mark is not asked to manually delete worksheet rows. Dependency, authority, factual-input, and formula-reference checks are required before and after compaction. Actual LibreOffice Calc evaluation behavior must be verified.
-
-## Copilot Status Rule
-Builds 211–230 did not receive an actual Copilot review because no callable Copilot implementation-review action was available in the active workflow.
-
-`COPILOT NOT ACTUALLY USED → SAY NOT USED → DO NOT CLAIM ACCELERATION CONFIDENCE`
-
-Copilot remains an optional implementation/review worker, not business-logic authority.
+Progress is based on proven responsibilities against the currently defined milestone scope. It is not an elapsed-time estimate or delivery-date promise.
 
 ## Calc Artifact Retention
 `artifacts/calc/` preserves one current approved Calc baseline only.
 
 Current approved Calc baseline:
-`artifacts/calc/MarketDEX_Calc_V0_Build230_Controlled_eBay_Publication_Authority_Gate.ods`
+`artifacts/calc/MarketDEX_Calc_V0_Build250_Controlled_External_Publication_Result_Evidence_Gate.ods`
 
-Build 230 remote preservation was verified with GitHub blob SHA `23ee31c77a05a6e0ca2cc4549e046d5fc095af80`.
+Build 250 remote preservation was verified with GitHub blob SHA `c94e22821dde9ab345a380cd4536f962e3352e71`.
 
-Build 210 was superseded and directly removed from the active repository tree by Jarvis after Build 230 remote preservation was verified. Git history and checkpoint history preserve progression.
+Build 230 was superseded and directly removed from the active repository tree by Jarvis after Build 250 remote preservation was verified. Git history and checkpoint history preserve progression.
 
-## Builds 211–230 — Listing and Controlled eBay Publication Authority
-Permanent responsibility boundary:
+## Builds 231–250 — Controlled External Publication Result Evidence
+Builds 231–250 establish Publication Result Evidence Contract; Explicit Publication Execution Commit; Publication Attempt ID; Publication Authority Revalidation; Future Connector Responsibility Boundary; Connector Call Performed Evidence; External Publication Result Intake; External Result Received Validation; External Result Status Classification; Marketplace Listing Identity; Publication Attempt Identity Match; Platform Identity Match; Inventory Record Identity Match; External Result Reference Validation; Successful Result Completeness Gate; Publication Result Fail-Closed Classification; Verified Publication Result Cross-Check; Publication Consequence Derivation; LISTED Transition Eligibility Boundary; and the Controlled External Publication Result Evidence Gate.
 
+## Build 250 Debugging and Acceptance
+Initial Build 250 visually exposed malformed OpenFormula syntax and an affected stale formula-reference chain. Visible factual execution inputs were correct, but derived authority, commit, attempt, record, external-status, and evidence-presence results were wrong.
+
+Debugging repaired only malformed OpenFormula syntax and the affected formula-reference chain. The approved Builds 231–250 business contract remained unchanged. Actual LibreOffice Calc evaluation verified the repaired gate.
+
+Verified fail-closed proof for `INV-000001` / `PUB-000001`:
+- Authority Valid = `YES`;
+- Commit Valid = `YES`;
+- Attempt Match = `YES`;
+- Platform Match = `YES`;
+- Record Match = `YES`;
+- Result Received Valid = `NO`;
+- Raw External Status = `NO RESULT`;
+- Classified Result = `NO RESULT`;
+- Result Guidance = `AWAIT PUBLICATION RESULT`;
+- Listing ID Present = `NO`;
+- Result Reference Present = `NO`;
+- Result Time Present = `NO`;
+- Success Evidence Complete = `NO`;
+- Verified Publication = `NO`;
+- Verification Result = `NOT VERIFIED`;
+- Publication Consequence = `NONE`;
+- LISTED Transition Eligibility = `NOT ELIGIBLE`;
+- Authoritative Inventory State Write = `NO`.
+
+Permanent verification rule:
+> **When formula behavior is under test, formula presence is insufficient. Actual LibreOffice evaluation behavior must be verified.**
+
+## Permanent Publication and External Result Boundaries
 `READY TO LIST ≠ LISTED`
 
 `PLATFORM SELECTED ≠ PUBLICATION`
@@ -67,110 +76,46 @@ Permanent responsibility boundary:
 
 `PUBLICATION AUTHORITY GRANTED ≠ ACTUAL PUBLICATION`
 
-Builds 211–230 establish Listing Responsibility, authoritative READY TO LIST intake, platform target selection, platform evidence profiles, the eBay listing evidence profile, applicable platform-factor evaluation, condition applicability protection, missing-evidence fail-closed behavior, first missing platform-factor derivation, publication readiness, the read-only READY FOR PUBLICATION result, explicit Publication Request, current Inventory state revalidation, platform target revalidation, publication-readiness revalidation, authorized publication actor validation, Publication Authority validation, and the no-publication/no-connector boundary.
+`CONNECTOR REQUEST ≠ MARKETPLACE ACCEPTANCE`
 
-Build 230 combines these responsibilities into the Controlled eBay Publication Authority Gate.
+`MARKETPLACE LISTING ID ≠ VERIFIED PUBLICATION`
 
-## Build 230 Debugging and Acceptance
-Initial Build 230 visually exposed a stale compacted-row and merged-cell formula-reference chain. The visible eBay evidence profile was factually supported, but platform readiness incorrectly returned `NO / TITLE / NOT READY FOR PUBLICATION`, and publication-authority revalidation incorrectly denied all validation factors.
+`VERIFIED PUBLICATION ≠ SOLD`
 
-Debugging repaired only the stale compacted-row and merged-cell formula-reference chain. The approved Builds 211–230 business contract remained unchanged.
+`ELIGIBILITY ≠ STATE MUTATION`
 
-Repaired publication authority was verified in LibreOffice Calc:
-- Applicable Factors Supported = `YES`;
-- First Missing Platform Factor = `NONE`;
-- Platform Readiness Result = `READY FOR PUBLICATION`;
-- State Valid = `YES`;
-- Platform Valid = `YES`;
-- Readiness Valid = `YES`;
-- Actor Authorized = `YES`;
-- Request Valid = `YES`;
-- Authority Result = `GRANTED`;
-- Actual Publication Performed = `NO`.
+`AUTHORIZATION ≠ EXECUTION`
 
-A separate upstream Inventory defect was then investigated in rows 7–29. Quick Capture Status, the Inventory Action View, and Inventory Review Gate shared one malformed OpenFormula prefix defect. Duplicated formula prefixes caused `Err:510` across the populated Quick Capture status, the first reviewed Inventory Action View record, and Promotion State.
-
-Debugging corrected only the malformed duplicated OpenFormula prefixes. Quick Capture, Inventory Action View, and Inventory Review Gate were not redesigned; the approved Inventory business contract remained unchanged. Actual LibreOffice Calc verification confirmed rows 7–29 evaluate without `Err:510`.
-
-Permanent verification rule:
-> **When formula behavior is under test, formula presence is insufficient. Actual LibreOffice evaluation behavior must be verified.**
-
-## Permanent Publication Authority Boundaries
-`AUTHORITATIVE INVENTORY STATE = READY TO LIST → LISTING RESPONSIBILITY MAY BEGIN`
-
-`LISTING RESPONSIBILITY = CREATE LISTING ≠ LISTING EXISTS`
-
-`PLATFORM TARGET = EBAY → LOAD EBAY EVIDENCE PROFILE`
-
-`PLATFORM TARGET IS NOT INVENTORY AUTHORITY`
-
-`ALL APPLICABLE PLATFORM FACTORS SUPPORTED → READY FOR PUBLICATION`
-
-`READY FOR PUBLICATION IS READ ONLY`
-
-`PUBLICATION REQUIRES EXPLICIT PUBLICATION REQUEST`
-
-`PUBLICATION AUTHORITY REQUIRES CURRENT STATE + PLATFORM + CURRENT READINESS + AUTHORIZED ACTOR + VALID REQUEST`
-
-`PUBLICATION AUTHORITY = GRANTED ≠ ACTUAL PUBLICATION`
-
-`ACTUAL PUBLICATION PERFORMED = NO` at the Build 230 boundary.
-
-No connector call, marketplace write, macro, or silent publication automation is authorized by Build 230.
+No connector call, marketplace write, fabricated marketplace result, or direct Inventory state write from external publication evidence is authorized by Build 250.
 
 ## Current Business Boundary
-MarketDEX now proves the boundary from authoritative Inventory state `READY TO LIST` through controlled eBay Publication Authority.
+MarketDEX now proves the controlled boundary from authoritative Inventory identity and lifecycle state through READY TO LIST transition execution, listing responsibility, eBay publication readiness, explicit Publication Request, Publication Authority, explicit execution commit, publication-attempt identity, external publication-result intake, fail-closed result classification, marketplace identity validation, verified-publication cross-check, publication consequence derivation, and LISTED transition eligibility.
 
-For `INV-000001`, Listing Responsibility derives `CREATE LISTING`, platform target is `EBAY`, all applicable eBay listing evidence is supported, and the read-only result derives `READY FOR PUBLICATION`. An explicit `PUBLISH LISTING` request is revalidated against current Inventory state, platform target, current publication readiness, and authorized actor. Publication Authority derives `GRANTED`.
-
-Actual marketplace publication remains unperformed and unproven. `ACTUAL PUBLICATION PERFORMED = NO` is the controlling boundary.
+At the accepted Build 250 boundary, Publication Authority is `GRANTED`, Execution Commit is `EXECUTE PUBLICATION`, Publication Attempt ID is `PUB-000001`, connector responsibility is `FUTURE CONNECTOR`, Connector Call Performed is `NO`, and Marketplace Write Claimed is `NO`. No external result has been received. Verified Publication remains `NO`; Publication Consequence remains `NONE`; LISTED Transition Eligibility remains `NOT ELIGIBLE`; Authoritative Inventory State Write remains `NO`.
 
 ## Worksheet Supersession Check
-No Inventory proof sections were removed in Builds 211–230.
+Build 230 Publication Authority remains a direct dependency of the Build 250 external-result gate. Build 210 controlled transition architecture remains the proven model for a future READY TO LIST → LISTED transition consequence.
 
-The generalized factor-scoped engine, Full Readiness Cross-Check, Controlled Transition Authority, Controlled Transition Execution, and Controlled Publication Authority surfaces remain active dependencies or audit responsibilities.
+Dependency-safe compaction review is the next responsibility. Remove only superseded proof surfaces; preserve active authority, factual-input, operating-gate, audit, and formula dependencies.
 
-Compaction remains deferred until the actual publication-result evidence boundary proves which authority and audit surfaces it consumes.
+## Copilot Status
+Builds 231–250 did not receive an actual Copilot implementation review because no callable Copilot implementation-review action was used.
+
+`COPILOT ACTION = NOT USED`
+
+Copilot remains an optional implementation/review worker, not business-logic authority.
 
 ## Milestone Progress
 **Milestone:** Workbook OS — Inventory Lifecycle to Controlled Marketplace Publication Boundary
 
-**Progress:** `[█████████░] 90%`
+**Progress:** `[█████████▊] 98%`
 
-Completed: authoritative Inventory identity; Inventory state model; readiness evidence; generalized factor-scoped resolution; Full Readiness Cross-Check; controlled READY TO LIST transition authority; controlled transition execution; append-only transition history; post-write verification; idempotent replay protection; Listing Responsibility; platform target; eBay evidence profile; publication readiness; explicit Publication Request; Publication Authority; no-publication/no-connector boundary; upstream Inventory Err:510 repair.
+Completed: authoritative Inventory identity; two-dimensional Inventory state; readiness evidence; generalized factor-scoped resolution; Full Readiness Cross-Check; controlled READY TO LIST transition authority; controlled transition execution; append-only transition history; post-write verification; idempotent replay protection; Listing Responsibility; platform target; eBay evidence profile; publication readiness; explicit Publication Request; Publication Authority; no-publication/no-connector boundary; upstream Inventory Err:510 repair; controlled external publication-result evidence; publication attempt identity; fail-closed external result classification; marketplace listing identity validation; verified publication cross-check; publication consequence derivation; LISTED transition eligibility boundary; Build 250 preservation.
 
-Remaining before milestone close: define and prove actual publication-result evidence without building a marketplace connector; establish publication-result verification and marketplace-listing identity evidence; run dependency-safe worksheet supersession/compaction; close the milestone checkpoint.
+Remaining before milestone close: dependency-safe worksheet supersession/compaction review and milestone close.
 
 ## Exact Resume Point
-**Spreadsheet Design — Build 231 discovery: Granted Publication Authority → Publication Execution Boundary → External Publication Result Evidence → Marketplace Listing Identity → Verified Publication Result.**
-
-First define the separation between:
-- Publication Authority `GRANTED`;
-- explicit publication execution/commit responsibility;
-- future connector responsibility;
-- externally returned publication result evidence;
-- marketplace listing identity;
-- publication success/failure classification;
-- verified published state;
-- Inventory lifecycle consequences of verified publication.
-
-Run the Copilot availability/status check explicitly. Do not claim Copilot review unless an actual review action is performed.
-
-Run the worksheet supersession check automatically. Compact only newly superseded proof surfaces when dependency-safe.
-
-Preserve one authoritative Inventory Record ID, current authoritative lifecycle state, append-only transition history, post-write verification, idempotent replay protection, Listing Responsibility, platform evidence profile, publication readiness, explicit Publication Request, Publication Authority, and no silent marketplace publication.
-
-Do not build an eBay or TCGplayer connector yet.
-
-Do not fabricate an external marketplace response.
-
-Do not treat Publication Authority as proof of publication.
-
-Do not treat a connector request as proof of publication.
-
-Do not treat a marketplace listing ID without verified platform/result evidence as authoritative publication proof.
-
-Use one ODS, actual LibreOffice behavior verification, explicit Copilot status reporting, one targeted human visual review, one preservation event, direct safe repository maintenance when available, scope-based milestone progress reporting, and step-by-step Mark action visibility.
+**Spreadsheet Design — dependency-safe worksheet supersession / compaction review → verify package, formulas, actual LibreOffice behavior, and business-contract preservation → close current milestone.**
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
