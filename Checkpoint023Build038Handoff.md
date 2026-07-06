@@ -9,8 +9,9 @@
 - Repository Hygiene R001, R002, and R003 are complete.
 - Build 036 — Price Decision Preparation Action — is approved and repository-preserved.
 - Build 037 — Platform Preparation Action — is implemented, visually accepted, and treated as pushed/preserved based on Mark's confirmation.
-- Build 038 — Shipping Review Preparation Action — is implemented, package-verified, and visually accepted.
-- Build 038 preservation is the immediate repository step if not already committed and pushed.
+- Build 038 — Shipping Review Preparation Action — is implemented, package-verified, visually accepted, and repository-preserved.
+- Foundation Synchronization F001 established the frictionless Jarvis operating contract in current foundation authority.
+- Repository Sweep R004 synchronized the partnership and development workflow for direct repository maintenance and reduced manual work.
 - Do not rediscover Builds 033–038.
 
 ## Proven Listing Preparation Chain
@@ -60,29 +61,30 @@ Preserve:
 - Workbook-first authority.
 - Mark's visual acceptance authority.
 - Emoji-first comprehension and short digestible communication.
-- Condensed multi-step batches and low-friction downloadable deliverables.
-- BUILD / PLAN / STOP recommendations.
+- Condensed multi-step batches and low-friction deliverables.
+- 🏗️ BUILD / 📐 PLAN / 🛑 STOP recommendations.
 - Checkpoint rhythm.
+- Direct repository maintenance when Jarvis can safely perform it.
 
 ## Implementation Workflow
 For routine design-locked workbook builds:
 
 `Mark approves → Jarvis builds → Jarvis verifies → Jarvis provides finished downloadable ODS → Mark visually checks → approved build is preserved`
 
-Mark is not expected to perform workbook implementation steps.
+Mark is not expected to perform workbook implementation steps Jarvis can reasonably complete.
+
+For safe repository text maintenance:
+
+`Jarvis inspects authority → Jarvis updates GitHub directly → Jarvis verifies → Mark clicks Pull origin`
 
 ## Resume Instruction
-Resume from Checkpoint 023 and the approved Build 038 endpoint.
+Resume from Checkpoint 023 and the approved, repository-preserved Build 038 endpoint.
 
-If Build 038 has not yet been repository-preserved, preserve it first as:
-
-`Calc Build 038 - Shipping Review Preparation Action`
-
-Then begin Build 039 discovery.
+Begin Build 039 discovery.
 
 Do not redesign the preparation chain.
 
-Do not rediscover Build 038.
+Do not rediscover Builds 033–038.
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
