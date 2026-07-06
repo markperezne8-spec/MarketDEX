@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 041
+# MarketDEX Foundation Checkpoint 042
 
-**Status:** 🏁 Checkpoint Complete — Generalized Factor-Scoped Resolution Engine Gate
+**Status:** 🏁 Checkpoint Complete — Compacted Inventory + Full Readiness Cross-Check Gate
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
@@ -14,29 +14,15 @@ MarketDEX is proven first through the LibreOffice workbook and Mark's real Poké
 
 The repository is the shared continuity bridge.
 
-## Authority Chain
-- `Constitution.md` — permanent principles.
-- `Vision.md` — product direction.
-- `Jarvis Partnership Agreement.md` — Mark + Jarvis working contract.
-- `WorkbookBlueprint.md` — design-locked workbook business contracts.
-- `FoundationCheckpoint.md` — single current-state and exact resume authority.
-- `CheckpointManifest.md` — checkpoint history.
-- `.github/copilot-instructions.md` — controlled Copilot worker/review boundaries.
-
 ## Frictionless Working Contract
 Protected defaults remain: Momentum Default; No-Repetition Default; Inspect Once · Reuse Evidence; Zero-Action Mark State; Exact Copy-Block Discipline; Action Vocabulary Precision; Real-Action-Only Instructions; Repository-First Inspection; Deliverable-First Partnership; Direct Repository Maintenance; Risk-Based Verification.
 
 `CAN JARVIS SAFELY DO THIS INSTEAD? → YES → JARVIS DOES IT → ZERO FAKE WORK FOR MARK`
 
-Every workbook visual review must identify:
-`WORKSHEET + EXACT ROW RANGE + SECTION HEADING + WHAT MARK SHOULD VERIFY`
-
-Every response must keep Mark's real action explicit and visible step by step.
+Every workbook visual review identifies `WORKSHEET + EXACT ROW RANGE + SECTION HEADING + WHAT MARK SHOULD VERIFY`.
 
 ## Permanent Worksheet Supersession and Compaction Rule
 The active workbook is an operating surface, not the historical development archive.
-
-Whenever a newly accepted consolidated worksheet gate fully supersedes earlier proof/build sections, Jarvis must automatically evaluate worksheet compaction as part of the next safe build responsibility.
 
 `SUPERSEDED PROOF SURFACE → REMOVE`
 
@@ -46,141 +32,79 @@ Whenever a newly accepted consolidated worksheet gate fully supersedes earlier p
 
 `DEVELOPMENT HISTORY → GIT + CHECKPOINT DOCUMENTS`
 
-Jarvis performs the cleanup when safe. Mark is not asked to manually delete worksheet rows.
+Jarvis evaluates supersession automatically and performs safe worksheet cleanup. Mark is not asked to manually delete worksheet rows. Dependency, authority, factual-input, and formula-reference checks are required before and after compaction. Actual LibreOffice Calc evaluation behavior must be verified.
 
-Compaction must not blindly delete earlier sections. Before removal Jarvis must identify formula dependencies, authoritative inputs, factual source surfaces, and current operating responsibilities. Any required authority/input surface remains.
+## Copilot Status Rule
+Copilot review is recorded only when Copilot actually performs a review through an available workflow. Build 166–180 did not receive an actual Copilot review because the available GitHub connection did not expose a callable Copilot implementation-review action.
 
-After compaction, formula references must be repaired as needed and actual LibreOffice Calc evaluation behavior must be verified. Formula presence alone is insufficient.
+`COPILOT NOT ACTUALLY USED → SAY NOT USED → DO NOT CLAIM ACCELERATION CONFIDENCE`
 
-This supersession/compaction check is now a permanent checkpoint and build-planning responsibility to prevent endless accumulation of obsolete build proof sections in the live workbook.
-
-## Copilot Checkpoint Acceleration
-Authority chain:
-`MARK DECIDES → JARVIS ARCHITECTS + COORDINATES → COPILOT IMPLEMENTS OR REVIEWS NARROW APPROVED WORK → JARVIS VERIFIES CONTRACT COMPLIANCE → MARK PERFORMS HUMAN BUSINESS/VISUAL ACCEPTANCE WHEN REQUIRED`
-
-Every checkpoint plan includes the Copilot Acceleration Check:
-1. Is the business contract proven?
-2. Are responsibilities adjacent and coherent?
-3. Can Copilot implementation/review independently check added scope?
-4. Can defects remain isolated and safely rolled back?
-5. Are LibreOffice behavior verification and required human visual acceptance preserved?
-6. Does the new gate supersede earlier worksheet proof surfaces that should be compacted?
-
-`COPILOT REVIEW = ADDITIONAL CONFIDENCE, NOT BLANKET PERMISSION TO SKIP CONTROLS`
-
-Larger coherent batches are allowed when the contract is proven and added review materially covers the expanded scope. Unresolved planning boundaries may not be skipped.
+Copilot remains an optional implementation/review worker, not business-logic authority. Jarvis remains responsible for contract verification and Mark retains required human business/visual acceptance.
 
 ## Calc Artifact Retention
 `artifacts/calc/` preserves one current approved Calc baseline only.
 
-The sole current Calc baseline is:
-`artifacts/calc/MarketDEX_Calc_V0_Build165_Generalized_Factor_Scoped_Resolution_Engine_Gate.ods`
+The current approved Calc baseline is:
+`artifacts/calc/MarketDEX_Calc_V0_Build180_Compacted_Inventory_Full_Readiness_Cross_Check_Gate.ods`
 
-Build 145 has been superseded and directly removed from the active repository tree by Jarvis after Build 165 remote preservation was verified. Git history and checkpoint history preserve progression.
+Build 180 remote preservation was verified with GitHub blob SHA `915f137b0faccac16579f558868e582b681dc367`.
 
-## Builds 146–165 — Generalized Factor-Scoped Resolution Engine
-Permanent proof chain:
+Build 165 is superseded. Jarvis attempted direct remote deletion after Build 180 verification, but the repository delete action was blocked by the active tool safety layer. The deletion remains a repository-maintenance follow-up; Build 180 remains the approved authority. This is not delegated to Mark as fake work unless direct cleanup remains unavailable at the point cleanup is operationally required.
 
-`SUPPORTED EVIDENCE → IDENTIFY EVIDENCE TYPE → MAP EXACT FACTOR SCOPE → VERIFY SUPPORTED → VERIFY ACTIVE BLOCKER MATCH → RESOLVE MATCHED FACTOR ONLY → PRESERVE EVERY OTHER FACTOR → REEVALUATE READINESS → DERIVE ONE NEXT EXACT BLOCKER`
+## Builds 166–180 — Worksheet Compaction + Full Readiness Cross-Check
+Builds 166–168 audited worksheet supersession, classified proof/authority/operating surfaces, and preserved formula dependencies.
 
-Build 146 establishes the generalized Supported Evidence contract.
+Builds 169–171 removed the superseded Build 123–130 preparation proof and Build 131–145 factor-specific resolution proof surfaces. Fifty-one superseded worksheet rows were removed. The Build 165 generalized engine and required authority/factual input surfaces were preserved.
 
-Build 147 maps Evidence Type to exact Factor Scope.
+Build 172 repaired post-compaction formula references.
 
-Build 148 validates Factor Scope match.
+Build 173 verified the generalized engine regression boundary.
 
-Build 149 requires supported evidence.
+Builds 174–177 established the Full Readiness Cross-Check, applicable-factor evaluation, Condition applicability protection, and missing/unsupported factor fail-closed behavior.
 
-Build 150 requires active blocker match.
+Build 178 establishes the Full Readiness Passed result contract.
 
-Build 151 protects Condition applicability.
+Build 179 exposes `READY TO LIST ELIGIBLE` as a read-only result only.
 
-Build 152 derives one-factor resolution.
+Build 180 combines the compacted Inventory operating surface with the Full Readiness Cross-Check Gate.
 
-Build 153 prohibits cross-factor clearing.
+## Build 180 Debugging and Acceptance
+Initial Build 180 visually passed worksheet compaction and preserved the generalized engine, but the Full Readiness `MISSING FACTOR` formula returned LibreOffice `Err:508`.
 
-Build 154 protects repeated-evidence idempotency.
+Debugging corrected the compacted Full Readiness formula references and the Err:508 syntax defect without changing the approved Builds 166–180 business contract.
 
-Build 155 preserves unrelated factors.
-
-Build 156 resolves Listing Content through the generalized contract.
-
-Build 157 derives Price Decision as the next blocker.
-
-Build 158 proves Price Decision factor-scoped resolution.
-
-Build 159 derives Platform as the next blocker.
-
-Build 160 proves Platform factor-scoped resolution.
-
-Build 161 derives Shipping Review as the next blocker.
-
-Build 162 proves Shipping Review factor-scoped resolution.
-
-Build 163 derives Data-Quality Clearance as the next blocker.
-
-Build 164 cross-checks the full factor-scoped chain and fail-closed mismatch behavior.
-
-Build 165 combines these responsibilities into the Generalized Factor-Scoped Resolution Engine Gate.
-
-## Build 165 Debugging and Acceptance
-The first Build 165 package visually exposed a stale formula-reference chain.
-
-The generalized evidence input correctly showed `LISTING CONTENT / LISTING CONTENT EVIDENCE / REVIEWED / YES`, but the validation surface returned `UNMAPPED / 0 / MISMATCH / UNSUPPORTED / NO RESOLUTION`. Downstream factor resolution and Action Center guidance therefore fell through incorrectly.
-
-Debugging repaired only the stale formula-reference chain. The approved Builds 146–165 business contract remained unchanged.
-
-Repaired Build 165 was verified in LibreOffice Calc:
-- `LISTING CONTENT EVIDENCE` maps to `LISTING CONTENT`;
-- mapped factor matches the active blocker;
-- reviewed supported evidence evaluates as `SUPPORTED`;
-- resolution authority is `RESOLVE MATCHED FACTOR ONLY`;
-- `LISTING CONTENT` only is resolved;
-- `LISTING CONTENT READY` advances to `YES`;
-- cross-factor clearing remains prohibited;
-- repeated evidence does not create duplicate clearing;
-- unrelated factors remain preserved;
-- readiness reevaluation derives `PRICE DECISION`;
-- exact next action is `MAKE PRICE DECISION`;
-- Action Center returns `MAKE PRICE DECISION / PRICE DECISION / PRICE DECISION EVIDENCE / REVIEW PRICE DECISION`;
-- Action Center remains read-only;
-- the chain stops at Full Readiness Cross-Check and does not automatically promote `READY TO LIST`.
+Repaired Build 180 was verified in LibreOffice Calc:
+- Photos Ready = `YES`;
+- Condition Applicability = `NOT APPLICABLE`;
+- Condition Evaluated = `NOT APPLICABLE`;
+- Listing Content Ready = `YES`;
+- Price Decision Ready = `NO`;
+- Platform Selected = `NO`;
+- Shipping Path Reviewed = `NO`;
+- Blocking Data-Quality Issue = `NO`;
+- Applicable Factors Supported = `NO`;
+- first missing applicable factor derives as `PRICE DECISION`;
+- cross-check result is `FAILED · REMAIN IN PREPARATION`;
+- eligibility result is `NOT READY TO LIST ELIGIBLE`;
+- Inventory mutation authority is `NONE · READ ONLY`.
 
 Permanent verification rule:
 > **When formula behavior is under test, formula presence is insufficient. Actual LibreOffice evaluation behavior must be verified.**
 
-## Permanent State, Evidence, Resolution, and Action Center Boundaries
-`INVENTORY OWNS RECORD IDENTITY`
+## Permanent Full Readiness Boundaries
+`ALL APPLICABLE READINESS FACTORS MUST BE FACTUALLY SUPPORTED`
 
-`BUSINESS INVENTORY CONDITION ≠ OPERATIONAL LIFECYCLE STATE`
+`CONDITION IS EVALUATED ONLY WHEN APPLICABLE`
 
-`OWNERSHIP DOES NOT CREATE WORKFLOW STATE`
+`FIRST MISSING APPLICABLE FACTOR IS DERIVED IN APPROVED PRIORITY ORDER`
 
-`READINESS EVIDENCE CLASSIFIES OPERATIONAL LIFECYCLE STATE`
+`ANY MISSING / UNSUPPORTED APPLICABLE FACTOR → FULL READINESS FAILS CLOSED`
 
-`SUPPORTED FACTUAL EVIDENCE IS REQUIRED FOR FACTOR RESOLUTION`
+`FULL READINESS PASSED ≠ AUTOMATIC INVENTORY STATE MUTATION`
 
-`EVIDENCE TYPE MUST MAP TO EXACT FACTOR SCOPE`
-
-`EVIDENCE FACTOR SCOPE MUST MATCH THE ACTIVE BLOCKER`
-
-`ONE MATCHED FACTOR ONLY`
-
-`NO CROSS-FACTOR CLEARING`
-
-`CONDITION APPLICABILITY MUST BE RESPECTED`
-
-`REPEATED SUPPORTED EVIDENCE DOES NOT CREATE DUPLICATE CLEARING`
-
-`UNRELATED FACTORS REMAIN FACTUAL AND PRESERVED`
-
-`ONE SUPPORTED BLOCKER AT A TIME`
+`READY TO LIST ELIGIBLE = READ-ONLY ELIGIBILITY RESULT`
 
 `ACTION CENTER IS READ ONLY`
-
-`ROUTING GUIDANCE ≠ STATE MUTATION`
-
-`MISSING / UNSUPPORTED / MISMATCHED EVIDENCE ≠ GUESSED RESOLUTION`
 
 `NO AUTOMATIC READY TO LIST`
 
@@ -188,70 +112,51 @@ Permanent verification rule:
 
 No macros, marketplace connectors, publication automation, or automatic Inventory state writes are authorized by the current Calc gate.
 
-## Marketplace Integration Direction Preserved
-Future eBay and TCGplayer connectivity remains compatible with the architecture.
-
-Intended future chain:
-`MARKETPLACE CONNECTOR → IMPORT FACTUAL MARKETPLACE EVENT → MATCH MARKETDEX INVENTORY RECORD → VALIDATE EVENT → CONTROLLED AUTHORITATIVE INVENTORY UPDATE → ACTION CENTER READS CURRENT INVENTORY TRUTH`
-
-Connector implementation is not authorized by this checkpoint.
-
 ## Current Business Boundary
-MarketDEX now has a generalized factor-scoped evidence-resolution contract for the remaining proven preparation chain.
+MarketDEX now has a compacted Inventory worksheet operating surface and an explicit Full Readiness Cross-Check contract.
 
-For `INV-000001`, supported Listing Content Evidence maps to Listing Content, matches the active blocker, resolves Listing Content only, preserves unrelated factors, and derives Price Decision / Make Price Decision as the next exact blocker and action.
-
-The generalized progression is proven through Listing Content → Price Decision → Platform → Shipping Review → Data-Quality Clearance.
-
-The engine intentionally stops at Full Readiness Cross-Check. Clearing the final visible blocker does not automatically promote Inventory to `READY TO LIST`.
+For `INV-000001`, the first missing applicable readiness factor is Price Decision. Full Readiness fails closed, the record remains in preparation, and the read-only eligibility result remains `NOT READY TO LIST ELIGIBLE`.
 
 The next design question is:
-> **Which current worksheet proof sections are fully superseded by the accepted generalized engine, which authority/input surfaces must remain, and what explicit full-readiness cross-check is required before controlled promotion to READY TO LIST?**
+> **Once Full Readiness passes and READY TO LIST ELIGIBLE is derived read-only, which explicit authority and evidence are required to perform a controlled authoritative lifecycle transition to READY TO LIST without allowing eligibility or Action Center guidance to mutate Inventory state?**
 
 ## Exact Resume Point
-**Spreadsheet Design — Build 166 discovery: Worksheet Supersession Audit + Safe Compaction → Full Readiness Cross-Check Contract.**
+**Spreadsheet Design — Build 181 discovery: READY TO LIST Eligibility → Explicit Transition Authority → Controlled Authoritative Lifecycle State Change.**
 
-First inspect the Build 165 workbook dependency chain and classify each existing Inventory worksheet section as:
-- superseded proof surface;
-- active authority/factual input surface;
-- current operating gate.
+First inspect the proven Transformation Event and controlled state-transition principles already preserved in project architecture and workbook history.
 
-Remove only superseded proof surfaces through a controlled compaction build. Preserve every required authority/input surface and the current generalized operating gate.
+Then define the narrow boundary between:
+- factual readiness evidence;
+- Full Readiness Passed;
+- read-only `READY TO LIST ELIGIBLE`;
+- explicit transition authority;
+- authoritative lifecycle state mutation;
+- transition evidence and audit history.
 
-Then repair formula references as required and verify actual LibreOffice Calc evaluation behavior.
+Run the Copilot availability/status check explicitly. Do not claim Copilot review unless an actual review action is performed.
 
-After compaction, define the explicit Full Readiness Cross-Check contract before any controlled `READY TO LIST` promotion is authorized.
-
-Run the Copilot Acceleration Check and determine whether safe worksheet compaction and full-readiness cross-check proof can form one coherent batch without crossing into automatic Inventory mutation.
+Run the worksheet supersession check automatically. Compact only newly superseded proof surfaces when dependency-safe.
 
 Preserve:
 - one authoritative Inventory Record ID;
-- evidence-to-factor scope matching;
-- supported evidence requirement;
-- active blocker match requirement;
-- condition applicability;
-- one factor resolved per supported evidence result;
-- no cross-factor clearing;
-- no duplicate clearing from repeated evidence;
-- unrelated blocker preservation;
-- evidence-based readiness reevaluation;
-- one exact next blocker at a time;
-- read-only Action Center context;
-- no automatic `READY TO LIST`;
+- Full Readiness Cross-Check authority;
+- read-only eligibility result;
+- Action Center read-only boundary;
+- explicit mutation authority requirement;
+- fail-closed missing authority behavior;
+- permanent state-transition audit history;
 - no silent state mutation.
 
-Do not preserve obsolete worksheet proof sections solely as development history. Git and checkpoint documents own that history.
-
-Do not delete active authority or factual input surfaces during compaction.
+Do not treat `READY TO LIST ELIGIBLE` as mutation authority.
 
 Do not treat Action Center guidance as mutation authority.
 
-Do not build marketplace connectors, macros, publication automation, or automatic Inventory mutation.
+Do not build marketplace connectors, macros, publication automation, or uncontrolled automatic Inventory mutation.
 
-Use one ODS, dependency-aware worksheet compaction, actual LibreOffice behavior verification, Copilot review when materially useful and available, one targeted human visual review, one preservation event, direct safe repository maintenance, and step-by-step Mark action visibility.
+Use one ODS, actual LibreOffice behavior verification, explicit Copilot status reporting, one targeted human visual review, one preservation event, direct safe repository maintenance when available, and step-by-step Mark action visibility.
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
 
 ## Execution Discipline
-> **Plan in the correct responsibility. Implement proven decisions. Repair bugs without redesign. Preserve meaningful releases. Compact superseded proof surfaces when safe.**
+> **Plan in the correct responsibility. Implement proven decisions. Repair bugs without redesign. Preserve meaningful releases. Compact superseded proof surfaces when safe. Never confuse eligibility with mutation authority.**
