@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 039
+# MarketDEX Foundation Checkpoint 040
 
-**Status:** 🏁 Checkpoint Complete — Readiness Evidence → Exact Next Preparation Blocker Gate
+**Status:** 🏁 Checkpoint Complete — Supported Evidence → One-Factor Resolution → Next Exact Blocker Gate
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
@@ -31,6 +31,8 @@ Protected defaults remain: Momentum Default; No-Repetition Default; Inspect Once
 Every workbook visual review must identify:
 `WORKSHEET + EXACT ROW RANGE + SECTION HEADING + WHAT MARK SHOULD VERIFY`
 
+Every response must keep Mark's real action explicit and visible step by step.
+
 ## Copilot Checkpoint Acceleration
 Authority chain:
 `MARK DECIDES → JARVIS ARCHITECTS + COORDINATES → COPILOT IMPLEMENTS OR REVIEWS NARROW APPROVED WORK → JARVIS VERIFIES CONTRACT COMPLIANCE → MARK PERFORMS HUMAN BUSINESS/VISUAL ACCEPTANCE WHEN REQUIRED`
@@ -50,60 +52,80 @@ Larger coherent batches are allowed when the contract is proven and added review
 `artifacts/calc/` preserves one current approved Calc baseline only.
 
 The sole current Calc baseline is:
-`artifacts/calc/MarketDEX_Calc_V0_Build130_Exact_Next_Preparation_Blocker_Gate.ods`
+`artifacts/calc/MarketDEX_Calc_V0_Build145_Supported_Evidence_One_Factor_Resolution_Next_Blocker_Gate.ods`
 
-Build 122 has been superseded and directly removed from the active repository tree by Jarvis after Build 130 remote preservation was verified. Git history and checkpoint history preserve progression.
+Build 130 has been superseded and directly removed from the active repository tree by Jarvis after Build 145 remote preservation was verified. Git history and checkpoint history preserve progression.
 
-## Builds 123–130 — Exact Next Preparation Blocker
+## Builds 131–145 — Supported Evidence → One-Factor Resolution → Next Exact Blocker
 Permanent proof chain:
 
-`PREPARATION NEEDED → FACTUAL READINESS EVIDENCE → SKIP NON-APPLICABLE FACTORS → SELECT FIRST UNSATISFIED FACTOR IN PROVEN PRIORITY → PHOTOS → PREPARE PRODUCT PHOTOS`
+`PREPARE PRODUCT PHOTOS → SUPPORTED PRODUCT PHOTO EVIDENCE → SUPPORTED → RESOLVE PHOTOS ONLY → PHOTOS READY = YES → PRESERVE UNRELATED FACTORS → REEVALUATE READINESS → SKIP CONDITION · NOT APPLICABLE → LISTING CONTENT → PREPARE LISTING CONTENT`
 
-Build 123 establishes exact readiness-blocker derivation.
+Build 131 establishes the Supported Photo Evidence contract.
 
-Build 124 detects the Photos blocker.
+Build 132 evaluates Photo Evidence support.
 
-Build 125 protects the Condition applicability skip gate.
+Build 133 protects the Photos-only resolution boundary.
 
-Build 126 reuses the proven preparation priority chain.
+Build 134 derives the controlled Photos Ready result.
 
-Build 127 protects one-blocker-at-a-time selection.
+Build 135 preserves unrelated readiness factors.
 
-Build 128 maps exact blocker to exact preparation action.
+Build 136 reevaluates Listing Readiness after one-factor resolution.
 
-Build 129 gives the Action Center exact preparation guidance.
+Build 137 preserves the non-applicable Condition skip after resolution.
 
-Build 130 combines these responsibilities into the Readiness Evidence → Exact Next Preparation Blocker Gate.
+Build 138 derives Listing Content as the next exact blocker.
 
-## Build 130 Debugging and Acceptance
-The first Build 130 package visually exposed a stale formula-reference chain.
+Build 139 derives `PREPARE LISTING CONTENT` as the exact next action.
 
-The visible evidence correctly showed `PREPARATION NEEDED`, `PHOTOS READY = NO`, and `CONDITION APPLICABLE = NO`, but the derived blocker incorrectly returned `NO PREPARATION BLOCKER`; the Action Center therefore fell through to review guidance.
+Build 140 gives the read-only Action Center post-photo guidance.
 
-Debugging repaired only the stale formula-reference chain. The approved Builds 123–130 business contract remained unchanged.
+Build 141 protects unsupported Photo Evidence fail-closed behavior.
 
-Repaired Build 130 was verified in LibreOffice Calc:
-- `PREPARATION NEEDED` reads factual readiness evidence;
-- `PHOTOS READY = NO` derives exact blocker `PHOTOS`;
-- non-applicable Condition is skipped;
-- one supported blocker is selected at a time;
-- unrelated missing factors remain factual and are not silently cleared;
-- exact action is `PREPARE PRODUCT PHOTOS`;
-- Action Center returns `PREPARE PRODUCT PHOTOS / PHOTOS / PRODUCT PHOTO EVIDENCE / REVIEW PHOTO EVIDENCE`;
+Build 142 protects repeated supported Photo Evidence from duplicate clearing.
+
+Build 143 exposes Factor Resolution audit context.
+
+Build 144 cross-checks the controlled factor-resolution chain.
+
+Build 145 combines these responsibilities into the Supported Evidence → One-Factor Resolution → Next Exact Blocker Gate.
+
+## Build 145 Debugging and Acceptance
+The first Build 145 package visually exposed a stale formula-reference chain.
+
+The factual photo evidence was present and supported in the evidence surface, but Photo Evidence Evaluation returned `UNSUPPORTED`. The Photos-only resolution therefore returned `NO FACTOR RESOLUTION / PHOTOS READY = NO`; readiness reevaluation remained on `PHOTOS`; and the Action Center fell through to review guidance.
+
+Debugging repaired only the stale formula-reference chain. The approved Builds 131–145 business contract remained unchanged.
+
+Repaired Build 145 was verified in LibreOffice Calc:
+- Supported Product Photo Evidence evaluates as `SUPPORTED`;
+- supported Photo Evidence resolves `PHOTOS` only;
+- `PHOTOS READY` advances to `YES`;
+- unrelated readiness factors remain factual and are not silently cleared;
+- Condition remains `NOT APPLICABLE` and is skipped;
+- Listing Readiness remains `PREPARATION NEEDED`;
+- the next exact blocker is `LISTING CONTENT`;
+- the exact next action is `PREPARE LISTING CONTENT`;
+- Action Center returns `PREPARE LISTING CONTENT / LISTING CONTENT / LISTING CONTENT EVIDENCE / REVIEW LISTING CONTENT`;
 - Action Center remains read-only;
 - no silent state mutation was introduced.
 
 Permanent verification rule:
 > **When formula behavior is under test, formula presence is insufficient. Actual LibreOffice evaluation behavior must be verified.**
 
-## Permanent State and Action Center Boundaries
+## Permanent State, Evidence, and Action Center Boundaries
 `INVENTORY OWNS RECORD IDENTITY`
 
 `BUSINESS INVENTORY CONDITION ≠ OPERATIONAL LIFECYCLE STATE`
 
 `OWNERSHIP DOES NOT CREATE WORKFLOW STATE`
 
-`READINESS EVIDENCE CLASSIFIES THE FIRST OPERATIONAL LIFECYCLE STATE`
+`READINESS EVIDENCE CLASSIFIES OPERATIONAL LIFECYCLE STATE`
+
+`SUPPORTED FACTUAL EVIDENCE IS REQUIRED FOR FACTOR RESOLUTION`
+
+`SUPPORTED PHOTO EVIDENCE MAY RESOLVE PHOTOS ONLY`
 
 `CONDITION APPLICABILITY MUST BE RESPECTED`
 
@@ -111,11 +133,15 @@ Permanent verification rule:
 
 `COMPLETING ONE TASK DOES NOT SILENTLY CLEAR UNRELATED BLOCKERS`
 
+`REPEATED SUPPORTED EVIDENCE DOES NOT CREATE DUPLICATE CLEARING`
+
 `ACTION CENTER ROUTES FROM OPERATIONAL LIFECYCLE STATE ONLY`
+
+`ACTION CENTER IS READ ONLY`
 
 `ROUTING GUIDANCE ≠ STATE MUTATION`
 
-`MISSING EVIDENCE ≠ GUESSED WORKFLOW STATE`
+`MISSING OR UNSUPPORTED EVIDENCE ≠ GUESSED RESOLUTION`
 
 `NO SILENT STATE CHANGE`
 
@@ -130,28 +156,35 @@ Intended future chain:
 Connector implementation is not authorized by this checkpoint.
 
 ## Current Business Boundary
-MarketDEX can now identify the exact next preparation blocker for a real `PREPARATION NEEDED` Inventory record from factual readiness evidence.
+MarketDEX can now accept supported evidence for one active readiness blocker, resolve only the supported factor, preserve unrelated blockers, reevaluate readiness, and derive the next exact blocker and action.
 
-For `INV-000001`, the first supported blocker is `PHOTOS`, and the exact next action is `PREPARE PRODUCT PHOTOS`.
+For `INV-000001`, supported Product Photo Evidence resolves Photos only. Condition is not applicable. The next exact blocker is Listing Content and the next action is `PREPARE LISTING CONTENT`.
 
 The next design question is:
-> **After Mark supplies supported product-photo evidence, how should MarketDEX mark only the Photos factor ready, preserve every unrelated blocker, and derive the next exact blocker without silent state mutation?**
+> **How should MarketDEX generalize the proven one-factor evidence-resolution contract across the remaining preparation factors without duplicating factor-specific logic or allowing evidence for one factor to resolve another?**
 
 ## Exact Resume Point
-**Spreadsheet Design — Build 131 discovery: Supported Photo Evidence → Controlled Readiness Factor Resolution → Next Exact Blocker.**
+**Spreadsheet Design — Build 146 discovery: Generalized Supported Evidence → Factor-Scoped Resolution Engine → Remaining Preparation Chain.**
 
-First inspect the locked blocker-resolution and evidence contracts.
+First inspect the proven factor-specific preparation actions and the Build 145 evidence-resolution contract.
 
-Then run the Copilot Acceleration Check and determine whether the proven factor-resolution chain can safely support a larger coherent batch.
+Then run the Copilot Acceleration Check and determine whether the remaining proven preparation factors can be implemented as one generalized factor-scoped resolution batch.
 
 Preserve:
 - one authoritative Inventory Record ID;
-- evidence-based lifecycle classification;
-- one exact supported blocker at a time;
+- evidence-to-factor scope matching;
+- supported evidence requirement;
 - condition applicability;
-- no silent clearing of unrelated blockers;
+- one factor resolved per supported evidence result;
+- no cross-factor clearing;
+- no duplicate clearing from repeated evidence;
+- unrelated blocker preservation;
+- evidence-based readiness reevaluation;
+- one exact next blocker at a time;
 - read-only Action Center context;
 - no silent state mutation.
+
+Do not create separate resolution logic that changes business meaning by factor unless a proven contract requires the difference.
 
 Do not treat Action Center guidance as mutation authority.
 
