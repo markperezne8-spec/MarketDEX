@@ -8,61 +8,53 @@ Progress percentages are scope-based estimates, not elapsed-time estimates and n
 ## Reporting and Communication Defaults
 Communication is short, direct, action-focused, emoji-forward, and moderately narrow. Use `⚡🚀✨ MILESTONE` for milestone recognition. Stack several workflow steps ahead when useful. Every Mark repository action includes exact copy-paste filenames, commit messages, and reply text.
 
-Remote checkpoint/progress synchronization occurs after the accepted Calc baseline is confirmed remote. Jarvis does not create avoidable remote/local divergence while Mark has a local preservation commit pending.
+Remote checkpoint/progress synchronization occurs after the accepted Calc baseline is confirmed remote.
 
-## Closed Milestone
-**Milestone:** Verified Publication to Controlled LISTED State
+## Current Milestone
+**Milestone:** Authoritative LISTED State to Controlled Sale Evidence
 
-**Progress:** `[██████████] 100%`
+**Progress:** `[██████░░░░] 60%`
 
-Checkpoint 049 closes the milestone.
+Build 320 is accepted and remotely verified as the sole current Calc baseline with GitHub blob SHA `52b037145ae0a7a9d9b3968c1d433c9042b168cf`.
 
-Build 280 is accepted and remotely verified as the current Calc baseline with GitHub blob SHA `2c03419561aa05a206f1812a4a960c7facc2715e`.
+Checkpoint 050 records the Controlled Verified Sale Evidence Gate.
 
-Completed: Success Evidence Contract; Success Status Validation; required listing/result/time evidence; Identity Chain Revalidation; Complete Success Evidence Gate; Verified Publication = YES; LISTED Eligibility Revalidation; Explicit LISTED Transition Request; LISTED Transition Authority; Execution Commit; Controlled State Write; Derived New State = LISTED; append-only LISTED transition history; Post-Write Verification; Completion; Replay Protection; Second Write Prevention; Build 280 visual acceptance; remote Build 280 verification; superseded Build 260 removal; Checkpoint 049 synchronization.
+Completed: Sale Evidence Intake; Sale Identity and Marketplace Match; Sale Amount and Quantity Validation; Complete Sale Evidence Gate; Verified Sale = YES; Sale Consequence = SALE VERIFIED; SOLD Transition Eligibility = ELIGIBLE; State Write = NO; Build 320 visual acceptance; remote Build 320 verification; superseded Build 280 removal; Checkpoint 050 synchronization.
 
-Remaining: none for this milestone.
+Remaining: explicit SOLD transition request; SOLD transition authority; execution commit; controlled state write; append-only SOLD transition history; post-write verification; replay protection; milestone close.
 
 ## Current Proven Boundary
-`VERIFIED PUBLICATION = YES`
+`AUTHORITATIVE STATE VALID = YES`
 
-`LISTED TRANSITION ELIGIBILITY = ELIGIBLE`
+`LISTING ID MATCH = YES`
 
-`EXPLICIT LISTED TRANSITION REQUEST = VALID REQUEST`
+`SALE EVIDENCE COMPLETE = YES`
 
-`LISTED TRANSITION AUTHORITY = GRANTED`
+`VERIFIED SALE = YES`
 
-`EXECUTION COMMIT = EXECUTE LISTED TRANSITION`
+`SALE CONSEQUENCE = SALE VERIFIED`
 
-`CONTROLLED STATE WRITE = YES`
+`SOLD TRANSITION ELIGIBILITY = ELIGIBLE`
 
-`DERIVED NEW STATE = LISTED`
-
-`TRANSITION HISTORY RESULT = EXECUTED`
-
-`POST-WRITE STATE MATCH = YES`
-
-`COMPLETION = COMPLETED`
-
-`REPLAY RESULT = ALREADY EXECUTED`
-
-`SECOND WRITE = NO`
+`STATE WRITE = NO`
 
 ## Permanent Boundary
-`VERIFIED PUBLICATION ≠ LISTED`
+`LISTED ≠ SOLD`
+
+`SALE CLAIM ≠ VERIFIED SALE`
+
+`VERIFIED SALE ≠ SOLD STATE`
 
 `ELIGIBILITY ≠ AUTHORITY`
 
 `AUTHORITY ≠ EXECUTION`
-
-`EXECUTION ≠ VERIFIED COMPLETION`
 
 Replay must not create a second state write.
 
 ## Copilot Status
 `COPILOT ACTION = NOT USED`
 
-Copilot was not used to resolve the Git conflict. Copilot may be used for debugging and implementation review only when an actual callable Copilot action occurs. It is not business-logic authority.
+Copilot may be used for debugging and implementation review only when an actual callable Copilot action occurs. It is not business-logic authority.
 
 ## Next Gate
-Define the next Workbook OS milestone and its first business responsibility from authoritative LISTED state. Desktop application implementation remains dormant.
+Build the controlled LISTED → SOLD transition execution batch from accepted Build 320. Desktop application implementation remains dormant.
