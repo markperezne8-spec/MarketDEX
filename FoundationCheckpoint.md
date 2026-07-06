@@ -1,94 +1,88 @@
-# MarketDEX Foundation Checkpoint 050
+# MarketDEX Foundation Checkpoint 051
 
-**Status:** 🏁 Checkpoint Complete — Controlled Verified Sale Evidence Gate
+**Status:** 🏁 Checkpoint Complete — Controlled SOLD Transition Execution Gate
 
 ## Active Phase
-📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
+📊 ACTIVE — LibreOffice Workbook OS through Spreadsheet Design.
 
-🖥️ DORMANT — Desktop Application Foundation remains preserved for future implementation.
+🖥️ DORMANT — Desktop Application Foundation remains preserved.
 
 ## Permanent Direction
-MarketDEX is proven first through the LibreOffice workbook and Mark's real Pokémon TCG business.
-
 > **Enter once. Understand everywhere.**
 
 ## Frictionless Working Contract
 `CAN JARVIS SAFELY DO THIS INSTEAD? → YES → JARVIS DOES IT → ZERO FAKE WORK FOR MARK`
 
-Communication is short, direct, action-focused, emoji-forward, and moderately narrow. Stack several workflow steps ahead when useful. Every Mark repository action includes exact copy-paste filenames, commit messages, and reply text. Workbook visual review identifies `WORKSHEET + EXACT ROW RANGE + SECTION HEADING + WHAT MARK SHOULD VERIFY`.
+Communication is short, direct, emoji-forward, moderately narrow, and action-focused. Stack several workflow steps ahead when useful. Every Mark repository action includes exact copy-paste instructions. Visual review identifies worksheet, exact row range, section heading, and what to verify.
 
-Checkpoint headings use `🏁`. Milestone reporting uses `⚡🚀✨ MILESTONE`.
+Checkpoint headings use `🏁`. Milestones use `⚡🚀✨ MILESTONE`.
 
-Repository friction rule: remote checkpoint/progress synchronization occurs only after the accepted Calc baseline is confirmed remote.
+Repository rule: remote checkpoint/progress synchronization occurs only after the accepted Calc baseline is confirmed remote.
 
-## Calc Artifact Retention
-`artifacts/calc/` preserves one current approved Calc baseline only.
-
-Current approved Calc baseline:
-`artifacts/calc/MarketDEX_Calc_V0_Build320_Controlled_Verified_Sale_Evidence_Gate.ods`
+## Current Approved Calc Baseline
+`artifacts/calc/MarketDEX_Calc_V0_Build360_Controlled_SOLD_Transition_Execution_Gate.ods`
 
 Remote GitHub blob SHA:
-`52b037145ae0a7a9d9b3968c1d433c9042b168cf`
+`2f78ed4dd74d9669f4a408d733cca6a0b790c6de`
 
-The superseded Build 280 baseline was removed after Build 320 remote verification.
+Build 360 is accepted and remotely verified. Build 320 remains a superseded repository artifact pending dependency-safe retention cleanup because direct deletion was blocked by repository safety controls.
 
-## Builds 281–320 — Controlled Verified Sale Evidence
-Builds 281–290 establish Sale Evidence Intake.
+## Builds 321–360 — Controlled SOLD Transition Execution
+Builds 321–330 establish the Explicit SOLD Transition Request.
 
-Builds 291–300 establish Sale Identity and Marketplace Match.
+Builds 331–340 establish SOLD Transition Authority.
 
-Builds 301–310 establish Sale Amount and Quantity Validation.
+Builds 341–350 establish Execution Commit and Controlled SOLD State Write.
 
-Builds 311–320 establish the Verified Sale Cross-Check and Controlled Verified Sale Evidence Gate.
+Builds 351–354 establish append-only SOLD transition history.
 
-## Accepted Build 320 Proof
-For `INV-000001` / `SALE-000001`:
-- Authoritative State Valid = `YES`;
-- Record Match = `YES`;
-- Platform Match = `YES`;
-- Listing ID Match = `YES`;
-- Sale Received Valid = `YES`;
-- Sale Status Valid = `YES`;
-- Sale Reference Present = `YES`;
-- Sold Time Present = `YES`;
-- Amount Valid = `YES`;
-- Quantity Valid = `YES`;
-- Sale Evidence Complete = `YES`;
-- Identity Chain Valid = `YES`;
-- Verified Sale = `YES`;
-- Sale Consequence = `SALE VERIFIED`;
-- SOLD Transition Eligibility = `ELIGIBLE`;
-- State Write = `NO`.
+Builds 355–359 establish post-write verification and replay protection.
 
-Mark visually verified Inventory rows 856–883 in LibreOffice Calc. Package integrity, OpenFormula hygiene, LibreOffice headless evaluation, and Err:510 scan passed before visual acceptance.
+Build 360 establishes the Controlled SOLD Transition Execution Gate.
 
-## Permanent Sale Boundary
+## Accepted Build 360 Proof
+For `INV-000001`:
+- Request Result = `VALID REQUEST`;
+- Authority Result = `GRANTED`;
+- Controlled State Write = `YES`;
+- Derived New State = `SOLD`;
+- transition ID = `TRN-000003`;
+- transition history result = `EXECUTED`;
+- Completion = `COMPLETED`;
+- Replay Result = `ALREADY EXECUTED`;
+- Second Write = `NO`.
+
+Mark visually verified Inventory rows 884–905 in LibreOffice Calc. Package integrity, OpenFormula hygiene, LibreOffice headless evaluation, and Err:510 scan passed before visual acceptance.
+
+## Permanent SOLD Boundary
 `LISTED ≠ SOLD`
 
 `SALE CLAIM ≠ VERIFIED SALE`
 
 `VERIFIED SALE ≠ SOLD STATE`
 
-Valid identity, marketplace listing match, sale reference, sold time, positive sale amount, and positive quantity are required for Verified Sale.
+`ELIGIBILITY ≠ AUTHORITY`
 
-Verified Sale creates SOLD transition eligibility only. It does not directly mutate authoritative Inventory state.
+`AUTHORITY ≠ EXECUTION`
+
+`EXECUTION ≠ VERIFIED COMPLETION`
+
+Verified Sale creates SOLD transition eligibility only. Explicit request, granted authority, execution commit, controlled state write, append-only history, and post-write verification are required. Replay must not create a second write.
 
 ## Copilot Status
 `COPILOT ACTION = NOT USED`
 
-Copilot remains optional for debugging and implementation review when an actual callable Copilot action occurs. Copilot is not business-logic authority.
-
 ## Milestone Progress
 **Milestone:** Authoritative LISTED State to Controlled Sale Evidence
 
-**Progress:** `[██████░░░░] 60%`
+**Progress:** `[██████████] 100%`
 
-Completed: sale evidence intake; sale identity and marketplace match; sale amount and quantity validation; complete sale evidence gate; Verified Sale derivation; SOLD transition eligibility; Build 320 acceptance; remote verification; sole-baseline retention synchronization.
+Completed: sale evidence intake; identity and marketplace match; amount and quantity validation; Verified Sale; SOLD eligibility; explicit SOLD transition request; SOLD authority; execution commit; controlled SOLD state write; append-only history; post-write verification; replay protection; Build 360 acceptance and remote verification.
 
-Remaining: explicit SOLD transition request; SOLD transition authority; execution commit; controlled state write; append-only SOLD transition history; post-write verification; replay protection; milestone close.
+Remaining: repository supersession cleanup is operational housekeeping and does not reopen the closed business milestone.
 
 ## Exact Resume Point
-**Spreadsheet Design — build the controlled LISTED → SOLD transition execution batch from accepted Build 320. Desktop application implementation remains dormant.**
+**Spreadsheet Design — define the next Workbook OS milestone and first business responsibility from authoritative SOLD state. Desktop application implementation remains dormant.**
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
