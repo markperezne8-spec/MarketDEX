@@ -10,55 +10,56 @@ Communication is short, direct, action-focused, emoji-forward, and moderately na
 
 Remote checkpoint/progress synchronization occurs after the accepted Calc baseline is confirmed remote.
 
-## Closed Milestone
-**Milestone:** Authoritative LISTED State to Controlled Sale Evidence
+## Closed Milestone 6
+**Milestone:** Authoritative SOLD State to Financial Truth
 
 **Progress:** `[██████████] 100%`
 
-Checkpoint 051 closes the milestone.
+Checkpoint 052 closes the milestone.
 
-Build 360 is accepted and remotely verified as the current approved Calc baseline with GitHub blob SHA `2f78ed4dd74d9669f4a408d733cca6a0b790c6de`.
+Build 480 is accepted and remotely verified as the current approved Calc baseline with GitHub blob SHA `c0744a2068b0f2b9cff9cc74f8efb0ac7e593113`.
 
-Completed: Sale Evidence Intake; Sale Identity and Marketplace Match; Sale Amount and Quantity Validation; Verified Sale = YES; SOLD Transition Eligibility = ELIGIBLE; Explicit SOLD Transition Request; SOLD Transition Authority; Execution Commit; Controlled State Write; Derived New State = SOLD; append-only SOLD transition history; Post-Write Verification; Completion; Replay Protection; Second Write Prevention; Build 360 visual acceptance and remote verification; Checkpoint 051 synchronization.
-
-Repository housekeeping: Build 320 is superseded but remains pending retention cleanup because direct deletion was blocked by repository safety controls. This does not reopen the business milestone.
+Completed: Authoritative Sale Value and Revenue Evidence; Marketplace Fee Evidence and Authority; Shipping and Packaging Cost Evidence; Controlled Sale Cost Evidence; Inventory Cost Basis Evidence; Authoritative Cost Basis Cross-Check; Net Profit Derivation; Financial Truth Cross-Check; Build 480 visual acceptance and remote verification; Checkpoint 052 synchronization.
 
 ## Current Proven Boundary
-`VERIFIED SALE = YES`
+`COST BASIS RESULT = COST BASIS VERIFIED`
 
-`SOLD TRANSITION ELIGIBILITY = ELIGIBLE`
+`NET PROFIT = 32.74`
 
-`REQUEST RESULT = VALID REQUEST`
+`PROFIT STATUS = PROFIT`
 
-`AUTHORITY RESULT = GRANTED`
+`FINANCIAL TRUTH = VERIFIED`
 
-`CONTROLLED STATE WRITE = YES`
+`TOTAL DEDUCTIONS = 69.26`
 
-`DERIVED NEW STATE = SOLD`
+`FINANCIAL TRUTH RESULT = FINANCIAL TRUTH VERIFIED`
 
-`COMPLETION = COMPLETED`
+## Permanent Financial Boundary
+`SOLD STATE ≠ REVENUE TRUTH`
 
-`REPLAY RESULT = ALREADY EXECUTED`
+`SALE CLAIM ≠ AUTHORITATIVE REVENUE`
 
-`SECOND WRITE = NO`
+`FEE CLAIM ≠ AUTHORITATIVE MARKETPLACE FEE`
 
-## Permanent Boundary
-`LISTED ≠ SOLD`
+`COST CLAIM ≠ AUTHORITATIVE FULFILLMENT COST`
 
-`SALE CLAIM ≠ VERIFIED SALE`
+`INVENTORY COST ≠ VERIFIED COST BASIS`
 
-`VERIFIED SALE ≠ SOLD STATE`
+`FINANCIAL COMPONENTS ≠ FINANCIAL TRUTH`
 
-`ELIGIBILITY ≠ AUTHORITY`
+Net Profit = Gross Revenue − Marketplace Fee − Fulfillment Cost − Cost Basis.
 
-`AUTHORITY ≠ EXECUTION`
-
-`EXECUTION ≠ VERIFIED COMPLETION`
-
-Replay must not create a second state write.
+Build 480 creates no cash settlement authority and no tax authority.
 
 ## Copilot Status
 `COPILOT ACTION = NOT USED`
 
+## Active Milestone 7
+**Milestone:** Verified Financial Truth to Controlled Marketplace Settlement
+
+**Progress:** `[░░░░░░░░░░] 0%`
+
+Planned responsibility chain: settlement evidence intake; sale and platform identity match; payout amount and settlement-time validation; verified settlement; settlement eligibility; explicit settlement transition request; authority; controlled settlement write; append-only settlement history; post-write verification; replay protection.
+
 ## Next Gate
-Define the next Workbook OS milestone and its first business responsibility from authoritative SOLD state. Desktop application implementation remains dormant.
+Builds 481–500 — establish Marketplace Settlement Evidence Intake from verified financial truth. Derived profit must not be treated as cash received. No tax authority is created.
