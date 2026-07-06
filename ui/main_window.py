@@ -4,18 +4,23 @@ from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QLabel
 class MainWindow(QMainWindow):
     def __init__(self, database_path):
         super().__init__()
-        self.setWindowTitle('MarketDEX OS — M20.B1')
+        self.setWindowTitle('MarketDEX OS — M21.B1')
         self.resize(900, 560)
-        root = QWidget(); layout = QVBoxLayout(root)
-        title = QLabel('MarketDEX OS'); title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title.setStyleSheet('font-size: 30px; font-weight: 700;')
-        status = QLabel('DESKTOP FOUNDATION READY')
-        status.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        status.setStyleSheet('font-size: 18px;')
-        authority = QLabel('Persistence Authority • Event Identity • Service Boundaries')
-        authority.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        path = QLabel(f'Offline database initialized:\n{database_path}')
-        path.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        path.setWordWrap(True)
-        layout.addStretch(); layout.addWidget(title); layout.addWidget(status); layout.addWidget(authority); layout.addWidget(path); layout.addStretch()
+        root = QWidget()
+        layout = QVBoxLayout(root)
+        labels = [
+            ('MarketDEX OS', 30, True),
+            ('PERSISTENCE AUTHORITY READY', 18, False),
+            ('Repositories • Asset Authority • Inventory Authority', 14, False),
+            ('Controlled Writes • Append-Only History • Replay Defense', 14, False),
+            (f'Offline authority database:\n{database_path}', 12, False),
+        ]
+        layout.addStretch()
+        for text, size, bold in labels:
+            label = QLabel(text)
+            label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            label.setWordWrap(True)
+            label.setStyleSheet(f'font-size: {size}px;' + (' font-weight: 700;' if bold else ''))
+            layout.addWidget(label)
+        layout.addStretch()
         self.setCentralWidget(root)
