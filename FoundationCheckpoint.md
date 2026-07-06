@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 037
+# MarketDEX Foundation Checkpoint 038
 
-**Status:** 🏁 Checkpoint Complete — Two-Dimension Inventory State + Action Center Gate
+**Status:** 🏁 Checkpoint Complete — First Authoritative Operational Lifecycle State Gate
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
@@ -27,84 +27,104 @@ Knowledge is permanent. Technology may change.
 ## Frictionless Mark + Jarvis Operating Contract
 `Jarvis Partnership Agreement.md` Version 2.2 remains active.
 
-Protected defaults remain: Momentum Default; No-Repetition Default; Inspect Once · Reuse Evidence; Zero-Action Mark State; Exact Copy-Block Discipline; Action Vocabulary Precision; Real-Action-Only Instructions; repository-first inspection; direct safe repository text maintenance; deliverable-first partnership; and risk-based verification.
+Protected defaults remain: Momentum Default; No-Repetition Default; Inspect Once · Reuse Evidence; Zero-Action Mark State; Exact Copy-Block Discipline; Action Vocabulary Precision; Real-Action-Only Instructions; Repository-First Inspection; Deliverable-First Partnership; Direct Repository Maintenance; and Risk-Based Verification.
+
+### ⚡ Can Jarvis Safely Do This Instead? — Reinforced
+Before assigning Mark routine repository maintenance, Jarvis must determine whether safe repository tooling can perform the action directly.
+
+If Jarvis can safely create, update, or delete the remote repository item with current evidence and proper continuity protection, Jarvis performs the action directly.
+
+This includes safe deletion of a proven superseded active Calc baseline after the newer accepted baseline is repository-preserved.
+
+Mark must not receive manual repository work merely because a manual path exists.
+
+`CAN JARVIS SAFELY DO THIS INSTEAD? → YES → JARVIS DOES IT → ZERO FAKE WORK FOR MARK`
+
+This clarification is active immediately and must be incorporated into the next `Jarvis Partnership Agreement.md` version revision.
 
 ### 📍 Workbook Visual Review Targeting — Active Rule
 Every workbook visual-review instruction must identify:
 
 `WORKSHEET + EXACT ROW RANGE + SECTION HEADING + WHAT MARK SHOULD VERIFY`
 
-Jarvis must direct Mark to the smallest relevant workbook area rather than asking Mark to search broadly. Row positions must come from the actual deliverable being reviewed.
+Jarvis directs Mark to the smallest relevant workbook area. Row positions must come from the actual deliverable being reviewed.
 
-This rule remains active immediately and is queued for incorporation into the next `Jarvis Partnership Agreement.md` version revision.
+This rule remains active immediately and must be incorporated into the next `Jarvis Partnership Agreement.md` version revision.
 
 ## Routine Workbook Implementation Contract
 `Mark approves → Jarvis builds a coherent safe batch → Jarvis verifies → finished downloadable ODS → Mark visually checks once → accepted build is repository-preserved once`
 
 Default accelerated rhythm:
-`checkpoint/approved boundary → plan farther ahead → 6–9 adjacent responsibilities when safe → one ODS → one package verification → one targeted visual review → one preservation push → repository closeout → one pull only at the next required synchronization point`
+`checkpoint/approved boundary → plan farther ahead → 6–9 adjacent responsibilities when safe → one ODS → one package verification → one targeted visual review → one preservation event → repository closeout → one pull only at the next required synchronization point`
 
 The number 6–9 is a default safe range, not a quota. Responsibility coherence, business uncertainty, architecture boundaries, ODS risk, and continuity risk control batch size.
 
 ## Calc Artifact Retention Rule
 `artifacts/calc/` preserves one current approved Calc baseline only. A newer visually accepted and repository-preserved Calc build replaces the previous active artifact; Git history and checkpoint history preserve progression.
 
+When safe GitHub deletion tooling is available and the superseded artifact is proven, Jarvis removes the prior active remote Calc baseline directly rather than assigning the deletion to Mark.
+
 ## Current Calc Continuity
-MarketDEX Calc Version 0 has progressed through accepted and repository-preserved **Build 114 — Two-Dimension Inventory State + Action Center Gate**.
+MarketDEX Calc Version 0 has progressed through accepted and repository-preserved **Build 122 — First Authoritative Operational Lifecycle State Gate**.
 
 The sole current Calc baseline is:
-`artifacts/calc/MarketDEX_Calc_V0_Build114_Two_Dimension_Inventory_State_Action_Center_Gate.ods`
+`artifacts/calc/MarketDEX_Calc_V0_Build122_First_Authoritative_Operational_Lifecycle_State_Gate.ods`
 
-Build 106 has been superseded as the active artifact and remains recoverable through Git history and checkpoint history.
+Build 114 has been superseded and removed from the active repository tree. Git history and checkpoint history preserve progression.
 
-## Builds 107–114 — Two-Dimension Inventory State
-Build 107 established that `OWNED` and the proven Action Center lifecycle vocabulary answer different business questions.
+## Builds 115–122 — Lifecycle Classification Evidence → First Authoritative Operational State
+The approved batch reused the design-locked Listing Readiness contract rather than inferring workflow state from ownership.
 
-Permanent separation:
+Permanent proof chain:
 
-`BUSINESS INVENTORY CONDITION ≠ OPERATIONAL LIFECYCLE STATE`
+`OWNERSHIP DOES NOT CREATE WORKFLOW STATE → FACTUAL READINESS EVIDENCE IS EVALUATED → ONE AUTHORITATIVE OPERATIONAL STATE IS CLASSIFIED → ACTION CENTER READS THAT STATE`
 
-`OWNED ≠ PREPARATION NEEDED`
+Build 115 establishes the Lifecycle Classification Evidence contract.
 
-Build 108 establishes the Business Inventory Condition surface.
+Build 116 establishes the real record readiness evidence surface.
 
-Build 109 establishes the separate Operational Lifecycle State surface.
+Build 117 establishes the applicable-factor gate.
 
-Build 110 protects the condition-versus-lifecycle boundary.
+Build 118 establishes `NOT EVALUATED` classification.
 
-Build 111 establishes the lifecycle-classification evidence gate.
+Build 119 establishes `BLOCKED` classification.
 
-Build 112 preserves fail-closed handling when authoritative lifecycle evidence is missing.
+Build 120 establishes `PREPARATION NEEDED` classification.
 
-Build 113 proves the Action Center reads Operational Lifecycle State only.
+Build 121 establishes `READY TO LIST` classification.
 
-Build 114 combines the two-dimension Inventory state model, lifecycle evidence boundary, read-only Action Center routing responsibility, and no-mutation protection into the Two-Dimension Inventory State + Action Center Gate.
+Build 122 combines evidence evaluation, applicable-factor handling, first authoritative Operational Lifecycle State classification, and read-only Action Center routing into the First Authoritative Operational Lifecycle State Gate.
 
-## Build 114 Visual Acceptance
-Build 114 was visually reviewed in LibreOffice Calc at:
+## Build 122 Debugging and Acceptance
+The first Build 122 package visually exposed a formula-reference regression.
 
-`WORKSHEET: Inventory`
+The classification surface did not flow correctly into the Authoritative Operational Lifecycle State, which returned `0`; the Action Center therefore fell through to unmapped fail-closed guidance.
 
-`ROWS: 533–551`
+Debugging repaired the formula-reference regression without redesigning lifecycle classification or changing the approved Builds 115–122 business contract.
 
-`SECTION: OWNED STATE SEMANTICS → TWO-DIMENSION INVENTORY STATE · BUILDS 107–114`
+Repaired Build 122 was verified in LibreOffice Calc:
+- readiness evidence classifies the real record as `PREPARATION NEEDED`;
+- `PREPARATION NEEDED` flows into the Authoritative Operational Lifecycle State;
+- the Action Center reads that authoritative operational state;
+- the Action Center returns matching mapped preparation guidance;
+- Business Inventory Condition remains separate from Operational Lifecycle State;
+- no silent state mutation was introduced.
 
-Accepted visual evidence:
-- `INV-000001` resolves to `Mega Greninja ex Premium Collection`;
-- Business Inventory Condition is `OWNED`;
-- Operational Lifecycle State is `LIFECYCLE EVIDENCE REQUIRED`;
-- lifecycle evidence is `NOT AUTHORITATIVELY ESTABLISHED`;
-- classification remains `FAIL CLOSED · DO NOT INFER PREPARATION NEEDED`;
-- Action Center returns `REVIEW REQUIRED · FAIL CLOSED`;
-- mutation authority remains `NONE · READ ONLY`;
-- the visible operating boundary states `OWNED ≠ PREPARATION NEEDED → LIFECYCLE EVIDENCE REQUIRED → ACTION CENTER FAILS CLOSED UNTIL AUTHORITATIVE WORKFLOW STATE EXISTS`.
+Permanent verification rule:
+> **When formula behavior is the responsibility under test, formula presence is insufficient. LibreOffice evaluation behavior must be verified.**
 
-## Permanent Action Center and State Boundaries
+## Permanent State and Action Center Boundaries
 `INVENTORY OWNS RECORD IDENTITY`
 
 `BUSINESS INVENTORY CONDITION ≠ OPERATIONAL LIFECYCLE STATE`
 
 `OWNED ≠ PREPARATION NEEDED`
+
+`OWNERSHIP DOES NOT CREATE WORKFLOW STATE`
+
+`READINESS EVIDENCE CLASSIFIES THE FIRST OPERATIONAL LIFECYCLE STATE`
+
+`CONDITION APPLICABILITY MUST BE RESPECTED`
 
 `ACTION CENTER ROUTES FROM OPERATIONAL LIFECYCLE STATE ONLY`
 
@@ -116,11 +136,9 @@ Accepted visual evidence:
 
 `ROUTING GUIDANCE ≠ STATE MUTATION`
 
-`MISSING LIFECYCLE EVIDENCE ≠ GUESSED WORKFLOW STATE`
+`MISSING EVIDENCE ≠ GUESSED WORKFLOW STATE`
 
 `UNMAPPED → REVIEW REQUIRED`
-
-`COMPLETE → NO INVENTED NEXT ACTION`
 
 `NO SILENT STATE CHANGE`
 
@@ -132,10 +150,10 @@ Future eBay and TCGplayer connectivity remains compatible with the architecture.
 Intended future responsibility chain:
 `MARKETPLACE CONNECTOR → IMPORT FACTUAL MARKETPLACE EVENT → MATCH MARKETDEX INVENTORY RECORD → VALIDATE EVENT → CONTROLLED AUTHORITATIVE INVENTORY UPDATE → ACTION CENTER READS CURRENT INVENTORY TRUTH`
 
-The two-dimension state separation improves future integration safety: external possession or inventory evidence must not be mistaken for operational lifecycle evidence. The Action Center remains read-only. Connector implementation is not authorized by this checkpoint.
+External inventory or possession evidence must not be mistaken for operational lifecycle evidence. The Action Center remains read-only. Connector implementation is not authorized by this checkpoint.
 
 ## Design-Locked Business Contracts Preserved
-Inventory Identity; Product Form Taxonomy; Quantity + Unit Identity; Cost Basis + Cost Layers; Physical Location + Custody; Inventory Business State; Platform Exposure + Listing Relationship; Inventory Age + Capital Commitment Clock; Inventory Lineage + Transformation; Inventory Reconciliation + Adjustment; Mission Control five-zone architecture; Visual Intelligence; Capital Health and Capital Origin; Opportunity + Risk boundary; MarketDEX Visual North Star; authoritative mascot protection.
+Inventory Identity; Product Form Taxonomy; Quantity + Unit Identity; Cost Basis + Cost Layers; Physical Location + Custody; Inventory Business State; Platform Exposure + Listing Relationship; Inventory Age + Capital Commitment Clock; Inventory Lineage + Transformation; Inventory Reconciliation + Adjustment; Listing Readiness; Mission Control five-zone architecture; Visual Intelligence; Capital Health and Capital Origin; Opportunity + Risk boundary; MarketDEX Visual North Star; authoritative mascot protection.
 
 ## Visual Governance
 `MarketDEX_Mission_Control_Visual_North_Star.png` remains the authoritative dashboard visual-direction reference.
@@ -143,37 +161,39 @@ Inventory Identity; Product Form Taxonomy; Quantity + Unit Identity; Cost Basis 
 `MarketDEX_Official_Mascot.png` remains the authoritative locked gray-and-white electric dog mascot with yellow lightning sparks and must not be intentionally redesigned, replaced, recolored, restyled, or substituted unless Mark explicitly unlocks the design.
 
 ## Current Business Boundary
-MarketDEX now distinguishes business inventory condition from operational lifecycle state. The real promoted Mega Greninja position can truthfully be `OWNED` while its operational lifecycle state remains unestablished.
+MarketDEX can now classify the first authoritative Operational Lifecycle State from factual Listing Readiness evidence rather than from ownership alone.
 
-The Action Center correctly fails closed until authoritative workflow-state evidence exists.
+For the real promoted Mega Greninja record, the current evidence supports `PREPARATION NEEDED`. The Action Center can read that authoritative state and derive mapped preparation guidance.
 
 The next design question is:
-> **What minimum factual evidence is required to authoritatively establish the first Operational Lifecycle State for a real owned Inventory record?**
+> **Once a real record is authoritatively classified as `PREPARATION NEEDED`, how should MarketDEX identify the exact next readiness blocker from the factual readiness evidence instead of returning generic preparation guidance?**
 
-The answer must reuse the design-locked Listing Readiness and preparation-factor contracts rather than inventing a state from possession alone.
+The answer must reuse the existing preparation-factor and blocker contracts and preserve one blocker at a time without silently clearing unrelated blockers.
 
 ## Exact Resume Point
-**Spreadsheet Design — Build 115 discovery: Lifecycle Classification Evidence → First Authoritative Operational State.**
+**Spreadsheet Design — Build 123 discovery: Readiness Evidence → Exact Next Preparation Blocker.**
 
-First inspect the locked Listing Readiness factors and the existing real Mega Greninja evidence.
+First inspect the locked preparation-factor priority and blocker-resolution contracts.
 
-Then determine the smallest evidence-classification responsibility that can establish one supported first Operational Lifecycle State or remain fail closed when evidence is insufficient.
+Then determine the smallest responsibility that derives one exact next readiness blocker for `INV-000001` from the current factual readiness evidence.
 
 Preserve:
 - one authoritative Inventory Record ID;
 - Business Inventory Condition as a separate dimension;
 - Operational Lifecycle State as the Action Center routing dimension;
 - evidence-based classification;
+- one exact supported blocker at a time;
+- no silent clearing of unrelated blockers;
 - read-only Action Center context;
 - no silent state mutation.
 
-Do not infer `PREPARATION NEEDED` from `OWNED` alone.
+Do not replace evidence-based classification with manual lifecycle-state selection.
 
 Do not build marketplace connectors, macros, publication automation, or automatic Inventory mutation.
 
 Do not create a second editable Inventory truth surface.
 
-Use the accelerated batch default, one ODS, one targeted visual review with worksheet + exact row range + section heading + verification target, one preservation push, proactive checkpoint cadence, emoji-first comprehension, exact copy-block discipline, and real-action-only instructions.
+Use the accelerated batch default, one ODS, one targeted visual review with worksheet + exact row range + section heading + verification target, one preservation event, proactive checkpoint cadence, emoji-first comprehension, exact copy-block discipline, real-action-only instructions, and the `Can Jarvis safely do this instead?` test before assigning Mark manual repository work.
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
