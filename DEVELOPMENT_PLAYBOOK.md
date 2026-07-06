@@ -1,290 +1,114 @@
 # MarketDEX Development Playbook
 
-**Version:** 2.0
-
+**Version:** 2.1
 **Status:** 📁 Repository Ready · 🔒 Design Locked
-
 **Document Type:** Development Governance Living Document
-
 **Permanent Filename:** `DEVELOPMENT_PLAYBOOK.md`
 
-------------------------------------------------------------------------
+---
 
 ## 🎯 Purpose
-
-This document defines how approved MarketDEX knowledge moves into production implementation, focused debugging, verification, documentation, and release history.
+This document defines how proven MarketDEX knowledge moves into implementation, focused debugging, verification, repository preservation, and release history.
 
 Development is not the authority for inventing MarketDEX business logic.
 
 The LibreOffice workbook remains the active proving ground and permanent business continuity system.
 
-------------------------------------------------------------------------
-
 ## 🧭 Authority Chain
+`💡 Idea → 📊 Spreadsheet Design → 💼 Real Business Use and Refinement → 🔒 Approved Business Responsibility → 🎨 Prototype Design when visual exploration adds value → 📦 Build Specification when needed → 💻 Implementation → 🐞 Focused Debugging when required → 🧪 Verification → 📁 Repository Preservation → 📦 Release History`
 
-The normal implementation authority chain is:
-
-💡 Idea
-
-↓
-
-📊 Spreadsheet Design
-
-↓
-
-💼 Real Business Use and Refinement
-
-↓
-
-🔒 Approved Business Responsibility
-
-↓
-
-🎨 Prototype Design when visual exploration adds value
-
-↓
-
-📦 Build Specification
-
-↓
-
-💻 Development
-
-↓
-
-🐞 Focused Debugging when required
-
-↓
-
-🧪 Verification
-
-↓
-
-📁 Git Commit and Documentation
-
-↓
-
-📦 Release History
-
-Nothing gets coded until the relevant business responsibility has been discussed in Spreadsheet Design.
+Nothing gets coded until the relevant business responsibility has been discussed and approved in Spreadsheet Design.
 
 Prototype Design may define approved future presentation and interaction concepts.
 
-Development implements proven ideas.
-
-------------------------------------------------------------------------
+Implementation implements proven ideas. It does not redesign them silently.
 
 ## 🎯 Team Roles
-
 ### Mark — Product Owner
-
 Mark defines vision, priorities, acceptance, and final project direction.
 
-Mark is the final decision authority.
+Mark is the final decision authority and performs business or visual acceptance when appropriate.
+
+Mark is not expected to manually perform implementation work Jarvis can reasonably complete.
 
 ### Jarvis — Project Lead and Business Systems Architect
+Jarvis protects approved MarketDEX architecture; maintains planning and implementation boundaries; converts approved responsibilities into implementation-ready work; produces complete deliverables; directly maintains repository text authority when safe tools are available; reviews implementation against approved business logic; coordinates specialist AI workflow; and protects repository continuity and checkpoint discipline.
 
-Jarvis:
+For routine design-locked LibreOffice Calc work, Jarvis may implement and package the build directly when the approved baseline ODS is available and a safe package-inspection path exists.
 
-- Protects approved MarketDEX architecture.
-- Maintains planning and implementation boundaries.
-- Converts approved responsibilities into implementation-ready specifications.
-- Produces complete deliverables and Build Packs when practical.
-- Reviews implementations against approved business logic.
-- Coordinates specialist AI workflow.
-- Protects repository continuity and checkpoint discipline.
-
-### Codex — Implementation Specialist
-
-Codex implements production-quality code from approved specifications.
+### Codex — Selective Implementation Specialist
+Codex is reserved for production-quality code, high-risk native ODS work, difficult debugging, or milestone verification when specialist value materially improves safety or quality.
 
 Codex does not independently redesign MarketDEX business workflows or change locked business logic.
 
-For LibreOffice Calc builds, Codex is the primary implementation and native ODS/package verification specialist.
+Codex is not required for every routine Calc build.
 
 ### GitHub Copilot — Pair Programming Support
-
 GitHub Copilot may assist inside VS Code with explanations, local refactoring, and small implementation improvements.
 
 Copilot suggestions do not override approved architecture or business logic.
 
-Copilot may assist with governance and document cross-checks when useful. Copilot should not independently repeat binary ODS/package inspection already verified by Codex.
-
-------------------------------------------------------------------------
-
 ## 📊 Spreadsheet Design Authority
+Spreadsheet Design is authoritative for current workbook workflows and business logic.
 
-Spreadsheet Design is authoritative for current MarketDEX business workflows and business logic.
+Implementation contradictions return to Spreadsheet Design before locked business logic changes.
 
-Approved responsibilities may include:
+The workbook proves the business system. Later technology may reduce friction around proven knowledge.
 
-- Workbook workflows.
-- Tables and historical records.
-- Calculations and formulas.
-- Controlled vocabularies.
-- Validation rules.
-- Derived statuses.
-- Business event meaning.
-- Decision-support logic.
-- LibreOffice automation requirements.
-- Authoritative and derived responsibility boundaries.
+## 🏗️ Routine Workbook Build Flow
+`Mark approves → Jarvis builds → Jarvis verifies → Jarvis provides finished downloadable ODS → Mark visually checks → approved build is repository-preserved`
 
-If Development discovers a contradiction, ambiguity, or potentially stronger business rule, implementation pauses on that issue and returns it to Spreadsheet Design.
+Jarvis should use the smallest sufficient verification path.
 
-Development must not resolve business-rule uncertainty by inventing production behavior.
+Mark should not be asked to edit XML, rebuild ODS packages, recreate design-locked workbook sections, or perform repetitive implementation steps Jarvis can safely complete.
 
-------------------------------------------------------------------------
+## 🔗 Repository Preservation Flow
+When Jarvis can safely perform repository text maintenance directly:
+`Inspect authority → make the smallest approved change → verify → commit directly to GitHub → tell Mark to Pull origin`
 
-## 🎨 Prototype Design Authority
+When a binary workbook artifact cannot be safely written directly through the available repository path:
+`Jarvis creates verified download → Mark visually accepts → Mark places finished artifact in approved repository path → commit/push only when Jarvis cannot safely perform that preservation step directly`
 
-Prototype Design is authoritative for approved future application presentation concepts when those concepts have been reviewed and accepted.
+Do not ask Mark to push or replace files merely from habit. First determine whether Jarvis can safely perform the operation.
 
-Prototype work may define:
+## 🐞 Debugging Boundary
+Debugging exists only for focused defect repair.
 
-- Screen hierarchy.
-- Navigation.
-- Visual grouping.
-- Interaction concepts.
-- Read-oriented and action-oriented surfaces.
-- MarketDEX visual-language application.
-- Approved future desktop workflow presentation.
+Use:
+`Root cause → smallest safe fix → explanation → verification`
 
-Prototypes do not create new business truth.
+Do not redesign architecture, change business logic, or add unrelated features while fixing a bug.
 
-When a prototype requires a business-rule change, the issue returns to Spreadsheet Design.
+If a defect reveals a better workflow idea, return that idea to the correct planning responsibility before changing direction.
 
-------------------------------------------------------------------------
+## 🧪 Verification Discipline
+Verification should be proportional to risk.
 
-## 💻 Development Rules
+Routine design-locked workbook builds may use package integrity, native mimetype structure, XML parseability, design-lock evidence checks, and Mark's visual acceptance when appropriate.
 
-Development exists only to implement proven ideas.
+High-risk native ODS changes, difficult package defects, or milestone verification may justify Codex or additional specialist review.
 
-Engineering rules:
+Repeated verification that adds no meaningful confidence should be avoided.
 
-- Implement approved specifications.
-- Preserve one permanent codebase.
-- Prefer modular architecture.
-- Keep one clear responsibility per engine or service when practical.
-- Keep UI responsibilities understandable.
-- Preserve stable identity and authoritative history.
-- Preserve offline-first operation.
-- Prefer free and subscription-resistant foundations when practical.
-- Use SQLite as the desktop application's authoritative local data store unless a later approved architecture decision changes this.
-- Document major engineering decisions.
-- Do not redesign workflows during implementation.
-- Do not change business logic during implementation.
-- Do not invent unrelated features during implementation.
+## 📦 Release and Checkpoint Discipline
+Releases preserve meaningful milestones, packages, and engineering decisions. Nothing is developed or debugged in the Releases responsibility lane.
 
-If implementation pressure suggests weakening an approved MarketDEX contract, return the issue to planning before changing direction.
+Checkpoints preserve current continuity and approved knowledge when enough meaningful progress has accumulated or context risk is increasing.
 
-------------------------------------------------------------------------
+Design-locked and repository-preserved work must not be rediscovered unless new evidence, a defect, or Mark explicitly reopens the decision.
 
-## 🐞 Debugging Rules
-
-Debugging exists only for bugs.
-
-For each bug:
-
-1. Identify the root cause.
-2. Recommend the smallest safe fix.
-3. Explain why the issue occurred.
-4. Apply or prepare the focused correction.
-5. Verify the fix before moving on.
-
-Do not redesign the application while fixing a bug.
-
-Do not add roadmap work, architecture changes, or feature requests to a bug fix unless the root cause proves that an approved design contradiction exists.
-
-A proven design contradiction returns to the appropriate planning responsibility.
-
-------------------------------------------------------------------------
-
-## 📦 Build Pack Standard
-
-When a formal Build Pack is justified, it should include the implementation material necessary for the approved milestone.
-
-The normal Build Pack may include:
-
-1. Architecture Brief
-2. Approved Responsibility Reference
-3. Technical Specification
-4. Codex Prompt
-5. Copilot Review Prompt when useful
-6. Test Plan
-7. Acceptance Checklist
-8. Git Commit Message
-9. Release Notes
-10. Documentation Updates
-11. Next Milestone Preview
-
-Build Packs should not recreate unresolved planning inside Development.
-
-------------------------------------------------------------------------
-
-## 🧪 Verification Standard
-
-Implementation should be verified against the approved responsibility before release.
-
-Verification should confirm:
-
-- The intended workflow works.
-- Approved business logic is preserved.
-- Authoritative and derived responsibilities remain correctly separated.
-- Historical evidence is not silently overwritten.
-- UI behavior matches approved prototype direction when applicable.
-- Offline-first expectations remain intact.
-- The implementation does not introduce unrelated features.
-- Relevant Windows behavior is tested.
-- Documentation is synchronized when the milestone changes permanent project knowledge.
-
-Verification should use the smallest sufficient path that proves the applicable acceptance criteria. Avoid redundant tool inspection and repeated approval loops when existing verified evidence remains applicable.
-
-When a Calc build introduces visual workbook changes, successful package or formula verification does not replace human visual acceptance. Mark's visual review remains part of workbook acceptance.
-
-Preserved Calc workbook build artifacts use the approved repository convention `artifacts/calc`. These artifacts record execution state and do not replace governing foundation documents, Spreadsheet Design authority, locked contracts, or approved calculation contracts.
-
-------------------------------------------------------------------------
-
-## 📦 Release Discipline
-
-Releases preserve the historical record of MarketDEX evolution.
-
-A milestone is complete only when the applicable work is:
-
-- Implemented.
-- Verified.
-- Consistent with approved architecture.
-- Documented.
-- Windows tested when applicable.
-- Committed to GitHub.
-- Ready for the next approved milestone.
-
-Release history records completed work.
-
-Nothing is developed or debugged in the Releases responsibility.
-
-------------------------------------------------------------------------
-
-## 🚀 Current Phase
-
-The active proving ground is LibreOffice Calc Version 0.
-
-Broad pre-build business architecture is frozen enough for workbook execution.
-
-Future desktop application development may begin gradually only from proven and approved Spreadsheet Design or Prototype Design responsibilities and only when Mark authorizes that movement.
-
-The workbook remains permanent and must not be treated as disposable because software implementation begins.
-
-------------------------------------------------------------------------
+## 🏗️ 📐 🛑 Recommendation Standard
+- 🏗️ **BUILD** — implementation, creation, packaging, or preservation.
+- 📐 **PLAN** — discovery, blueprint, business logic, architecture, or next movement.
+- 🛑 **STOP** — intentional hold, blocker, checkpoint, or do-not-proceed boundary.
 
 ## 📁 Document Governance
-
 **Permanent Filename:** `DEVELOPMENT_PLAYBOOK.md`
 
-**Current Version:** 2.0
+**Current Version:** 2.1
 
 **Status:** 📁 Repository Ready · 🔒 Design Locked · 🏁 Checkpoint Complete · 👍 Approved
 
-**Purpose:** Define the permanent governance boundary between approved MarketDEX planning, production implementation, focused debugging, verification, and release history.
+**Purpose:** Define the implementation, debugging, verification, repository-preservation, and release workflow for proven MarketDEX knowledge.
 
 **Safe to Replace Repository Copy**
