@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 046
+# MarketDEX Foundation Checkpoint 047
 
-**Status:** 🏁 Checkpoint Complete — Controlled External Publication Result Evidence Gate
+**Status:** 🏁 Checkpoint Complete — Inventory Lifecycle to Controlled Marketplace Publication Boundary Milestone Closed
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
@@ -19,7 +19,9 @@ Protected defaults remain: Momentum Default; No-Repetition Default; Inspect Once
 
 `CAN JARVIS SAFELY DO THIS INSTEAD? → YES → JARVIS DOES IT → ZERO FAKE WORK FOR MARK`
 
-Every workbook visual review identifies `WORKSHEET + EXACT ROW RANGE + SECTION HEADING + WHAT MARK SHOULD VERIFY`.
+Communication default is short, direct, and action-focused. Use moderate narrow reading width, approximately 25% wider than the prior narrow format. Use more functional emojis. Stack 2–4 steps ahead when Mark has actions so the workflow remains frictionless. Every Mark repository action includes exact copy-paste filenames, commit messages, and reply text. Workbook visual review identifies `WORKSHEET + EXACT ROW RANGE + SECTION HEADING + WHAT MARK SHOULD VERIFY`.
+
+Checkpoint headings use the checkered flag: `🏁`.
 
 ## Permanent Progress Reporting Workflow
 Every Spreadsheet Design build-plan approval, completed build batch, debugging return, preservation closeout, checkpoint synchronization, and milestone close reports a scope-based milestone progress bar.
@@ -29,43 +31,36 @@ Progress is based on proven responsibilities against the currently defined miles
 ## Calc Artifact Retention
 `artifacts/calc/` preserves one current approved Calc baseline only.
 
-Current approved Calc baseline:
-`artifacts/calc/MarketDEX_Calc_V0_Build250_Controlled_External_Publication_Result_Evidence_Gate.ods`
+Current approved repaired Build 250 binary is remotely verified by GitHub blob SHA:
+`3d7c570291da7a2749a414c4e1de7a84b1346b49`.
 
-Build 250 remote preservation was verified with GitHub blob SHA `c94e22821dde9ab345a380cd4536f962e3352e71`.
+The preserved remote artifact currently carries GitHub path suffix `(3)` from the manual upload sequence. Binary identity, not the cosmetic suffix, is authoritative for this checkpoint. Future baseline replacement should normalize the filename without changing the accepted business contract.
 
-Build 230 was superseded and directly removed from the active repository tree by Jarvis after Build 250 remote preservation was verified. Git history and checkpoint history preserve progression.
+## Build 250 Final Formula Hygiene
+After initial Build 250 acceptance, worksheet supersession review exposed additional active upstream duplicated OpenFormula prefixes.
 
-## Builds 231–250 — Controlled External Publication Result Evidence
-Builds 231–250 establish Publication Result Evidence Contract; Explicit Publication Execution Commit; Publication Attempt ID; Publication Authority Revalidation; Future Connector Responsibility Boundary; Connector Call Performed Evidence; External Publication Result Intake; External Result Received Validation; External Result Status Classification; Marketplace Listing Identity; Publication Attempt Identity Match; Platform Identity Match; Inventory Record Identity Match; External Result Reference Validation; Successful Result Completeness Gate; Publication Result Fail-Closed Classification; Verified Publication Result Cross-Check; Publication Consequence Derivation; LISTED Transition Eligibility Boundary; and the Controlled External Publication Result Evidence Gate.
+Debugging repaired the Build 195 / Build 210 transition chain in Inventory rows 652–707, then repaired 107 remaining duplicated OpenFormula prefixes in row 101 and rows 422–631.
 
-## Build 250 Debugging and Acceptance
-Initial Build 250 visually exposed malformed OpenFormula syntax and an affected stale formula-reference chain. Visible factual execution inputs were correct, but derived authority, commit, attempt, record, external-status, and evidence-presence results were wrong.
+Actual LibreOffice Calc verification confirmed:
+- row 101 and rows 422–631 evaluate without Err:510;
+- rows 652–707 remain correct;
+- Build 230 rows 721–760 remain correct;
+- Build 250 rows 761–804 remain correct;
+- no business logic was redesigned;
+- no expected outputs were hardcoded;
+- no worksheet rows were removed or compacted.
 
-Debugging repaired only malformed OpenFormula syntax and the affected formula-reference chain. The approved Builds 231–250 business contract remained unchanged. Actual LibreOffice Calc evaluation verified the repaired gate.
-
-Verified fail-closed proof for `INV-000001` / `PUB-000001`:
-- Authority Valid = `YES`;
-- Commit Valid = `YES`;
-- Attempt Match = `YES`;
-- Platform Match = `YES`;
-- Record Match = `YES`;
-- Result Received Valid = `NO`;
-- Raw External Status = `NO RESULT`;
-- Classified Result = `NO RESULT`;
-- Result Guidance = `AWAIT PUBLICATION RESULT`;
-- Listing ID Present = `NO`;
-- Result Reference Present = `NO`;
-- Result Time Present = `NO`;
-- Success Evidence Complete = `NO`;
-- Verified Publication = `NO`;
-- Verification Result = `NOT VERIFIED`;
-- Publication Consequence = `NONE`;
-- LISTED Transition Eligibility = `NOT ELIGIBLE`;
-- Authoritative Inventory State Write = `NO`.
+Package inspection confirmed zero remaining `of:=of:` occurrences in the repaired artifact.
 
 Permanent verification rule:
 > **When formula behavior is under test, formula presence is insufficient. Actual LibreOffice evaluation behavior must be verified.**
+
+## Worksheet Supersession / Compaction Decision
+**Decision: PRESERVE AS-IS.**
+
+The reviewed Inventory surfaces remain active authority, factual-input, operating-gate, audit, formula, or future transition-model dependencies. Build 230 Publication Authority is a direct dependency of Build 250. Build 210 controlled transition architecture remains the proven model for the future READY TO LIST → LISTED transition consequence.
+
+No dependency-safe worksheet row compaction is justified at this checkpoint. Development history remains in Git and checkpoint documents; active operating dependencies remain in the workbook.
 
 ## Permanent Publication and External Result Boundaries
 `READY TO LIST ≠ LISTED`
@@ -88,37 +83,50 @@ Permanent verification rule:
 
 No connector call, marketplace write, fabricated marketplace result, or direct Inventory state write from external publication evidence is authorized by Build 250.
 
-## Current Business Boundary
-MarketDEX now proves the controlled boundary from authoritative Inventory identity and lifecycle state through READY TO LIST transition execution, listing responsibility, eBay publication readiness, explicit Publication Request, Publication Authority, explicit execution commit, publication-attempt identity, external publication-result intake, fail-closed result classification, marketplace identity validation, verified-publication cross-check, publication consequence derivation, and LISTED transition eligibility.
+## Current Proven Boundary
+`PUBLICATION AUTHORITY = GRANTED`
 
-At the accepted Build 250 boundary, Publication Authority is `GRANTED`, Execution Commit is `EXECUTE PUBLICATION`, Publication Attempt ID is `PUB-000001`, connector responsibility is `FUTURE CONNECTOR`, Connector Call Performed is `NO`, and Marketplace Write Claimed is `NO`. No external result has been received. Verified Publication remains `NO`; Publication Consequence remains `NONE`; LISTED Transition Eligibility remains `NOT ELIGIBLE`; Authoritative Inventory State Write remains `NO`.
+`EXECUTION COMMIT = EXECUTE PUBLICATION`
 
-## Worksheet Supersession Check
-Build 230 Publication Authority remains a direct dependency of the Build 250 external-result gate. Build 210 controlled transition architecture remains the proven model for a future READY TO LIST → LISTED transition consequence.
+`PUBLICATION ATTEMPT ID = PUB-000001`
 
-Dependency-safe compaction review is the next responsibility. Remove only superseded proof surfaces; preserve active authority, factual-input, operating-gate, audit, and formula dependencies.
+`CONNECTOR RESPONSIBILITY = FUTURE CONNECTOR`
+
+`CONNECTOR CALL PERFORMED = NO`
+
+`MARKETPLACE WRITE CLAIMED = NO`
+
+`EXTERNAL RESULT RECEIVED = NO`
+
+`CLASSIFIED RESULT = NO RESULT`
+
+`VERIFIED PUBLICATION = NO`
+
+`PUBLICATION CONSEQUENCE = NONE`
+
+`LISTED TRANSITION ELIGIBILITY = NOT ELIGIBLE`
+
+`AUTHORITATIVE INVENTORY STATE WRITE = NO`
 
 ## Copilot Status
-Builds 231–250 did not receive an actual Copilot implementation review because no callable Copilot implementation-review action was used.
-
 `COPILOT ACTION = NOT USED`
 
-Copilot remains an optional implementation/review worker, not business-logic authority.
+Copilot remains an optional debugging, pattern-scanning, repetitive-defect detection, and implementation-review worker when an actual callable Copilot action is available. Copilot is not business-logic authority and cannot accept a build or change an approved contract.
 
 ## Milestone Progress
 **Milestone:** Workbook OS — Inventory Lifecycle to Controlled Marketplace Publication Boundary
 
-**Progress:** `[█████████▊] 98%`
+**Progress:** `[██████████] 100%`
 
-Completed: authoritative Inventory identity; two-dimensional Inventory state; readiness evidence; generalized factor-scoped resolution; Full Readiness Cross-Check; controlled READY TO LIST transition authority; controlled transition execution; append-only transition history; post-write verification; idempotent replay protection; Listing Responsibility; platform target; eBay evidence profile; publication readiness; explicit Publication Request; Publication Authority; no-publication/no-connector boundary; upstream Inventory Err:510 repair; controlled external publication-result evidence; publication attempt identity; fail-closed external result classification; marketplace listing identity validation; verified publication cross-check; publication consequence derivation; LISTED transition eligibility boundary; Build 250 preservation.
+Completed: authoritative Inventory identity; two-dimensional Inventory state; readiness evidence; generalized factor-scoped resolution; Full Readiness Cross-Check; controlled READY TO LIST transition authority; controlled transition execution; append-only transition history; post-write verification; idempotent replay protection; Listing Responsibility; platform target; eBay evidence profile; publication readiness; explicit Publication Request; Publication Authority; no-publication/no-connector boundary; external publication-result evidence; publication attempt identity; fail-closed external result classification; marketplace listing identity validation; verified publication cross-check; publication consequence derivation; LISTED transition eligibility boundary; Build 250 formula hygiene repair; remote repaired-binary verification; dependency-safe supersession review.
 
-Remaining before milestone close: dependency-safe worksheet supersession/compaction review and milestone close.
+Remaining: none for this milestone.
 
 ## Exact Resume Point
-**Spreadsheet Design — dependency-safe worksheet supersession / compaction review → verify package, formulas, actual LibreOffice behavior, and business-contract preservation → close current milestone.**
+**Spreadsheet Design — define the next Workbook OS milestone and its first business responsibility. Do not implement desktop application code.**
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
 
 ## Execution Discipline
-> **Plan in the correct responsibility. Implement proven decisions. Repair bugs without redesign. Preserve meaningful releases. Compact superseded proof surfaces when safe. Never confuse publication authority with verified marketplace publication.**
+> **Plan in the correct responsibility. Implement proven decisions. Repair bugs without redesign. Preserve meaningful releases. Preserve active operating dependencies. Never confuse publication authority with verified marketplace publication.**
