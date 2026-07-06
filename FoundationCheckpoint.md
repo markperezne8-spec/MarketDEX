@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 030
+# MarketDEX Foundation Checkpoint 031
 
-**Status:** 🏁 Mandatory Preservation Checkpoint — Accelerated Workbook OS Continuity
+**Status:** 🏁 Mandatory Preservation Checkpoint — Inventory Action Center Operating Contract
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
@@ -20,38 +20,27 @@ MarketDEX is being proven first through the LibreOffice workbook and Mark's real
 - `CheckpointManifest.md` — checkpoint and repository-milestone history.
 - The repository, not conversation history, is the shared continuity bridge.
 
-## Frictionless Operating Loop
-`🏛️ HQ sets direction → specialist lane proves or refines responsibility → Mark approves → Jarvis builds → Jarvis verifies → finished deliverable → Mark visually or operationally checks → approved work is repository-preserved → continuity synchronizes → resume from repository authority`
-
 ## Jarvis Workflow 2.1 — Accelerated Batch Default
-Repository-first inspection; direct supported text maintenance; finished verified binary deliverables when direct binary preservation is unavailable; automatic continuity synchronization; 🔒 Design Locked / ✅ Operationally Proven / 🔓 Reopened by Evidence decision states; one clear 🏗️ BUILD / 📐 PLAN / 🛑 STOP movement; continuous repository hygiene; risk-based verification; HQ synchronization through repository authority; and the Mark Effort Test: `Can Jarvis safely do this instead?`
+For low-risk, logically sequential, design-locked workbook responsibilities, plan farther ahead and build a larger coherent batch before asking Mark to preserve the workbook.
 
-For low-risk, logically sequential, design-locked workbook responsibilities, Jarvis should plan farther ahead and build a larger coherent batch before asking Mark to preserve the workbook.
-
-Default accelerated rhythm:
+Default rhythm:
 `checkpoint/approved boundary → 6–9 adjacent builds when safe → one ODS → one package verification → one visual review → one push → Jarvis repository closeout → one pull at the next required synchronization point`
 
-Three-build batches remain allowed when the next responsibility contains an architecture boundary, uncertain business truth, high-risk ODS manipulation, or evidence that requires Mark's decision.
-
-Do not increase batch size merely to reduce clicks. Batch size is controlled by responsibility coherence and continuity risk.
+Use smaller batches at architecture boundaries, uncertain business truth, high-risk ODS manipulation, or evidence requiring Mark's decision. Batch size is controlled by responsibility coherence and continuity risk, not build-count targets.
 
 ## Communication and Copy Standard
 Default to emoji-first comprehension, short digestible responses, condensed step batches, and the smallest explanation needed for a confident decision.
 
 Every 📐 PLAN presented to Mark must include a **🐾 Mark — What you do** section with short numbered steps.
 
-Whenever Mark must copy and paste exact text such as a commit summary, reply phrase, path, command, or replacement text, Jarvis must place the exact copyable value in its own fenced code block so the ChatGPT copy control is available.
-
-Do not place explanatory prose inside copy blocks. One copy block should contain only the exact text Mark needs to copy.
+Whenever Mark must copy and paste exact text such as a commit summary, reply phrase, path, command, or replacement text, place the exact copyable value in its own fenced code block. Do not place explanatory prose inside copy blocks.
 
 ## Mandatory Checkpoint Cadence
-Jarvis must proactively recommend a checkpoint before continuity risk becomes material instead of waiting for Mark to remember.
+Jarvis proactively recommends or performs continuity checkpoint preservation before risk becomes material.
 
-Default triggers: after meaningful repository-preserved multi-build batches; before the next substantial batch when several builds have accumulated; before planned pauses or long breaks; after major repository hygiene, authority, architecture, or workflow changes; and whenever losing chat context could create repetition or rediscovery risk.
+Default triggers: meaningful repository-preserved multi-build batches; before a substantial next batch after accumulated progress; planned pauses or long breaks; major repository hygiene, authority, architecture, or workflow changes; or whenever lost chat context could cause repetition or rediscovery.
 
 Use **🏁 CHECKPOINT RECOMMENDED** or **🏁 MANDATORY CHECKPOINT** when a trigger is reached.
-
-A checkpoint preserves the exact current baseline, approved workflow boundary, next approved movement, unresolved maintenance items, and exact resume point.
 
 ## Deliverable and Repository Contract
 Routine design-locked workbook work:
@@ -66,9 +55,6 @@ Mark is not expected to perform implementation or repository steps Jarvis can re
 `artifacts/calc/` preserves one current approved Calc baseline only.
 
 When a newer Calc build is visually accepted and repository-preserved, the previous Calc artifact is deleted from the current repository tree. Historical progression remains preserved through Git commit history and `CheckpointManifest.md`.
-
-## Checkpoint Consolidation Rule
-`FoundationCheckpoint.md` carries current state and exact resume continuity. `CheckpointManifest.md` carries checkpoint and repository milestone history. Do not create routine root-level numbered checkpoint handoff or verification files.
 
 ## Cost, Tool, and Technology Preference
 - Offline-first.
@@ -86,62 +72,75 @@ Inventory Identity; Product Form Taxonomy; Quantity + Unit Identity; Cost Basis 
 `MarketDEX_Official_Mascot.png` remains the authoritative locked gray-and-white electric dog mascot with yellow lightning sparks and must not be intentionally redesigned, replaced, recolored, restyled, or substituted unless Mark explicitly unlocks the design.
 
 ## Current Calc Continuity
-MarketDEX Calc Version 0 has progressed through approved **Build 054 — Lifecycle Completion Gate**.
+MarketDEX Calc Version 0 has progressed through approved **Build 063 — Inventory Action Center Gate**.
 
 The sole current repository-preserved Calc baseline is:
-`artifacts/calc/MarketDEX_Calc_V0_Build054_Lifecycle_Completion_Gate.ods`
+`artifacts/calc/MarketDEX_Calc_V0_Build063_Inventory_Action_Center_Gate.ods`
 
-Build 054 is package-verified, visually accepted by Mark, and repository-preserved.
+Build 063 is package-verified, visually accepted by Mark, and repository-preserved.
 
-The proven lifecycle now continues:
-`SHIPPED → Delivery Observation → DELIVERED → Settlement / Payout Evidence → PAID OUT → Lifecycle Completion Gate → COMPLETE`
+The full demonstrated Inventory sale lifecycle through `COMPLETE · DEMO` remains preserved as proof and business-contract evidence.
 
-### Build 052 — Delivery Observation
-Controlled outcomes: `DELIVERED / NOT DELIVERED / PENDING REVIEW / UNKNOWN REVIEW`. Tracking visibility alone cannot silently prove delivery.
+### Builds 055–063 — Inventory Action Center Operating Contract
+The first operator-facing Inventory operating contract is now proven:
 
-### Build 053 — Settlement / Payout Evidence
-Controlled outcomes: `PAID OUT / PENDING PAYOUT / HELD / UNKNOWN REVIEW`. Fees, taxes, marketplace adjustments, and payout amounts are recorded only when factually known.
+`SELECT RECORD → UNDERSTAND CURRENT STATE → SEE NEXT ACTION → SEE BLOCKER → KNOW REQUIRED EVIDENCE → RECORD EVIDENCE → REVIEW RESULT → PREVIEW SUPPORTED TRANSITION`
 
-### Build 054 — Lifecycle Completion Gate
-`supported delivery evidence + supported sale relationship + shipment history + supported settlement state → SUPPORTED FOR COMPLETION · DEMO → COMPLETE · DEMO`
+Build 055 establishes one selected Inventory record as the active working context without altering Inventory facts.
 
-Inventory, Sale, Platform Exposure, Shipment, Delivery, and financial evidence remain preserved after lifecycle completion.
+Build 056 shows the selected record's current supported lifecycle state from supported lifecycle evidence.
 
-Vocabulary contract:
-`SHIPPED ≠ DELIVERED`
-`DELIVERED ≠ PAID OUT`
-`PAID OUT ≠ COMPLETE`
+Build 057 derives the next required operator responsibility from current supported state and the locked lifecycle sequence.
 
-## Artifact Hygiene R012
-Build 054 replaced Build 051 as the sole current approved Calc baseline after package verification, Mark's visual acceptance, and repository preservation.
+Build 058 exposes one explicit unresolved blocker preventing the next supported movement.
 
-Superseded Build 051 was removed from the active `artifacts/calc/` tree. Historical progression remains recoverable through Git history and checkpoint history.
+Build 059 tells the operator what factual evidence is required next before entry.
+
+Build 060 proves the first controlled operator-facing evidence input surface using the already-proven delivery outcome vocabulary.
+
+Build 061 explicitly reviews recorded evidence as `SUPPORTED / UNSUPPORTED / PENDING REVIEW / UNKNOWN` before transition support may be presented.
+
+Build 062 previews the transition that would become supported from reviewed evidence while explicitly preserving `PREVIEW ONLY` and `NOT APPLIED · DEMO`.
+
+Build 063 combines selected record, current state, next action, active blocker, required evidence, controlled input, evidence review, and transition preview into the Inventory Action Center Gate.
+
+Operating boundary:
+`TRANSITION PREVIEW ≠ STATE MUTATION`
+
+The Action Center does not create automation, macros, buttons, marketplace connectors, or silent state changes.
+
+The operator should not need to read the full linear demo chain to understand what to do next.
+
+## Artifact Hygiene R013
+Build 063 replaced Build 054 as the sole current approved Calc baseline after package verification, Mark's visual acceptance, and repository preservation.
+
+Superseded Build 054 was removed from the active `artifacts/calc/` tree. Historical progression remains recoverable through Git history and checkpoint history.
 
 ## Pending Repository Maintenance
-`CheckpointManifest.md` requires safe historical reconciliation for Checkpoints 027–030 and Artifact Hygiene R010–R012. Current-state continuity is authoritative here until manifest reconciliation is safely completed.
+`CheckpointManifest.md` requires safe historical reconciliation for Checkpoints 027–031 and Artifact Hygiene R010–R013. Current-state continuity is authoritative here until manifest reconciliation is safely completed.
 
 ## Current Business Boundary
-The demonstrated Inventory sale lifecycle is complete through `COMPLETE · DEMO` with explicit factual-evidence boundaries from Listing Readiness through publication, exposure, sale, sold transition, fulfillment, shipment, delivery, settlement, and lifecycle completion.
+The proven lifecycle business contracts remain intact. The first operator-facing Action Center contract is now proven, but the surface is still demonstrated with one fixed working record and fixed demo values.
 
-The next work must not continue adding lifecycle steps merely because the worksheet can grow. The next responsibility is to convert the proven linear demo chain into more useful workbook operating behavior while preserving the locked business contracts.
+The next responsibility is to prove how the Action Center responds to different supported lifecycle states and selects the correct next action, blocker, evidence vocabulary, review responsibility, and transition preview without duplicating the full linear lifecycle chain.
 
 ## Exact Resume Point
-**Accelerated next-batch discovery from Build 054 — Operationalization of the Proven Inventory Lifecycle.**
+**Accelerated next-batch discovery from Build 063 — State-Driven Inventory Action Center Routing.**
 
 Plan 6–9 adjacent builds when responsibility coherence permits, with one ODS, one visual review, and one preservation push.
 
 Discovery questions:
-> Which demonstrated lifecycle evidence should become structured operator-facing input, derived status, or controlled review output first?
+> What controlled state-to-next-action routing map is required for the proven lifecycle states from PREPARATION NEEDED through COMPLETE?
 
-> What is the smallest useful transition from a linear demo chain toward a working Inventory worksheet without redesigning the locked lifecycle contracts?
+> How should the Action Center distinguish terminal COMPLETE from actionable states and review/unknown conditions?
 
-> Which repeated demo blocks should remain visible as proof and which should become controlled operating surfaces?
+> How should blocker, evidence-needed, controlled-input vocabulary, and transition preview change from one selected current state without silently mutating Inventory?
 
-Resume from the approved and repository-preserved Build 054 endpoint.
+Resume from the approved and repository-preserved Build 063 endpoint.
 
-Do not rediscover Builds 033–054.
+Do not rediscover Builds 033–063.
 
-Do not extend the sale lifecycle past COMPLETE merely to create more build numbers.
+Do not build buttons, macros, connectors, or silent state mutation yet.
 
 Use the accelerated batch default and copy-block communication standard.
 
