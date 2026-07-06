@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 032
+# MarketDEX Foundation Checkpoint 033
 
-**Status:** 🏁 Mandatory Preservation Checkpoint — State-Driven Inventory Action Center Routing
+**Status:** 🏁 Mandatory Preservation Checkpoint — Formula-Driven Inventory Action Center Handoff
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
@@ -70,77 +70,91 @@ Inventory Identity; Product Form Taxonomy; Quantity + Unit Identity; Cost Basis 
 `MarketDEX_Official_Mascot.png` remains the authoritative locked gray-and-white electric dog mascot with yellow lightning sparks and must not be intentionally redesigned, replaced, recolored, restyled, or substituted unless Mark explicitly unlocks the design.
 
 ## Current Calc Continuity
-MarketDEX Calc Version 0 has progressed through approved **Build 072 — State-Driven Inventory Action Center Gate**.
+MarketDEX Calc Version 0 has progressed through approved **Build 081 — Formula-Driven Inventory Action Center Gate**.
 
 The sole current repository-preserved Calc baseline is:
-`artifacts/calc/MarketDEX_Calc_V0_Build072_State_Driven_Inventory_Action_Center_Gate.ods`
+`artifacts/calc/MarketDEX_Calc_V0_Build081_Formula_Driven_Inventory_Action_Center_Gate.ods`
 
-Build 072 is package-verified, visually accepted by Mark, and repository-preserved.
+Build 081 is package-verified, visually accepted by Mark, and repository-preserved.
 
-The full demonstrated Inventory sale lifecycle through `COMPLETE · DEMO` and the Build 055–063 operator-facing Action Center contract remain preserved as proof and business-contract evidence.
+The full demonstrated Inventory sale lifecycle through `COMPLETE · DEMO`, the Build 055–063 operator-facing Action Center contract, and the Build 064–072 state-driven routing contract remain preserved as proof and business-contract evidence.
 
-### Builds 064–072 — State-Driven Inventory Action Center Routing
-The Action Center routing contract is now proven:
+### Builds 073–081 — Formula-Driven Inventory Action Center
+The first formula-driven Action Center routing contract is now proven:
 
-`SELECT RECORD → READ SUPPORTED STATE → ROUTE NEXT ACTION → ROUTE BLOCKER → ROUTE EVIDENCE VOCABULARY → REVIEW → PREVIEW`
+`SELECT STATE ONCE → FORMULAS DERIVE ACTION + BLOCKER + EVIDENCE + REVIEW + PREVIEW`
 
-Build 064 establishes the controlled lifecycle routing map: one supported current state selects one controlled operator route.
+Build 073 establishes one controlled selected-state routing input.
 
-Build 065 routes `PREPARATION NEEDED` to the next preparation responsibility, readiness blocker, supported preparation evidence, and advancement preview.
+Build 074 establishes state normalization through trimmed uppercase routing context and a fail-safe boundary.
 
-Build 066 routes `READY TO LIST / READY FOR PUBLICATION` to listing-intent or publication-authority responsibility without equating readiness with publication.
+Build 075 formula-derives Next Action from the controlled selected-state source.
 
-Build 067 routes `PUBLISHED / ACTIVE PLATFORM EXPOSURE` to exposure review or sale observation and requires factual publication, exposure, or sale evidence.
+Build 076 formula-derives Active Blocker.
 
-Build 068 routes `SOLD` to fulfillment preparation and supported packaging plus shipment-path review.
+Build 077 formula-derives Evidence Needed.
 
-Build 069 routes `READY FOR SHIPMENT / SHIPPED` to shipment-result or delivery-evidence responsibility using factual shipment or delivery outcomes.
+Build 078 formula-derives Review Responsibility.
 
-Build 070 routes `DELIVERED / PAID OUT` to settlement evidence or lifecycle-completion review while preserving factual financial-evidence boundaries.
+Build 079 formula-derives Transition Preview.
 
-Build 071 protects `COMPLETE` as the terminal state of the proven sale lifecycle: `COMPLETE → NO NEXT LIFECYCLE ACTION`. Review and unknown conditions remain review-bound and are not treated as complete.
+Build 080 protects blank, unknown, unsupported, and unmapped routing values through fail-closed review guidance: `UNMAPPED → REVIEW REQUIRED` and `NO TRANSITION PREVIEW`.
 
-Build 072 combines selected record, supported current state, and the controlled routing map into one State-Driven Inventory Action Center Gate.
+Build 081 combines the controlled selected-state input and formula-derived route outputs into the Formula-Driven Inventory Action Center Gate.
 
-Operating boundary:
-`ROUTING GUIDANCE ≠ STATE MUTATION`
+Package verification detected 22 formula-bearing cells in the workbook package, including the new Action Center routing formulas.
+
+Visual review confirmed the formula-driven surfaces render through Next Action, Active Blocker, Evidence Needed, Review Responsibility, Transition Preview, Fail-Closed Protection, and the Formula-Driven Inventory Action Center Gate.
+
+Operating boundaries:
+`FORMULA-DERIVED GUIDANCE ≠ STATE MUTATION`
+
+`UNMAPPED → REVIEW REQUIRED`
 
 `COMPLETE → NO INVENTED NEXT ACTION`
 
-The Action Center still creates no buttons, macros, connectors, automatic state writes, or silent state mutation.
+`NO SILENT STATE CHANGE`
 
-## Artifact Hygiene R014
-Build 072 replaced Build 063 as the sole current approved Calc baseline after package verification, Mark's visual acceptance, and repository preservation.
+No macros, buttons, connectors, marketplace automation, or automatic Inventory state writes are authorized by Build 081.
 
-Superseded Build 063 was removed from the active `artifacts/calc/` tree. Historical progression remains recoverable through Git history and checkpoint history.
+## Artifact Hygiene R015
+Build 081 replaced Build 072 as the sole current approved Calc baseline after package verification, Mark's visual acceptance, and repository preservation.
+
+Superseded Build 072 was removed from the active `artifacts/calc/` tree. Historical progression remains recoverable through Git history and checkpoint history.
+
+## Chat Handoff Boundary
+The prior Spreadsheet Design chat is intentionally closed after Build 081 because Mark identified degrading conversation performance and requested a fresh chat.
+
+No Build 082 or later construction is authorized in the closed chat.
+
+The fresh Spreadsheet Design chat must use this repository checkpoint as continuity authority and must not rely on rediscovering the closed conversation.
 
 ## Pending Repository Maintenance
-`CheckpointManifest.md` requires safe historical reconciliation for Checkpoints 027–032 and Artifact Hygiene R010–R014. Current-state continuity is authoritative here until manifest reconciliation is safely completed.
+`CheckpointManifest.md` still requires safe historical reconciliation for Checkpoints 027–033 and Artifact Hygiene R010–R015. Current-state continuity is authoritative here until manifest reconciliation is completed from repository-supported evidence.
 
 ## Current Business Boundary
-The Action Center now understands the proven lifecycle at a controlled routing-contract level, but the routing surfaces remain fixed demonstration rows. They do not yet read a structured operator selection or derive route outputs through workbook formulas.
+The Action Center now demonstrates formula-driven routing from one controlled selected-state input. The formulas prove derivation behavior, but the current input remains a fixed demonstration value and the formula map is only partially exercised through the visible SHIPPED demo route.
 
-The next responsibility is to prove the smallest formula-driven Action Center behavior: one controlled selected-state input should drive derived next action, blocker, evidence needed, and terminal-state guidance while preserving preview-only and no-silent-state-change boundaries.
+The next responsibility is not to add more fixed explanation blocks. It is to prove controlled operator interaction with the formula-driven Action Center: a safe selected-state input method and multi-state formula validation across supported, terminal, blank, unknown, unsupported, and unmapped conditions.
 
 ## Exact Resume Point
-**Accelerated next-batch discovery from Build 072 — Formula-Driven Action Center Routing.**
+**Fresh Spreadsheet Design chat — Build 082 discovery from Build 081: Controlled Action Center State Selection + Multi-State Formula Validation.**
 
-Plan a coherent 6–9 build batch when safe, with one ODS, one package verification, one visual review, and one preservation push.
+Resume from the approved and repository-preserved Build 081 endpoint.
 
-Discovery questions:
-> What is the smallest controlled selected-state input surface that LibreOffice Calc can safely use as the Action Center routing source?
+First determine the smallest safe LibreOffice Calc interaction for selecting a controlled supported state without macros or connectors.
 
-> Which route outputs should be formula-derived first: next action, active blocker, evidence needed, terminal guidance, and transition preview?
+Then plan a coherent accelerated batch that validates formula outputs across representative lifecycle states, `COMPLETE`, blank input, unknown input, unsupported input, and unmapped input.
 
-> How should unknown, unsupported, blank, or unmapped selected-state values fail safely without inventing an operator path?
+The next batch must prove that one operator selection changes derived Action Center guidance correctly and fails closed when the selected-state evidence is not mapped.
 
-Resume from the approved and repository-preserved Build 072 endpoint.
+Do not rediscover Builds 033–081.
 
-Do not rediscover Builds 033–072.
+Do not build marketplace connectors, macros, publication automation, or silent state mutation.
 
-Do not build macros, connectors, marketplace automation, or silent state mutation yet.
+Do not extend the old linear demo chain merely to add more rows.
 
-Use the accelerated batch default and copy-block communication standard.
+Use the accelerated batch default, one ODS, one visual review, one preservation push, proactive checkpoint cadence, and copy-block communication standard.
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
