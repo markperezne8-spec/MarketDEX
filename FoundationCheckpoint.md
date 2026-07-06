@@ -1,4 +1,4 @@
-# MarketDEX Foundation Checkpoint 024
+# MarketDEX Foundation Checkpoint 025
 
 **Status:** 🏁 Verified Knowledge Checkpoint — Workbook OS Active Continuity
 
@@ -24,21 +24,14 @@ MarketDEX is being proven first through the LibreOffice workbook and Mark's real
 `🏛️ HQ sets direction → specialist lane proves or refines responsibility → Mark approves → Jarvis builds → Jarvis verifies → finished deliverable → Mark visually or operationally checks → approved work is repository-preserved → continuity synchronizes → resume from repository authority`
 
 ## Jarvis Workflow 2.0 — Active Defaults
-1. Repository-first inspection.
-2. Direct-maintenance default for supported repository text authority.
-3. Finished verified binary deliverables when direct binary preservation is unavailable.
-4. Automatic continuity synchronization through `FoundationCheckpoint.md` and `CheckpointManifest.md`.
-5. Decision memory states: 🔒 Design Locked / ✅ Operationally Proven / 🔓 Reopened by Evidence.
-6. One clear 🏗️ BUILD / 📐 PLAN / 🛑 STOP next movement.
-7. Continuous repository hygiene.
-8. Risk-based verification.
-9. HQ synchronization through repository authority.
-10. Mark Effort Test: `Can Jarvis safely do this instead?`
+Repository-first inspection; direct supported text maintenance; finished verified binary deliverables when direct binary preservation is unavailable; automatic continuity synchronization; 🔒 Design Locked / ✅ Operationally Proven / 🔓 Reopened by Evidence decision states; one clear 🏗️ BUILD / 📐 PLAN / 🛑 STOP movement; continuous repository hygiene; risk-based verification; HQ synchronization through repository authority; and the Mark Effort Test: `Can Jarvis safely do this instead?`
 
 ## Communication and Mark Instruction Standard
 Default to emoji-first comprehension, short digestible responses, condensed step batches, and the smallest explanation needed for a confident decision.
 
-Every 📐 PLAN presented to Mark must include a **🐾 Mark — What you do** section with short numbered steps. Do not leave Mark to infer his role from the plan.
+Every 📐 PLAN presented to Mark must include a **🐾 Mark — What you do** section with short numbered steps.
+
+Prefer tightly related multi-build batches when the adjacent business responsibilities are low-risk and logically sequential. One batch may use one build, one verification cycle, one screenshot, and one preservation movement. Do not batch across an unresolved architecture boundary merely to move faster.
 
 Do not repeat approved history, rediscover design-locked work, or ask Mark to recreate preserved information.
 
@@ -54,14 +47,10 @@ Mark is not expected to perform implementation or repository steps Jarvis can re
 ## Calc Artifact Retention Rule
 `artifacts/calc/` preserves **one current approved Calc baseline only**.
 
-When a newer Calc build is visually accepted and repository-preserved, the previous Calc artifact is deleted from the current repository tree. Historical build progression remains preserved through Git commit history and `CheckpointManifest.md`.
-
-Do not accumulate superseded Calc build files in the active artifact directory.
+When a newer Calc build is visually accepted and repository-preserved, the previous Calc artifact is deleted from the current repository tree. Historical progression remains preserved through Git commit history and `CheckpointManifest.md`.
 
 ## Checkpoint Consolidation Rule
-`FoundationCheckpoint.md` carries current state and exact resume continuity. `CheckpointManifest.md` carries checkpoint and repository milestone history.
-
-Do not create routine root-level numbered checkpoint handoff or verification files. Merge meaningful history into the manifest and advance this living checkpoint.
+`FoundationCheckpoint.md` carries current state and exact resume continuity. `CheckpointManifest.md` carries checkpoint and repository milestone history. Do not create routine root-level numbered checkpoint handoff or verification files.
 
 ## Cost, Tool, and Technology Preference
 - Offline-first.
@@ -79,46 +68,64 @@ Inventory Identity; Product Form Taxonomy; Quantity + Unit Identity; Cost Basis 
 `MarketDEX_Official_Mascot.png` remains the authoritative locked gray-and-white electric dog mascot with yellow lightning sparks and must not be intentionally redesigned, replaced, recolored, restyled, or substituted unless Mark explicitly unlocks the design.
 
 ## Current Calc Continuity
-MarketDEX Calc Version 0 has progressed through approved **Build 039 — Data-Quality Clearance Preparation Action**.
+MarketDEX Calc Version 0 has progressed through approved **Build 042 — Publication Readiness Gate**.
 
 The sole current repository-preserved Calc baseline is:
-`artifacts/calc/MarketDEX_Calc_V0_Build039_Data_Quality_Clearance_Preparation_Action.ods`
+`artifacts/calc/MarketDEX_Calc_V0_Build042_Publication_Readiness_Gate.ods`
 
-Build 039 is package-verified, visually accepted by Mark, and repository-preserved.
+Build 042 is package-verified, visually accepted by Mark, and repository-preserved.
 
-The proven preparation chain is:
-`Photos → Condition → Listing Content → Price Decision → Platform → Shipping Review → Data-Quality Clearance → Full Listing Readiness Cross-Check`
+The proven workflow now continues:
+`Listing Readiness Preparation → Full Listing Readiness Cross-Check → READY TO LIST → Confirm Listing Intent → Listing Record Draft → Publication Readiness Gate → READY FOR PUBLICATION`
 
-Build 039 proved:
-`REVIEW DATA QUALITY → COMPLETE · DEMO → NO KNOWN UNRESOLVED DATA-QUALITY ISSUE · DEMO → DATA-QUALITY CLEARED · DEMO → EXPLICIT 7-OF-7 READINESS CROSS-CHECK → READY TO LIST · DEMO`
+### Build 040 — Listing Intent Preparation
+`READY TO LIST → CONFIRM LISTING INTENT → PREPARE LISTING · DEMO`
 
-Data-Quality Clearance clears only Data-Quality Clearance. `READY TO LIST` appears only after the explicit full seven-factor cross-check supports every applicable factor.
+Confirming listing intent records seller intent only. `READY TO LIST` remains the readiness state. No publication occurs.
 
-Build 039 does not create, publish, or expose a listing and does not invent missing facts. If any readiness factor is unsupported, MarketDEX remains `PREPARATION NEEDED` and returns the next remaining blocker.
+### Build 041 — Listing Record Preparation
+`PREPARE LISTING RECORD → LISTING RECORD DRAFT PREPARED · DEMO → DRAFT · DEMO`
 
-## Artifact Hygiene R007
-Superseded Calc Builds 032–038 were removed from the active `artifacts/calc/` tree after Build 039 was accepted and preserved.
+The Listing Record Draft references supported preparation evidence and the Inventory Record relationship. A draft is not listed, published, exposed, sold, or shipped.
 
-Build history remains recoverable through Git history and is summarized in `CheckpointManifest.md`.
+### Build 042 — Publication Readiness Gate
+`REVIEW PUBLICATION READINESS → SUPPORTED FOR PUBLICATION · DEMO → READY FOR PUBLICATION · DEMO → NOT PUBLISHED · DEMO`
+
+The publication-readiness cross-check uses the Listing Record Draft, supported preparation evidence, and selected platform context.
+
+Vocabulary contract:
+`READY TO LIST ≠ LISTED`
+`LISTING DRAFT ≠ PUBLISHED`
+`READY FOR PUBLICATION ≠ PUBLISHED`
+`PUBLISHED ≠ SOLD`
+
+`READY FOR PUBLICATION` is permission-state evidence only. MarketDEX does not submit, publish, expose, create an order, buy postage, or mark inventory sold or shipped.
+
+## Artifact Hygiene R008
+Build 042 replaced Build 039 as the sole current approved Calc baseline after package verification, Mark's visual acceptance, and repository preservation.
+
+Superseded Build 039 was removed from the active `artifacts/calc/` tree. Historical progression remains recoverable through Git history and checkpoint history.
 
 ## Current Business Boundary
-The demonstrated Listing Readiness preparation chain is complete through `READY TO LIST · DEMO`.
+The demonstrated workflow is complete through `READY FOR PUBLICATION · DEMO` while explicitly remaining `NOT PUBLISHED · DEMO`.
 
-`READY TO LIST` is a readiness state, not a live marketplace action. MarketDEX has not created a listing, published a listing, activated Platform Exposure, created an order, bought postage, or marked inventory sold or shipped.
-
-The next discovery must begin from this boundary rather than extending the preparation chain by assumption.
+The next discovery must define the minimum publication or marketplace-exposure responsibility without assuming a live marketplace connector, silently publishing a listing, or conflating publication with sale.
 
 ## Exact Resume Point
-**Build 040 discovery — Post-Readiness Business Boundary**
+**Build 043–045 discovery batch — Publication and Marketplace Exposure Boundary**
 
-Business question:
-> Once inventory is supported as READY TO LIST, what is the minimum next business responsibility MarketDEX should expose without silently creating or publishing a marketplace listing?
+Business questions:
+> What explicit seller authorization must exist before publication can occur?
 
-Resume from the approved and repository-preserved Build 039 endpoint.
+> What minimum publication event evidence should MarketDEX record without requiring a live marketplace connector?
 
-Do not rediscover Builds 033–039.
+> Once publication is supported, how should Platform Exposure become active without treating the item as sold?
 
-Do not treat READY TO LIST as LISTED, PUBLISHED, EXPOSED, SOLD, or SHIPPED.
+Resume from the approved and repository-preserved Build 042 endpoint.
+
+Do not rediscover Builds 033–042.
+
+Do not treat READY FOR PUBLICATION as PUBLISHED, EXPOSED, SOLD, or SHIPPED.
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
