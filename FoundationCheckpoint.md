@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 049
+# MarketDEX Foundation Checkpoint 050
 
-**Status:** 🏁 Checkpoint Complete — Controlled LISTED Transition Execution Gate
+**Status:** 🏁 Checkpoint Complete — Controlled Verified Sale Evidence Gate
 
 ## Active Phase
 📊 ACTIVE — LibreOffice Workbook OS execution through Spreadsheet Design.
@@ -12,95 +12,83 @@ MarketDEX is proven first through the LibreOffice workbook and Mark's real Poké
 
 > **Enter once. Understand everywhere.**
 
-The repository is the shared continuity bridge.
-
 ## Frictionless Working Contract
 `CAN JARVIS SAFELY DO THIS INSTEAD? → YES → JARVIS DOES IT → ZERO FAKE WORK FOR MARK`
 
 Communication is short, direct, action-focused, emoji-forward, and moderately narrow. Stack several workflow steps ahead when useful. Every Mark repository action includes exact copy-paste filenames, commit messages, and reply text. Workbook visual review identifies `WORKSHEET + EXACT ROW RANGE + SECTION HEADING + WHAT MARK SHOULD VERIFY`.
 
-Checkpoint headings use `🏁`. Milestone reporting uses `⚡🚀✨ MILESTONE` for frictionless recognition.
+Checkpoint headings use `🏁`. Milestone reporting uses `⚡🚀✨ MILESTONE`.
 
-Repository friction rule: Jarvis must avoid remote checkpoint/progress writes while Mark has a local preservation commit pending. Remote documentation synchronization occurs only after the accepted Calc baseline is confirmed remote, preventing avoidable GitHub Desktop merge/rebase conflicts.
+Repository friction rule: remote checkpoint/progress synchronization occurs only after the accepted Calc baseline is confirmed remote.
 
 ## Calc Artifact Retention
 `artifacts/calc/` preserves one current approved Calc baseline only.
 
 Current approved Calc baseline:
-`artifacts/calc/MarketDEX_Calc_V0_Build280_Controlled_LISTED_Transition_Execution_Gate.ods`
+`artifacts/calc/MarketDEX_Calc_V0_Build320_Controlled_Verified_Sale_Evidence_Gate.ods`
 
 Remote GitHub blob SHA:
-`2c03419561aa05a206f1812a4a960c7facc2715e`
+`52b037145ae0a7a9d9b3968c1d433c9042b168cf`
 
-The superseded Build 260 Calc baseline was directly removed from the active repository tree by Jarvis after Build 280 remote verification. Git history and checkpoint history preserve progression.
+The superseded Build 280 baseline was removed after Build 320 remote verification.
 
-## Builds 261–280 — Controlled LISTED Transition Execution
-Builds 261–265 establish the Explicit LISTED Transition Request.
+## Builds 281–320 — Controlled Verified Sale Evidence
+Builds 281–290 establish Sale Evidence Intake.
 
-Builds 266–270 establish LISTED Transition Authority.
+Builds 291–300 establish Sale Identity and Marketplace Match.
 
-Builds 271–275 establish Execution Commit and Controlled State Write.
+Builds 301–310 establish Sale Amount and Quantity Validation.
 
-Builds 276–280 establish append-only LISTED transition history, post-write verification, replay protection, and the final Controlled LISTED Transition Execution Gate.
+Builds 311–320 establish the Verified Sale Cross-Check and Controlled Verified Sale Evidence Gate.
 
-## Accepted Build 280 Proof
-For `INV-000001`:
-- LISTED Transition Eligibility = `ELIGIBLE`;
-- explicit transition request = `READY TO LIST → LISTED`;
-- Request Status = `REQUESTED`;
-- Requested By = `MARK · OPERATOR`;
-- Request Result = `VALID REQUEST`;
-- Current State Valid = `YES`;
-- Verified Publication Valid = `YES`;
-- Request Valid = `YES`;
-- Actor Authorized = `YES`;
-- Authority Result = `GRANTED`;
-- Execution Commit = `EXECUTE LISTED TRANSITION`;
-- Authority Revalidated = `YES`;
-- Write Eligible = `YES`;
-- Controlled State Write = `YES`;
-- Derived New State = `LISTED`;
-- append-only transition ID = `TRN-000002`;
-- transition history result = `EXECUTED`;
-- History Match = `YES`;
-- Post-Write State Match = `YES`;
-- Completion = `COMPLETED`;
-- Replay Result = `ALREADY EXECUTED`;
-- Second Write = `NO`.
+## Accepted Build 320 Proof
+For `INV-000001` / `SALE-000001`:
+- Authoritative State Valid = `YES`;
+- Record Match = `YES`;
+- Platform Match = `YES`;
+- Listing ID Match = `YES`;
+- Sale Received Valid = `YES`;
+- Sale Status Valid = `YES`;
+- Sale Reference Present = `YES`;
+- Sold Time Present = `YES`;
+- Amount Valid = `YES`;
+- Quantity Valid = `YES`;
+- Sale Evidence Complete = `YES`;
+- Identity Chain Valid = `YES`;
+- Verified Sale = `YES`;
+- Sale Consequence = `SALE VERIFIED`;
+- SOLD Transition Eligibility = `ELIGIBLE`;
+- State Write = `NO`.
 
-Mark visually verified Inventory rows 834–855 in LibreOffice Calc. Package integrity, OpenFormula hygiene, LibreOffice headless evaluation, and Err:510 scan passed before visual acceptance.
+Mark visually verified Inventory rows 856–883 in LibreOffice Calc. Package integrity, OpenFormula hygiene, LibreOffice headless evaluation, and Err:510 scan passed before visual acceptance.
 
-## Permanent LISTED Boundary
-`VERIFIED PUBLICATION ≠ LISTED`
+## Permanent Sale Boundary
+`LISTED ≠ SOLD`
 
-`ELIGIBILITY ≠ AUTHORITY`
+`SALE CLAIM ≠ VERIFIED SALE`
 
-`AUTHORITY ≠ EXECUTION`
+`VERIFIED SALE ≠ SOLD STATE`
 
-`EXECUTION ≠ VERIFIED COMPLETION`
+Valid identity, marketplace listing match, sale reference, sold time, positive sale amount, and positive quantity are required for Verified Sale.
 
-Verified Publication creates LISTED transition eligibility only.
-
-An explicit LISTED transition request, granted authority, execution commit, controlled state write, append-only transition history, and post-write verification are required before the transition is complete.
-
-Replay must not create a second state write.
+Verified Sale creates SOLD transition eligibility only. It does not directly mutate authoritative Inventory state.
 
 ## Copilot Status
 `COPILOT ACTION = NOT USED`
 
-Copilot was not used to resolve the Git conflict. Copilot remains an optional debugging, pattern-scanning, repetitive-defect detection, and implementation-review worker when an actual callable Copilot action is available. Copilot is not business-logic authority.
+Copilot remains optional for debugging and implementation review when an actual callable Copilot action occurs. Copilot is not business-logic authority.
 
 ## Milestone Progress
-**Milestone:** Verified Publication to Controlled LISTED State
+**Milestone:** Authoritative LISTED State to Controlled Sale Evidence
 
-**Progress:** `[██████████] 100%`
+**Progress:** `[██████░░░░] 60%`
 
-Completed: verified publication success evidence; complete success evidence gate; Verified Publication derivation; LISTED eligibility; explicit LISTED transition request; LISTED transition authority; execution commit; controlled state write; append-only LISTED transition history; post-write verification; completion; idempotent replay protection; Build 280 acceptance; remote Build 280 verification; sole-baseline retention synchronization.
+Completed: sale evidence intake; sale identity and marketplace match; sale amount and quantity validation; complete sale evidence gate; Verified Sale derivation; SOLD transition eligibility; Build 320 acceptance; remote verification; sole-baseline retention synchronization.
 
-Remaining: none for this milestone.
+Remaining: explicit SOLD transition request; SOLD transition authority; execution commit; controlled state write; append-only SOLD transition history; post-write verification; replay protection; milestone close.
 
 ## Exact Resume Point
-**Spreadsheet Design — define the next Workbook OS milestone and its first business responsibility from authoritative LISTED state. Desktop application implementation remains dormant.**
+**Spreadsheet Design — build the controlled LISTED → SOLD transition execution batch from accepted Build 320. Desktop application implementation remains dormant.**
 
 ## Core Operating Principle
 > **Enter once. Understand everywhere.**
