@@ -3,38 +3,36 @@ from PySide6.QtWidgets import QMainWindow,QWidget,QVBoxLayout,QLabel,QPushButton
 class MainWindow(QMainWindow):
     def __init__(self,database,services):
         super().__init__(); self.database,self.services=database,services
-        self.setWindowTitle('MarketDEX OS — M28.B1'); self.resize(1380,760)
+        self.setWindowTitle('MarketDEX OS — M29.B1'); self.resize(1380,760)
         root=QWidget(); lay=QVBoxLayout(root)
         title=QLabel('MarketDEX OS'); title.setStyleSheet('font-size:36px;font-weight:700'); lay.addWidget(title)
-        lay.addWidget(QLabel('END-TO-END BUSINESS AUTHORITY INTEGRATION + CONTRACT CONFORMANCE'))
-        lay.addWidget(QLabel('M20 → M27 Integrated Authority • Fail Closed • Append-Only • Replay Defense • Derived Mission Control'))
-        self.run=QPushButton('Run Clean M28 Conformance Workflow'); self.run.clicked.connect(self.execute); lay.addWidget(self.run)
-        self.table=QTableWidget(0,3); self.table.setHorizontalHeaderLabels(['Contract Gate','Result','Authoritative Evidence']); self.table.horizontalHeader().setStretchLastSection(True); lay.addWidget(self.table)
-        self.footer=QLabel('M28.B1 conformance workflow not yet executed on this database.'); lay.addWidget(self.footer)
-        self.setCentralWidget(root); self.refresh()
+        lay.addWidget(QLabel('DAMAGE + LOSS INVENTORY ADJUSTMENT AUTHORITY'))
+        lay.addWidget(QLabel('Evidence → Explicit Request → Revalidation → Controlled Movement → Reconciliation → Audit → Replay Defense'))
+        self.run=QPushButton('Run Clean M29 Damage + Loss Acceptance Workflow'); self.run.clicked.connect(self.execute); lay.addWidget(self.run)
+        self.table=QTableWidget(0,3); self.table.setHorizontalHeaderLabels(['Authority Gate','Result','Evidence']); self.table.horizontalHeader().setStretchLastSection(True); lay.addWidget(self.table)
+        self.footer=QLabel(); lay.addWidget(self.footer); self.setCentralWidget(root); self.refresh()
     def refresh(self):
-        with self.database.connect() as c:
-            checks=[
-              ('Acquisition + persisted inventory', c.execute('SELECT COUNT(*) FROM inventory_history').fetchone()[0]>0, 'inventory_history'),
-              ('Transformation lineage + cost conservation', c.execute('SELECT COUNT(*) FROM transformation_lineage').fetchone()[0]>0, 'transformation_lineage'),
-              ('Marketplace allocation authority', c.execute('SELECT COUNT(*) FROM marketplace_allocations').fetchone()[0]>0, 'marketplace_allocations'),
-              ('Sale + financial truth', c.execute('SELECT COUNT(*) FROM sales').fetchone()[0]>0, 'sales + sales_financial_history'),
-              ('Settlement + order closure', c.execute('SELECT COUNT(*) FROM order_closures').fetchone()[0]>0, 'settlements + order_closures'),
-              ('Return + cost restoration', c.execute('SELECT COUNT(*) FROM returns').fetchone()[0]>0, 'returns + financial_events'),
-              ('Corrective authority immutable lineage', c.execute('SELECT COUNT(*) FROM correction_events').fetchone()[0]>0, 'correction_events'),
-              ('Exception + controlled resolution', c.execute('SELECT COUNT(*) FROM exception_resolutions').fetchone()[0]>0, 'exception_history + exception_resolutions'),
-              ('Audit verification', c.execute("SELECT COUNT(*) FROM audit_verifications WHERE verification_result='VERIFIED'").fetchone()[0]>0, 'audit_verifications'),
-            ]
+        try: r=self.services.m29.verify()
+        except Exception: r={'quantity':0,'damage':0,'loss':0,'movements':0,'audits':0,'replay':0,'deltas':[],'reconciled':False}
+        checks=[
+          ('Incomplete DAMAGE evidence fails closed',r['damage']==1,'BLOCKED request created ZERO extra movement'),
+          ('DAMAGE controlled movement',r['damage']==1 and -1 in r['deltas'],'DAMAGE quantity_delta = -1'),
+          ('DAMAGE replay defense',r['damage']==1 and r['quantity']<=2,'ZERO second quantity decrement'),
+          ('Excess LOSS quantity fails closed',r['loss']==1,'Requested 3 > authoritative available quantity'),
+          ('LOSS controlled movement',r['loss']==1 and r['deltas'].count(-1)==2,'LOSS quantity_delta = -1'),
+          ('LOSS replay defense',r['loss']==1 and r['quantity']==1 and r['movements']==2,'ZERO second quantity decrement'),
+          ('Movement ledger reconciliation',r['reconciled'],'expected quantity = authoritative quantity'),
+          ('Append-only audit authority',r['audits']==2,'DAMAGE + LOSS VERIFIED audit events'),
+          ('Restart-persistent authoritative result',r['quantity']==1 and r['movements']==2,'authoritative quantity = 1; 2 movements persist')]
         self.table.setRowCount(len(checks))
         for i,(name,ok,evidence) in enumerate(checks):
             for j,v in enumerate((name,'VERIFIED' if ok else 'PENDING',evidence)): self.table.setItem(i,j,QTableWidgetItem(str(v)))
-        passed=sum(1 for _,ok,_ in checks if ok)
-        self.footer.setText(f'M28 contract gates verified: {passed} / {len(checks)} — Mission Control remains derived with ZERO direct business writes')
+        passed=sum(ok for _,ok,_ in checks)
+        self.footer.setText(f'M29 authority gates verified: {passed} / 9 — authoritative quantity: {r["quantity"]} — DAMAGE + LOSS movement truth remains append-only')
     def execute(self):
         try:
-            r=self.services.conformance.run_clean_acceptance()
-            self.refresh()
-            if not r['oversell_blocked']: raise RuntimeError('Cross-channel oversell defense failed')
-            QMessageBox.information(self,'M28.B1 RESULT','END-TO-END BUSINESS AUTHORITY INTEGRATION + CONTRACT CONFORMANCE VERIFIED')
+            r=self.services.m29.run(); self.refresh()
+            if not (r['quantity']==1 and r['damage']==1 and r['loss']==1 and r['movements']==2 and r['reconciled']): raise RuntimeError('M29 authority verification incomplete')
+            QMessageBox.information(self,'M29.B1 RESULT','DAMAGE + LOSS INVENTORY ADJUSTMENT AUTHORITY VERIFIED')
         except Exception as exc:
-            self.refresh(); QMessageBox.critical(self,'M28 conformance blocked',str(exc))
+            self.refresh(); QMessageBox.critical(self,'M29 adjustment authority blocked',str(exc))

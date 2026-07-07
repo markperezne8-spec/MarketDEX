@@ -13,6 +13,8 @@ from .audit_service import AuditService
 from .dashboard_service import DashboardService
 from .integration_service import IntegrationService
 from .conformance_service import ConformanceService
+from .inventory_adjustment_service import InventoryAdjustmentService
+from .m29_acceptance_service import M29AcceptanceService
 class ServiceRegistry:
  def __init__(self,database):
   events=EventRepository(); assets=AssetRepository(); inventory=InventoryRepository()
@@ -21,3 +23,5 @@ class ServiceRegistry:
   self.sales=SalesService(database,events,assets,inventory); self.return_service=ReturnService(database,events,inventory); self.correction=CorrectionService(database,events); self.reversal=ReversalService(database,events); self.exception=ExceptionService(database,events); self.audit=AuditService(database,events); self.dashboard=DashboardService(database)
   self.integration=IntegrationService(database,events,self)
   self.conformance=ConformanceService(database,self)
+  self.adjustment=InventoryAdjustmentService(database,events,assets,inventory,self.integration)
+  self.m29=M29AcceptanceService(database,self)
