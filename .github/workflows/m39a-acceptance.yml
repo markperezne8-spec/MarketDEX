@@ -15,4 +15,10 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install pytest
-      - run: pytest -q
+      - name: Run full authority conformance suite
+        run: |
+          pytest -q > pytest.log 2>&1 || {
+            tail -n 120 pytest.log
+            exit 1
+          }
+          cat pytest.log
