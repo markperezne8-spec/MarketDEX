@@ -16,9 +16,17 @@ jobs:
           python-version: '3.12'
       - run: pip install pytest
       - name: Run full authority conformance suite
+        id: pytest
+        continue-on-error: true
+        run: pytest -q > pytest.log 2>&1
+      - name: Upload authority conformance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: authority-conformance-evidence
+          path: pytest.log
+      - name: Enforce authority conformance result
+        if: steps.pytest.outcome != 'success'
         run: |
-          pytest -q > pytest.log 2>&1 || {
-            tail -n 120 pytest.log
-            exit 1
-          }
           cat pytest.log
+          exit 1
