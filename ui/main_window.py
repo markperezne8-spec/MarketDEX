@@ -1,5 +1,5 @@
 from uuid import uuid4
-from PySide6.QtWidgets import QMainWindow,QWidget,QVBoxLayout,QLabel,QPushButton,QGridLayout,QGroupBox,QHBoxLayout,QTableWidget,QTableWidgetItem,QDialog,QFormLayout,QLineEdit,QComboBox,QSpinBox,QDoubleSpinBox,QDialogButtonBox,QMessageBox
+from PySide6.QtWidgets import QMainWindow,QWidget,QVBoxLayout,QLabel,QPushButton,QGridLayout,QGroupBox,QHBoxLayout,QTableWidget,QTableWidgetItem,QDialog,QFormLayout,QLineEdit,QComboBox,QSpinBox,QDoubleSpinBox,QDialogButtonBox,QMessageBox,QFileDialog
 
 
 class AddAssetDialog(QDialog):
@@ -34,6 +34,7 @@ class MainWindow(QMainWindow):
             box=QGroupBox(label); box_layout=QVBoxLayout(box); value=QLabel('--'); value.setStyleSheet('font-size:24px;font-weight:700'); box_layout.addWidget(value); self.values[key]=value; grid.addWidget(box,index//2,index%2)
         layout.addLayout(grid)
         inventory_header=QHBoxLayout(); inventory_header.addWidget(QLabel('📦 INVENTORY')); inventory_header.addStretch(1)
+        export_button=QPushButton('Export CSV'); export_button.clicked.connect(self.export_inventory); inventory_header.addWidget(export_button)
         self.adjust_button=QPushButton('Adjust Selected'); self.adjust_button.setEnabled(False); self.adjust_button.clicked.connect(self.adjust_selected); inventory_header.addWidget(self.adjust_button)
         add_button=QPushButton('+ Add Asset'); add_button.clicked.connect(self.add_asset); inventory_header.addWidget(add_button); layout.addLayout(inventory_header)
         filter_bar=QHBoxLayout(); self.inventory_search=QLineEdit(); self.inventory_search.setPlaceholderText('Search inventory by asset name...'); self.inventory_search.textChanged.connect(self.refresh_inventory); filter_bar.addWidget(self.inventory_search)
@@ -60,6 +61,14 @@ class MainWindow(QMainWindow):
         for row_index,row in enumerate(self.inventory_rows):
             for column,value in enumerate((row['asset_name'],row['asset_type'],row['quantity'],self._money(row['total_cost_minor']))): self.inventory_table.setItem(row_index,column,QTableWidgetItem(str(value)))
         self.inventory_table.resizeColumnsToContents(); self.inventory_result.setText(f"Showing {len(self.inventory_rows):,} matching inventory asset(s) • {self.inventory_sort.currentText()} {self.inventory_sort_order.currentText()}"); self.show_selected()
+
+    def export_inventory(self):
+        destination,_=QFileDialog.getSaveFileName(self,'Export Current Inventory View','MarketDEX_Inventory.csv','CSV Files (*.csv)')
+        if not destination:return
+        try:
+            exported=self.inventory_service.export_inventory_csv(self.inventory_rows,destination)
+            QMessageBox.information(self,'Inventory Exported',f'Exported {len(self.inventory_rows):,} visible asset(s) to:\n{exported}')
+        except Exception as exc:QMessageBox.critical(self,'Export Failed',str(exc))
 
     def refresh(self):
         snapshot=self.service.snapshot()
