@@ -36,7 +36,10 @@ class MainWindow(QMainWindow):
         inventory_header=QHBoxLayout(); inventory_header.addWidget(QLabel('📦 INVENTORY')); inventory_header.addStretch(1)
         self.adjust_button=QPushButton('Adjust Selected'); self.adjust_button.setEnabled(False); self.adjust_button.clicked.connect(self.adjust_selected); inventory_header.addWidget(self.adjust_button)
         add_button=QPushButton('+ Add Asset'); add_button.clicked.connect(self.add_asset); inventory_header.addWidget(add_button); layout.addLayout(inventory_header)
+        filter_bar=QHBoxLayout(); self.inventory_search=QLineEdit(); self.inventory_search.setPlaceholderText('Search inventory by asset name...'); self.inventory_search.textChanged.connect(self.refresh_inventory); filter_bar.addWidget(self.inventory_search)
+        self.inventory_type_filter=QComboBox(); self.inventory_type_filter.addItems(['ALL','SINGLE','SEALED','SLAB','ACCESSORY']); self.inventory_type_filter.currentTextChanged.connect(self.refresh_inventory); filter_bar.addWidget(self.inventory_type_filter); layout.addLayout(filter_bar)
         self.inventory_table=QTableWidget(0,4); self.inventory_table.setHorizontalHeaderLabels(['Asset','Type','Qty','Total Cost']); self.inventory_table.setEditTriggers(QTableWidget.NoEditTriggers); self.inventory_table.setSelectionBehavior(QTableWidget.SelectRows); self.inventory_table.itemSelectionChanged.connect(self.show_selected); layout.addWidget(self.inventory_table)
+        self.inventory_result=QLabel(''); layout.addWidget(self.inventory_result)
         self.asset_detail=QLabel('Select an inventory asset to view details.'); self.asset_detail.setWordWrap(True); layout.addWidget(self.asset_detail)
         self.refresh_button=QPushButton('Refresh MarketDEX'); self.refresh_button.clicked.connect(self.refresh); layout.addWidget(self.refresh_button)
         self.footer=QLabel('Loading MarketDEX business authority...'); self.footer.setWordWrap(True); layout.addWidget(self.footer); self.setCentralWidget(root); self.refresh()
@@ -44,14 +47,17 @@ class MainWindow(QMainWindow):
     @staticmethod
     def _money(minor): return f'${minor/100:,.2f}'
 
+    def refresh_inventory(self):
+        self.inventory_rows=self.inventory_service.list_inventory(search_text=self.inventory_search.text(),asset_type=self.inventory_type_filter.currentText()); self.inventory_table.setRowCount(len(self.inventory_rows))
+        for row_index,row in enumerate(self.inventory_rows):
+            for column,value in enumerate((row['asset_name'],row['asset_type'],row['quantity'],self._money(row['total_cost_minor']))): self.inventory_table.setItem(row_index,column,QTableWidgetItem(str(value)))
+        self.inventory_table.resizeColumnsToContents(); self.inventory_result.setText(f"Showing {len(self.inventory_rows):,} matching inventory asset(s)"); self.show_selected()
+
     def refresh(self):
         snapshot=self.service.snapshot()
         for key in ('inventory_units','inventory_asset_count','completed_sales','verified_audits','authority_events'): self.values[key].setText(f'{snapshot[key]:,}')
         for key in ('inventory_cost_minor','revenue_minor','profit_minor'): self.values[key].setText(self._money(snapshot[key]))
-        self.inventory_rows=self.inventory_service.list_inventory(); self.inventory_table.setRowCount(len(self.inventory_rows))
-        for row_index,row in enumerate(self.inventory_rows):
-            for column,value in enumerate((row['asset_name'],row['asset_type'],row['quantity'],self._money(row['total_cost_minor']))): self.inventory_table.setItem(row_index,column,QTableWidgetItem(str(value)))
-        self.inventory_table.resizeColumnsToContents(); self.footer.setText(f"LIVE DATABASE: {snapshot['database_path']} — refreshed from protected SQLite authority.")
+        self.refresh_inventory(); self.footer.setText(f"LIVE DATABASE: {snapshot['database_path']} — refreshed from protected SQLite authority.")
 
     def selected_asset_id(self):
         row=self.inventory_table.currentRow(); return self.inventory_rows[row]['asset_id'] if 0<=row<len(self.inventory_rows) else None
