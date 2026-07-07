@@ -1,4 +1,4 @@
-SCHEMA_VERSION=13
+SCHEMA_VERSION=14
 SCHEMA_SQL=r'''
 CREATE TABLE IF NOT EXISTS schema_metadata (schema_version INTEGER NOT NULL, applied_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS event_identity (event_id TEXT PRIMARY KEY,event_type TEXT NOT NULL,request_id TEXT NOT NULL UNIQUE,occurred_at TEXT NOT NULL,committed_at TEXT NOT NULL,payload_json TEXT NOT NULL,payload_sha256 TEXT NOT NULL);
@@ -20,14 +20,8 @@ CREATE TABLE IF NOT EXISTS inventory_reconciliations (reconciliation_id TEXT PRI
 CREATE TABLE IF NOT EXISTS reconciliation_history (history_id INTEGER PRIMARY KEY AUTOINCREMENT,reconciliation_id TEXT NOT NULL,asset_id TEXT NOT NULL,state TEXT NOT NULL CHECK(state IN ('DETECTED','BLOCKED','ELIGIBLE','COMMITTED','VERIFIED','RECONCILED')),event_id TEXT,request_id TEXT,evidence_reference TEXT,remaining_quantity_truth INTEGER NOT NULL,current_quantity INTEGER NOT NULL,observed_quantity INTEGER NOT NULL,variance_quantity INTEGER NOT NULL,authorized_delta INTEGER,control_result TEXT NOT NULL,recorded_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS settlement_executions (settlement_id TEXT PRIMARY KEY,sale_id TEXT NOT NULL UNIQUE,settlement_request_id TEXT NOT NULL UNIQUE,settlement_event_id TEXT NOT NULL UNIQUE,settlement_evidence_id TEXT NOT NULL UNIQUE,settlement_platform TEXT NOT NULL,observed_payout_minor INTEGER NOT NULL CHECK(observed_payout_minor>=0),settlement_result TEXT NOT NULL CHECK(settlement_result='SETTLED'),created_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS settlement_history (settlement_history_id INTEGER PRIMARY KEY AUTOINCREMENT,settlement_id TEXT NOT NULL,sale_id TEXT NOT NULL,settlement_request_id TEXT NOT NULL,settlement_event_id TEXT NOT NULL,settlement_evidence_id TEXT NOT NULL,settlement_platform TEXT NOT NULL,observed_payout_minor INTEGER NOT NULL CHECK(observed_payout_minor>=0),settlement_result TEXT NOT NULL CHECK(settlement_result='SETTLED'),recorded_at TEXT NOT NULL,UNIQUE(settlement_event_id,settlement_result));
-CREATE TRIGGER IF NOT EXISTS inventory_adjustments_no_update BEFORE UPDATE ON inventory_adjustments BEGIN SELECT RAISE(ABORT,'inventory_adjustments is append-only'); END;
-CREATE TRIGGER IF NOT EXISTS inventory_adjustments_no_delete BEFORE DELETE ON inventory_adjustments BEGIN SELECT RAISE(ABORT,'inventory_adjustments is append-only'); END;
-CREATE TRIGGER IF NOT EXISTS inventory_movements_no_update BEFORE UPDATE ON inventory_movements BEGIN SELECT RAISE(ABORT,'inventory_movements is append-only'); END;
-CREATE TRIGGER IF NOT EXISTS inventory_movements_no_delete BEFORE DELETE ON inventory_movements BEGIN SELECT RAISE(ABORT,'inventory_movements is append-only'); END;
-CREATE TRIGGER IF NOT EXISTS inventory_reconciliations_no_update BEFORE UPDATE ON inventory_reconciliations BEGIN SELECT RAISE(ABORT,'inventory_reconciliations is append-only'); END;
-CREATE TRIGGER IF NOT EXISTS inventory_reconciliations_no_delete BEFORE DELETE ON inventory_reconciliations BEGIN SELECT RAISE(ABORT,'inventory_reconciliations is append-only'); END;
-CREATE TRIGGER IF NOT EXISTS reconciliation_history_no_update BEFORE UPDATE ON reconciliation_history BEGIN SELECT RAISE(ABORT,'reconciliation_history is append-only'); END;
-CREATE TRIGGER IF NOT EXISTS reconciliation_history_no_delete BEFORE DELETE ON reconciliation_history BEGIN SELECT RAISE(ABORT,'reconciliation_history is append-only'); END;
+CREATE TABLE IF NOT EXISTS order_closures (closure_id TEXT PRIMARY KEY,sale_id TEXT NOT NULL UNIQUE,settlement_id TEXT NOT NULL UNIQUE,product_id TEXT NOT NULL,asset_id TEXT NOT NULL,listing_id TEXT NOT NULL,allocation_id TEXT NOT NULL,marketplace TEXT NOT NULL,closure_request_id TEXT NOT NULL UNIQUE,closure_event_id TEXT NOT NULL UNIQUE,closure_result TEXT NOT NULL CHECK(closure_result='CLOSED'),created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS order_closure_history (closure_history_id INTEGER PRIMARY KEY AUTOINCREMENT,closure_id TEXT NOT NULL,sale_id TEXT NOT NULL,settlement_id TEXT NOT NULL,closure_event_id TEXT NOT NULL,closure_result TEXT NOT NULL CHECK(closure_result='CLOSED'),recorded_at TEXT NOT NULL,UNIQUE(closure_event_id,closure_result));
 CREATE TRIGGER IF NOT EXISTS event_identity_no_update BEFORE UPDATE ON event_identity BEGIN SELECT RAISE(ABORT,'event_identity is immutable'); END;
 CREATE TRIGGER IF NOT EXISTS event_identity_no_delete BEFORE DELETE ON event_identity BEGIN SELECT RAISE(ABORT,'event_identity is immutable'); END;
 CREATE TRIGGER IF NOT EXISTS inventory_history_no_update BEFORE UPDATE ON inventory_history BEGIN SELECT RAISE(ABORT,'inventory_history is append-only'); END;
@@ -42,4 +36,8 @@ CREATE TRIGGER IF NOT EXISTS settlement_executions_no_update BEFORE UPDATE ON se
 CREATE TRIGGER IF NOT EXISTS settlement_executions_no_delete BEFORE DELETE ON settlement_executions BEGIN SELECT RAISE(ABORT,'settlement_executions is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS settlement_history_no_update BEFORE UPDATE ON settlement_history BEGIN SELECT RAISE(ABORT,'settlement_history is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS settlement_history_no_delete BEFORE DELETE ON settlement_history BEGIN SELECT RAISE(ABORT,'settlement_history is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS order_closures_no_update BEFORE UPDATE ON order_closures BEGIN SELECT RAISE(ABORT,'order_closures is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS order_closures_no_delete BEFORE DELETE ON order_closures BEGIN SELECT RAISE(ABORT,'order_closures is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS order_closure_history_no_update BEFORE UPDATE ON order_closure_history BEGIN SELECT RAISE(ABORT,'order_closure_history is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS order_closure_history_no_delete BEFORE DELETE ON order_closure_history BEGIN SELECT RAISE(ABORT,'order_closure_history is append-only'); END;
 '''
