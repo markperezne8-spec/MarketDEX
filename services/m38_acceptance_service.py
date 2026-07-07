@@ -17,7 +17,24 @@ class M38AcceptanceService:
         self.path = Path(path)
         self.sale = ProductSaleExecutionService(self.path)
 
+    def _accepted_sale_lineage(self):
+        with self.sale.db.read_connection() as c:
+            sale = c.execute("SELECT * FROM sales WHERE sale_id=? AND state='COMPLETED'", (SALE_ID,)).fetchone()
+            if not sale:
+                return None
+            link = c.execute("SELECT * FROM inventory_product_links WHERE asset_id=? AND state='LINKED'", (sale['asset_id'],)).fetchone()
+            allocation = c.execute("SELECT * FROM marketplace_publication_allocations WHERE allocation_id=?", (ALLOCATION_ID,)).fetchone()
+            listing = None if not allocation else c.execute("SELECT * FROM marketplace_listing_identities WHERE listing_identity_id=?", (allocation['publication_identity'],)).fetchone()
+            sale_event = c.execute("SELECT 1 FROM event_identity WHERE request_id=? AND event_id=?", (SALE_REQ, sale['created_event_id'])).fetchone()
+            conversion = c.execute("SELECT 1 FROM publication_lifecycle_events WHERE allocation_id=? AND sale_id=? AND event_type='SOLD_CONVERSION'", (ALLOCATION_ID, SALE_ID)).fetchone()
+            if not all((link, allocation, listing, sale_event, conversion)):
+                return None
+            return link['product_id'], link['inventory_product_link_id'], listing['listing_identity_id']
+
     def _fixture(self):
+        accepted = self._accepted_sale_lineage()
+        if accepted:
+            return accepted
         m35 = InventoryProductLinkService(self.path)
         m35_result = m35.run_acceptance()
         if m35_result["passed"] != 12:
