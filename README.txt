@@ -1,8 +1,8 @@
-MarketDEX M29.B1 — Damage + Loss Inventory Adjustment Authority
+MarketDEX M30.B1 Hotfix 003 — Acceptance Fixture Recovery
 
-Uses the accepted inventory authority and append-only movement truth.
-DAMAGE and LOSS require complete evidence, explicit request identity, current authority revalidation, available quantity revalidation, controlled inventory_service-owned mutation, post-write verification, ledger reconciliation, audit authority, and persistent replay defense.
+Accepted M29 baseline authority model preserved.
+Hotfix scope: recover the M30 acceptance fixture when M30-ASSET already exists but has no authoritative inventory quantity.
+No deletion. No database reset. No marketplace lifecycle redesign.
 
-Run RUN_MARKETDEX.bat.
-Click "Run Clean M29 Damage + Loss Acceptance Workflow" once.
-Close MarketDEX and reopen it for the acceptance screenshot.
+Acceptance target:
+M30 authority gates verified: 10 / 10 — authoritative quantity: 2 — active allocation: 0 — available quantity: 2 — publication + allocation lifecycle truth remains append-only
