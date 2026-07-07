@@ -1,0 +1,5 @@
+panel_max_width=760
+selection=ROW
+selected_detail=VISIBLE
+adjustment_mode=EXPLICIT_DELTA
+refresh_after_success=TRUE
