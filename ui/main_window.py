@@ -41,6 +41,10 @@ class MainWindow(QMainWindow):
         sort_bar=QHBoxLayout(); sort_bar.addWidget(QLabel('Sort by'))
         self.inventory_sort=QComboBox(); self.inventory_sort.addItems(['NAME','TYPE','QUANTITY','TOTAL COST']); self.inventory_sort.currentTextChanged.connect(self.refresh_inventory); sort_bar.addWidget(self.inventory_sort)
         self.inventory_sort_order=QComboBox(); self.inventory_sort_order.addItems(['ASC','DESC']); self.inventory_sort_order.currentTextChanged.connect(self.refresh_inventory); sort_bar.addWidget(self.inventory_sort_order); sort_bar.addStretch(1); layout.addLayout(sort_bar)
+        summary_bar=QHBoxLayout(); self.inventory_summary={}
+        for label,key in (('Assets','asset_count'),('Units','total_units'),('Filtered Cost','total_cost_minor')):
+            box=QGroupBox(label); box_layout=QVBoxLayout(box); value=QLabel('--'); value.setStyleSheet('font-size:18px;font-weight:700'); box_layout.addWidget(value); self.inventory_summary[key]=value; summary_bar.addWidget(box)
+        layout.addLayout(summary_bar)
         self.inventory_table=QTableWidget(0,4); self.inventory_table.setHorizontalHeaderLabels(['Asset','Type','Qty','Total Cost']); self.inventory_table.setEditTriggers(QTableWidget.NoEditTriggers); self.inventory_table.setSelectionBehavior(QTableWidget.SelectRows); self.inventory_table.itemSelectionChanged.connect(self.show_selected); layout.addWidget(self.inventory_table)
         self.inventory_result=QLabel(''); layout.addWidget(self.inventory_result)
         self.asset_detail=QLabel('Select an inventory asset to view details.'); self.asset_detail.setWordWrap(True); layout.addWidget(self.asset_detail)
@@ -52,6 +56,7 @@ class MainWindow(QMainWindow):
 
     def refresh_inventory(self):
         self.inventory_rows=self.inventory_service.list_inventory(search_text=self.inventory_search.text(),asset_type=self.inventory_type_filter.currentText(),sort_key=self.inventory_sort.currentText(),sort_order=self.inventory_sort_order.currentText()); self.inventory_table.setRowCount(len(self.inventory_rows))
+        summary=self.inventory_service.summarize_inventory(self.inventory_rows); self.inventory_summary['asset_count'].setText(f"{summary['asset_count']:,}"); self.inventory_summary['total_units'].setText(f"{summary['total_units']:,}"); self.inventory_summary['total_cost_minor'].setText(self._money(summary['total_cost_minor']))
         for row_index,row in enumerate(self.inventory_rows):
             for column,value in enumerate((row['asset_name'],row['asset_type'],row['quantity'],self._money(row['total_cost_minor']))): self.inventory_table.setItem(row_index,column,QTableWidgetItem(str(value)))
         self.inventory_table.resizeColumnsToContents(); self.inventory_result.setText(f"Showing {len(self.inventory_rows):,} matching inventory asset(s) • {self.inventory_sort.currentText()} {self.inventory_sort_order.currentText()}"); self.show_selected()
