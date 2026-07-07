@@ -1,6 +1,8 @@
 name: M39A Acceptance
 
 on:
+  push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
