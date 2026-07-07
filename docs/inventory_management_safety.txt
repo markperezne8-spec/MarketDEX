@@ -1,0 +1,5 @@
+negative_resulting_quantity=BLOCKED
+negative_resulting_cost=BLOCKED
+zero_adjustment=BLOCKED
+request_identity=EXACTLY_ONCE
+evidence=EVENT_HISTORY_MOVEMENT_AUDIT
