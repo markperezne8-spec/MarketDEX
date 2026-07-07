@@ -11,11 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PYTHONPATH: ${{ github.workspace }}
+      QT_QPA_PLATFORM: offscreen
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install Linux Qt runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 libgl1 libxkbcommon-x11-0
       - name: Install project test runtime
         run: pip install pytest -r requirements.txt
       - name: Run full authority conformance suite
