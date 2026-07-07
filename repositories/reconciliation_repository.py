@@ -1,0 +1,7 @@
+class ReconciliationRepository:
+ def get(self,c,reconciliation_id): return c.execute('SELECT * FROM inventory_reconciliations WHERE reconciliation_id=?',(reconciliation_id,)).fetchone()
+ def by_request(self,c,request_id): return c.execute('SELECT * FROM inventory_reconciliations WHERE request_id=?',(request_id,)).fetchone()
+ def append_state(self,c,*,reconciliation_id,asset_id,state,event_id,request_id,evidence_reference,remaining,current,observed,variance,authorized_delta,control_result,recorded_at):
+  c.execute('INSERT INTO reconciliation_history(reconciliation_id,asset_id,state,event_id,request_id,evidence_reference,remaining_quantity_truth,current_quantity,observed_quantity,variance_quantity,authorized_delta,control_result,recorded_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',(reconciliation_id,asset_id,state,event_id,request_id,evidence_reference,remaining,current,observed,variance,authorized_delta,control_result,recorded_at))
+ def insert_final(self,c,values):
+  c.execute('INSERT INTO inventory_reconciliations(reconciliation_id,asset_id,event_id,request_id,replay_key,evidence_type,evidence_reference,evidence_complete,observed_quantity,remaining_quantity_truth,pre_reconciliation_quantity,variance_quantity,authorized_delta,post_reconciliation_quantity,reconciliation_reason,reconciliation_state,inventory_history_reference,audit_event_id,created_at,committed_at,verified_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',values)
