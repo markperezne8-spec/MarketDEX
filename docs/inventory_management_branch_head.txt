@@ -1,0 +1,2 @@
+branch=app-integration-inventory-management
+accepted_parent=0967b5034e106186b87c642350a10e96993601b1
