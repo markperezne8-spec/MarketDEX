@@ -15,9 +15,16 @@ class InventoryAppService(AuthoritativeService):
         super().__init__(database, EventRepository())
         self.inventory = InventoryRepository()
 
-    def list_inventory(self, search_text='', asset_type='ALL'):
+    def list_inventory(self, search_text='', asset_type='ALL', sort_key='NAME', sort_order='ASC'):
         search_text = str(search_text or '').strip().casefold()
         asset_type = str(asset_type or 'ALL').strip().upper()
+        sort_key = str(sort_key or 'NAME').strip().upper()
+        sort_order = str(sort_order or 'ASC').strip().upper()
+        sort_fields = {'NAME':'asset_name','TYPE':'asset_type','QUANTITY':'quantity','TOTAL COST':'total_cost_minor'}
+        if sort_key not in sort_fields:
+            raise ValueError('Unsupported inventory sort key')
+        if sort_order not in {'ASC','DESC'}:
+            raise ValueError('Unsupported inventory sort order')
         with self.database.read_connection() as connection:
             rows = connection.execute(
                 "SELECT a.asset_id,a.asset_name,a.asset_type,i.quantity,i.total_cost_minor "
@@ -29,7 +36,11 @@ class InventoryAppService(AuthoritativeService):
             inventory = [row for row in inventory if search_text in row['asset_name'].casefold()]
         if asset_type != 'ALL':
             inventory = [row for row in inventory if row['asset_type'] == asset_type]
-        return inventory
+        field = sort_fields[sort_key]
+        def sort_value(row):
+            value = row[field]
+            return value.casefold() if isinstance(value, str) else value
+        return sorted(inventory, key=lambda row:(sort_value(row), row['asset_id']), reverse=sort_order == 'DESC')
 
     def get_asset_detail(self, asset_id):
         with self.database.read_connection() as connection:
