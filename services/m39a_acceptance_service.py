@@ -64,6 +64,7 @@ class M39AAcceptanceService:
             audit = None if settlement is None else c.execute("SELECT * FROM audit_events WHERE event_id=? AND authority_type='SETTLEMENT' AND authority_id=?", (settlement["settlement_event_id"], SETTLEMENT_ID)).fetchone()
             inventory = None if sale is None else c.execute("SELECT quantity FROM inventory_authority WHERE asset_id=?", (sale["asset_id"],)).fetchone()
             sale_count = c.execute("SELECT COUNT(*) n FROM sales WHERE sale_id=?", (SALE_ID,)).fetchone()["n"]
+            order_closure_count = c.execute("SELECT COUNT(*) n FROM order_closures").fetchone()["n"]
             inv_sale_moves = 0 if sale is None else c.execute("SELECT COUNT(*) n FROM inventory_history WHERE event_id=?", (sale["created_event_id"],)).fetchone()["n"]
             settlement_inv_moves = 0 if settlement is None else c.execute("SELECT COUNT(*) n FROM inventory_history WHERE event_id=?", (settlement["settlement_event_id"],)).fetchone()["n"]
             expected = None if not fin else (int(fin[0]["revenue_minor"]) - int(fin[0]["marketplace_fees_minor"]) - int(fin[0]["shipping_minor"]) - int(fin[0]["packaging_minor"]))
@@ -108,6 +109,7 @@ class M39AAcceptanceService:
             "second_sale": "NO" if sale_count == 1 else "YES",
             "inventory_mutation": "ZERO" if settlement_inv_moves == 0 else "DETECTED",
             "second_financial": "NO" if len(fin) == 1 else "YES",
+            "order_closure": "NO" if order_closure_count == 0 else "YES",
             "replay": "PASS" if replay_restart_ok else "FAIL",
             "restart": "PASS" if replay_restart_ok else "FAIL",
             "result": "STANDALONE SETTLEMENT VERIFIED" if passed == 12 else "BLOCKED",

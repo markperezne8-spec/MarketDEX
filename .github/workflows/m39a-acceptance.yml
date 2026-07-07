@@ -9,10 +9,32 @@ on:
 jobs:
   authority-conformance:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      QT_QPA_PLATFORM: offscreen
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install pytest
-      - run: pytest -q
+      - name: Install Linux Qt runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 libgl1 libxkbcommon-x11-0
+      - name: Install project test runtime
+        run: pip install pytest -r requirements.txt
+      - name: Run full authority conformance suite
+        id: pytest
+        continue-on-error: true
+        run: pytest -q > pytest.log 2>&1
+      - name: Upload authority conformance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: authority-conformance-evidence
+          path: pytest.log
+      - name: Enforce authority conformance result
+        if: steps.pytest.outcome != 'success'
+        run: |
+          cat pytest.log
+          exit 1
