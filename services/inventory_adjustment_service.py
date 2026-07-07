@@ -16,7 +16,7 @@ class InventoryAdjustmentService(AuthoritativeService):
         valid_type=str(adjustment_type).strip().upper() in ('DAMAGE','LOSS')
         complete=bool(evidence_complete) and bool(str(evidence_type).strip()) and bool(str(evidence_reference).strip())
         explicit=bool(str(request_id).strip())
-        with self.database.connect() as c: asset=self.assets.get(c,str(asset_id).strip()) if str(asset_id).strip() else None
+        with self.database.read_connection() as c: asset=self.assets.get(c,str(asset_id).strip()) if str(asset_id).strip() else None
         available=self.available_quantity(str(asset_id).strip()) if asset is not None else 0
         eligible=asset is not None and complete and explicit and valid_type and q>0 and q<=available
         return {'adjustment_eligible':eligible,'control_result':'CONTROLLED' if eligible else 'BLOCKED','available_quantity':available}
@@ -49,5 +49,5 @@ class InventoryAdjustmentService(AuthoritativeService):
         return event
 
     def history(self):
-        with self.database.connect() as c:
+        with self.database.read_connection() as c:
             return [dict(r) for r in c.execute('SELECT * FROM inventory_adjustments ORDER BY committed_at,event_id').fetchall()]

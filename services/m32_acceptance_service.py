@@ -3,7 +3,7 @@ class M32AcceptanceService:
  def __init__(self,database,services): self.database,self.s=database,services
  def _fixture(self):
   asset='M32-ASSET'
-  with self.database.connect() as c:
+  with self.database.read_connection() as c:
    a=c.execute('SELECT 1 FROM assets WHERE asset_id=?',(asset,)).fetchone(); inv=c.execute('SELECT quantity,total_cost_minor FROM inventory_authority WHERE asset_id=?',(asset,)).fetchone(); done=c.execute("SELECT 1 FROM event_identity WHERE request_id='M32:SOLD:1'").fetchone()
   if done:return
   if not a:self.s.asset.create_asset(request_id='M32:ASSET',asset_id=asset,asset_name='M32 Operational Inventory Asset',asset_type='SINGLE',state='COMPLETED')
@@ -17,7 +17,7 @@ class M32AcceptanceService:
   return False
  def run(self):
   self._fixture(); aid='M32-ASSET'
-  with self.database.connect() as c: done=c.execute("SELECT 1 FROM event_identity WHERE request_id='M32:SOLD:1'").fetchone()
+  with self.database.read_connection() as c: done=c.execute("SELECT 1 FROM event_identity WHERE request_id='M32:SOLD:1'").fetchone()
   if done:return self.verify()
   self.s.lifecycle.list_publication(request_id='M32:EBAY:LIST',allocation_id='M32-EBAY-ALLOC',asset_id=aid,marketplace='eBay',requested_allocation_quantity=2,publication_reference='M32-EBAY-PUB',publication_identity='M32-EBAY-ID',evidence_type='PUBLICATION',evidence_reference='M32-EBAY-EVIDENCE',evidence_complete=True,intent='LISTED')
   if self.s.adjustment.eligibility(asset_id=aid,adjustment_type='DAMAGE',adjustment_quantity=4,evidence_type='PHOTO',evidence_reference='OVER',evidence_complete=True,request_id='M32:DAMAGE:BLOCK')['adjustment_eligible']:raise RuntimeError('Damage capacity defense failed')
@@ -35,7 +35,7 @@ class M32AcceptanceService:
   return self.verify()
  def verify(self):
   aid='M32-ASSET'
-  with self.database.connect() as c:
+  with self.database.read_connection() as c:
    inv=c.execute('SELECT quantity FROM inventory_authority WHERE asset_id=?',(aid,)).fetchone()
    if not inv:return {'quantity':0,'active':0,'available':0,'ledger':'PENDING','replay':'PENDING','restart':'PENDING','integrity':'PENDING','damage':'PENDING','loss':'PENDING','oversell':'PENDING','release':'PENDING','cancel':'PENDING','sold':'PENDING','recon':'PENDING'}
    q=int(inv['quantity']); expected=int(c.execute('SELECT COALESCE(SUM(quantity_delta),0) FROM inventory_history WHERE asset_id=?',(aid,)).fetchone()[0]); damage=c.execute("SELECT 1 FROM inventory_adjustments WHERE asset_id=? AND adjustment_type='DAMAGE'",(aid,)).fetchone(); sold=c.execute("SELECT 1 FROM publication_lifecycle_events WHERE allocation_id='M32-EBAY-ALLOC' AND event_type='SOLD_CONVERSION'").fetchone(); rel=c.execute("SELECT 1 FROM publication_lifecycle_events WHERE allocation_id='M32-TCG-ALLOC' AND event_type='RELEASE'").fetchone(); rp=int(c.execute("SELECT COUNT(*) FROM replay_defense_history WHERE request_id IN ('M32:DAMAGE:1','M32:TCG:RELEASE','M32:EBAY:LIST')").fetchone()[0])

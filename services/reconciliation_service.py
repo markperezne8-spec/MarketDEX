@@ -18,7 +18,7 @@ class ReconciliationService(AuthoritativeService):
   try: observed=int(observed_quantity)
   except: return {'eligible':False,'control_result':'BLOCKED'}
   if isinstance(observed_quantity,float) and not observed_quantity.is_integer(): return {'eligible':False,'control_result':'BLOCKED'}
-  with self.database.connect() as c:
+  with self.database.read_connection() as c:
    asset=c.execute('SELECT 1 FROM assets WHERE asset_id=?',(asset_id,)).fetchone(); inv=c.execute('SELECT * FROM inventory_authority WHERE asset_id=?',(asset_id,)).fetchone()
    if not asset or not inv: return {'eligible':False,'control_result':'BLOCKED'}
    remaining=self.remaining_quantity_truth(c,asset_id); current=int(inv['quantity']); variance=observed-current; authority_variance=remaining-current
@@ -58,7 +58,7 @@ class ReconciliationService(AuthoritativeService):
    self._verify_event(c,event)
   return event
  def result(self,reconciliation_id):
-  with self.database.connect() as c:
+  with self.database.read_connection() as c:
    r=self.repo.get(c,reconciliation_id)
    if not r:return None
    inv=c.execute('SELECT quantity FROM inventory_authority WHERE asset_id=?',(r['asset_id'],)).fetchone(); ledger=self.remaining_quantity_truth(c,r['asset_id']); replay=int(c.execute('SELECT COUNT(*) FROM replay_defense_history WHERE request_id=?',(r['request_id'],)).fetchone()[0]); audit=int(c.execute("SELECT COUNT(*) FROM audit_events WHERE event_id=? AND authority_type='INVENTORY_RECONCILIATION'",(r['event_id'],)).fetchone()[0])
