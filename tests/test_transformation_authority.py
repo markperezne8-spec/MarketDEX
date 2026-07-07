@@ -55,7 +55,7 @@ class TransformationAuthorityTests(unittest.TestCase):
   with db.connect() as c:
    self.assertNotIn('created_event_id TEXT NOT NULL UNIQUE',c.execute("SELECT sql FROM sqlite_master WHERE name='assets'").fetchone()[0])
    self.assertNotIn('last_event_id TEXT NOT NULL UNIQUE',c.execute("SELECT sql FROM sqlite_master WHERE name='inventory_authority'").fetchone()[0])
-   self.assertEqual(c.execute('SELECT schema_version FROM schema_metadata ORDER BY rowid DESC LIMIT 1').fetchone()[0],6)
+   self.assertEqual(c.execute('SELECT schema_version FROM schema_metadata ORDER BY rowid DESC LIMIT 1').fetchone()[0],7)
 
 
  def test_assets_v2_foreign_key_damage_is_repaired(self):
@@ -76,6 +76,6 @@ class TransformationAuthorityTests(unittest.TestCase):
   with db.connect() as c:
    self.assertNotIn('assets_v2',c.execute("SELECT sql FROM sqlite_master WHERE name='transformations'").fetchone()[0])
    self.assertNotIn('assets_v2',c.execute("SELECT sql FROM sqlite_master WHERE name='transformation_lineage'").fetchone()[0])
-   self.assertEqual(c.execute('SELECT schema_version FROM schema_metadata ORDER BY rowid DESC LIMIT 1').fetchone()[0],6)
+   self.assertEqual(c.execute('SELECT schema_version FROM schema_metadata ORDER BY rowid DESC LIMIT 1').fetchone()[0],7)
 
 if __name__=='__main__': unittest.main()

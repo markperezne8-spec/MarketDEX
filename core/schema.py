@@ -1,4 +1,4 @@
-SCHEMA_VERSION = 6
+SCHEMA_VERSION = 7
 SCHEMA_SQL = r"""
 CREATE TABLE IF NOT EXISTS schema_metadata (schema_version INTEGER NOT NULL, applied_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS event_identity (event_id TEXT PRIMARY KEY, event_type TEXT NOT NULL, request_id TEXT NOT NULL UNIQUE, occurred_at TEXT NOT NULL, committed_at TEXT NOT NULL, payload_json TEXT NOT NULL, payload_sha256 TEXT NOT NULL);
@@ -36,6 +36,57 @@ CREATE TABLE IF NOT EXISTS sales_financial_history (
  FOREIGN KEY(event_id) REFERENCES event_identity(event_id),
  FOREIGN KEY(sale_id) REFERENCES sales(sale_id)
 );
+
+CREATE TABLE IF NOT EXISTS returns (
+ return_id TEXT PRIMARY KEY, sale_id TEXT NOT NULL, asset_id TEXT NOT NULL,
+ quantity INTEGER NOT NULL CHECK(quantity > 0), condition_evidence TEXT NOT NULL,
+ restock_authorized INTEGER NOT NULL CHECK(restock_authorized IN (0,1)),
+ refund_minor INTEGER NOT NULL CHECK(refund_minor >= 0),
+ restored_cost_minor INTEGER NOT NULL CHECK(restored_cost_minor >= 0),
+ profit_restatement_minor INTEGER NOT NULL, event_id TEXT NOT NULL UNIQUE,
+ created_at TEXT NOT NULL, FOREIGN KEY(sale_id) REFERENCES sales(sale_id),
+ FOREIGN KEY(asset_id) REFERENCES assets(asset_id), FOREIGN KEY(event_id) REFERENCES event_identity(event_id)
+);
+CREATE TABLE IF NOT EXISTS return_events (
+ return_event_id INTEGER PRIMARY KEY AUTOINCREMENT, return_id TEXT NOT NULL,
+ original_event_id TEXT NOT NULL, event_id TEXT NOT NULL UNIQUE, recorded_at TEXT NOT NULL,
+ FOREIGN KEY(return_id) REFERENCES returns(return_id), FOREIGN KEY(original_event_id) REFERENCES event_identity(event_id),
+ FOREIGN KEY(event_id) REFERENCES event_identity(event_id)
+);
+CREATE TABLE IF NOT EXISTS correction_events (
+ correction_event_id TEXT PRIMARY KEY, original_event_id TEXT NOT NULL, corrective_evidence TEXT NOT NULL,
+ inventory_quantity_delta INTEGER NOT NULL, inventory_cost_delta_minor INTEGER NOT NULL,
+ financial_delta_minor INTEGER NOT NULL, event_id TEXT NOT NULL UNIQUE, recorded_at TEXT NOT NULL,
+ FOREIGN KEY(original_event_id) REFERENCES event_identity(event_id), FOREIGN KEY(event_id) REFERENCES event_identity(event_id)
+);
+CREATE TABLE IF NOT EXISTS reversal_events (
+ reversal_event_id TEXT PRIMARY KEY, original_event_id TEXT NOT NULL,
+ inventory_quantity_delta INTEGER NOT NULL, inventory_cost_delta_minor INTEGER NOT NULL,
+ financial_delta_minor INTEGER NOT NULL, event_id TEXT NOT NULL UNIQUE, recorded_at TEXT NOT NULL,
+ FOREIGN KEY(original_event_id) REFERENCES event_identity(event_id), FOREIGN KEY(event_id) REFERENCES event_identity(event_id)
+);
+CREATE TABLE IF NOT EXISTS inventory_movements (
+ movement_id TEXT PRIMARY KEY, asset_id TEXT NOT NULL, event_id TEXT NOT NULL,
+ quantity_delta INTEGER NOT NULL, cost_delta_minor INTEGER NOT NULL, movement_type TEXT NOT NULL,
+ recorded_at TEXT NOT NULL, UNIQUE(event_id,asset_id,movement_type),
+ FOREIGN KEY(asset_id) REFERENCES assets(asset_id), FOREIGN KEY(event_id) REFERENCES event_identity(event_id)
+);
+CREATE TABLE IF NOT EXISTS financial_events (
+ financial_event_id TEXT PRIMARY KEY, event_id TEXT NOT NULL UNIQUE, original_event_id TEXT,
+ sale_id TEXT, event_type TEXT NOT NULL, amount_minor INTEGER NOT NULL, profit_effect_minor INTEGER NOT NULL,
+ recorded_at TEXT NOT NULL, FOREIGN KEY(event_id) REFERENCES event_identity(event_id),
+ FOREIGN KEY(original_event_id) REFERENCES event_identity(event_id), FOREIGN KEY(sale_id) REFERENCES sales(sale_id)
+);
+CREATE TABLE IF NOT EXISTS event_history (
+ history_id INTEGER PRIMARY KEY AUTOINCREMENT, event_id TEXT NOT NULL UNIQUE, original_event_id TEXT,
+ authority_type TEXT NOT NULL, authority_id TEXT NOT NULL, recorded_at TEXT NOT NULL,
+ FOREIGN KEY(event_id) REFERENCES event_identity(event_id), FOREIGN KEY(original_event_id) REFERENCES event_identity(event_id)
+);
+CREATE TABLE IF NOT EXISTS audit_events (
+ audit_event_id INTEGER PRIMARY KEY AUTOINCREMENT, event_id TEXT NOT NULL, authority_type TEXT NOT NULL,
+ authority_id TEXT NOT NULL, verification_result TEXT NOT NULL, recorded_at TEXT NOT NULL,
+ UNIQUE(event_id,authority_type,authority_id), FOREIGN KEY(event_id) REFERENCES event_identity(event_id)
+);
 CREATE TABLE IF NOT EXISTS transformations (transformation_id TEXT PRIMARY KEY, source_asset_id TEXT NOT NULL, source_quantity INTEGER NOT NULL CHECK(source_quantity > 0), source_cost_minor INTEGER NOT NULL CHECK(source_cost_minor >= 0), state TEXT NOT NULL CHECK(state IN ('PLANNED','IN PROGRESS','COMPLETED','CANCELLED','REVIEW')), created_event_id TEXT NOT NULL, completed_event_id TEXT UNIQUE, created_at TEXT NOT NULL, completed_at TEXT, FOREIGN KEY(source_asset_id) REFERENCES assets(asset_id));
 CREATE TABLE IF NOT EXISTS transformation_lineage (lineage_id INTEGER PRIMARY KEY AUTOINCREMENT, transformation_id TEXT NOT NULL, source_asset_id TEXT NOT NULL, result_asset_id TEXT NOT NULL, allocated_cost_minor INTEGER NOT NULL CHECK(allocated_cost_minor >= 0), result_quantity INTEGER NOT NULL CHECK(result_quantity > 0), event_id TEXT NOT NULL, recorded_at TEXT NOT NULL, UNIQUE(transformation_id,result_asset_id), FOREIGN KEY(transformation_id) REFERENCES transformations(transformation_id), FOREIGN KEY(source_asset_id) REFERENCES assets(asset_id), FOREIGN KEY(result_asset_id) REFERENCES assets(asset_id));
 CREATE TRIGGER IF NOT EXISTS audit_history_no_update BEFORE UPDATE ON audit_history BEGIN SELECT RAISE(ABORT,'audit_history is append-only'); END;
@@ -44,6 +95,20 @@ CREATE TRIGGER IF NOT EXISTS event_identity_no_update BEFORE UPDATE ON event_ide
 CREATE TRIGGER IF NOT EXISTS event_identity_no_delete BEFORE DELETE ON event_identity BEGIN SELECT RAISE(ABORT,'event_identity is immutable'); END;
 CREATE TRIGGER IF NOT EXISTS inventory_history_no_update BEFORE UPDATE ON inventory_history BEGIN SELECT RAISE(ABORT,'inventory_history is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS inventory_history_no_delete BEFORE DELETE ON inventory_history BEGIN SELECT RAISE(ABORT,'inventory_history is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS return_events_no_update BEFORE UPDATE ON return_events BEGIN SELECT RAISE(ABORT,'return_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS return_events_no_delete BEFORE DELETE ON return_events BEGIN SELECT RAISE(ABORT,'return_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS correction_events_no_update BEFORE UPDATE ON correction_events BEGIN SELECT RAISE(ABORT,'correction_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS correction_events_no_delete BEFORE DELETE ON correction_events BEGIN SELECT RAISE(ABORT,'correction_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS reversal_events_no_update BEFORE UPDATE ON reversal_events BEGIN SELECT RAISE(ABORT,'reversal_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS reversal_events_no_delete BEFORE DELETE ON reversal_events BEGIN SELECT RAISE(ABORT,'reversal_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS inventory_movements_no_update BEFORE UPDATE ON inventory_movements BEGIN SELECT RAISE(ABORT,'inventory_movements is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS inventory_movements_no_delete BEFORE DELETE ON inventory_movements BEGIN SELECT RAISE(ABORT,'inventory_movements is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS financial_events_no_update BEFORE UPDATE ON financial_events BEGIN SELECT RAISE(ABORT,'financial_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS financial_events_no_delete BEFORE DELETE ON financial_events BEGIN SELECT RAISE(ABORT,'financial_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS event_history_no_update BEFORE UPDATE ON event_history BEGIN SELECT RAISE(ABORT,'event_history is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS event_history_no_delete BEFORE DELETE ON event_history BEGIN SELECT RAISE(ABORT,'event_history is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS audit_events_no_update BEFORE UPDATE ON audit_events BEGIN SELECT RAISE(ABORT,'audit_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS audit_events_no_delete BEFORE DELETE ON audit_events BEGIN SELECT RAISE(ABORT,'audit_events is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS sales_financial_history_no_update BEFORE UPDATE ON sales_financial_history BEGIN SELECT RAISE(ABORT,'sales_financial_history is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS sales_financial_history_no_delete BEFORE DELETE ON sales_financial_history BEGIN SELECT RAISE(ABORT,'sales_financial_history is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS transformation_lineage_no_update BEFORE UPDATE ON transformation_lineage BEGIN SELECT RAISE(ABORT,'transformation_lineage is append-only'); END;
