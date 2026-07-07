@@ -1,3 +1,4 @@
+import csv
 from pathlib import Path
 from core.database_manager import DatabaseManager
 from core.event_repository import EventRepository
@@ -50,6 +51,19 @@ class InventoryAppService(AuthoritativeService):
             'total_units': sum(int(row['quantity']) for row in rows),
             'total_cost_minor': sum(int(row['total_cost_minor']) for row in rows),
         }
+
+    @staticmethod
+    def export_inventory_csv(rows, destination):
+        destination = Path(destination)
+        if destination.suffix.lower() != '.csv':
+            destination = destination.with_suffix('.csv')
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        with destination.open('w', newline='', encoding='utf-8-sig') as handle:
+            writer = csv.writer(handle)
+            writer.writerow(['Asset ID','Asset Name','Asset Type','Quantity','Total Cost'])
+            for row in rows:
+                writer.writerow([row['asset_id'],row['asset_name'],row['asset_type'],int(row['quantity']),f"{int(row['total_cost_minor'])/100:.2f}"])
+        return destination
 
     def get_asset_detail(self, asset_id):
         with self.database.read_connection() as connection:
