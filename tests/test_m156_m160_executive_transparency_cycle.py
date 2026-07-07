@@ -1,5 +1,6 @@
 import sqlite3
 import pytest
+from services.executive_accountability_cycle_service import ExecutiveAccountabilityCycleService
 from services.executive_transparency_cycle_service import ExecutiveTransparencyCycleBlocked, ExecutiveTransparencyCycleService
 
 EXPECTED=(('EXECUTIVE_ACCOUNTABILITY_OBSERVATION','EXECUTIVE_ACCOUNTABILITY_OBSERVATION_READY'),('EXECUTIVE_TRANSPARENCY_RECONSTRUCTION','EXECUTIVE_TRANSPARENCY_READY'),('EXECUTIVE_DISCLOSURE_AUTHORITY','EXECUTIVE_DISCLOSURE_READY'),('EXECUTIVE_VISIBILITY_AUTHORITY','EXECUTIVE_VISIBILITY_READY'),('EXECUTIVE_TRANSPARENCY_CYCLE_AUTHORITY','EXECUTIVE_TRANSPARENCY_CYCLE_READY'))
@@ -13,6 +14,7 @@ def test_m160_declares_executive_transparency_cycle_ready():
  assert ExecutiveTransparencyCycleService.final_result()=='EXECUTIVE_TRANSPARENCY_CYCLE_READY'
 
 def _seed_accountability(service):
+ ExecutiveAccountabilityCycleService(service.path)
  with service.database.transaction() as c:
   c.execute("INSERT INTO executive_accountability_cycles(executive_accountability_cycle_id,executive_answerability_id,executive_accountability_cycle_id_request_id,executive_accountability_cycle_id_event_id,authority_code,executive_accountability_cycle_result,created_at) VALUES (?,?,?,?,?,?,?)",('accountability-1','answerability-1','seed-request','seed-event','AUTHORIZE_EXECUTIVE_ACCOUNTABILITY_CYCLE_AUTHORITY','EXECUTIVE_ACCOUNTABILITY_CYCLE_READY','2026-07-07T00:00:00Z'))
 
@@ -25,7 +27,7 @@ def _build_cycle(service):
  return ids
 
 def test_m156_requires_accepted_accountability_parent(tmp_path):
- service=ExecutiveTransparencyCycleService(tmp_path/'m160.sqlite3')
+ path=tmp_path/'m160.sqlite3'; ExecutiveAccountabilityCycleService(path); service=ExecutiveTransparencyCycleService(path)
  with pytest.raises(ExecutiveTransparencyCycleBlocked,match='Accepted EXECUTIVE_ACCOUNTABILITY_CYCLE_READY authority required'):
   service.reconstruct(stage=EXPECTED[0][0],authority_id='observation-1',parent_id='missing',request_id='request-1',intent='RECONSTRUCT_EXECUTIVE_ACCOUNTABILITY_OBSERVATION')
 
