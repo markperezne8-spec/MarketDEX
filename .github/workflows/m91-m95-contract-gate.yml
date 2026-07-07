@@ -1,0 +1,21 @@
+name: M91-M95 Executive Learning Cycle Authority Gate
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  authority-gate:
+    runs-on: ubuntu-24.04
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install runtime
+        run: pip install pytest PySide6
+      - name: Verify M39-M95 authority spine
+        run: pytest -q tests/test_m39a_acceptance.py tests/test_m45_m49_authority.py tests/test_m50_execution_feedback.py tests/test_m51_m55_adaptive_feedback.py tests/test_m56_m60_continuous_business_loop.py tests/test_m61_m65_autonomous_business_cycle.py tests/test_m66_m70_strategic_control_loop.py tests/test_m71_m75_governed_strategic_cycle.py tests/test_m76_m80_enterprise_governance_loop.py tests/test_m81_m85_executive_control_cycle.py tests/test_m86_m90_executive_feedback_loop.py tests/test_m86_m90_schema_gate.py tests/test_m91_m95_schema_gate.py
