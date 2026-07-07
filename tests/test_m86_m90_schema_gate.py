@@ -10,7 +10,7 @@ def test_m86_m90_schema_initializes_and_is_append_only(tmp_path):
             '''INSERT INTO executive_feedback_loops_history(
                 executive_feedback_loop_id,
                 executive_response_id,
-                executive_feedback_loop_event_id,
+                executive_feedback_loop_id_event_id,
                 executive_feedback_loop_result,
                 recorded_at
             ) VALUES (?, ?, ?, ?, ?)''',
