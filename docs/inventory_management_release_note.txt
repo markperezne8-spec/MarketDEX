@@ -1,0 +1,1 @@
+VISIBLE_CHANGE=Inventory rows can be selected, inspected, and adjusted through an explicit delta workflow.

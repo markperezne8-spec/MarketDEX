@@ -1,0 +1,3 @@
+files=SERVICE_UI_TEST_GATE_DOCS
+implementation=COMPLETE
+pr_state=DRAFT_AFTER_COMMITS
