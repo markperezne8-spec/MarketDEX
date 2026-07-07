@@ -1,4 +1,4 @@
-MarketDEX M36.B1
-Baseline: 6bf853bfe09794d30af527ae1c48985bfb1e11ab
-Product-to-Marketplace Listing Identity + Publication Readiness acceptance build.
-Preserve existing data/marketdex.sqlite3 when replacing the build.
+MarketDEX M37.B1
+Baseline: 780e7ac67a36cdbbd3d87d0e45fa042a27218da0
+Controlled M36 READY listing execution through accepted M30 MarketplaceLifecycleService publication authority.
+Preserve existing data/marketdex.sqlite3.

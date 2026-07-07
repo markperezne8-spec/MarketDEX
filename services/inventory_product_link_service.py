@@ -1,13 +1,26 @@
 import sqlite3,uuid,json,hashlib,re
 from pathlib import Path
 from datetime import datetime,timezone
+from contextlib import contextmanager
 BASELINE='135066da16af816060d6d49e13e80e262f27efb1'
 REQ='M35-LINK-CHARIZARD-001'; ASSET='AST-M35-CHARIZARD-001'
 def now(): return datetime.now(timezone.utc).isoformat()
 def norm(v): return re.sub(r'[^a-z0-9]+',' ',(v or '').casefold()).strip()
 class InventoryProductLinkService:
  def __init__(self,path): self.path=Path(path); self.path.parent.mkdir(parents=True,exist_ok=True); self._init()
- def _c(self): c=sqlite3.connect(self.path); c.row_factory=sqlite3.Row; c.execute('PRAGMA foreign_keys=ON'); return c
+ @contextmanager
+ def _c(self):
+  c=sqlite3.connect(self.path)
+  c.row_factory=sqlite3.Row
+  c.execute('PRAGMA foreign_keys=ON')
+  try:
+   yield c
+   c.commit()
+  except Exception:
+   c.rollback()
+   raise
+  finally:
+   c.close()
  def _init(self):
   with self._c() as c:c.executescript("""
   CREATE TABLE IF NOT EXISTS event_identity(event_id TEXT PRIMARY KEY,event_type TEXT NOT NULL,request_id TEXT NOT NULL UNIQUE,occurred_at TEXT NOT NULL,committed_at TEXT NOT NULL,payload_json TEXT NOT NULL,payload_sha256 TEXT NOT NULL);

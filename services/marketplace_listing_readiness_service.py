@@ -1,6 +1,7 @@
 import sqlite3, uuid, json, hashlib
 from pathlib import Path
 from datetime import datetime, timezone
+from contextlib import contextmanager
 
 BASELINE = "6bf853bfe09794d30af527ae1c48985bfb1e11ab"
 PRODUCT_NAME = "Charizard ex"
@@ -20,11 +21,19 @@ class MarketplaceListingReadinessService:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self._init()
 
+    @contextmanager
     def _c(self):
         c = sqlite3.connect(self.path)
         c.row_factory = sqlite3.Row
         c.execute("PRAGMA foreign_keys=ON")
-        return c
+        try:
+            yield c
+            c.commit()
+        except Exception:
+            c.rollback()
+            raise
+        finally:
+            c.close()
 
     def _init(self):
         with self._c() as c:

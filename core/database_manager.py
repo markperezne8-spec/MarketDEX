@@ -7,8 +7,13 @@ class DatabaseManager:
  def __init__(self,database_path:Path): self.database_path=Path(database_path); self.database_path.parent.mkdir(parents=True,exist_ok=True)
  def connect(self):
   c=sqlite3.connect(self.database_path); c.row_factory=sqlite3.Row; c.execute('PRAGMA foreign_keys=ON'); c.execute('PRAGMA journal_mode=WAL'); return c
+ @contextmanager
+ def read_connection(self):
+  c=self.connect()
+  try: yield c
+  finally: c.close()
  def initialize(self):
-  with self.connect() as c:
+  with self.read_connection() as c:
    c.executescript(SCHEMA_SQL); row=c.execute('SELECT schema_version FROM schema_metadata ORDER BY rowid DESC LIMIT 1').fetchone(); current=0 if row is None else int(row['schema_version'])
    if current>SCHEMA_VERSION: raise RuntimeError(f'Unsupported schema version: {current}')
    c.executescript(SCHEMA_SQL)

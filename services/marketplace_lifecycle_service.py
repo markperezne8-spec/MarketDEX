@@ -14,7 +14,7 @@ class MarketplaceLifecycleService(AuthoritativeService):
  def reject_replay(self,c,event_type,request_id,payload):
   event=self._new_event(event_type,request_id,payload); existing=c.execute('SELECT event_id FROM event_identity WHERE request_id=?',(request_id,)).fetchone()
   if existing is not None:
-   c.execute('INSERT OR IGNORE INTO replay_defense_history(request_id,original_event_id,attempted_event_type,payload_sha256,defense_result,recorded_at) VALUES (?,?,?,?,?,?)',(request_id,existing['event_id'],event_type,event.payload_sha256,'BLOCKED',event.committed_at)); raise ReplayRejected('Request already committed — ZERO second authoritative mutation')
+   c.execute('INSERT OR IGNORE INTO replay_defense_history(request_id,original_event_id,attempted_event_type,payload_sha256,defense_result,recorded_at) VALUES (?,?,?,?,?,?)',(request_id,existing['event_id'],event_type,event.payload_sha256,'BLOCKED',event.committed_at)); raise ReplayRejected('Request already committed â€” ZERO second authoritative mutation')
  def audit(self,c,eid,typ,aid,ts): c.execute('INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)',(eid,typ,aid,'VERIFIED',ts))
 
 
@@ -37,7 +37,7 @@ class MarketplaceLifecycleService(AuthoritativeService):
   aid=str(k.get('asset_id','')).strip(); evidence=bool(k.get('evidence_complete')) and bool(str(k.get('evidence_type','')).strip()) and bool(str(k.get('evidence_reference','')).strip())
   explicit=str(k.get('intent','')).strip().upper()=='LISTED' and bool(str(k.get('request_id','')).strip())
   identity=bool(str(k.get('marketplace','')).strip()) and bool(str(k.get('publication_reference','')).strip()) and bool(str(k.get('publication_identity','')).strip())
-  with self.db.connect() as c: inv=c.execute('SELECT 1 FROM inventory_authority WHERE asset_id=?',(aid,)).fetchone(); av=self.available_quantity(aid,c) if inv else 0
+  with self.db.read_connection() as c: inv=c.execute('SELECT 1 FROM inventory_authority WHERE asset_id=?',(aid,)).fetchone(); av=self.available_quantity(aid,c) if inv else 0
   ok=bool(inv) and evidence and explicit and identity and q>0 and q<=av
   return {'publication_eligible':ok,'control_result':'CONTROLLED' if ok else 'BLOCKED','available_quantity':av}
  def list_publication(self,*,request_id,allocation_id,asset_id,marketplace,requested_allocation_quantity,publication_reference,publication_identity,evidence_type,evidence_reference,evidence_complete,intent):
