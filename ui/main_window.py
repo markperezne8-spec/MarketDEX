@@ -6,10 +6,10 @@ class MainWindow(QMainWindow):
   r=r or self.service.verify(); self.table.setRowCount(len(r['checks']))
   for i,(name,ok,evidence) in enumerate(r['checks']):
    for j,value in enumerate((name,'VERIFIED' if ok else 'BLOCKED',evidence)): self.table.setItem(i,j,QTableWidgetItem(str(value)))
-  self.footer.setText(f'M45-M49 authority gates verified: {r["passed"]} / 20 — operating state: {r["operating_state"]} — operating code: {r["operating_code"]} — inventory mutation: {r["inventory"]} — history: {r["history"]} — replay: {r["replay"]} — restart: {r["restart"]} — result: {r["result"]}')
+  self.footer.setText(f'M45-M49 authority gates verified: {r["passed"]} / {r["gate_count"]} — operating state: {r["operating_state"]} — operating code: {r["operating_code"]} — inventory mutation: {r["inventory"]} — history: {r["history"]} — replay: {r["replay"]} — restart: {r["restart"]} — result: {r["result"]}')
  def execute(self):
   try:
    r=self.service.execute(); self.refresh(r)
-   if r['passed']!=20: raise RuntimeError('M45-M49 cumulative authority verification incomplete')
+   if r['passed']!=r['gate_count']: raise RuntimeError('M45-M49 cumulative authority verification incomplete')
    QMessageBox.information(self,'M45-M49 RESULT','M45-M49 RESULT — ACCELERATED OPERATING COMMAND CHAIN VERIFIED')
   except Exception as exc: self.table.setRowCount(0); self.footer.setText('M45-M49 cumulative acceptance blocked.'); QMessageBox.critical(self,'M45-M49 operating command chain blocked',str(exc))
