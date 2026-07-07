@@ -34,7 +34,7 @@ class InventoryAdjustmentService(AuthoritativeService):
         with self.database.transaction() as c:
             if self.assets.get(c,asset_id) is None: raise ValueError('Unknown asset identity')
             inv=self.inventory.get(c,asset_id)
-            active=int(c.execute("SELECT COALESCE(SUM(allocated_quantity),0) n FROM marketplace_allocations WHERE asset_id=? AND state='ACTIVE'",(asset_id,)).fetchone()['n'])
+            active=int(self.availability.active_allocation_quantity(asset_id,c))
             available=(int(inv['quantity']) if inv else 0)-active
             if q<=0 or q>available: raise ValueError('Stale or insufficient authoritative available quantity')
             self._append_event_and_audit(c,event,f'apply_{typ.lower()}_adjustment')
