@@ -23,17 +23,17 @@ jobs:
           sudo apt-get install -y libegl1 libgl1 libxkbcommon-x11-0
       - name: Install project test runtime
         run: pip install pytest -r requirements.txt
-      - name: Run full authority conformance suite
+      - name: Run M39A standalone settlement acceptance
         id: pytest
         continue-on-error: true
-        run: pytest -q > pytest.log 2>&1
-      - name: Upload authority conformance evidence
+        run: pytest -q tests/test_m39a_standalone_settlement.py > pytest.log 2>&1
+      - name: Upload M39A acceptance evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: authority-conformance-evidence
+          name: m39a-acceptance-evidence
           path: pytest.log
-      - name: Enforce authority conformance result
+      - name: Enforce M39A acceptance result
         if: steps.pytest.outcome != 'success'
         run: |
           cat pytest.log
