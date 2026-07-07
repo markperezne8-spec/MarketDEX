@@ -26,24 +26,34 @@ Completed: Authoritative Sale Value and Revenue Evidence; Marketplace Fee Eviden
 
 **Progress:** `[██████████] 100%`
 
-Checkpoint 053 closes the current authority-chain milestone at M42.A1.
+Checkpoint 053 closes the milestone at M42.A1.
 
 Accepted desktop authority chain:
 `PRODUCT → ASSET → LISTING → ALLOCATION → SALE → M24 FINANCIAL TRUTH → SETTLED → ORDER CLOSE → FINALIZED → PROFIT_RECOGNIZED → POSTED → BALANCED → SUMMARIZED`
 
-Accepted M42.A1 visual evidence confirms 12 / 12 authority gates VERIFIED and:
-`BALANCED → BUSINESS PERFORMANCE RECONSTRUCTION → SUMMARIZED`
+M42.A1 accepted implementation is merged to `main` at commit `6e902a7a58f811a30da72b8ed44c80779b8842ea`.
 
-Current accepted business performance truth:
-`SALE COUNT = 1`
+## Closed Milestone 8
+**Milestone:** Business Performance Authority to Operating Intelligence
 
-`REVENUE = 5000 minor units`
+**Progress:** `[██████████] 100%`
 
-`COGS = 0 minor units`
+Checkpoint 054 closes the milestone at M43.A1.
 
-`REALIZED PROFIT = 4200 minor units`
+Accepted desktop authority chain:
+`PRODUCT → ASSET → LISTING → ALLOCATION → SALE → M24 FINANCIAL TRUTH → SETTLED → ORDER CLOSE → FINALIZED → PROFIT_RECOGNIZED → POSTED → BALANCED → SUMMARIZED → INTELLIGENCE_READY`
 
-`LEDGER ACCOUNT = REALIZED_SALES_PROFIT`
+Accepted M43.A1 visual evidence confirms 12 / 12 authority gates VERIFIED and:
+`SUMMARIZED → PERFORMANCE INTELLIGENCE RECONSTRUCTION → INTELLIGENCE_READY`
+
+Current accepted operating intelligence truth:
+`PROFIT MARGIN = 8400 basis points = 84.00%`
+
+`AVERAGE REVENUE PER FINALIZED SALE = 5000 minor units`
+
+`AVERAGE REALIZED PROFIT PER FINALIZED SALE = 4200 minor units`
+
+`PERFORMANCE STATUS = PROFITABLE`
 
 `INVENTORY MUTATION = ZERO`
 
@@ -63,6 +73,8 @@ Current accepted business performance truth:
 
 `SECOND LEDGER BALANCE = NO`
 
+`SECOND PERFORMANCE SUMMARY = NO`
+
 `SECOND SOLD CONVERSION = NO`
 
 `HISTORY = APPEND-ONLY`
@@ -71,14 +83,14 @@ Current accepted business performance truth:
 
 `RESTART = PASS`
 
-M42.A1 accepted implementation is merged to `main` at commit `6e902a7a58f811a30da72b8ed44c80779b8842ea`.
+M43.A1 accepted implementation is merged to `main` at commit `7b0ef9b6e296ccb66c6baa9e3cfadc8ab5426c84`.
 
 ## Current Proven Boundary
-`BUSINESS PERFORMANCE SUMMARY = SUMMARIZED`
+`BUSINESS PERFORMANCE INTELLIGENCE = INTELLIGENCE_READY`
 
-MarketDEX can now reconstruct explainable finalized business performance from accepted ledger truth without mutating inventory or duplicating upstream authority.
+MarketDEX can now derive explainable decision metrics from accepted summarized business performance without rewriting or mutating the accepted financial, settlement, ledger, or summary authority chain.
 
-## Permanent Financial Boundary
+## Permanent Financial and Intelligence Boundaries
 `SOLD STATE ≠ REVENUE TRUTH`
 
 `SALE CLAIM ≠ AUTHORITATIVE REVENUE`
@@ -97,17 +109,19 @@ MarketDEX can now reconstruct explainable finalized business performance from ac
 
 `BALANCED ≠ SUMMARIZED`
 
+`SUMMARIZED ≠ INTELLIGENCE_READY`
+
 A downstream accepted authority must not invalidate an immutable accepted upstream authority.
 
 ## Copilot Status
 `COPILOT ACTION = NOT USED`
 
 ## Next Milestone
-**Milestone:** Business Performance Authority to Operating Intelligence
+**Milestone:** Operating Intelligence to Decision Authority
 
 **Progress:** `[░░░░░░░░░░] 0%`
 
-The next authority must consume accepted `SUMMARIZED` business performance truth without rewriting, recalculating, or mutating the accepted financial and ledger chain.
+The next authority must consume accepted `INTELLIGENCE_READY` truth and create explainable business decision authority without rewriting, recalculating, or mutating accepted upstream authority.
 
 ## Next Gate
-Define the post-M42.A1 authority boundary before implementation. Preserve Checkpoint 053 as the approved recovery and architectural baseline.
+Define the post-M43.A1 decision-authority boundary. Preserve Checkpoint 054 as the approved recovery and architectural baseline.
