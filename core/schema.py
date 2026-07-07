@@ -1,4 +1,4 @@
-SCHEMA_VERSION = 7
+SCHEMA_VERSION = 8
 SCHEMA_SQL = r"""
 CREATE TABLE IF NOT EXISTS schema_metadata (schema_version INTEGER NOT NULL, applied_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS event_identity (event_id TEXT PRIMARY KEY, event_type TEXT NOT NULL, request_id TEXT NOT NULL UNIQUE, occurred_at TEXT NOT NULL, committed_at TEXT NOT NULL, payload_json TEXT NOT NULL, payload_sha256 TEXT NOT NULL);
@@ -87,6 +87,52 @@ CREATE TABLE IF NOT EXISTS audit_events (
  authority_id TEXT NOT NULL, verification_result TEXT NOT NULL, recorded_at TEXT NOT NULL,
  UNIQUE(event_id,authority_type,authority_id), FOREIGN KEY(event_id) REFERENCES event_identity(event_id)
 );
+
+CREATE TABLE IF NOT EXISTS exception_authority (
+ exception_id TEXT PRIMARY KEY,
+ source_event_id TEXT,
+ exception_type TEXT NOT NULL,
+ evidence TEXT NOT NULL,
+ state TEXT NOT NULL CHECK(state IN ('REVIEW','COMPLETED')),
+ event_id TEXT NOT NULL UNIQUE,
+ created_at TEXT NOT NULL,
+ FOREIGN KEY(source_event_id) REFERENCES event_identity(event_id),
+ FOREIGN KEY(event_id) REFERENCES event_identity(event_id)
+);
+CREATE TABLE IF NOT EXISTS exception_history (
+ exception_history_id INTEGER PRIMARY KEY AUTOINCREMENT,
+ exception_id TEXT NOT NULL,
+ event_id TEXT NOT NULL UNIQUE,
+ source_event_id TEXT,
+ exception_type TEXT NOT NULL,
+ evidence TEXT NOT NULL,
+ state TEXT NOT NULL,
+ recorded_at TEXT NOT NULL,
+ FOREIGN KEY(exception_id) REFERENCES exception_authority(exception_id),
+ FOREIGN KEY(event_id) REFERENCES event_identity(event_id),
+ FOREIGN KEY(source_event_id) REFERENCES event_identity(event_id)
+);
+CREATE TABLE IF NOT EXISTS audit_verifications (
+ audit_verification_id TEXT PRIMARY KEY,
+ target_event_id TEXT NOT NULL,
+ target_payload_sha256 TEXT NOT NULL,
+ verification_result TEXT NOT NULL CHECK(verification_result IN ('VERIFIED','FAILED')),
+ event_id TEXT NOT NULL UNIQUE,
+ verified_at TEXT NOT NULL,
+ FOREIGN KEY(target_event_id) REFERENCES event_identity(event_id),
+ FOREIGN KEY(event_id) REFERENCES event_identity(event_id)
+);
+CREATE TABLE IF NOT EXISTS replay_defense_history (
+ replay_history_id INTEGER PRIMARY KEY AUTOINCREMENT,
+ request_id TEXT NOT NULL,
+ original_event_id TEXT NOT NULL,
+ attempted_event_type TEXT NOT NULL,
+ payload_sha256 TEXT NOT NULL,
+ defense_result TEXT NOT NULL CHECK(defense_result='BLOCKED'),
+ recorded_at TEXT NOT NULL,
+ UNIQUE(request_id,attempted_event_type,payload_sha256),
+ FOREIGN KEY(original_event_id) REFERENCES event_identity(event_id)
+);
 CREATE TABLE IF NOT EXISTS transformations (transformation_id TEXT PRIMARY KEY, source_asset_id TEXT NOT NULL, source_quantity INTEGER NOT NULL CHECK(source_quantity > 0), source_cost_minor INTEGER NOT NULL CHECK(source_cost_minor >= 0), state TEXT NOT NULL CHECK(state IN ('PLANNED','IN PROGRESS','COMPLETED','CANCELLED','REVIEW')), created_event_id TEXT NOT NULL, completed_event_id TEXT UNIQUE, created_at TEXT NOT NULL, completed_at TEXT, FOREIGN KEY(source_asset_id) REFERENCES assets(asset_id));
 CREATE TABLE IF NOT EXISTS transformation_lineage (lineage_id INTEGER PRIMARY KEY AUTOINCREMENT, transformation_id TEXT NOT NULL, source_asset_id TEXT NOT NULL, result_asset_id TEXT NOT NULL, allocated_cost_minor INTEGER NOT NULL CHECK(allocated_cost_minor >= 0), result_quantity INTEGER NOT NULL CHECK(result_quantity > 0), event_id TEXT NOT NULL, recorded_at TEXT NOT NULL, UNIQUE(transformation_id,result_asset_id), FOREIGN KEY(transformation_id) REFERENCES transformations(transformation_id), FOREIGN KEY(source_asset_id) REFERENCES assets(asset_id), FOREIGN KEY(result_asset_id) REFERENCES assets(asset_id));
 CREATE TRIGGER IF NOT EXISTS audit_history_no_update BEFORE UPDATE ON audit_history BEGIN SELECT RAISE(ABORT,'audit_history is append-only'); END;
@@ -109,6 +155,12 @@ CREATE TRIGGER IF NOT EXISTS event_history_no_update BEFORE UPDATE ON event_hist
 CREATE TRIGGER IF NOT EXISTS event_history_no_delete BEFORE DELETE ON event_history BEGIN SELECT RAISE(ABORT,'event_history is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS audit_events_no_update BEFORE UPDATE ON audit_events BEGIN SELECT RAISE(ABORT,'audit_events is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS audit_events_no_delete BEFORE DELETE ON audit_events BEGIN SELECT RAISE(ABORT,'audit_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS exception_history_no_update BEFORE UPDATE ON exception_history BEGIN SELECT RAISE(ABORT,'exception_history is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS exception_history_no_delete BEFORE DELETE ON exception_history BEGIN SELECT RAISE(ABORT,'exception_history is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS audit_verifications_no_update BEFORE UPDATE ON audit_verifications BEGIN SELECT RAISE(ABORT,'audit_verifications is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS audit_verifications_no_delete BEFORE DELETE ON audit_verifications BEGIN SELECT RAISE(ABORT,'audit_verifications is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS replay_defense_history_no_update BEFORE UPDATE ON replay_defense_history BEGIN SELECT RAISE(ABORT,'replay_defense_history is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS replay_defense_history_no_delete BEFORE DELETE ON replay_defense_history BEGIN SELECT RAISE(ABORT,'replay_defense_history is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS sales_financial_history_no_update BEFORE UPDATE ON sales_financial_history BEGIN SELECT RAISE(ABORT,'sales_financial_history is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS sales_financial_history_no_delete BEFORE DELETE ON sales_financial_history BEGIN SELECT RAISE(ABORT,'sales_financial_history is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS transformation_lineage_no_update BEFORE UPDATE ON transformation_lineage BEGIN SELECT RAISE(ABORT,'transformation_lineage is append-only'); END;
