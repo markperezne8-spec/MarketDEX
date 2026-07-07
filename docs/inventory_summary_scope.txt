@@ -1,0 +1,4 @@
+visible_summary=ASSETS_UNITS_FILTERED_COST
+projection=SEARCH_FILTER_SORT_COMPOSED
+mutation=NONE
+protected_authority=M39-M165
