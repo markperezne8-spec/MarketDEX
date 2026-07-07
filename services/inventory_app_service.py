@@ -15,14 +15,21 @@ class InventoryAppService(AuthoritativeService):
         super().__init__(database, EventRepository())
         self.inventory = InventoryRepository()
 
-    def list_inventory(self):
+    def list_inventory(self, search_text='', asset_type='ALL'):
+        search_text = str(search_text or '').strip().casefold()
+        asset_type = str(asset_type or 'ALL').strip().upper()
         with self.database.read_connection() as connection:
             rows = connection.execute(
                 "SELECT a.asset_id,a.asset_name,a.asset_type,i.quantity,i.total_cost_minor "
                 "FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id "
                 "ORDER BY a.asset_name COLLATE NOCASE,a.asset_id"
             ).fetchall()
-        return [dict(row) for row in rows]
+        inventory = [dict(row) for row in rows]
+        if search_text:
+            inventory = [row for row in inventory if search_text in row['asset_name'].casefold()]
+        if asset_type != 'ALL':
+            inventory = [row for row in inventory if row['asset_type'] == asset_type]
+        return inventory
 
     def get_asset_detail(self, asset_id):
         with self.database.read_connection() as connection:
