@@ -1,6 +1,6 @@
 import sqlite3
 import pytest
-from services.m45_m49_acceptance_service import M45M49AcceptanceService,CHAIN
+from services.m45_m49_acceptance_service import M45M49AcceptanceService,CHAIN,ACCEPTANCE_GATE_COUNT
 from services.m44a_acceptance_service import M44AAcceptanceService
 from services.operating_command_chain_service import OperatingCommandChainService,OperatingChainBlocked,STAGES
 
@@ -9,8 +9,8 @@ def fixture(path):
  return OperatingCommandChainService(path)
 def run_chain(svc):
  for stage,aid,pid,rid,_,_ in CHAIN: svc.reconstruct(stage=stage,authority_id=aid,parent_id=pid,request_id=rid,intent=f'RECONSTRUCT_{stage}')
-def test_accelerated_chain_exact_acceptance_20_of_20(tmp_path):
- r=M45M49AcceptanceService(tmp_path/'m45_m49.sqlite3').execute(); assert r['passed']==20; assert r['operating_state']=='OPERATING_READY'; assert r['operating_code']=='OPERATE_CONTROLLED_GROWTH'; assert r['result']=='M45-M49 OPERATING COMMAND CHAIN VERIFIED'
+def test_accelerated_chain_exact_acceptance_21_of_21(tmp_path):
+ r=M45M49AcceptanceService(tmp_path/'m45_m49.sqlite3').execute(); assert r['passed']==ACCEPTANCE_GATE_COUNT==21; assert r['gate_count']==21; assert r['operating_state']=='OPERATING_READY'; assert r['operating_code']=='OPERATE_CONTROLLED_GROWTH'; assert r['result']=='M45-M49 OPERATING COMMAND CHAIN VERIFIED'
 def test_replay_restart_exactly_once_for_every_stage(tmp_path):
  path=tmp_path/'replay.sqlite3'; svc=fixture(path)
  for stage,aid,pid,rid,_,_ in CHAIN:
