@@ -1,3 +1,3 @@
-MarketDEX M33.B1
-Baseline: 50dec3f9637dd8cc3b347dcdcdf305cbdae05110
-Run RUN_MARKETDEX.bat. M33 conformance authority creates no business mutation.
+MarketDEX M34.B1
+Baseline: 9c8bb74166eac532cf81b299400edd3b6c2f118c
+Product Registry canonical identity authority.
