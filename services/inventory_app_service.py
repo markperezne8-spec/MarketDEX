@@ -42,6 +42,15 @@ class InventoryAppService(AuthoritativeService):
             return value.casefold() if isinstance(value, str) else value
         return sorted(inventory, key=lambda row:(sort_value(row), row['asset_id']), reverse=sort_order == 'DESC')
 
+    @staticmethod
+    def summarize_inventory(rows):
+        rows = list(rows)
+        return {
+            'asset_count': len(rows),
+            'total_units': sum(int(row['quantity']) for row in rows),
+            'total_cost_minor': sum(int(row['total_cost_minor']) for row in rows),
+        }
+
     def get_asset_detail(self, asset_id):
         with self.database.read_connection() as connection:
             row = connection.execute(
