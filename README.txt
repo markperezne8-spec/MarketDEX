@@ -1,6 +1,9 @@
-MarketDEX M26.B1 — Exceptions + Audit + Replay Defense Authority
-Frozen M19.B1 migration stage 7 of 8.
-Exception evidence fails closed and preserves source-event lineage.
-Audit verification derives from immutable event payload hashes.
-Replay defense blocks a duplicate event identity before a second authoritative write.
+MarketDEX M27.B1 — Mission Control Derived Views
+Frozen M19.B1 migration stage 8 of 8.
+
+Mission Control reads existing authoritative truth through dashboard_service.
+It derives inventory, financial, operational, exception, audit, corrective, and event views.
+Dashboard refresh creates ZERO authoritative writes.
+No business truth is stored or invented by the UI.
+
 Run RUN_MARKETDEX.bat.
