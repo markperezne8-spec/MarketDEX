@@ -1,7 +1,7 @@
-name: M86-M90 Executive Feedback Contract Gate
+name: M86-M90 Executive Feedback Authority Gate
 on: [pull_request, workflow_dispatch]
 jobs:
-  contract-gate:
+  authority-gate:
     runs-on: ubuntu-latest
     env: {PYTHONPATH: '${{ github.workspace }}', QT_QPA_PLATFORM: offscreen}
     steps:
@@ -13,5 +13,5 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libegl1 libgl1 libxkbcommon-x11-0
           pip install pytest -r requirements.txt
-      - name: Verify M39-M85 spine and M86-M90 contract
-        run: pytest -q tests/test_m39a_standalone_settlement.py tests/test_m39b_product_aware_closure.py tests/test_m40a_financial_finalization.py tests/test_m40b_profit_recognition.py tests/test_m41a_business_ledger_posting.py tests/test_m41b_business_ledger_balance.py tests/test_m42a_business_performance_summary.py tests/test_m43a_business_performance_intelligence.py tests/test_m44a_business_decision.py tests/test_m45_m49_operating_command_chain.py tests/test_m50_execution_feedback_authority.py tests/test_m51_m55_adaptive_feedback_chain.py tests/test_m56_m60_continuous_business_loop.py tests/test_m61_m65_autonomous_business_cycle.py tests/test_m66_m70_strategic_control_loop.py tests/test_m71_m75_governed_strategic_cycle.py tests/test_m76_m80_enterprise_governance_loop.py tests/test_m81_m85_executive_control_cycle.py tests/test_m86_m90_executive_feedback_loop.py
+      - name: Verify M39-M90 authority spine
+        run: pytest -q tests/test_m39a_standalone_settlement.py tests/test_m39b_product_aware_closure.py tests/test_m40a_financial_finalization.py tests/test_m40b_profit_recognition.py tests/test_m41a_business_ledger_posting.py tests/test_m41b_business_ledger_balance.py tests/test_m42a_business_performance_summary.py tests/test_m43a_business_performance_intelligence.py tests/test_m44a_business_decision.py tests/test_m45_m49_operating_command_chain.py tests/test_m50_execution_feedback_authority.py tests/test_m51_m55_adaptive_feedback_chain.py tests/test_m56_m60_continuous_business_loop.py tests/test_m61_m65_autonomous_business_cycle.py tests/test_m66_m70_strategic_control_loop.py tests/test_m71_m75_governed_strategic_cycle.py tests/test_m76_m80_enterprise_governance_loop.py tests/test_m81_m85_executive_control_cycle.py tests/test_m86_m90_executive_feedback_loop.py tests/test_m86_m90_schema_gate.py
