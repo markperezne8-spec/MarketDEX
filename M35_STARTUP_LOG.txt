@@ -1,0 +1,2 @@
+MarketDEX M35.B1 startup 
+Folder: C:\Projects\MarketDEX_OS 
