@@ -18,8 +18,8 @@ class ExecutiveFeedbackLoopService(AuthoritativeService):
   self.path=Path(path); self.database=DatabaseManager(self.path); self.database.initialize(); self.events=EventRepository(); super().__init__(self.database,self.events)
   with self.database.transaction() as c:
    for _,_,_,_,_,t,idc,pc,rc,r in STAGES:
-    rq=f'{idc}_request_id'; ec=f'{idc}_event_id'; h=f'{t}_history'
-    c.execute(f'CREATE TABLE IF NOT EXISTS {t}({idc} TEXT PRIMARY KEY,{pc} TEXT NOT NULL UNIQUE,{rq} TEXT NOT NULL UNIQUE,{ec} TEXT NOT NULL UNIQUE,authority_code TEXT NOT NULL,{rc} TEXT NOT NULL CHECK({rc}=?),created_at TEXT NOT NULL)',(r,))
+    rq=f'{idc}_request_id'; ec=f'{idc}_event_id'; h=f'{t}_history'; result_literal=r.replace("'", "''")
+    c.execute(f"CREATE TABLE IF NOT EXISTS {t}({idc} TEXT PRIMARY KEY,{pc} TEXT NOT NULL UNIQUE,{rq} TEXT NOT NULL UNIQUE,{ec} TEXT NOT NULL UNIQUE,authority_code TEXT NOT NULL,{rc} TEXT NOT NULL CHECK({rc}='{result_literal}'),created_at TEXT NOT NULL)")
     c.execute(f'CREATE TABLE IF NOT EXISTS {h}(history_id INTEGER PRIMARY KEY AUTOINCREMENT,{idc} TEXT NOT NULL,{pc} TEXT NOT NULL,{ec} TEXT NOT NULL UNIQUE,{rc} TEXT NOT NULL,recorded_at TEXT NOT NULL)')
     for name,table,op in ((f'{t}_no_update',t,'UPDATE'),(f'{t}_no_delete',t,'DELETE'),(f'{h}_no_update',h,'UPDATE'),(f'{h}_no_delete',h,'DELETE')): c.execute(f"CREATE TRIGGER IF NOT EXISTS {name} BEFORE {op} ON {table} BEGIN SELECT RAISE(ABORT,'append-only'); END")
  def reconstruct(self,*,stage,authority_id,parent_id,request_id,intent):
