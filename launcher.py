@@ -1,12 +1,12 @@
 import sys
 from pathlib import Path
 from PySide6.QtWidgets import QApplication
-from services.m39b_acceptance_service import M39BAcceptanceService
+from services.m40a_acceptance_service import M40AAcceptanceService
 from ui.main_window import MainWindow
 
 if __name__ == "__main__":
-    acceptance_db = Path(__file__).parent / "data" / "m39b_acceptance.sqlite3"
-    svc = M39BAcceptanceService(acceptance_db)
+    acceptance_db = Path(__file__).parent / "data" / "m40a_acceptance.sqlite3"
+    svc = M40AAcceptanceService(acceptance_db)
     app = QApplication(sys.argv)
     w = MainWindow(svc)
     w.show()
