@@ -13,5 +13,5 @@ class ServiceRegistry:
  def __init__(self,database):
   events=EventRepository(); assets=AssetRepository(); inventory=InventoryRepository()
   self.asset=AssetService(database,events,assets); self.inventory=InventoryService(database,events,assets,inventory)
-  self.transformation=TransformationService(database,events); self.sales=SalesService(database,events); self.returns=ReturnService(database,events)
-  self.exceptions=ExceptionService(database,events); self.audit=AuditService(database,events); self.dashboard=DashboardService(database,events)
+  self.transformation=TransformationService(database,events,assets,inventory)
+  self.sales=SalesService(database,events); self.return_service=ReturnService(database,events); self.exception=ExceptionService(database,events); self.audit=AuditService(database,events); self.dashboard=DashboardService(database,events)
