@@ -9,12 +9,15 @@ on:
 jobs:
   authority-conformance:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install pytest
+      - name: Install project test runtime
+        run: pip install pytest -r requirements.txt
       - name: Run full authority conformance suite
         id: pytest
         continue-on-error: true
