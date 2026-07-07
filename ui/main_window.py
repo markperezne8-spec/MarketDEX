@@ -1,5 +1,6 @@
 from uuid import uuid4
 from PySide6.QtWidgets import QMainWindow,QWidget,QVBoxLayout,QLabel,QPushButton,QGridLayout,QGroupBox,QHBoxLayout,QTableWidget,QTableWidgetItem,QDialog,QFormLayout,QLineEdit,QComboBox,QSpinBox,QDoubleSpinBox,QDialogButtonBox,QMessageBox,QFileDialog
+from services.inventory_csv_import_service import InventoryCsvImportService
 
 
 class AddAssetDialog(QDialog):
@@ -24,7 +25,7 @@ class AdjustAssetDialog(QDialog):
 
 class MainWindow(QMainWindow):
     def __init__(self,service,inventory_service):
-        super().__init__(); self.service=service; self.inventory_service=inventory_service; self.inventory_rows=[]
+        super().__init__(); self.service=service; self.inventory_service=inventory_service; self.inventory_import_service=InventoryCsvImportService(inventory_service); self.inventory_rows=[]
         self.setWindowTitle('MarketDEX OS — Mission Control'); self.resize(1480,860)
         root=QWidget(); outer=QHBoxLayout(root); panel=QWidget(); panel.setMaximumWidth(760); layout=QVBoxLayout(panel); outer.addWidget(panel); outer.addStretch(1)
         title=QLabel('MarketDEX OS'); title.setStyleSheet('font-size:36px;font-weight:700'); layout.addWidget(title)
@@ -34,6 +35,7 @@ class MainWindow(QMainWindow):
             box=QGroupBox(label); box_layout=QVBoxLayout(box); value=QLabel('--'); value.setStyleSheet('font-size:24px;font-weight:700'); box_layout.addWidget(value); self.values[key]=value; grid.addWidget(box,index//2,index%2)
         layout.addLayout(grid)
         inventory_header=QHBoxLayout(); inventory_header.addWidget(QLabel('📦 INVENTORY')); inventory_header.addStretch(1)
+        import_button=QPushButton('Import CSV'); import_button.clicked.connect(self.import_inventory); inventory_header.addWidget(import_button)
         export_button=QPushButton('Export CSV'); export_button.clicked.connect(self.export_inventory); inventory_header.addWidget(export_button)
         self.adjust_button=QPushButton('Adjust Selected'); self.adjust_button.setEnabled(False); self.adjust_button.clicked.connect(self.adjust_selected); inventory_header.addWidget(self.adjust_button)
         add_button=QPushButton('+ Add Asset'); add_button.clicked.connect(self.add_asset); inventory_header.addWidget(add_button); layout.addLayout(inventory_header)
@@ -61,6 +63,17 @@ class MainWindow(QMainWindow):
         for row_index,row in enumerate(self.inventory_rows):
             for column,value in enumerate((row['asset_name'],row['asset_type'],row['quantity'],self._money(row['total_cost_minor']))): self.inventory_table.setItem(row_index,column,QTableWidgetItem(str(value)))
         self.inventory_table.resizeColumnsToContents(); self.inventory_result.setText(f"Showing {len(self.inventory_rows):,} matching inventory asset(s) • {self.inventory_sort.currentText()} {self.inventory_sort_order.currentText()}"); self.show_selected()
+
+    def import_inventory(self):
+        source,_=QFileDialog.getOpenFileName(self,'Import MarketDEX Inventory CSV','','CSV Files (*.csv)')
+        if not source:return
+        try:
+            rows=self.inventory_import_service.validate_csv(source)
+            answer=QMessageBox.question(self,'Confirm Inventory Import',f"Import {len(rows):,} validated asset(s) as authoritative inventory events?",QMessageBox.Yes|QMessageBox.No)
+            if answer!=QMessageBox.Yes:return
+            imported=self.inventory_import_service.import_csv(source,f'ui-import-{uuid4().hex}'); self.refresh()
+            QMessageBox.information(self,'Inventory Imported',f'Imported {len(imported):,} asset(s) into MarketDEX authority.')
+        except Exception as exc:QMessageBox.critical(self,'Import Blocked',str(exc))
 
     def export_inventory(self):
         destination,_=QFileDialog.getSaveFileName(self,'Export Current Inventory View','MarketDEX_Inventory.csv','CSV Files (*.csv)')
