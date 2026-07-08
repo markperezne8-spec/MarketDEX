@@ -1,0 +1,17 @@
+name: App Integration Inventory Archive Gate
+on: [pull_request, workflow_dispatch]
+jobs:
+  inventory-archive-gate:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install runtime
+        run: pip install pytest -r requirements.txt
+      - name: Verify inventory archive and cumulative protected authority
+        run: pytest -q tests
