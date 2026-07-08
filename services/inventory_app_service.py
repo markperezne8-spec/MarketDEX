@@ -12,13 +12,14 @@ class InventoryAppService(AuthoritativeService):
     def __init__(self, database_path):
         self.path = Path(database_path); database = DatabaseManager(self.path); database.initialize(); super().__init__(database, EventRepository()); self.inventory = InventoryRepository()
 
-    def _list_inventory_state(self, state, search_text='', asset_type='ALL', sort_key='NAME', sort_order='ASC'):
+    def _list_inventory_state(self, state, search_text='', asset_type='ALL', sort_key='NAME', sort_order='ASC', include_state=False):
         search_text = str(search_text or '').strip().casefold(); asset_type = str(asset_type or 'ALL').strip().upper(); sort_key = str(sort_key or 'NAME').strip().upper(); sort_order = str(sort_order or 'ASC').strip().upper()
         sort_fields = {'NAME':'asset_name','TYPE':'asset_type','QUANTITY':'quantity','TOTAL COST':'total_cost_minor'}
         if sort_key not in sort_fields: raise ValueError('Unsupported inventory sort key')
         if sort_order not in {'ASC','DESC'}: raise ValueError('Unsupported inventory sort order')
+        state_column = ',a.state' if include_state else ''
         with self.database.read_connection() as connection:
-            rows = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,a.state,i.quantity,i.total_cost_minor FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id WHERE a.state=? ORDER BY a.asset_name COLLATE NOCASE,a.asset_id", (state,)).fetchall()
+            rows = connection.execute(f"SELECT a.asset_id,a.asset_name,a.asset_type{state_column},i.quantity,i.total_cost_minor FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id WHERE a.state=? ORDER BY a.asset_name COLLATE NOCASE,a.asset_id", (state,)).fetchall()
         inventory = [dict(row) for row in rows]
         if search_text: inventory = [row for row in inventory if search_text in row['asset_name'].casefold()]
         if asset_type != 'ALL': inventory = [row for row in inventory if row['asset_type'] == asset_type]
@@ -31,7 +32,7 @@ class InventoryAppService(AuthoritativeService):
         return self._list_inventory_state('COMPLETED', search_text, asset_type, sort_key, sort_order)
 
     def list_archived_inventory(self, search_text='', asset_type='ALL', sort_key='NAME', sort_order='ASC'):
-        return self._list_inventory_state('CANCELLED', search_text, asset_type, sort_key, sort_order)
+        return self._list_inventory_state('CANCELLED', search_text, asset_type, sort_key, sort_order, include_state=True)
 
     @staticmethod
     def summarize_inventory(rows):
