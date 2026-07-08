@@ -5,73 +5,43 @@ from services.inventory_csv_import_service import InventoryCsvImportService
 
 class AddAssetDialog(QDialog):
     def __init__(self,parent=None):
-        super().__init__(parent); self.setWindowTitle('Add Inventory Asset'); form=QFormLayout(self)
-        self.name=QLineEdit(); self.asset_type=QComboBox(); self.asset_type.addItems(['SINGLE','SEALED','SLAB','ACCESSORY'])
-        self.quantity=QSpinBox(); self.quantity.setRange(0,100000); self.quantity.setValue(1)
-        self.cost=QDoubleSpinBox(); self.cost.setRange(0,1000000); self.cost.setDecimals(2); self.cost.setPrefix('$')
-        form.addRow('Asset Name',self.name); form.addRow('Asset Type',self.asset_type); form.addRow('Quantity',self.quantity); form.addRow('Total Cost',self.cost)
-        buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); form.addRow(buttons)
+        super().__init__(parent); self.setWindowTitle('Add Inventory Asset'); form=QFormLayout(self); self.name=QLineEdit(); self.asset_type=QComboBox(); self.asset_type.addItems(['SINGLE','SEALED','SLAB','ACCESSORY']); self.quantity=QSpinBox(); self.quantity.setRange(0,100000); self.quantity.setValue(1); self.cost=QDoubleSpinBox(); self.cost.setRange(0,1000000); self.cost.setDecimals(2); self.cost.setPrefix('$'); form.addRow('Asset Name',self.name); form.addRow('Asset Type',self.asset_type); form.addRow('Quantity',self.quantity); form.addRow('Total Cost',self.cost); buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); form.addRow(buttons)
 
 
 class AdjustAssetDialog(QDialog):
     def __init__(self,detail,parent=None):
-        super().__init__(parent); self.setWindowTitle('Adjust Inventory Asset'); form=QFormLayout(self)
-        form.addRow('Asset',QLabel(detail['asset_name'])); form.addRow('Current Quantity',QLabel(str(detail['quantity']))); form.addRow('Current Cost',QLabel(f"${detail['total_cost_minor']/100:,.2f}"))
-        self.quantity_delta=QSpinBox(); self.quantity_delta.setRange(-100000,100000); self.quantity_delta.setPrefix('Delta ')
-        self.cost_delta=QDoubleSpinBox(); self.cost_delta.setRange(-1000000,1000000); self.cost_delta.setDecimals(2); self.cost_delta.setPrefix('Delta $')
-        form.addRow('Quantity Adjustment',self.quantity_delta); form.addRow('Cost Adjustment',self.cost_delta)
-        buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); form.addRow(buttons)
+        super().__init__(parent); self.setWindowTitle('Adjust Inventory Asset'); form=QFormLayout(self); form.addRow('Asset',QLabel(detail['asset_name'])); form.addRow('Current Quantity',QLabel(str(detail['quantity']))); form.addRow('Current Cost',QLabel(f"${detail['total_cost_minor']/100:,.2f}")); self.quantity_delta=QSpinBox(); self.quantity_delta.setRange(-100000,100000); self.quantity_delta.setPrefix('Delta '); self.cost_delta=QDoubleSpinBox(); self.cost_delta.setRange(-1000000,1000000); self.cost_delta.setDecimals(2); self.cost_delta.setPrefix('Delta $'); form.addRow('Quantity Adjustment',self.quantity_delta); form.addRow('Cost Adjustment',self.cost_delta); buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); form.addRow(buttons)
 
 
 class BulkAdjustDialog(QDialog):
     def __init__(self,selected_count,parent=None):
-        super().__init__(parent); self.setWindowTitle('Bulk Adjust Inventory'); form=QFormLayout(self)
-        form.addRow('Selected Assets',QLabel(f'{selected_count:,}'))
-        self.quantity_delta=QSpinBox(); self.quantity_delta.setRange(-100000,100000); self.quantity_delta.setPrefix('Delta ')
-        self.cost_delta=QDoubleSpinBox(); self.cost_delta.setRange(-1000000,1000000); self.cost_delta.setDecimals(2); self.cost_delta.setPrefix('Delta $')
-        form.addRow('Quantity Delta Per Asset',self.quantity_delta); form.addRow('Cost Delta Per Asset',self.cost_delta)
-        buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); form.addRow(buttons)
+        super().__init__(parent); self.setWindowTitle('Bulk Adjust Inventory'); form=QFormLayout(self); form.addRow('Selected Assets',QLabel(f'{selected_count:,}')); self.quantity_delta=QSpinBox(); self.quantity_delta.setRange(-100000,100000); self.quantity_delta.setPrefix('Delta '); self.cost_delta=QDoubleSpinBox(); self.cost_delta.setRange(-1000000,1000000); self.cost_delta.setDecimals(2); self.cost_delta.setPrefix('Delta $'); form.addRow('Quantity Delta Per Asset',self.quantity_delta); form.addRow('Cost Delta Per Asset',self.cost_delta); buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); form.addRow(buttons)
 
 
 class MainWindow(QMainWindow):
     def __init__(self,service,inventory_service):
-        super().__init__(); self.service=service; self.inventory_service=inventory_service; self.inventory_import_service=InventoryCsvImportService(inventory_service); self.inventory_rows=[]
-        self.setWindowTitle('MarketDEX OS — Mission Control'); self.resize(1480,860)
-        root=QWidget(); outer=QHBoxLayout(root); panel=QWidget(); panel.setMaximumWidth(760); layout=QVBoxLayout(panel); outer.addWidget(panel); outer.addStretch(1)
-        title=QLabel('MarketDEX OS'); title.setStyleSheet('font-size:36px;font-weight:700'); layout.addWidget(title)
-        subtitle=QLabel('MISSION CONTROL — LIVE SQLITE BUSINESS SNAPSHOT'); subtitle.setStyleSheet('font-size:15px;font-weight:600'); layout.addWidget(subtitle)
+        super().__init__(); self.service=service; self.inventory_service=inventory_service; self.inventory_import_service=InventoryCsvImportService(inventory_service); self.inventory_rows=[]; self.setWindowTitle('MarketDEX OS — Mission Control'); self.resize(1480,860)
+        root=QWidget(); outer=QHBoxLayout(root); panel=QWidget(); panel.setMaximumWidth(820); layout=QVBoxLayout(panel); outer.addWidget(panel); outer.addStretch(1); title=QLabel('MarketDEX OS'); title.setStyleSheet('font-size:36px;font-weight:700'); layout.addWidget(title); subtitle=QLabel('MISSION CONTROL — LIVE SQLITE BUSINESS SNAPSHOT'); subtitle.setStyleSheet('font-size:15px;font-weight:600'); layout.addWidget(subtitle)
         self.values={}; grid=QGridLayout(); cards=(('📦 Inventory Units','inventory_units'),('🗂️ Inventory Assets','inventory_asset_count'),('💰 Inventory Cost','inventory_cost_minor'),('🧾 Completed Sales','completed_sales'),('📈 Revenue','revenue_minor'),('💵 Profit','profit_minor'),('🛡️ Verified Audits','verified_audits'),('⚙️ Authority Events','authority_events'))
         for index,(label,key) in enumerate(cards):
             box=QGroupBox(label); box_layout=QVBoxLayout(box); value=QLabel('--'); value.setStyleSheet('font-size:24px;font-weight:700'); box_layout.addWidget(value); self.values[key]=value; grid.addWidget(box,index//2,index%2)
-        layout.addLayout(grid)
-        inventory_header=QHBoxLayout(); inventory_header.addWidget(QLabel('📦 INVENTORY')); inventory_header.addStretch(1)
-        import_button=QPushButton('Import CSV'); import_button.clicked.connect(self.import_inventory); inventory_header.addWidget(import_button)
-        export_button=QPushButton('Export CSV'); export_button.clicked.connect(self.export_inventory); inventory_header.addWidget(export_button)
-        self.adjust_button=QPushButton('Adjust Selected'); self.adjust_button.setEnabled(False); self.adjust_button.clicked.connect(self.adjust_selected); inventory_header.addWidget(self.adjust_button)
-        self.bulk_adjust_button=QPushButton('Bulk Adjust'); self.bulk_adjust_button.setEnabled(False); self.bulk_adjust_button.clicked.connect(self.bulk_adjust_selected); inventory_header.addWidget(self.bulk_adjust_button)
-        add_button=QPushButton('+ Add Asset'); add_button.clicked.connect(self.add_asset); inventory_header.addWidget(add_button); layout.addLayout(inventory_header)
-        filter_bar=QHBoxLayout(); self.inventory_search=QLineEdit(); self.inventory_search.setPlaceholderText('Search inventory by asset name...'); self.inventory_search.textChanged.connect(self.refresh_inventory); filter_bar.addWidget(self.inventory_search)
-        self.inventory_type_filter=QComboBox(); self.inventory_type_filter.addItems(['ALL','SINGLE','SEALED','SLAB','ACCESSORY']); self.inventory_type_filter.currentTextChanged.connect(self.refresh_inventory); filter_bar.addWidget(self.inventory_type_filter); layout.addLayout(filter_bar)
-        sort_bar=QHBoxLayout(); sort_bar.addWidget(QLabel('Sort by')); self.inventory_sort=QComboBox(); self.inventory_sort.addItems(['NAME','TYPE','QUANTITY','TOTAL COST']); self.inventory_sort.currentTextChanged.connect(self.refresh_inventory); sort_bar.addWidget(self.inventory_sort)
-        self.inventory_sort_order=QComboBox(); self.inventory_sort_order.addItems(['ASC','DESC']); self.inventory_sort_order.currentTextChanged.connect(self.refresh_inventory); sort_bar.addWidget(self.inventory_sort_order); sort_bar.addStretch(1); layout.addLayout(sort_bar)
+        layout.addLayout(grid); inventory_header=QHBoxLayout(); inventory_header.addWidget(QLabel('📦 INVENTORY')); inventory_header.addStretch(1)
+        import_button=QPushButton('Import CSV'); import_button.clicked.connect(self.import_inventory); inventory_header.addWidget(import_button); export_button=QPushButton('Export CSV'); export_button.clicked.connect(self.export_inventory); inventory_header.addWidget(export_button); self.adjust_button=QPushButton('Adjust Selected'); self.adjust_button.setEnabled(False); self.adjust_button.clicked.connect(self.adjust_selected); inventory_header.addWidget(self.adjust_button); self.bulk_adjust_button=QPushButton('Bulk Adjust'); self.bulk_adjust_button.setEnabled(False); self.bulk_adjust_button.clicked.connect(self.bulk_adjust_selected); inventory_header.addWidget(self.bulk_adjust_button); self.archive_button=QPushButton('Archive Selected'); self.archive_button.setEnabled(False); self.archive_button.clicked.connect(self.archive_selected); inventory_header.addWidget(self.archive_button); add_button=QPushButton('+ Add Asset'); add_button.clicked.connect(self.add_asset); inventory_header.addWidget(add_button); layout.addLayout(inventory_header)
+        filter_bar=QHBoxLayout(); self.inventory_search=QLineEdit(); self.inventory_search.setPlaceholderText('Search inventory by asset name...'); self.inventory_search.textChanged.connect(self.refresh_inventory); filter_bar.addWidget(self.inventory_search); self.inventory_type_filter=QComboBox(); self.inventory_type_filter.addItems(['ALL','SINGLE','SEALED','SLAB','ACCESSORY']); self.inventory_type_filter.currentTextChanged.connect(self.refresh_inventory); filter_bar.addWidget(self.inventory_type_filter); layout.addLayout(filter_bar)
+        sort_bar=QHBoxLayout(); sort_bar.addWidget(QLabel('Sort by')); self.inventory_sort=QComboBox(); self.inventory_sort.addItems(['NAME','TYPE','QUANTITY','TOTAL COST']); self.inventory_sort.currentTextChanged.connect(self.refresh_inventory); sort_bar.addWidget(self.inventory_sort); self.inventory_sort_order=QComboBox(); self.inventory_sort_order.addItems(['ASC','DESC']); self.inventory_sort_order.currentTextChanged.connect(self.refresh_inventory); sort_bar.addWidget(self.inventory_sort_order); sort_bar.addStretch(1); layout.addLayout(sort_bar)
         summary_bar=QHBoxLayout(); self.inventory_summary={}
         for label,key in (('Assets','asset_count'),('Units','total_units'),('Filtered Cost','total_cost_minor')):
             box=QGroupBox(label); box_layout=QVBoxLayout(box); value=QLabel('--'); value.setStyleSheet('font-size:18px;font-weight:700'); box_layout.addWidget(value); self.inventory_summary[key]=value; summary_bar.addWidget(box)
-        layout.addLayout(summary_bar)
-        self.inventory_table=QTableWidget(0,4); self.inventory_table.setHorizontalHeaderLabels(['Asset','Type','Qty','Total Cost']); self.inventory_table.setEditTriggers(QTableWidget.NoEditTriggers); self.inventory_table.setSelectionBehavior(QTableWidget.SelectRows); self.inventory_table.setSelectionMode(QAbstractItemView.ExtendedSelection); self.inventory_table.itemSelectionChanged.connect(self.show_selected); layout.addWidget(self.inventory_table)
-        self.inventory_result=QLabel(''); layout.addWidget(self.inventory_result); self.asset_detail=QLabel('Select an inventory asset to view details.'); self.asset_detail.setWordWrap(True); layout.addWidget(self.asset_detail)
-        self.refresh_button=QPushButton('Refresh MarketDEX'); self.refresh_button.clicked.connect(self.refresh); layout.addWidget(self.refresh_button)
-        self.footer=QLabel('Loading MarketDEX business authority...'); self.footer.setWordWrap(True); layout.addWidget(self.footer); self.setCentralWidget(root); self.refresh()
+        layout.addLayout(summary_bar); self.inventory_table=QTableWidget(0,4); self.inventory_table.setHorizontalHeaderLabels(['Asset','Type','Qty','Total Cost']); self.inventory_table.setEditTriggers(QTableWidget.NoEditTriggers); self.inventory_table.setSelectionBehavior(QTableWidget.SelectRows); self.inventory_table.setSelectionMode(QAbstractItemView.ExtendedSelection); self.inventory_table.itemSelectionChanged.connect(self.show_selected); layout.addWidget(self.inventory_table); self.inventory_result=QLabel(''); layout.addWidget(self.inventory_result); self.asset_detail=QLabel('Select an inventory asset to view details.'); self.asset_detail.setWordWrap(True); layout.addWidget(self.asset_detail); self.refresh_button=QPushButton('Refresh MarketDEX'); self.refresh_button.clicked.connect(self.refresh); layout.addWidget(self.refresh_button); self.footer=QLabel('Loading MarketDEX business authority...'); self.footer.setWordWrap(True); layout.addWidget(self.footer); self.setCentralWidget(root); self.refresh()
 
     @staticmethod
     def _money(minor): return f'${minor/100:,.2f}'
 
     def refresh_inventory(self):
-        self.inventory_rows=self.inventory_service.list_inventory(search_text=self.inventory_search.text(),asset_type=self.inventory_type_filter.currentText(),sort_key=self.inventory_sort.currentText(),sort_order=self.inventory_sort_order.currentText()); self.inventory_table.setRowCount(len(self.inventory_rows))
-        summary=self.inventory_service.summarize_inventory(self.inventory_rows); self.inventory_summary['asset_count'].setText(f"{summary['asset_count']:,}"); self.inventory_summary['total_units'].setText(f"{summary['total_units']:,}"); self.inventory_summary['total_cost_minor'].setText(self._money(summary['total_cost_minor']))
+        self.inventory_rows=self.inventory_service.list_inventory(search_text=self.inventory_search.text(),asset_type=self.inventory_type_filter.currentText(),sort_key=self.inventory_sort.currentText(),sort_order=self.inventory_sort_order.currentText()); self.inventory_table.setRowCount(len(self.inventory_rows)); summary=self.inventory_service.summarize_inventory(self.inventory_rows); self.inventory_summary['asset_count'].setText(f"{summary['asset_count']:,}"); self.inventory_summary['total_units'].setText(f"{summary['total_units']:,}"); self.inventory_summary['total_cost_minor'].setText(self._money(summary['total_cost_minor']))
         for row_index,row in enumerate(self.inventory_rows):
             for column,value in enumerate((row['asset_name'],row['asset_type'],row['quantity'],self._money(row['total_cost_minor']))): self.inventory_table.setItem(row_index,column,QTableWidgetItem(str(value)))
-        self.inventory_table.resizeColumnsToContents(); self.inventory_result.setText(f"Showing {len(self.inventory_rows):,} matching inventory asset(s) • {self.inventory_sort.currentText()} {self.inventory_sort_order.currentText()}"); self.show_selected()
+        self.inventory_table.resizeColumnsToContents(); self.inventory_result.setText(f"Showing {len(self.inventory_rows):,} active inventory asset(s) • {self.inventory_sort.currentText()} {self.inventory_sort_order.currentText()}"); self.show_selected()
 
     def import_inventory(self):
         source,_=QFileDialog.getOpenFileName(self,'Import MarketDEX Inventory CSV','','CSV Files (*.csv)')
@@ -85,8 +55,7 @@ class MainWindow(QMainWindow):
     def export_inventory(self):
         destination,_=QFileDialog.getSaveFileName(self,'Export Current Inventory View','MarketDEX_Inventory.csv','CSV Files (*.csv)')
         if not destination:return
-        try:
-            exported=self.inventory_service.export_inventory_csv(self.inventory_rows,destination); QMessageBox.information(self,'Inventory Exported',f'Exported {len(self.inventory_rows):,} visible asset(s) to:\n{exported}')
+        try: exported=self.inventory_service.export_inventory_csv(self.inventory_rows,destination); QMessageBox.information(self,'Inventory Exported',f'Exported {len(self.inventory_rows):,} visible asset(s) to:\n{exported}')
         except Exception as exc:QMessageBox.critical(self,'Export Failed',str(exc))
 
     def refresh(self):
@@ -95,14 +64,12 @@ class MainWindow(QMainWindow):
         for key in ('inventory_cost_minor','revenue_minor','profit_minor'): self.values[key].setText(self._money(snapshot[key]))
         self.refresh_inventory(); self.footer.setText(f"LIVE DATABASE: {snapshot['database_path']} — refreshed from protected SQLite authority.")
 
-    def selected_asset_ids(self):
-        return [self.inventory_rows[index.row()]['asset_id'] for index in self.inventory_table.selectionModel().selectedRows() if 0<=index.row()<len(self.inventory_rows)]
-
+    def selected_asset_ids(self): return [self.inventory_rows[index.row()]['asset_id'] for index in self.inventory_table.selectionModel().selectedRows() if 0<=index.row()<len(self.inventory_rows)]
     def selected_asset_id(self):
         selected=self.selected_asset_ids(); return selected[0] if len(selected)==1 else None
 
     def show_selected(self):
-        selected=self.selected_asset_ids(); self.adjust_button.setEnabled(len(selected)==1); self.bulk_adjust_button.setEnabled(len(selected)>1)
+        selected=self.selected_asset_ids(); self.adjust_button.setEnabled(len(selected)==1); self.bulk_adjust_button.setEnabled(len(selected)>1); self.archive_button.setEnabled(len(selected)==1)
         if not selected: self.asset_detail.setText('Select an inventory asset to view details.'); return
         if len(selected)>1: self.asset_detail.setText(f'SELECTED: {len(selected):,} inventory assets • Bulk Adjust applies the same delta to every selected asset.'); return
         detail=self.inventory_service.get_asset_detail(selected[0]); self.asset_detail.setText(f"SELECTED: {detail['asset_name']}  •  {detail['asset_type']}  •  Qty {detail['quantity']}  •  Cost {self._money(detail['total_cost_minor'])}  •  {detail['state']}")
@@ -127,9 +94,15 @@ class MainWindow(QMainWindow):
         if len(asset_ids)<2:return
         dialog=BulkAdjustDialog(len(asset_ids),self)
         if dialog.exec()!=QDialog.Accepted:return
-        quantity_delta=dialog.quantity_delta.value(); cost_delta_minor=round(dialog.cost_delta.value()*100)
-        answer=QMessageBox.question(self,'Confirm Bulk Adjustment',f'Apply quantity delta {quantity_delta:+,} and cost delta {self._money(cost_delta_minor)} to each of {len(asset_ids):,} selected assets?',QMessageBox.Yes|QMessageBox.No)
+        quantity_delta=dialog.quantity_delta.value(); cost_delta_minor=round(dialog.cost_delta.value()*100); answer=QMessageBox.question(self,'Confirm Bulk Adjustment',f'Apply quantity delta {quantity_delta:+,} and cost delta {self._money(cost_delta_minor)} to each of {len(asset_ids):,} selected assets?',QMessageBox.Yes|QMessageBox.No)
         if answer!=QMessageBox.Yes:return
-        try:
-            adjusted=self.inventory_service.bulk_adjust_assets(asset_ids=asset_ids,quantity_delta=quantity_delta,cost_delta_minor=cost_delta_minor,request_prefix=f'ui-bulk-adjust-{uuid4().hex}'); self.refresh(); QMessageBox.information(self,'Bulk Adjustment Complete',f'Adjusted {len(adjusted):,} inventory assets through authoritative events.')
+        try: adjusted=self.inventory_service.bulk_adjust_assets(asset_ids=asset_ids,quantity_delta=quantity_delta,cost_delta_minor=cost_delta_minor,request_prefix=f'ui-bulk-adjust-{uuid4().hex}'); self.refresh(); QMessageBox.information(self,'Bulk Adjustment Complete',f'Adjusted {len(adjusted):,} inventory assets through authoritative events.')
         except Exception as exc:QMessageBox.critical(self,'Bulk Adjustment Blocked',str(exc))
+
+    def archive_selected(self):
+        asset_id=self.selected_asset_id()
+        if asset_id is None:return
+        detail=self.inventory_service.get_asset_detail(asset_id); answer=QMessageBox.warning(self,'Archive Inventory Asset',f"Archive {detail['asset_name']}?\n\nIt will leave the active inventory view. Authority events, inventory history, movements, and audit evidence are preserved.",QMessageBox.Yes|QMessageBox.No)
+        if answer!=QMessageBox.Yes:return
+        try:self.inventory_service.archive_asset(asset_id=asset_id,request_id=f'ui-archive-{uuid4().hex}'); self.refresh(); QMessageBox.information(self,'Inventory Archived','Asset archived. Historical authority evidence was preserved.')
+        except Exception as exc:QMessageBox.critical(self,'Archive Blocked',str(exc))
