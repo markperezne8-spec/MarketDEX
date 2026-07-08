@@ -1,0 +1,16 @@
+name: Marketplace Listing Preparation Operator Flow Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/MARKETPLACE_LISTING_PREPARATION_OPERATOR_FLOW.md'
+      - '.github/workflows/marketplace-listing-preparation-operator-flow-gate.yml'
+
+jobs:
+  marketplace-listing-preparation-operator-flow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: grep -q 'READY TO PREPARE' docs/MARKETPLACE_LISTING_PREPARATION_OPERATOR_FLOW.md
+      - run: grep -q 'offline listing package' docs/MARKETPLACE_LISTING_PREPARATION_OPERATOR_FLOW.md
+      - run: grep -q 'flow stops before marketplace publication' docs/MARKETPLACE_LISTING_PREPARATION_OPERATOR_FLOW.md
