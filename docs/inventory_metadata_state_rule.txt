@@ -1,0 +1,1 @@
+Only active inventory metadata can be edited. Archived inventory metadata remains preserved until the asset is restored.

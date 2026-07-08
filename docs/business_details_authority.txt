@@ -1,0 +1,1 @@
+Business details updates preserve inventory quantity and total cost. Accepted updates record a verified business details event. Active inventory only.

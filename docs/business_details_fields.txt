@@ -1,0 +1,4 @@
+purchase_date
+purchase_source
+storage_location
+notes

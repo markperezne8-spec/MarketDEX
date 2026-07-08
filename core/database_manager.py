@@ -17,7 +17,9 @@ class DatabaseManager:
    c.executescript(SCHEMA_SQL); row=c.execute('SELECT schema_version FROM schema_metadata ORDER BY rowid DESC LIMIT 1').fetchone(); current=0 if row is None else int(row['schema_version'])
    if current>SCHEMA_VERSION: raise RuntimeError(f'Unsupported schema version: {current}')
    c.executescript(SCHEMA_SQL)
-   if current<SCHEMA_VERSION:c.execute('INSERT INTO schema_metadata VALUES (?,?)',(SCHEMA_VERSION,datetime.now(timezone.utc).isoformat()))
+   if current<SCHEMA_VERSION:
+    c.execute('INSERT INTO schema_metadata VALUES (?,?)',(SCHEMA_VERSION,datetime.now(timezone.utc).isoformat()))
+    c.commit()
  @contextmanager
  def transaction(self):
   c=self.connect()

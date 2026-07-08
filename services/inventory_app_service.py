@@ -50,7 +50,7 @@ class InventoryAppService(AuthoritativeService):
 
     def get_asset_detail(self, asset_id):
         with self.database.read_connection() as connection:
-            row = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,a.state,i.quantity,i.total_cost_minor,i.verified_at FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id WHERE a.asset_id=?", (asset_id,)).fetchone()
+            row = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,a.state,i.quantity,i.total_cost_minor,i.verified_at,COALESCE(b.purchase_date,'') purchase_date,COALESCE(b.purchase_source,'') purchase_source,COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id WHERE a.asset_id=?", (asset_id,)).fetchone()
         if row is None: raise ValueError('Inventory asset not found')
         return dict(row)
 
@@ -61,6 +61,18 @@ class InventoryAppService(AuthoritativeService):
         with self.database.transaction() as connection:
             self._append_event_and_audit(connection, event, 'add_inventory_asset'); connection.execute("INSERT INTO assets(asset_id,asset_name,asset_type,state,created_event_id,created_at) VALUES (?,?,?,?,?,?)", (asset_id,asset_name,asset_type,'COMPLETED',event.event_id,event.committed_at)); self.inventory.apply(connection, asset_id=asset_id, quantity_delta=quantity, cost_delta_minor=total_cost_minor, event_id=event.event_id, recorded_at=event.committed_at); connection.execute("INSERT INTO inventory_movements(movement_id,asset_id,event_id,quantity_delta,cost_delta_minor,movement_type,recorded_at) VALUES (?,?,?,?,?,?,?)", (f'movement-{event.event_id}',asset_id,event.event_id,quantity,total_cost_minor,'ASSET_ADD',event.committed_at)); connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id,'INVENTORY_ASSET',asset_id,'VERIFIED',event.committed_at)); self._verify_event(connection, event)
         return asset_id
+
+    def update_business_details(self, *, asset_id, purchase_date='', purchase_source='', storage_location='', notes='', request_id):
+        detail = self.get_asset_detail(asset_id)
+        if detail['state'] != 'COMPLETED': raise ValueError('Archived inventory business details cannot be edited')
+        values = {'purchase_date':str(purchase_date or '').strip(),'purchase_source':str(purchase_source or '').strip(),'storage_location':str(storage_location or '').strip(),'notes':str(notes or '').strip()}
+        if all(detail[key] == value for key, value in values.items()): raise ValueError('Enter a business detail change')
+        event = self._new_event('INVENTORY_BUSINESS_DETAILS_UPDATED', request_id, {'asset_id':asset_id, **values})
+        with self.database.transaction() as connection:
+            self._append_event_and_audit(connection, event, 'update_inventory_business_details')
+            connection.execute("INSERT INTO inventory_business_details(asset_id,purchase_date,purchase_source,storage_location,notes,last_event_id,verified_at) VALUES (?,?,?,?,?,?,?) ON CONFLICT(asset_id) DO UPDATE SET purchase_date=excluded.purchase_date,purchase_source=excluded.purchase_source,storage_location=excluded.storage_location,notes=excluded.notes,last_event_id=excluded.last_event_id,verified_at=excluded.verified_at", (asset_id,values['purchase_date'],values['purchase_source'],values['storage_location'],values['notes'],event.event_id,event.committed_at))
+            connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id,'INVENTORY_BUSINESS_DETAILS',asset_id,'VERIFIED',event.committed_at)); self._verify_event(connection, event)
+        return self.get_asset_detail(asset_id)
 
     def adjust_asset(self, *, asset_id, quantity_delta, cost_delta_minor, request_id):
         quantity_delta = int(quantity_delta); cost_delta_minor = int(cost_delta_minor)

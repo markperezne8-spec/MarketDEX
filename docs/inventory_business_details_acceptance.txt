@@ -1,0 +1,1 @@
+Inventory Business Details acceptance: active inventory can store purchase date, purchase source, storage location, and notes through a verified event. Quantity and total cost remain unchanged. Archived and no-change edits are rejected.
