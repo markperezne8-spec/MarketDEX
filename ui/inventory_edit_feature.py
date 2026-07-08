@@ -23,7 +23,7 @@ class EditAssetDetailsDialog(QDialog):
 def install_inventory_edit_feature(window):
     button = QPushButton('Edit Details', window)
     button.setObjectName('edit_details_button')
-    button.setMinimumWidth(button.sizeHint().width())
+    button.setMinimumWidth(max(button.sizeHint().width(), 96))
     button.setEnabled(False)
     window.edit_details_button = button
 
