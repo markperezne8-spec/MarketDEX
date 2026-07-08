@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QApplication
 from services.mission_control_service import MissionControlService
 from services.inventory_app_service import InventoryAppService
 from ui.main_window import MainWindow
+from ui.inventory_edit_feature import install_inventory_edit_feature
 
 
 if __name__ == '__main__':
@@ -12,5 +13,6 @@ if __name__ == '__main__':
     inventory = InventoryAppService(database_path)
     app = QApplication(sys.argv)
     window = MainWindow(mission_control, inventory)
+    install_inventory_edit_feature(window)
     window.show()
     sys.exit(app.exec())
