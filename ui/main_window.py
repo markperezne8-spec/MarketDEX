@@ -35,6 +35,9 @@ class MainWindow(QMainWindow):
     @staticmethod
     def _money(minor): return f'${minor/100:,.2f}'
 
+    @staticmethod
+    def _detail_value(value): return str(value).strip() if str(value or '').strip() else '—'
+
     def refresh_inventory(self):
         listing=self.inventory_service.list_archived_inventory if self.inventory_view=='ARCHIVED' else self.inventory_service.list_inventory; self.inventory_rows=listing(search_text=self.inventory_search.text(),asset_type=self.inventory_type_filter.currentText(),sort_key=self.inventory_sort.currentText(),sort_order=self.inventory_sort_order.currentText()); self.inventory_table.setRowCount(len(self.inventory_rows)); summary=self.inventory_service.summarize_inventory(self.inventory_rows); self.inventory_summary['asset_count'].setText(f"{summary['asset_count']:,}"); self.inventory_summary['total_units'].setText(f"{summary['total_units']:,}"); self.inventory_summary['total_cost_minor'].setText(self._money(summary['total_cost_minor']))
         for row_index,row in enumerate(self.inventory_rows):
@@ -72,7 +75,7 @@ class MainWindow(QMainWindow):
         selected=self.selected_asset_ids(); active=self.inventory_view=='ACTIVE'; self.adjust_button.setEnabled(active and len(selected)==1); self.bulk_adjust_button.setEnabled(active and len(selected)>1); self.archive_button.setEnabled(active and len(selected)==1); self.restore_button.setEnabled(not active and len(selected)==1)
         if not selected: self.asset_detail.setText('Select an inventory asset to view details.'); return
         if len(selected)>1: self.asset_detail.setText(f'SELECTED: {len(selected):,} inventory assets'); return
-        detail=self.inventory_service.get_asset_detail(selected[0]); self.asset_detail.setText(f"SELECTED: {detail['asset_name']}  •  {detail['asset_type']}  •  Qty {detail['quantity']}  •  Cost {self._money(detail['total_cost_minor'])}  •  {detail['state']}")
+        detail=self.inventory_service.get_asset_detail(selected[0]); self.asset_detail.setText(f"SELECTED: {detail['asset_name']}  •  {detail['asset_type']}  •  Qty {detail['quantity']}  •  Cost {self._money(detail['total_cost_minor'])}  •  {detail['state']}\nPURCHASE: {self._detail_value(detail['purchase_date'])}  •  SOURCE: {self._detail_value(detail['purchase_source'])}\nSTORAGE: {self._detail_value(detail['storage_location'])}\nNOTES: {self._detail_value(detail['notes'])}")
 
     def add_asset(self):
         dialog=AddAssetDialog(self)
