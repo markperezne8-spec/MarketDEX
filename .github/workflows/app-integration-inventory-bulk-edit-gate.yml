@@ -1,0 +1,16 @@
+name: App Integration Inventory Bulk Edit Gate
+on: [pull_request, workflow_dispatch]
+jobs:
+  inventory-bulk-edit-gate:
+    runs-on: ubuntu-latest
+    env: {PYTHONPATH: '${{ github.workspace }}', QT_QPA_PLATFORM: offscreen}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install runtime
+        run: pip install pytest -r requirements.txt
+      - name: Verify inventory bulk edit vertical slice
+        run: pytest -q tests/test_inventory_bulk_edit_integration.py tests/test_inventory_import_integration.py tests/test_inventory_export_integration.py tests/test_inventory_summary_integration.py tests/test_inventory_sort_integration.py tests/test_inventory_search_filter_integration.py tests/test_inventory_management_integration.py tests/test_inventory_app_integration.py tests/test_mission_control_integration.py
+      - name: Verify protected M39-M165 authority spine
+        run: pytest -q tests/test_m39a_standalone_settlement.py tests/test_m39b_product_aware_closure.py tests/test_m40a_financial_finalization.py tests/test_m40b_profit_recognition.py tests/test_m41a_business_ledger_posting.py tests/test_m41b_business_ledger_balance.py tests/test_m42a_business_performance_summary.py tests/test_m43a_business_performance_intelligence.py tests/test_m44a_business_decision.py tests/test_m45_m49_operating_command_chain.py tests/test_m50_execution_feedback_authority.py tests/test_m51_m55_adaptive_feedback_chain.py tests/test_m56_m60_continuous_business_loop.py tests/test_m61_m65_autonomous_business_cycle.py tests/test_m66_m70_strategic_control_loop.py tests/test_m71_m75_governed_strategic_cycle.py tests/test_m76_m80_enterprise_governance_loop.py tests/test_m81_m85_executive_control_cycle.py tests/test_m86_m90_executive_feedback_loop.py tests/test_m86_m90_schema_gate.py tests/test_m91_m95_executive_learning_cycle.py tests/test_m91_m95_schema_gate.py tests/test_m96_m100_executive_evolution_cycle.py tests/test_m96_m100_schema_gate.py tests/test_m101_m105_executive_renewal_cycle.py tests/test_m101_m105_schema_gate.py tests/test_m106_m110_executive_continuity_cycle.py tests/test_m106_m110_schema_gate.py tests/test_m111_m115_executive_succession_cycle.py tests/test_m111_m115_schema_gate.py tests/test_m116_m120_executive_perpetuity_cycle.py tests/test_m116_m120_schema_gate.py tests/test_m121_m125_executive_institution_cycle.py tests/test_m121_m125_schema_gate.py tests/test_m126_m130_executive_covenant_cycle.py tests/test_m126_m130_schema_gate.py tests/test_m131_m135_executive_constitutional_cycle.py tests/test_m131_m135_schema_gate.py tests/test_m136_m140_executive_sovereignty_cycle.py tests/test_m136_m140_schema_gate.py tests/test_m141_m145_executive_legitimacy_cycle.py tests/test_m141_m145_schema_gate.py tests/test_m146_m150_executive_stewardship_cycle.py tests/test_m146_m150_schema_gate.py tests/test_m151_m155_executive_accountability_cycle.py tests/test_m151_m155_schema_gate.py tests/test_m156_m160_executive_transparency_cycle.py tests/test_m156_m160_schema_gate.py tests/test_m161_m165_executive_integrity_cycle.py tests/test_m161_m165_schema_gate.py
