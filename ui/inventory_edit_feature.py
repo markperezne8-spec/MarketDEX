@@ -22,11 +22,20 @@ class EditAssetDetailsDialog(QDialog):
 
 def install_inventory_edit_feature(window):
     button = QPushButton('Edit Details', window)
+    button.setObjectName('edit_details_button')
+    button.setMinimumWidth(max(button.sizeHint().width(), 96))
     button.setEnabled(False)
     window.edit_details_button = button
-    header = window.view_button.parent().layout()
+
+    header = window.inventory_header
     insert_at = header.indexOf(window.adjust_button)
     header.insertWidget(insert_at, button)
+
+    # The original Mission Control panel width predates Archive, Restore, and
+    # Edit Details. Preserve every control's readable minimum width instead of
+    # allowing Qt to squeeze the new button to zero pixels.
+    panel = window.inventory_panel
+    panel.setMaximumWidth(max(panel.maximumWidth(), 1100))
 
     original_show_selected = window.show_selected
 
