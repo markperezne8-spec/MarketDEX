@@ -29,7 +29,6 @@ def install_inventory_marketplace_listing_preparation_feature(window):
     summary.setStyleSheet('font-size:15px;font-weight:700')
     package = QLabel('LISTING PACKAGE: Waiting for execution readiness.')
     package.setWordWrap(True)
-    package.setTextInteractionFlags(package.textInteractionFlags())
     layout.addWidget(summary)
     layout.addWidget(package)
     panel_layout = window.inventory_panel.layout()
