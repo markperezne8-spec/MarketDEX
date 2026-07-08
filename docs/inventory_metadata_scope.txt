@@ -1,0 +1,1 @@
+Inventory metadata scope: purchase date, purchase source, storage location, and notes.
