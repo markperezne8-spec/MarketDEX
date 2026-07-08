@@ -16,7 +16,17 @@ jobs:
       - name: Verify Edit Details integration contract
         run: pytest -vv --tb=long tests/test_inventory_edit_details_integration.py
       - name: Verify Edit Details toolbar contract
-        run: pytest -vv --tb=long tests/test_inventory_edit_details_ui.py
+        run: |
+          set -o pipefail
+          pytest -vv --tb=long -rA tests/test_inventory_edit_details_ui.py 2>&1 | tee inventory-edit-details-toolbar-pytest.log
+      - name: Upload toolbar pytest diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: inventory-edit-details-toolbar-pytest
+          path: inventory-edit-details-toolbar-pytest.log
+          if-no-files-found: error
+          retention-days: 7
       - name: Verify adjacent Inventory contracts
         run: pytest -q tests/test_inventory_archive_integration.py tests/test_inventory_restore_integration.py tests/test_mission_control_integration.py
       - name: Verify cumulative protected authority spine
