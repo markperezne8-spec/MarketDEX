@@ -13,6 +13,7 @@ from ui.inventory_listing_workspace_feature import install_inventory_listing_wor
 from ui.inventory_listing_plan_queue_feature import install_inventory_listing_plan_queue_feature
 from ui.inventory_listing_execution_readiness_feature import install_inventory_listing_execution_readiness_feature
 from ui.inventory_marketplace_listing_preparation_feature import install_inventory_marketplace_listing_preparation_feature
+from ui.inventory_marketplace_listing_package_review_feature import install_inventory_marketplace_listing_package_review_feature
 
 
 if __name__ == '__main__':
@@ -30,5 +31,6 @@ if __name__ == '__main__':
     install_inventory_listing_plan_queue_feature(window)
     install_inventory_listing_execution_readiness_feature(window)
     install_inventory_marketplace_listing_preparation_feature(window)
+    install_inventory_marketplace_listing_package_review_feature(window)
     window.show()
     sys.exit(app.exec())
