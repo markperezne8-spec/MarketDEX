@@ -12,12 +12,12 @@ def test_edit_details_control_is_installed_in_inventory_toolbar(tmp_path):
     install_inventory_edit_feature(window)
 
     button = window.edit_details_button
-    header = window.view_button.parent().layout()
+    header = window.inventory_header
     assert button.objectName() == 'edit_details_button'
     assert button.text() == 'Edit Details'
     assert header.indexOf(button) >= 0
     assert header.indexOf(button) < header.indexOf(window.adjust_button)
     assert button.minimumWidth() > 0
-    assert window.view_button.parent().maximumWidth() >= 1100
+    assert window.inventory_panel.maximumWidth() >= 1100
 
     window.close()
