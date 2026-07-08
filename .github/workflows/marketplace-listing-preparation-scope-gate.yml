@@ -1,0 +1,16 @@
+name: Marketplace Listing Preparation Scope Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/MARKETPLACE_LISTING_PREPARATION_SCOPE.md'
+      - '.github/workflows/marketplace-listing-preparation-scope-gate.yml'
+
+jobs:
+  marketplace-listing-preparation-scope:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: grep -q 'IN SCOPE: build and display an offline listing package' docs/MARKETPLACE_LISTING_PREPARATION_SCOPE.md
+      - run: grep -q 'OUT OF SCOPE: marketplace authentication' docs/MARKETPLACE_LISTING_PREPARATION_SCOPE.md
+      - run: grep -q 'operator remains the publication authority' docs/MARKETPLACE_LISTING_PREPARATION_SCOPE.md
