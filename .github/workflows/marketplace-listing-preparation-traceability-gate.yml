@@ -1,0 +1,17 @@
+name: Marketplace Listing Preparation Traceability Gate
+
+on:
+  pull_request:
+    paths:
+      - 'ui/inventory_marketplace_listing_preparation_feature.py'
+      - 'docs/MARKETPLACE_LISTING_PREPARATION_TRACEABILITY.md'
+      - '.github/workflows/marketplace-listing-preparation-traceability-gate.yml'
+
+jobs:
+  marketplace-listing-preparation-traceability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: grep -q 'ASSET ID' ui/inventory_marketplace_listing_preparation_feature.py
+      - run: grep -q 'ASSET ID' docs/MARKETPLACE_LISTING_PREPARATION_TRACEABILITY.md
+      - run: grep -q 'does not create a remote marketplace identifier' docs/MARKETPLACE_LISTING_PREPARATION_TRACEABILITY.md
