@@ -1,0 +1,22 @@
+name: Marketplace Listing Preparation Progress Contract Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/BUILD_PROGRESS.md'
+      - 'docs/MARKETPLACE_LISTING_PREPARATION_PROGRESS_CONTRACT.md'
+      - 'tests/test_marketplace_listing_preparation_progress_contract.py'
+      - '.github/workflows/marketplace-listing-preparation-progress-contract-gate.yml'
+
+jobs:
+  marketplace-listing-preparation-progress-contract:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest
+      - run: python -m pytest -q tests/test_marketplace_listing_preparation_progress_contract.py
