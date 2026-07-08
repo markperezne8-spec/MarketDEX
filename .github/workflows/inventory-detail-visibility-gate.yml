@@ -1,0 +1,21 @@
+name: Inventory Detail Visibility Gate
+on: [pull_request, workflow_dispatch]
+jobs:
+  inventory-detail-visibility:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Qt runtime
+        run: sudo apt-get update && sudo apt-get install -y libegl1
+      - name: Install dependencies
+        run: pip install pytest -r requirements.txt
+      - name: Verify selected inventory detail visibility
+        run: pytest -vv --tb=long tests/test_inventory_detail_visibility_ui.py
+      - name: Verify business details workflows
+        run: pytest -q tests/test_add_asset_business_details_ui.py tests/test_inventory_business_details_integration.py tests/test_inventory_edit_details_integration.py
