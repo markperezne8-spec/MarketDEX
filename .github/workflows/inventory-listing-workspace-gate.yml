@@ -16,4 +16,4 @@ jobs:
       - name: Install dependencies
         run: pip install pytest -r requirements.txt
       - name: Verify consolidated listing decision workflow
-        run: pytest -q tests/test_inventory_listing_workspace_feature.py tests/test_inventory_custom_roi_feature.py tests/test_inventory_recommended_price_ui.py tests/test_inventory_price_guidance_feature.py tests/test_inventory_profit_feature.py tests/test_inventory_sale_readiness_feature.py tests/test_inventory_cost_intake_feature.py
+        run: pytest -q tests/test_inventory_listing_workspace_feature.py tests/test_inventory_listing_workspace_ui.py tests/test_inventory_custom_roi_feature.py tests/test_inventory_recommended_price_ui.py tests/test_inventory_price_guidance_feature.py tests/test_inventory_profit_feature.py tests/test_inventory_sale_readiness_feature.py tests/test_inventory_cost_intake_feature.py
