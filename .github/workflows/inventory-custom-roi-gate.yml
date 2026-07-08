@@ -16,4 +16,4 @@ jobs:
       - name: Install dependencies
         run: pip install pytest -r requirements.txt
       - name: Verify custom ROI and recommended pricing
-        run: pytest -q tests/test_inventory_custom_roi_feature.py tests/test_inventory_price_guidance_feature.py tests/test_inventory_profit_feature.py tests/test_inventory_sale_readiness_feature.py
+        run: pytest -q tests/test_inventory_custom_roi_feature.py tests/test_inventory_recommended_price_ui.py tests/test_inventory_price_guidance_feature.py tests/test_inventory_profit_feature.py tests/test_inventory_sale_readiness_feature.py
