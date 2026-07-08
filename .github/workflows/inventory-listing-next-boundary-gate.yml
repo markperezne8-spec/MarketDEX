@@ -1,0 +1,12 @@
+name: Inventory Listing Next Boundary Gate
+on: [pull_request, workflow_dispatch]
+jobs:
+  listing-next-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pytest
+      - run: pytest -q tests/test_listing_workspace_next_boundary.py
