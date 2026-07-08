@@ -1,0 +1,15 @@
+name: Marketplace Listing Preparation PR Policy Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/MARKETPLACE_LISTING_PREPARATION_PR_GATE.md'
+      - '.github/workflows/marketplace-listing-preparation-pr-gate.yml'
+
+jobs:
+  marketplace-listing-preparation-pr-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: grep -q 'exact pull-request head' docs/MARKETPLACE_LISTING_PREPARATION_PR_GATE.md
+      - run: grep -q 'do not authorize ignoring a failure in a focused gate' docs/MARKETPLACE_LISTING_PREPARATION_PR_GATE.md
