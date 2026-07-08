@@ -8,6 +8,7 @@ from ui.inventory_edit_feature import install_inventory_edit_feature
 from ui.inventory_cost_feature import install_inventory_cost_feature
 from ui.inventory_sale_readiness_feature import install_inventory_sale_readiness_feature
 from ui.inventory_profit_feature import install_inventory_profit_feature
+from ui.inventory_price_guidance_feature import install_inventory_price_guidance_feature
 
 
 if __name__ == '__main__':
@@ -20,5 +21,6 @@ if __name__ == '__main__':
     install_inventory_cost_feature(window)
     install_inventory_sale_readiness_feature(window)
     install_inventory_profit_feature(window)
+    install_inventory_price_guidance_feature(window)
     window.show()
     sys.exit(app.exec())
