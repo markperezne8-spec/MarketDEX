@@ -1,0 +1,19 @@
+name: Inventory Custom ROI Gate
+on: [pull_request, workflow_dispatch]
+jobs:
+  inventory-custom-roi:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Qt runtime
+        run: sudo apt-get update && sudo apt-get install -y libegl1
+      - name: Install dependencies
+        run: pip install pytest -r requirements.txt
+      - name: Verify custom ROI and recommended pricing
+        run: pytest -q tests/test_inventory_custom_roi_feature.py tests/test_inventory_recommended_price_ui.py tests/test_inventory_price_guidance_feature.py tests/test_inventory_profit_feature.py tests/test_inventory_sale_readiness_feature.py
