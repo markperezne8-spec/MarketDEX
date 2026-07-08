@@ -12,13 +12,14 @@ class InventoryAppService(AuthoritativeService):
     def __init__(self, database_path):
         self.path = Path(database_path); database = DatabaseManager(self.path); database.initialize(); super().__init__(database, EventRepository()); self.inventory = InventoryRepository()
 
-    def list_inventory(self, search_text='', asset_type='ALL', sort_key='NAME', sort_order='ASC'):
+    def _list_inventory_state(self, state, search_text='', asset_type='ALL', sort_key='NAME', sort_order='ASC', include_state=False):
         search_text = str(search_text or '').strip().casefold(); asset_type = str(asset_type or 'ALL').strip().upper(); sort_key = str(sort_key or 'NAME').strip().upper(); sort_order = str(sort_order or 'ASC').strip().upper()
         sort_fields = {'NAME':'asset_name','TYPE':'asset_type','QUANTITY':'quantity','TOTAL COST':'total_cost_minor'}
         if sort_key not in sort_fields: raise ValueError('Unsupported inventory sort key')
         if sort_order not in {'ASC','DESC'}: raise ValueError('Unsupported inventory sort order')
+        state_column = ',a.state' if include_state else ''
         with self.database.read_connection() as connection:
-            rows = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,i.quantity,i.total_cost_minor FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id WHERE a.state='COMPLETED' ORDER BY a.asset_name COLLATE NOCASE,a.asset_id").fetchall()
+            rows = connection.execute(f"SELECT a.asset_id,a.asset_name,a.asset_type{state_column},i.quantity,i.total_cost_minor FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id WHERE a.state=? ORDER BY a.asset_name COLLATE NOCASE,a.asset_id", (state,)).fetchall()
         inventory = [dict(row) for row in rows]
         if search_text: inventory = [row for row in inventory if search_text in row['asset_name'].casefold()]
         if asset_type != 'ALL': inventory = [row for row in inventory if row['asset_type'] == asset_type]
@@ -26,6 +27,12 @@ class InventoryAppService(AuthoritativeService):
         def sort_value(row):
             value = row[field]; return value.casefold() if isinstance(value, str) else value
         return sorted(inventory, key=lambda row:(sort_value(row), row['asset_id']), reverse=sort_order == 'DESC')
+
+    def list_inventory(self, search_text='', asset_type='ALL', sort_key='NAME', sort_order='ASC'):
+        return self._list_inventory_state('COMPLETED', search_text, asset_type, sort_key, sort_order)
+
+    def list_archived_inventory(self, search_text='', asset_type='ALL', sort_key='NAME', sort_order='ASC'):
+        return self._list_inventory_state('CANCELLED', search_text, asset_type, sort_key, sort_order, include_state=True)
 
     @staticmethod
     def summarize_inventory(rows):
@@ -85,4 +92,12 @@ class InventoryAppService(AuthoritativeService):
         event = self._new_event('INVENTORY_ASSET_ARCHIVED', request_id, {'asset_id':asset_id,'previous_state':'COMPLETED','archive_state':'CANCELLED'})
         with self.database.transaction() as connection:
             self._append_event_and_audit(connection, event, 'archive_inventory_asset'); connection.execute("UPDATE assets SET state='CANCELLED' WHERE asset_id=? AND state='COMPLETED'", (asset_id,)); connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id,'INVENTORY_ARCHIVE',asset_id,'VERIFIED',event.committed_at)); self._verify_event(connection, event)
+        return self.get_asset_detail(asset_id)
+
+    def restore_asset(self, *, asset_id, request_id):
+        detail = self.get_asset_detail(asset_id)
+        if detail['state'] != 'CANCELLED': raise ValueError('Only archived inventory can be restored')
+        event = self._new_event('INVENTORY_ASSET_RESTORED', request_id, {'asset_id':asset_id,'previous_state':'CANCELLED','restore_state':'COMPLETED'})
+        with self.database.transaction() as connection:
+            self._append_event_and_audit(connection, event, 'restore_inventory_asset'); connection.execute("UPDATE assets SET state='COMPLETED' WHERE asset_id=? AND state='CANCELLED'", (asset_id,)); connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id,'INVENTORY_RESTORE',asset_id,'VERIFIED',event.committed_at)); self._verify_event(connection, event)
         return self.get_asset_detail(asset_id)
