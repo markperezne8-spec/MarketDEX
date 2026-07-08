@@ -6,6 +6,7 @@ from services.inventory_app_service import InventoryAppService
 from ui.main_window import MainWindow
 from ui.inventory_edit_feature import install_inventory_edit_feature
 from ui.inventory_cost_feature import install_inventory_cost_feature
+from ui.inventory_sale_readiness_feature import install_inventory_sale_readiness_feature
 
 
 if __name__ == '__main__':
@@ -16,5 +17,6 @@ if __name__ == '__main__':
     window = MainWindow(mission_control, inventory)
     install_inventory_edit_feature(window)
     install_inventory_cost_feature(window)
+    install_inventory_sale_readiness_feature(window)
     window.show()
     sys.exit(app.exec())
