@@ -1,0 +1,16 @@
+name: Marketplace Listing Preparation Chain Contract Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/BUILD_PROGRESS.md'
+      - 'docs/MARKETPLACE_LISTING_PREPARATION_CHAIN_CONTRACT.md'
+      - '.github/workflows/marketplace-listing-preparation-chain-contract-gate.yml'
+
+jobs:
+  marketplace-listing-preparation-chain-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: grep -q 'Saved Listing Plan → Listing Plan Queue → Listing Execution Readiness → Marketplace Listing Preparation' docs/MARKETPLACE_LISTING_PREPARATION_CHAIN_CONTRACT.md
+      - run: grep -q 'Saved Listing Plan → Listing Plan Queue → Listing Execution Readiness → Marketplace Listing Preparation' docs/BUILD_PROGRESS.md
