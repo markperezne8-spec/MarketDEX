@@ -1,0 +1,16 @@
+name: Marketplace Listing Preparation Review Handoff Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/MARKETPLACE_LISTING_PREPARATION_REVIEW_HANDOFF.md'
+      - '.github/workflows/marketplace-listing-preparation-review-handoff-gate.yml'
+
+jobs:
+  marketplace-listing-preparation-review-handoff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: grep -q 'Marketplace Listing Package Review build' docs/MARKETPLACE_LISTING_PREPARATION_REVIEW_HANDOFF.md
+      - run: grep -q 'operator approval state before completion tracking' docs/MARKETPLACE_LISTING_PREPARATION_REVIEW_HANDOFF.md
+      - run: grep -q 'Publication remains a separate future authority boundary' docs/MARKETPLACE_LISTING_PREPARATION_REVIEW_HANDOFF.md
