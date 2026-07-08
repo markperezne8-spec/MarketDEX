@@ -1,17 +1,17 @@
 # MarketDEX OS Build Progress
 
-Current engineering progress: **84%**
+Current engineering progress: **86%**
 
-`█████████████████░░░ 84%`
+`█████████████████░░░ 86%`
 
 ## Active build
 
-Listing Plan Queue
+Listing Execution Readiness
 
 ## Completed operator chain
 
-Inventory → Business Details → Unit Cost → Sale Readiness → Fee-aware True Profit → Price Guidance → Listing Decision Workspace → Saved Listing Plan → Listing Plan Queue
+Inventory → Business Details → Unit Cost → Sale Readiness → Fee-aware True Profit → Price Guidance → Listing Decision Workspace → Saved Listing Plan → Listing Plan Queue → Listing Execution Readiness
 
 ## Next decision boundary
 
-Listing execution readiness and marketplace publication preparation remain future builds. MarketDEX does not publish marketplace listings in the Listing Plan Queue build.
+Marketplace listing preparation remains a future build. MarketDEX does not publish marketplace listings in the Listing Execution Readiness build.
