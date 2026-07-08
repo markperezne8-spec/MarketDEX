@@ -1,0 +1,17 @@
+name: Marketplace Listing Next Boundary Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/BUILD_PROGRESS.md'
+      - 'docs/MARKETPLACE_LISTING_PACKAGE_REVIEW_SCOPE.md'
+      - '.github/workflows/marketplace-listing-next-boundary-gate.yml'
+
+jobs:
+  marketplace-listing-next-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: grep -q 'Marketplace Listing Preparation' docs/BUILD_PROGRESS.md
+      - run: grep -q 'offline listing package' docs/MARKETPLACE_LISTING_PACKAGE_REVIEW_SCOPE.md
+      - run: grep -q 'No marketplace publication, submission, or modification' docs/MARKETPLACE_LISTING_PACKAGE_REVIEW_SCOPE.md

@@ -1,0 +1,15 @@
+name: Marketplace Listing Preparation Operator Authority Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/MARKETPLACE_LISTING_PREPARATION_OPERATOR_AUTHORITY.md'
+      - '.github/workflows/marketplace-listing-preparation-operator-authority-gate.yml'
+
+jobs:
+  marketplace-listing-preparation-operator-authority:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: grep -q 'operator retains authority' docs/MARKETPLACE_LISTING_PREPARATION_OPERATOR_AUTHORITY.md
+      - run: grep -q 'No automated publication authority' docs/MARKETPLACE_LISTING_PREPARATION_OPERATOR_AUTHORITY.md

@@ -1,0 +1,15 @@
+name: Marketplace Listing Preparation Acceptance Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/MARKETPLACE_LISTING_PREPARATION_ACCEPTANCE.md'
+      - '.github/workflows/marketplace-listing-preparation-acceptance-gate.yml'
+
+jobs:
+  marketplace-listing-preparation-acceptance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: grep -q 'exact head commit' docs/MARKETPLACE_LISTING_PREPARATION_ACCEPTANCE.md
+      - run: grep -q 'Merge is authorized only after focused gates pass' docs/MARKETPLACE_LISTING_PREPARATION_ACCEPTANCE.md

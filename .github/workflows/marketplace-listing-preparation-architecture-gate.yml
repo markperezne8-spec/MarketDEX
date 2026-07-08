@@ -1,0 +1,17 @@
+name: Marketplace Listing Preparation Architecture Gate
+
+on:
+  pull_request:
+    paths:
+      - 'ui/inventory_marketplace_listing_preparation_feature.py'
+      - 'docs/MARKETPLACE_LISTING_PREPARATION_ARCHITECTURE_NOTE.md'
+      - '.github/workflows/marketplace-listing-preparation-architecture-gate.yml'
+
+jobs:
+  marketplace-listing-preparation-architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: grep -q 'ListingPlanRepository' ui/inventory_marketplace_listing_preparation_feature.py
+      - run: grep -q 'listing_execution_readiness' ui/inventory_marketplace_listing_preparation_feature.py
+      - run: grep -q 'pure marketplace_listing_package function' docs/MARKETPLACE_LISTING_PREPARATION_ARCHITECTURE_NOTE.md

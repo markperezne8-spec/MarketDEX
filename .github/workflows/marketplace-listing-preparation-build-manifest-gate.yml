@@ -1,0 +1,17 @@
+name: Marketplace Listing Preparation Build Manifest Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/MARKETPLACE_LISTING_PREPARATION_BUILD_MANIFEST.md'
+      - '.github/workflows/marketplace-listing-preparation-build-manifest-gate.yml'
+
+jobs:
+  marketplace-listing-preparation-build-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: test -f ui/inventory_marketplace_listing_preparation_feature.py
+      - run: test -f launcher.py
+      - run: test -f docs/BUILD_PROGRESS.md
+      - run: grep -q 'Focused evidence includes UI, contract, matrix, policy, visibility, refresh, architecture, authority, scope, and handoff gates' docs/MARKETPLACE_LISTING_PREPARATION_BUILD_MANIFEST.md

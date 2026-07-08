@@ -1,0 +1,19 @@
+name: Marketplace Listing Preparation Package Fields Gate
+
+on:
+  pull_request:
+    paths:
+      - 'ui/inventory_marketplace_listing_preparation_feature.py'
+      - 'docs/MARKETPLACE_LISTING_PREPARATION_PACKAGE_FIELDS.md'
+      - '.github/workflows/marketplace-listing-preparation-package-fields-gate.yml'
+
+jobs:
+  marketplace-listing-preparation-package-fields:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          for field in MARKETPLACE TITLE QUANTITY "TARGET PRICE" "ASSET ID"; do
+            grep -q "$field" ui/inventory_marketplace_listing_preparation_feature.py
+            grep -q "$field" docs/MARKETPLACE_LISTING_PREPARATION_PACKAGE_FIELDS.md
+          done
