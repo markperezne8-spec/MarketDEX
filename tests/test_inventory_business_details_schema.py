@@ -1,4 +1,5 @@
 from core.database_manager import DatabaseManager
+from core.schema import SCHEMA_VERSION
 
 
 def test_business_details_schema_is_upgrade_safe(tmp_path):
@@ -12,4 +13,4 @@ def test_business_details_schema_is_upgrade_safe(tmp_path):
         version = connection.execute('SELECT schema_version FROM schema_metadata ORDER BY rowid DESC LIMIT 1').fetchone()['schema_version']
 
     assert {'asset_id', 'purchase_date', 'purchase_source', 'storage_location', 'notes', 'last_event_id', 'verified_at'} <= columns
-    assert version == 15
+    assert version == SCHEMA_VERSION
