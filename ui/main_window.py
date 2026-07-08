@@ -5,7 +5,7 @@ from services.inventory_csv_import_service import InventoryCsvImportService
 
 class AddAssetDialog(QDialog):
     def __init__(self,parent=None):
-        super().__init__(parent); self.setWindowTitle('Add Inventory Asset'); form=QFormLayout(self); self.name=QLineEdit(); self.asset_type=QComboBox(); self.asset_type.addItems(['SINGLE','SEALED','SLAB','ACCESSORY']); self.quantity=QSpinBox(); self.quantity.setRange(0,100000); self.quantity.setValue(1); self.cost=QDoubleSpinBox(); self.cost.setRange(0,1000000); self.cost.setDecimals(2); self.cost.setPrefix('$'); form.addRow('Asset Name',self.name); form.addRow('Asset Type',self.asset_type); form.addRow('Quantity',self.quantity); form.addRow('Total Cost',self.cost); buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); form.addRow(buttons)
+        super().__init__(parent); self.setWindowTitle('Add Inventory Asset'); form=QFormLayout(self); self.name=QLineEdit(); self.asset_type=QComboBox(); self.asset_type.addItems(['SINGLE','SEALED','SLAB','ACCESSORY']); self.quantity=QSpinBox(); self.quantity.setRange(0,100000); self.quantity.setValue(1); self.cost=QDoubleSpinBox(); self.cost.setRange(0,1000000); self.cost.setDecimals(2); self.cost.setPrefix('$'); self.purchase_date=QLineEdit(); self.purchase_date.setPlaceholderText('YYYY-MM-DD'); self.purchase_source=QLineEdit(); self.storage_location=QLineEdit(); self.notes=QLineEdit(); form.addRow('Asset Name',self.name); form.addRow('Asset Type',self.asset_type); form.addRow('Quantity',self.quantity); form.addRow('Total Cost',self.cost); form.addRow('Purchase Date',self.purchase_date); form.addRow('Purchase Source',self.purchase_source); form.addRow('Storage Location',self.storage_location); form.addRow('Notes',self.notes); buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); form.addRow(buttons)
 
 
 class AdjustAssetDialog(QDialog):
@@ -78,7 +78,12 @@ class MainWindow(QMainWindow):
         dialog=AddAssetDialog(self)
         if dialog.exec()!=QDialog.Accepted:return
         if not dialog.name.text().strip(): QMessageBox.warning(self,'Asset Required','Enter an asset name.'); return
-        try:self.inventory_service.add_asset(asset_id=f'asset-{uuid4().hex}',asset_name=dialog.name.text(),asset_type=dialog.asset_type.currentText(),quantity=dialog.quantity.value(),total_cost_minor=round(dialog.cost.value()*100),request_id=f'ui-add-{uuid4().hex}'); self.refresh()
+        try:
+            asset_id=f'asset-{uuid4().hex}'
+            self.inventory_service.add_asset(asset_id=asset_id,asset_name=dialog.name.text(),asset_type=dialog.asset_type.currentText(),quantity=dialog.quantity.value(),total_cost_minor=round(dialog.cost.value()*100),request_id=f'ui-add-{uuid4().hex}')
+            business_values={'purchase_date':dialog.purchase_date.text(),'purchase_source':dialog.purchase_source.text(),'storage_location':dialog.storage_location.text(),'notes':dialog.notes.text()}
+            if any(str(value or '').strip() for value in business_values.values()): self.inventory_service.update_business_details(asset_id=asset_id,request_id=f'ui-add-business-details-{uuid4().hex}',**business_values)
+            self.refresh()
         except Exception as exc:QMessageBox.critical(self,'Add Asset Failed',str(exc))
 
     def adjust_selected(self):
