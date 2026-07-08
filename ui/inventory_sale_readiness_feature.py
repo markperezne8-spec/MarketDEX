@@ -43,7 +43,7 @@ def install_inventory_sale_readiness_feature(window):
             return
         selected = next(row for row in window.inventory_rows if row['asset_id'] == asset_id)
         result = sale_decision(selected, round(asking.value() * 100))
-        decision.setText(f"SALE READINESS: {result['status']} • Unit Cost {window._money(result['unit_cost_minor'])} • Projected Margin {window._money(result['margin_minor'])} • {result['margin_percent']:.1f}%")
+        decision.setText(f"SALE READINESS: {result['status']} • Unit Cost {window._money(result['unit_cost_minor'])} • Gross Margin {window._money(result['margin_minor'])} • {result['margin_percent']:.1f}%")
 
     def show_selected():
         original_show_selected()
