@@ -11,6 +11,7 @@ from ui.inventory_profit_feature import install_inventory_profit_feature
 from ui.inventory_price_guidance_feature import install_inventory_price_guidance_feature
 from ui.inventory_listing_workspace_feature import install_inventory_listing_workspace_feature
 from ui.inventory_listing_plan_queue_feature import install_inventory_listing_plan_queue_feature
+from ui.inventory_listing_execution_readiness_feature import install_inventory_listing_execution_readiness_feature
 
 
 if __name__ == '__main__':
@@ -26,5 +27,6 @@ if __name__ == '__main__':
     install_inventory_price_guidance_feature(window)
     install_inventory_listing_workspace_feature(window)
     install_inventory_listing_plan_queue_feature(window)
+    install_inventory_listing_execution_readiness_feature(window)
     window.show()
     sys.exit(app.exec())
