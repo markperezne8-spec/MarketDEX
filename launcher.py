@@ -17,8 +17,14 @@ from ui.inventory_marketplace_listing_package_review_feature import install_inve
 from ui.viewport_fit_feature import install_viewport_fit_feature
 
 
+def runtime_database_path():
+    runtime_dir = Path(__file__).parent / 'runtime'
+    runtime_dir.mkdir(parents=True, exist_ok=True)
+    return runtime_dir / 'marketdex.sqlite3'
+
+
 if __name__ == '__main__':
-    database_path = Path(__file__).parent / 'data' / 'm51_m55_acceptance.sqlite3'
+    database_path = runtime_database_path()
     mission_control = MissionControlService(database_path)
     inventory = InventoryAppService(database_path)
     app = QApplication(sys.argv)
