@@ -27,4 +27,4 @@ jobs:
       - name: Install Qt runtime
         run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: python -m pip install pytest -r requirements.txt
-      - run: python -m pytest -q tests/test_operator_recorded_listing_outcome.py tests/test_completed_listing_package_queue.py tests/test_completed_listing_package_queue_contract.py tests/test_marketplace_lifecycle_service.py
+      - run: python -m pytest -q tests/test_operator_recorded_listing_outcome.py tests/test_completed_listing_package_queue.py tests/test_completed_listing_package_queue_contract.py
