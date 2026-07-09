@@ -25,6 +25,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+      - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
       - run: pytest -q --tb=short tests/test_runtime_database_authority.py
 
