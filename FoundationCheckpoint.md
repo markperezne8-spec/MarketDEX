@@ -19,6 +19,19 @@ Checkpoint headings use `🏁`. Milestones use `⚡🚀✨ MILESTONE`.
 
 Repository rule: remote checkpoint/progress synchronization occurs only after the accepted Calc baseline is confirmed remote.
 
+## Permanent Surgical Hotfix Workflow
+Small regressions must remain small.
+
+`REPRODUCE → ROOT CAUSE → CLEAN BRANCH → MINIMUM FIX → AUTHORITATIVE TEST → CI DEPENDENCY AUDIT → FIVE GATES → MERGE → PULL NOW → OPERATOR ACCEPTANCE`
+
+For a surgical hotfix, Jarvis audits the complete runtime → tests → CI dependency path before declaring the repair nearly done. Top-level behavior is protected by an authoritative regression test. CI gates use stable explicit test targets or stable markers instead of fragile broad keyword filters when zero-test collection can create false gate failures.
+
+If branch history, changed-file scope, or runtime mutations become unexpectedly large or unrelated, stop. Rebuild the hotfix cleanly from current `main` and remove leaked unrelated changes before merge.
+
+Permanent anti-patterns: documentation floods during a small regression; dozens of repository writes for one fix; contaminated branches; reacting to CI one layer at a time without auditing the whole validation chain; merging before required gates are green; telling Mark to pull before the merged commit is on `main`.
+
+Status language is authoritative: `ZERO ACTION FOR MARK` when no operator action is required; `PULL NOW` only when pull authority is real.
+
 ## Current Approved Calc Baseline
 `artifacts/calc/MarketDEX_Calc_V0_Build480_Controlled_Financial_Truth_Cross_Check_Gate.ods`
 
@@ -71,7 +84,9 @@ Authoritative financial truth requires verified revenue, verified marketplace fe
 Build 480 creates no cash settlement authority and no tax authority.
 
 ## Copilot Status
-`COPILOT ACTION = NOT USED`
+`COPILOT ACTION = INDEPENDENT CI / NAVIGATION AUDIT USED`
+
+Copilot independently confirmed the missing pytest CI dependency, identified broad `pytest -k` filters as a zero-test collection risk, and verified that `tests/test_workspace_navigation_contract.py` protects direct Pricing and Listing Workflow tab access. Repository evidence remains final merge authority.
 
 ## Milestone Progress
 **Milestone 6:** Authoritative SOLD State to Financial Truth
