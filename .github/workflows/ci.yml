@@ -26,7 +26,14 @@ jobs:
           python-version: '3.12'
           cache: pip
       - run: pip install -q -r requirements.txt pytest
-      - run: pytest -q --tb=short tests/test_m27_mission_control.py tests/test_runtime_database_authority.py
+      - name: Run Core Tests
+        shell: bash
+        run: |
+          set +e
+          pytest -q --tb=line -x tests/test_m27_mission_control.py tests/test_runtime_database_authority.py > core-test-output.txt 2>&1
+          code=$?
+          tail -n 80 core-test-output.txt
+          exit $code
 
   inventory:
     name: Inventory
@@ -50,7 +57,14 @@ jobs:
           python-version: '3.12'
           cache: pip
       - run: pip install -q -r requirements.txt pytest
-      - run: pytest -q --tb=short tests/test_inventory_profit_feature.py tests/test_inventory_price_guidance_feature.py
+      - name: Run Pricing Tests
+        shell: bash
+        run: |
+          set +e
+          pytest -q --tb=line -x tests/test_inventory_profit_feature.py tests/test_inventory_price_guidance_feature.py > pricing-test-output.txt 2>&1
+          code=$?
+          tail -n 80 pricing-test-output.txt
+          exit $code
 
   listing:
     name: Listing
