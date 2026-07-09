@@ -27,7 +27,15 @@ jobs:
           cache: pip
       - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
-      - run: pytest -q --tb=short tests/test_m27_mission_control.py tests/test_runtime_database_authority.py
+      - name: Run Core Tests
+        shell: bash
+        run: pytest -q --tb=long -x tests/test_m27_mission_control.py tests/test_runtime_database_authority.py 2>&1 | tee core-test-output.txt; exit ${PIPESTATUS[0]}
+      - name: Upload Core failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-failure-evidence
+          path: core-test-output.txt
 
   inventory:
     name: Inventory
