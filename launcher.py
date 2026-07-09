@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 from PySide6.QtWidgets import QApplication
+from core.runtime_database_migration import migrate_legacy_database_if_needed
 from services.mission_control_service import MissionControlService
 from services.inventory_app_service import InventoryAppService
 from ui.main_window import MainWindow
@@ -26,6 +27,7 @@ def runtime_database_path():
 
 if __name__ == '__main__':
     database_path = runtime_database_path()
+    migrate_legacy_database_if_needed(database_path, Path(__file__).parent)
     mission_control = MissionControlService(database_path)
     inventory = InventoryAppService(database_path)
     app = QApplication(sys.argv)
