@@ -1,0 +1,30 @@
+name: Operator Recorded Listing Outcome Gate
+
+on:
+  pull_request:
+    paths:
+      - 'launcher.py'
+      - 'services/marketplace_lifecycle_service.py'
+      - 'ui/inventory_completed_listing_package_queue_feature.py'
+      - 'ui/inventory_listing_execution_history_feature.py'
+      - 'ui/viewport_fit_feature.py'
+      - 'tests/test_operator_recorded_listing_outcome.py'
+      - 'docs/LISTING_EXECUTION_HISTORY.md'
+      - 'docs/BUILD_PROGRESS.md'
+      - '.github/workflows/operator-recorded-listing-outcome-gate.yml'
+
+jobs:
+  operator-recorded-listing-outcome:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      QT_QPA_PLATFORM: offscreen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Qt runtime
+        run: sudo apt-get update && sudo apt-get install -y libegl1
+      - run: python -m pip install pytest -r requirements.txt
+      - run: python -m pytest -q tests/test_operator_recorded_listing_outcome.py tests/test_completed_listing_package_queue.py tests/test_completed_listing_package_queue_contract.py tests/test_marketplace_lifecycle_service.py
