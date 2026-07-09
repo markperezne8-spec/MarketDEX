@@ -1,0 +1,21 @@
+name: Operator Shell Workspace Order Gate
+
+on:
+  pull_request:
+    paths:
+      - 'ui/viewport_fit_feature.py'
+      - 'tests/test_operator_shell_workspace_order.py'
+      - '.github/workflows/operator-shell-workspace-order-gate.yml'
+
+jobs:
+  operator-workspace-order:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependencies
+        run: python -m pip install pytest
+      - name: Verify business flow workspace order
+        run: python -m pytest -q tests/test_operator_shell_workspace_order.py
