@@ -1,0 +1,21 @@
+name: Operator Shell Listing Handoff Copy Gate
+
+on:
+  pull_request:
+    paths:
+      - 'ui/viewport_fit_feature.py'
+      - 'tests/test_operator_shell_listing_handoff_copy.py'
+      - '.github/workflows/operator-shell-listing-handoff-copy-gate.yml'
+
+jobs:
+  listing-handoff-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependencies
+        run: python -m pip install pytest
+      - name: Verify listing handoff language
+        run: python -m pytest -q tests/test_operator_shell_listing_handoff_copy.py
