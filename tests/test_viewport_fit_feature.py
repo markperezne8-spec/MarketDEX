@@ -42,12 +42,14 @@ def test_viewport_fit_splits_inventory_pricing_and_listing_workflow_into_tabs():
         assert getattr(window, attribute).parentWidget() is not panel
     assert window.inventory_continue_to_pricing.isEnabled() is False
     assert window.inventory_continue_to_listing_workflow.isEnabled() is False
+    assert window.marketdex_workspace_tabs.isTabEnabled(1) is False
+    assert window.marketdex_workspace_tabs.isTabEnabled(2) is False
     assert panel.layout().indexOf(window.inventory_pricing_handoff) < panel.layout().indexOf(window.inventory_table)
     assert window.marketdex_pricing_workspace_scroll.widget().layout().indexOf(window.inventory_listing_workflow_handoff) < window.marketdex_pricing_workspace_scroll.widget().layout().indexOf(window.inventory_cost_summary)
     window.close()
 
 
-def test_inventory_and_pricing_handoffs_follow_operator_flow():
+def test_inventory_selection_unlocks_downstream_operator_flow():
     app = QApplication.instance() or QApplication([])
     window, _, _ = _window_fixture()
     selected = {'asset_id': None}
@@ -57,12 +59,18 @@ def test_inventory_and_pricing_handoffs_follow_operator_flow():
     selected['asset_id'] = 'asset-1'; window.show_selected()
     assert window.inventory_continue_to_pricing.isEnabled() is True
     assert window.inventory_continue_to_listing_workflow.isEnabled() is True
+    assert tabs.isTabEnabled(1) is True
+    assert tabs.isTabEnabled(2) is True
     assert window.inventory_pricing_guidance.text().startswith('Asset selected.')
     assert window.inventory_listing_workflow_guidance.text().startswith('Asset selected.')
     window.inventory_continue_to_pricing.click()
     assert tabs.currentIndex() == 1
     window.inventory_continue_to_listing_workflow.click()
     assert tabs.currentIndex() == 2
+    selected['asset_id'] = None; window.show_selected()
+    assert tabs.currentIndex() == 0
+    assert tabs.isTabEnabled(1) is False
+    assert tabs.isTabEnabled(2) is False
     window.close()
 
 
