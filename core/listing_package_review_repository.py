@@ -21,3 +21,10 @@ class ListingPackageReviewRepository:
         with self.database_manager.read_connection() as connection:
             row = connection.execute('SELECT * FROM listing_package_reviews WHERE asset_id=?', (asset_id,)).fetchone()
             return None if row is None else dict(row)
+
+    def list_completed(self):
+        with self.database_manager.read_connection() as connection:
+            rows = connection.execute(
+                'SELECT * FROM listing_package_reviews WHERE completed=1 ORDER BY updated_at DESC'
+            ).fetchall()
+            return [dict(row) for row in rows]
