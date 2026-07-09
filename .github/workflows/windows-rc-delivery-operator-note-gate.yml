@@ -1,0 +1,18 @@
+name: Windows RC Delivery Operator Note Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/WINDOWS_RC_DELIVERY_OPERATOR_NOTE.md'
+      - 'tests/test_windows_rc_delivery_operator_note_contract.py'
+      - '.github/workflows/windows-rc-delivery-operator-note-gate.yml'
+
+jobs:
+  windows-rc-delivery-operator-note:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pytest -q tests/test_windows_rc_delivery_operator_note_contract.py
