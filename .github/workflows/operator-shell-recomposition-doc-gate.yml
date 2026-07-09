@@ -1,0 +1,21 @@
+name: Operator Shell Recomposition Doc Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/operator-shell-recomposition.md'
+      - 'tests/test_operator_shell_recomposition_doc_contract.py'
+      - '.github/workflows/operator-shell-recomposition-doc-gate.yml'
+
+jobs:
+  operator-shell-doc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependencies
+        run: python -m pip install pytest
+      - name: Verify operator shell documentation contract
+        run: python -m pytest -q tests/test_operator_shell_recomposition_doc_contract.py
