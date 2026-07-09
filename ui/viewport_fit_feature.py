@@ -13,6 +13,13 @@ LISTING_WORKFLOW_WIDGETS = (
     'inventory_sale_completion',
 )
 
+PRICING_WIDGETS = (
+    'inventory_cost_summary',
+    'inventory_sale_readiness',
+    'inventory_profit_summary',
+    'inventory_price_guidance',
+)
+
 
 def _scroll_page(widget, parent):
     page = QWidget(parent)
@@ -47,19 +54,47 @@ def _compact_inventory_workspace(window):
     window.inventory_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
 
-def _install_listing_workflow_handoff(window, tabs):
+def _install_inventory_pricing_handoff(window, tabs):
     panel_layout = window.inventory_panel.layout()
-    handoff = QGroupBox('🚀 NEXT: LISTING WORKFLOW')
+    handoff = QGroupBox('🚀 NEXT: PRICING')
     handoff_layout = QVBoxLayout(handoff)
-    guidance = QLabel('Pricing work is complete here. Continue to Listing Workflow for listing decisions, package review, operator handoff, LISTED outcomes, and confirmed sale completion.')
+    guidance = QLabel('Select one inventory asset, then continue to Pricing to review cost, fees, shipping, profit, and target ROI.')
     guidance.setWordWrap(True)
-    continue_button = QPushButton('Continue to Listing Workflow →')
+    continue_button = QPushButton('Continue to Pricing →')
+    continue_button.setEnabled(False)
     continue_button.clicked.connect(lambda: tabs.setCurrentIndex(1))
     handoff_layout.addWidget(guidance)
     handoff_layout.addWidget(continue_button)
     refresh_button = getattr(window, 'refresh_button', None)
     insert_at = panel_layout.indexOf(refresh_button) if refresh_button is not None else panel_layout.count()
     panel_layout.insertWidget(insert_at, handoff)
+    original_show = window.show_selected
+
+    def show_selected():
+        original_show()
+        continue_button.setEnabled(window.selected_asset_id() is not None)
+
+    window.show_selected = show_selected
+    try:
+        window.inventory_table.itemSelectionChanged.disconnect()
+    except RuntimeError:
+        pass
+    window.inventory_table.itemSelectionChanged.connect(window.show_selected)
+    window.inventory_pricing_handoff = handoff
+    window.inventory_continue_to_pricing = continue_button
+    show_selected()
+
+
+def _install_listing_workflow_handoff(window, tabs, pricing_layout):
+    handoff = QGroupBox('🚀 NEXT: LISTING WORKFLOW')
+    handoff_layout = QVBoxLayout(handoff)
+    guidance = QLabel('Pricing work is complete. Continue to Listing Workflow for listing decisions, package review, operator handoff, LISTED outcomes, and confirmed sale completion.')
+    guidance.setWordWrap(True)
+    continue_button = QPushButton('Continue to Listing Workflow →')
+    continue_button.clicked.connect(lambda: tabs.setCurrentIndex(2))
+    handoff_layout.addWidget(guidance)
+    handoff_layout.addWidget(continue_button)
+    pricing_layout.addWidget(handoff)
     window.inventory_listing_workflow_handoff = handoff
     window.inventory_continue_to_listing_workflow = continue_button
 
@@ -74,14 +109,30 @@ def install_viewport_fit_feature(window):
         panel_layout.removeWidget(widget)
         listing_layout.addWidget(widget)
     listing_layout.addStretch(1)
+    pricing_content = QWidget()
+    pricing_layout = QVBoxLayout(pricing_content)
+    pricing_title = QLabel('Pricing')
+    pricing_title.setStyleSheet('font-size:30px;font-weight:700')
+    pricing_layout.addWidget(pricing_title)
+    pricing_layout.addWidget(QLabel('PRICE WITH COST, FEES, SHIPPING, PACKAGING, PROFIT, AND TARGET ROI IN VIEW'))
+    for attribute in PRICING_WIDGETS:
+        widget = getattr(window, attribute, None)
+        if widget is not None:
+            panel_layout.removeWidget(widget)
+            pricing_layout.addWidget(widget)
+    pricing_layout.addStretch(1)
     _compact_inventory_workspace(window)
     tabs = QTabWidget(window)
     inventory_page, inventory_scroll = _scroll_page(content, tabs)
+    pricing_page, pricing_scroll = _scroll_page(pricing_content, tabs)
     listing_page, listing_scroll = _scroll_page(listing_content, tabs)
-    tabs.addTab(inventory_page, 'Inventory & Pricing')
+    tabs.addTab(inventory_page, 'Inventory')
+    tabs.addTab(pricing_page, 'Pricing')
     tabs.addTab(listing_page, 'Listing Workflow')
-    _install_listing_workflow_handoff(window, tabs)
+    _install_inventory_pricing_handoff(window, tabs)
+    _install_listing_workflow_handoff(window, tabs, pricing_layout)
     window.setCentralWidget(tabs)
     window.marketdex_workspace_tabs = tabs
     window.marketdex_workspace_scroll = inventory_scroll
+    window.marketdex_pricing_workspace_scroll = pricing_scroll
     window.marketdex_listing_workflow_scroll = listing_scroll

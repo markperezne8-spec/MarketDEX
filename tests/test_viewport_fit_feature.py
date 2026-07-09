@@ -4,6 +4,10 @@ from PySide6.QtWidgets import QApplication, QGroupBox, QLabel, QMainWindow, QSiz
 from ui.viewport_fit_feature import install_viewport_fit_feature, LISTING_WORKFLOW_WIDGETS
 
 
+class _SelectionModel:
+    def selectedRows(self): return []
+
+
 def _window_fixture():
     window = QMainWindow()
     content = QWidget(); panel = QWidget(content); panel.setLayout(QVBoxLayout())
@@ -20,21 +24,43 @@ def _window_fixture():
         widget = QGroupBox(attribute)
         panel.layout().addWidget(widget)
         setattr(window, attribute, widget)
+    for attribute in ('inventory_cost_summary', 'inventory_sale_readiness', 'inventory_profit_summary', 'inventory_price_guidance'):
+        widget = QLabel(attribute)
+        panel.layout().addWidget(widget)
+        setattr(window, attribute, widget)
+    window.refresh_button = QLabel('refresh'); panel.layout().addWidget(window.refresh_button)
+    window.selected_asset_id = lambda: None
+    window.show_selected = lambda: None
     window.setCentralWidget(content)
     return window, content, panel
 
 
-def test_viewport_fit_splits_inventory_and_listing_workflow_into_tabs():
+def test_viewport_fit_splits_inventory_pricing_and_listing_workflow_into_tabs():
     app = QApplication.instance() or QApplication([])
     window, content, panel = _window_fixture()
     install_viewport_fit_feature(window)
     assert isinstance(window.centralWidget(), QTabWidget)
-    assert window.centralWidget().count() == 2
-    assert window.centralWidget().tabText(0) == 'Inventory & Pricing'
-    assert window.centralWidget().tabText(1) == 'Listing Workflow'
+    assert [window.centralWidget().tabText(index) for index in range(window.centralWidget().count())] == ['Inventory', 'Pricing', 'Listing Workflow']
     assert window.marketdex_workspace_scroll.widget() is content
     for attribute in LISTING_WORKFLOW_WIDGETS:
         assert getattr(window, attribute).parentWidget() is not panel
+    assert window.inventory_continue_to_pricing.isEnabled() is False
+    window.close()
+
+
+def test_inventory_and_pricing_handoffs_follow_operator_flow():
+    app = QApplication.instance() or QApplication([])
+    window, _, _ = _window_fixture()
+    selected = {'asset_id': None}
+    window.selected_asset_id = lambda: selected['asset_id']
+    install_viewport_fit_feature(window)
+    tabs = window.marketdex_workspace_tabs
+    selected['asset_id'] = 'asset-1'; window.show_selected()
+    assert window.inventory_continue_to_pricing.isEnabled() is True
+    window.inventory_continue_to_pricing.click()
+    assert tabs.currentIndex() == 1
+    window.inventory_continue_to_listing_workflow.click()
+    assert tabs.currentIndex() == 2
     window.close()
 
 
