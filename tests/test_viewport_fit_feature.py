@@ -42,14 +42,18 @@ def test_viewport_fit_splits_inventory_pricing_and_listing_workflow_into_tabs():
         assert getattr(window, attribute).parentWidget() is not panel
     assert window.inventory_continue_to_pricing.isEnabled() is False
     assert window.inventory_continue_to_listing_workflow.isEnabled() is False
-    assert window.marketdex_workspace_tabs.isTabEnabled(1) is False
-    assert window.marketdex_workspace_tabs.isTabEnabled(2) is False
+    assert window.marketdex_workspace_tabs.isTabEnabled(1) is True
+    assert window.marketdex_workspace_tabs.isTabEnabled(2) is True
+    window.marketdex_workspace_tabs.setCurrentIndex(1)
+    assert window.marketdex_workspace_tabs.currentIndex() == 1
+    window.marketdex_workspace_tabs.setCurrentIndex(2)
+    assert window.marketdex_workspace_tabs.currentIndex() == 2
     assert panel.layout().indexOf(window.inventory_pricing_handoff) < panel.layout().indexOf(window.inventory_table)
     assert window.marketdex_pricing_workspace_scroll.widget().layout().indexOf(window.inventory_listing_workflow_handoff) < window.marketdex_pricing_workspace_scroll.widget().layout().indexOf(window.inventory_cost_summary)
     window.close()
 
 
-def test_inventory_selection_unlocks_downstream_operator_flow():
+def test_inventory_selection_enables_guided_handoffs_without_owning_tab_access():
     app = QApplication.instance() or QApplication([])
     window, _, _ = _window_fixture()
     selected = {'asset_id': None}
@@ -68,9 +72,11 @@ def test_inventory_selection_unlocks_downstream_operator_flow():
     window.inventory_continue_to_listing_workflow.click()
     assert tabs.currentIndex() == 2
     selected['asset_id'] = None; window.show_selected()
-    assert tabs.currentIndex() == 0
-    assert tabs.isTabEnabled(1) is False
-    assert tabs.isTabEnabled(2) is False
+    assert tabs.currentIndex() == 2
+    assert tabs.isTabEnabled(1) is True
+    assert tabs.isTabEnabled(2) is True
+    assert window.inventory_continue_to_pricing.isEnabled() is False
+    assert window.inventory_continue_to_listing_workflow.isEnabled() is False
     window.close()
 
 
