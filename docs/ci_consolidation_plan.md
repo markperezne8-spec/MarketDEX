@@ -24,7 +24,7 @@ The second controlled batch retires five duplicate feature gates: Viewport Fit, 
 
 The third controlled batch retires five cumulative milestone gates: M66-M70, M81-M85, M106-M110, M116-M120, and M151-M155. Each gate only installed the same runtime and executed an explicit subset of tests already discovered by the consolidated full-suite command.
 
-The fourth controlled batch begins retirement of the cumulative M45-M49 and M50 authority workflow triggers. Their protected operating-command-chain and execution-feedback tests remain in `tests/` and continue to run under the consolidated full-suite command.
+The fourth controlled batch retires five cumulative authority workflow triggers: M45-M49, M50, M56-M60, M61-M65, and M76-M80. Their operating-command-chain, execution-feedback, continuous-business-loop, autonomous-business-cycle, and enterprise-governance tests remain in `tests/` and continue to run under the consolidated full-suite command.
 
 No test file is deleted. No service, repository, SQLite, UI, pricing, listing, or sale authority is changed.
 
