@@ -12,16 +12,22 @@ The workflow uses concurrency cancellation so a newer commit on the same pull re
 
 ## Migration rule
 
-Legacy gates are retired from automatic pull-request execution in controlled batches only after the consolidated workflow proves the same tests execute successfully. Tests remain in `tests/`; consolidation removes runner duplication, not verification coverage.
+Legacy gates are retired from automatic pull-request execution in controlled batches only when their commands are strict subsets of the consolidated `python -m pytest -q` suite. Tests remain in `tests/`; consolidation removes runner duplication, not verification coverage.
 
 Manual Windows RC Delivery remains separate because packaging and release publication are operator-authorized release actions, not ordinary pull-request CI.
+
+## First retirement batch
+
+The first controlled batch retires five milestone authority workflow files: M51-M55, M71-M75, M101-M105, M126-M130, and M136-M140. Each legacy workflow only installed the same project dependencies and invoked named pytest files that are already discovered by the consolidated full-suite command.
+
+No test file is deleted. No service, repository, SQLite, UI, pricing, listing, or sale authority is changed.
 
 ## Sequence
 
 1. Establish consolidated full-suite CI.
-2. Verify the full pytest suite through the consolidated job.
-3. Inventory legacy automatic gate workflows by test coverage.
-4. Retire duplicate automatic triggers in batches while preserving the tests.
+2. Confirm duplicate legacy gate commands are subsets of full-suite pytest discovery.
+3. Retire duplicate automatic gates in controlled batches while preserving the tests.
+4. Verify the consolidated full pytest suite through the exact-head job.
 5. Keep release delivery and genuinely distinct platform packaging workflows separate.
 6. Require the consolidated MarketDEX CI result at the merge boundary.
 
