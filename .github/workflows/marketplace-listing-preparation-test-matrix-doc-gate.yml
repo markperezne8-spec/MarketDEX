@@ -11,6 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: grep -q 'PASS: active quantity' docs/MARKETPLACE_LISTING_PREPARATION_TEST_MATRIX.md
-      - run: grep -q 'BLOCK: zero quantity' docs/MARKETPLACE_LISTING_PREPARATION_TEST_MATRIX.md
-      - run: grep -q 'BLOCK: sale-readiness failure' docs/MARKETPLACE_LISTING_PREPARATION_TEST_MATRIX.md
+      - run: "grep -q 'PASS: active quantity' docs/MARKETPLACE_LISTING_PREPARATION_TEST_MATRIX.md"
+      - run: "grep -q 'BLOCK: zero quantity' docs/MARKETPLACE_LISTING_PREPARATION_TEST_MATRIX.md"
+      - run: "grep -q 'BLOCK: sale-readiness failure' docs/MARKETPLACE_LISTING_PREPARATION_TEST_MATRIX.md"
