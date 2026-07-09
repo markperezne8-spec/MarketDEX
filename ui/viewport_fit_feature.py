@@ -65,14 +65,20 @@ def _install_inventory_pricing_handoff(window, tabs):
     continue_button.clicked.connect(lambda: tabs.setCurrentIndex(1))
     handoff_layout.addWidget(guidance)
     handoff_layout.addWidget(continue_button)
-    refresh_button = getattr(window, 'refresh_button', None)
-    insert_at = panel_layout.indexOf(refresh_button) if refresh_button is not None else panel_layout.count()
+    table_index = panel_layout.indexOf(window.inventory_table)
+    insert_at = table_index if table_index >= 0 else panel_layout.count()
     panel_layout.insertWidget(insert_at, handoff)
     original_show = window.show_selected
 
     def show_selected():
         original_show()
-        continue_button.setEnabled(window.selected_asset_id() is not None)
+        selected = window.selected_asset_id() is not None
+        continue_button.setEnabled(selected)
+        guidance.setText(
+            'Asset selected. Continue to Pricing to review cost, fees, shipping, profit, and target ROI.'
+            if selected else
+            'Select one inventory asset, then continue to Pricing to review cost, fees, shipping, profit, and target ROI.'
+        )
 
     window.show_selected = show_selected
     try:
@@ -81,6 +87,7 @@ def _install_inventory_pricing_handoff(window, tabs):
         pass
     window.inventory_table.itemSelectionChanged.connect(window.show_selected)
     window.inventory_pricing_handoff = handoff
+    window.inventory_pricing_guidance = guidance
     window.inventory_continue_to_pricing = continue_button
     show_selected()
 
