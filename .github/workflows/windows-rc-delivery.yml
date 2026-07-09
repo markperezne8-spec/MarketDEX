@@ -1,0 +1,42 @@
+name: Windows RC Delivery
+
+on:
+  workflow_dispatch:
+
+jobs:
+  windows-rc-delivery:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-build.txt
+      - run: python -m PyInstaller --clean --noconfirm MarketDEX.spec
+      - name: Verify operator executable
+        shell: pwsh
+        run: |
+          if (-not (Test-Path 'dist/MarketDEX.exe')) { throw 'MarketDEX.exe was not produced' }
+          $size = (Get-Item 'dist/MarketDEX.exe').Length
+          if ($size -le 0) { throw 'MarketDEX.exe is empty' }
+          Write-Host "Verified dist/MarketDEX.exe ($size bytes)"
+      - name: Stage operator delivery package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path 'delivery/MarketDEX-Windows-RC' | Out-Null
+          Copy-Item 'dist/MarketDEX.exe' 'delivery/MarketDEX-Windows-RC/MarketDEX.exe'
+          @'
+          MarketDEX Windows Release Candidate
+
+          1. Extract the downloaded ZIP to a folder outside the MarketDEX source repository.
+          2. Double-click MarketDEX.exe.
+          3. Keep the application folder separate from the Git repository.
+          4. This Release Candidate is offline-first and stores runtime data locally.
+          '@ | Set-Content -Encoding UTF8 'delivery/MarketDEX-Windows-RC/README.txt'
+      - name: Publish operator delivery package
+        uses: actions/upload-artifact@v4
+        with:
+          name: MarketDEX-Windows-RC-Operator-Package
+          path: delivery/MarketDEX-Windows-RC
+          if-no-files-found: error
+          retention-days: 14
