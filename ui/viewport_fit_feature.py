@@ -10,6 +10,7 @@ LISTING_WORKFLOW_WIDGETS = (
     'inventory_marketplace_listing_package_review',
     'inventory_completed_listing_package_queue',
     'inventory_listing_execution_history',
+    'inventory_sale_completion',
 )
 
 
@@ -31,24 +32,16 @@ def _compact_inventory_workspace(window):
     layout = panel.layout()
     layout.setContentsMargins(12, 10, 12, 10)
     layout.setSpacing(5)
-
-    # The eight dashboard metrics remain visible, but become a compact status strip.
     for value in window.values.values():
         value.setStyleSheet('font-size:18px;font-weight:700')
         box = value.parentWidget()
         if isinstance(box, QGroupBox):
-            box.setMinimumHeight(54)
-            box.setMaximumHeight(64)
-            box.layout().setContentsMargins(8, 8, 8, 5)
-
+            box.setMinimumHeight(54); box.setMaximumHeight(64); box.layout().setContentsMargins(8, 8, 8, 5)
     for value in window.inventory_summary.values():
         value.setStyleSheet('font-size:16px;font-weight:700')
         box = value.parentWidget()
         if isinstance(box, QGroupBox):
-            box.setMinimumHeight(48)
-            box.setMaximumHeight(58)
-            box.layout().setContentsMargins(8, 7, 8, 4)
-
+            box.setMinimumHeight(48); box.setMaximumHeight(58); box.layout().setContentsMargins(8, 7, 8, 4)
     window.inventory_table.setMinimumHeight(120)
     window.inventory_table.setMaximumHeight(16777215)
     window.inventory_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -59,15 +52,12 @@ def install_viewport_fit_feature(window):
     panel_layout = window.inventory_panel.layout()
     listing_content = QWidget()
     listing_layout = QVBoxLayout(listing_content)
-
     for attribute in LISTING_WORKFLOW_WIDGETS:
         widget = getattr(window, attribute)
         panel_layout.removeWidget(widget)
         listing_layout.addWidget(widget)
     listing_layout.addStretch(1)
-
     _compact_inventory_workspace(window)
-
     tabs = QTabWidget(window)
     inventory_page, inventory_scroll = _scroll_page(content, tabs)
     listing_page, listing_scroll = _scroll_page(listing_content, tabs)
