@@ -1,21 +1,21 @@
 # MarketDEX OS Build Progress
 
-Current engineering progress: **92%**
+Current engineering progress: **94%**
 
-`██████████████████░░ 92%`
+`███████████████████░ 94%`
 
 ## Active build
 
-Persisted Listing Review State and Completion Tracking
+Completed Listing Package Queue and Operator Handoff
 
 ## Completed operator chain
 
-Inventory → Business Details → Unit Cost → Sale Readiness → Fee-aware True Profit → Price Guidance → Listing Decision Workspace → Saved Listing Plan → Listing Plan Queue → Listing Execution Readiness → Marketplace Listing Preparation → Marketplace Listing Package Review → Persisted Listing Review State → Completion Tracking
+Inventory → Business Details → Unit Cost → Sale Readiness → Fee-aware True Profit → Price Guidance → Listing Decision Workspace → Saved Listing Plan → Listing Plan Queue → Listing Execution Readiness → Marketplace Listing Preparation → Marketplace Listing Package Review → Persisted Listing Review State → Completion Tracking → Completed Listing Package Queue → Operator Handoff
 
 ## Current decision boundary
 
-Package review decisions persist locally in SQLite. Approved packages carry an explicit completion marker; returning a package for changes clears completion.
+Approved packages enter a dedicated offline queue with asset, marketplace, target price, and explicit operator handoff status. Returned packages leave the queue when completion clears.
 
 ## Next decision boundary
 
-Completed listing package queue and operator handoff workflow remain future builds. MarketDEX does not publish, submit, or modify marketplace listings in this build.
+Listing execution history and explicit operator-recorded marketplace outcome remain future builds. MarketDEX does not publish, submit, synchronize, or modify marketplace state in this build. Sale completion remains separate.
