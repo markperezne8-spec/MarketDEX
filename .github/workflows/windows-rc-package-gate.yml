@@ -1,0 +1,28 @@
+name: Windows RC Package Gate
+
+on:
+  pull_request:
+    paths:
+      - 'launcher.py'
+      - 'MarketDEX.spec'
+      - 'requirements.txt'
+      - 'requirements-build.txt'
+      - '.github/workflows/windows-rc-package-gate.yml'
+
+jobs:
+  windows-rc-package:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-build.txt
+      - run: python -m PyInstaller --clean --noconfirm MarketDEX.spec
+      - name: Verify packaged executable
+        shell: pwsh
+        run: |
+          if (-not (Test-Path 'dist/MarketDEX.exe')) { throw 'MarketDEX.exe was not produced' }
+          $size = (Get-Item 'dist/MarketDEX.exe').Length
+          if ($size -le 0) { throw 'MarketDEX.exe is empty' }
+          Write-Host "Verified dist/MarketDEX.exe ($size bytes)"
