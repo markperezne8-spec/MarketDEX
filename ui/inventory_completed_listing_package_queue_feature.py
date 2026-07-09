@@ -30,11 +30,17 @@ def install_inventory_completed_listing_package_queue_feature(window):
     def refresh_queue():
         nonlocal queue_rows
         assets = {row['asset_id']: row for row in window.inventory_service.list_inventory()}
+        with window.inventory_service.database.read_connection() as connection:
+            listed_asset_ids = {
+                row['asset_id'] for row in connection.execute(
+                    "SELECT asset_id FROM marketplace_publication_allocations WHERE state='ACTIVE'"
+                ).fetchall()
+            }
         queue_rows = []
         for review in review_repository.list_completed():
             asset = assets.get(review['asset_id'])
             plan = plan_repository.get(review['asset_id'])
-            if asset is not None and plan is not None:
+            if asset is not None and plan is not None and review['asset_id'] not in listed_asset_ids:
                 queue_rows.append((review, asset, plan))
         table.setRowCount(len(queue_rows))
         for index, (_, asset, plan) in enumerate(queue_rows):

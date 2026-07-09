@@ -9,6 +9,7 @@ LISTING_WORKFLOW_WIDGETS = (
     'inventory_marketplace_listing_preparation',
     'inventory_marketplace_listing_package_review',
     'inventory_completed_listing_package_queue',
+    'inventory_listing_execution_history',
 )
 
 
