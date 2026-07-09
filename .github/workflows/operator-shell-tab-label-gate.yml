@@ -1,0 +1,21 @@
+name: Operator Shell Tab Label Gate
+
+on:
+  pull_request:
+    paths:
+      - 'ui/viewport_fit_feature.py'
+      - 'tests/test_operator_shell_tab_labels.py'
+      - '.github/workflows/operator-shell-tab-label-gate.yml'
+
+jobs:
+  shell-tab-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependencies
+        run: python -m pip install pytest
+      - name: Verify concise operator tab labels
+        run: python -m pytest -q tests/test_operator_shell_tab_labels.py
