@@ -75,6 +75,10 @@ def _install_inventory_pricing_handoff(window, tabs):
         selected = window.selected_asset_id() is not None
         continue_button.setEnabled(selected)
         window.inventory_continue_to_listing_workflow.setEnabled(selected)
+        tabs.setTabEnabled(1, selected)
+        tabs.setTabEnabled(2, selected)
+        if not selected and tabs.currentIndex() != 0:
+            tabs.setCurrentIndex(0)
         guidance.setText(
             'Asset selected. Continue to Pricing to review cost, fees, shipping, profit, and target ROI.'
             if selected else
@@ -98,14 +102,13 @@ def _install_inventory_pricing_handoff(window, tabs):
     show_selected()
 
 
-def _install_listing_workflow_handoff(window, tabs, pricing_layout):
+def _install_listing_workflow_handoff(window, pricing_layout):
     handoff = QGroupBox('🚀 NEXT: LISTING WORKFLOW')
     handoff_layout = QVBoxLayout(handoff)
     guidance = QLabel('Select an inventory asset before continuing to Listing Workflow.')
     guidance.setWordWrap(True)
     continue_button = QPushButton('Continue to Listing Workflow →')
     continue_button.setEnabled(False)
-    continue_button.clicked.connect(lambda: tabs.setCurrentIndex(2))
     handoff_layout.addWidget(guidance)
     handoff_layout.addWidget(continue_button)
     pricing_layout.addWidget(handoff)
@@ -130,7 +133,7 @@ def install_viewport_fit_feature(window):
     pricing_title.setStyleSheet('font-size:30px;font-weight:700')
     pricing_layout.addWidget(pricing_title)
     pricing_layout.addWidget(QLabel('PRICE WITH COST, FEES, SHIPPING, PACKAGING, PROFIT, AND TARGET ROI IN VIEW'))
-    _install_listing_workflow_handoff(window, None, pricing_layout)
+    _install_listing_workflow_handoff(window, pricing_layout)
     for attribute in PRICING_WIDGETS:
         widget = getattr(window, attribute, None)
         if widget is not None:
@@ -145,7 +148,6 @@ def install_viewport_fit_feature(window):
     tabs.addTab(inventory_page, 'Inventory')
     tabs.addTab(pricing_page, 'Pricing')
     tabs.addTab(listing_page, 'Listing Workflow')
-    window.inventory_continue_to_listing_workflow.clicked.disconnect()
     window.inventory_continue_to_listing_workflow.clicked.connect(lambda: tabs.setCurrentIndex(2))
     _install_inventory_pricing_handoff(window, tabs)
     window.setCentralWidget(tabs)
