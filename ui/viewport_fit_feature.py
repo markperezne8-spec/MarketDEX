@@ -9,6 +9,9 @@ LISTING_WORKFLOW_WIDGETS = (
     'inventory_marketplace_listing_preparation',
     'inventory_marketplace_listing_package_review',
     'inventory_completed_listing_package_queue',
+)
+
+SALES_WORKFLOW_WIDGETS = (
     'inventory_listing_execution_history',
     'inventory_sale_completion',
 )
@@ -108,11 +111,11 @@ def _refresh_mission_control(window):
 
 def _install_listing_workflow_handoff(window, tabs):
     panel_layout = window.inventory_panel.layout()
-    handoff = QGroupBox('🚀 NEXT: LISTING WORKFLOW')
+    handoff = QGroupBox('🚀 NEXT: LISTINGS')
     handoff_layout = QVBoxLayout(handoff)
-    guidance = QLabel('Pricing work is complete here. Continue to Listing Workflow for listing decisions, package review, operator handoff, LISTED outcomes, and confirmed sale completion.')
+    guidance = QLabel('Pricing work is complete here. Continue to Listings for listing decisions, package review, and operator handoff.')
     guidance.setWordWrap(True)
-    continue_button = QPushButton('Continue to Listing Workflow →')
+    continue_button = QPushButton('Continue to Listings →')
     continue_button.clicked.connect(lambda: tabs.setCurrentIndex(2))
     handoff_layout.addWidget(guidance)
     handoff_layout.addWidget(continue_button)
@@ -133,14 +136,23 @@ def install_viewport_fit_feature(window):
         panel_layout.removeWidget(widget)
         listing_layout.addWidget(widget)
     listing_layout.addStretch(1)
+    sales_content = QWidget()
+    sales_layout = QVBoxLayout(sales_content)
+    for attribute in SALES_WORKFLOW_WIDGETS:
+        widget = getattr(window, attribute)
+        panel_layout.removeWidget(widget)
+        sales_layout.addWidget(widget)
+    sales_layout.addStretch(1)
     _compact_inventory_workspace(window)
     tabs = QTabWidget(window)
     mission_page = _mission_control(window, tabs)
     inventory_page, inventory_scroll = _scroll_page(content, tabs)
     listing_page, listing_scroll = _scroll_page(listing_content, tabs)
+    sales_page, sales_scroll = _scroll_page(sales_content, tabs)
     tabs.addTab(mission_page, 'Mission Control')
     tabs.addTab(inventory_page, 'Inventory & Pricing')
-    tabs.addTab(listing_page, 'Listing Workflow')
+    tabs.addTab(listing_page, 'Listings')
+    tabs.addTab(sales_page, 'Sales')
     _install_listing_workflow_handoff(window, tabs)
     original_refresh = window.refresh
     def refresh():
@@ -151,4 +163,5 @@ def install_viewport_fit_feature(window):
     window.marketdex_workspace_tabs = tabs
     window.marketdex_workspace_scroll = inventory_scroll
     window.marketdex_listing_workflow_scroll = listing_scroll
+    window.marketdex_sales_workflow_scroll = sales_scroll
     _refresh_mission_control(window)
