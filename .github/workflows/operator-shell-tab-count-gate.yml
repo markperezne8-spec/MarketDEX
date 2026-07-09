@@ -1,0 +1,21 @@
+name: Operator Shell Tab Count Gate
+
+on:
+  pull_request:
+    paths:
+      - 'ui/viewport_fit_feature.py'
+      - 'tests/test_operator_shell_tab_count.py'
+      - '.github/workflows/operator-shell-tab-count-gate.yml'
+
+jobs:
+  operator-shell-tab-count:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependencies
+        run: python -m pip install pytest
+      - name: Verify three-workspace shell boundary
+        run: python -m pytest -q tests/test_operator_shell_tab_count.py
