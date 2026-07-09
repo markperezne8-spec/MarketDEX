@@ -4,10 +4,6 @@ from PySide6.QtWidgets import QApplication, QGroupBox, QLabel, QMainWindow, QSiz
 from ui.viewport_fit_feature import install_viewport_fit_feature, LISTING_WORKFLOW_WIDGETS
 
 
-class _SelectionModel:
-    def selectedRows(self): return []
-
-
 def _window_fixture():
     window = QMainWindow()
     content = QWidget(); panel = QWidget(content); panel.setLayout(QVBoxLayout())
@@ -45,6 +41,7 @@ def test_viewport_fit_splits_inventory_pricing_and_listing_workflow_into_tabs():
     for attribute in LISTING_WORKFLOW_WIDGETS:
         assert getattr(window, attribute).parentWidget() is not panel
     assert window.inventory_continue_to_pricing.isEnabled() is False
+    assert panel.layout().indexOf(window.inventory_pricing_handoff) < panel.layout().indexOf(window.inventory_table)
     window.close()
 
 
@@ -57,6 +54,7 @@ def test_inventory_and_pricing_handoffs_follow_operator_flow():
     tabs = window.marketdex_workspace_tabs
     selected['asset_id'] = 'asset-1'; window.show_selected()
     assert window.inventory_continue_to_pricing.isEnabled() is True
+    assert window.inventory_pricing_guidance.text().startswith('Asset selected.')
     window.inventory_continue_to_pricing.click()
     assert tabs.currentIndex() == 1
     window.inventory_continue_to_listing_workflow.click()
