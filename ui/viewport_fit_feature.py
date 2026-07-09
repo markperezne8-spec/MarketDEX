@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QGroupBox, QScrollArea, QSizePolicy, QTabWidget, QWidget, QVBoxLayout
+from PySide6.QtWidgets import QGroupBox, QLabel, QPushButton, QScrollArea, QSizePolicy, QTabWidget, QWidget, QVBoxLayout
 
 
 LISTING_WORKFLOW_WIDGETS = (
@@ -47,6 +47,23 @@ def _compact_inventory_workspace(window):
     window.inventory_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
 
+def _install_listing_workflow_handoff(window, tabs):
+    panel_layout = window.inventory_panel.layout()
+    handoff = QGroupBox('🚀 NEXT: LISTING WORKFLOW')
+    handoff_layout = QVBoxLayout(handoff)
+    guidance = QLabel('Pricing work is complete here. Continue to Listing Workflow for listing decisions, package review, operator handoff, LISTED outcomes, and confirmed sale completion.')
+    guidance.setWordWrap(True)
+    continue_button = QPushButton('Continue to Listing Workflow →')
+    continue_button.clicked.connect(lambda: tabs.setCurrentIndex(1))
+    handoff_layout.addWidget(guidance)
+    handoff_layout.addWidget(continue_button)
+    refresh_button = getattr(window, 'refresh_button', None)
+    insert_at = panel_layout.indexOf(refresh_button) if refresh_button is not None else panel_layout.count()
+    panel_layout.insertWidget(insert_at, handoff)
+    window.inventory_listing_workflow_handoff = handoff
+    window.inventory_continue_to_listing_workflow = continue_button
+
+
 def install_viewport_fit_feature(window):
     content = window.takeCentralWidget()
     panel_layout = window.inventory_panel.layout()
@@ -63,6 +80,7 @@ def install_viewport_fit_feature(window):
     listing_page, listing_scroll = _scroll_page(listing_content, tabs)
     tabs.addTab(inventory_page, 'Inventory & Pricing')
     tabs.addTab(listing_page, 'Listing Workflow')
+    _install_listing_workflow_handoff(window, tabs)
     window.setCentralWidget(tabs)
     window.marketdex_workspace_tabs = tabs
     window.marketdex_workspace_scroll = inventory_scroll
