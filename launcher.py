@@ -27,12 +27,6 @@ def runtime_database_path():
     return runtime_dir / 'marketdex.sqlite3'
 
 
-def desktop_launch_size(available):
-    width = min(1320, max(960, int(available.width() * 0.86)))
-    height = min(760, max(640, int(available.height() * 0.82)))
-    return width, height
-
-
 if __name__ == '__main__':
     database_path = runtime_database_path()
     migrate_legacy_database_if_needed(database_path, Path(__file__).parent)
@@ -54,8 +48,5 @@ if __name__ == '__main__':
     install_inventory_listing_execution_history_feature(window)
     install_inventory_sale_completion_feature(window)
     install_viewport_fit_feature(window)
-    available = app.primaryScreen().availableGeometry()
-    width, height = desktop_launch_size(available)
-    window.resize(width, height)
-    window.show()
+    window.showMaximized()
     sys.exit(app.exec())
