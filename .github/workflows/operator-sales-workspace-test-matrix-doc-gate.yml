@@ -1,0 +1,21 @@
+name: Operator Sales Workspace Test Matrix Doc Gate
+
+on:
+  pull_request:
+    paths:
+      - 'ui/viewport_fit_feature.py'
+      - 'tests/test_operator_sales_workspace_contract.py'
+      - 'docs/operator_sales_workspace_test_matrix.md'
+      - '.github/workflows/operator-sales-workspace-test-matrix-doc-gate.yml'
+  workflow_dispatch:
+
+jobs:
+  operator-sales-workspace-test-matrix-doc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify documented operator boundaries
+        run: |
+          grep -q 'Post-listing work moves to Sales' docs/operator_sales_workspace_test_matrix.md
+          grep -q 'No duplicated workflow widgets' docs/operator_sales_workspace_test_matrix.md
+          grep -q 'Authority semantics are preserved' docs/operator_sales_workspace_test_matrix.md
