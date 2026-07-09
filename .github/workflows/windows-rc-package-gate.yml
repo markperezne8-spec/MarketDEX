@@ -26,3 +26,10 @@ jobs:
           $size = (Get-Item 'dist/MarketDEX.exe').Length
           if ($size -le 0) { throw 'MarketDEX.exe is empty' }
           Write-Host "Verified dist/MarketDEX.exe ($size bytes)"
+      - name: Publish Windows RC executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: MarketDEX-Windows-RC
+          path: dist/MarketDEX.exe
+          if-no-files-found: error
+          retention-days: 14
