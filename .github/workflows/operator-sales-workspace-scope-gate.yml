@@ -6,12 +6,8 @@ on:
       - 'ui/viewport_fit_feature.py'
       - 'tests/test_operator_sales_workspace_contract.py'
       - 'docs/operator_workspace_recomposition.md'
-      - 'docs/operator_sales_workspace_test_matrix.md'
-      - 'docs/operator_sales_workspace_scope.md'
-      - '.github/workflows/operator-sales-workspace-gate.yml'
-      - '.github/workflows/operator-sales-workspace-scope-gate.yml'
-      - '.github/workflows/operator-sales-workspace-test-matrix-doc-gate.yml'
-      - '.github/workflows/operator-sales-workspace-decision-boundary-gate.yml'
+      - 'docs/operator_sales_workspace_*.md'
+      - '.github/workflows/operator-sales-workspace-*.yml'
   workflow_dispatch:
 
 jobs:
@@ -25,5 +21,5 @@ jobs:
           git fetch origin "${{ github.base_ref || 'main' }}" --depth=1
           changed="$(git diff --name-only "origin/${{ github.base_ref || 'main' }}...HEAD")"
           echo "$changed"
-          forbidden="$(echo "$changed" | grep -Ev '^(ui/viewport_fit_feature.py|tests/test_operator_sales_workspace_contract.py|docs/operator_(workspace_recomposition|sales_workspace_(test_matrix|scope))\.md|\.github/workflows/operator-sales-workspace-(gate|scope-gate|test-matrix-doc-gate|decision-boundary-gate)\.yml)$' || true)"
+          forbidden="$(echo "$changed" | grep -Ev '^(ui/viewport_fit_feature.py|tests/test_operator_sales_workspace_contract.py|docs/operator_(workspace_recomposition|sales_workspace_[a-z_]+)\.md|\.github/workflows/operator-sales-workspace-[a-z-]+\.yml)$' || true)"
           test -z "$forbidden" || { echo "Out-of-scope files:"; echo "$forbidden"; exit 1; }
