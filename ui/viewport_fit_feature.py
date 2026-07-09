@@ -75,10 +75,6 @@ def _install_inventory_pricing_handoff(window, tabs):
         selected = window.selected_asset_id() is not None
         continue_button.setEnabled(selected)
         window.inventory_continue_to_listing_workflow.setEnabled(selected)
-        tabs.setTabEnabled(1, selected)
-        tabs.setTabEnabled(2, selected)
-        if not selected and tabs.currentIndex() != 0:
-            tabs.setCurrentIndex(0)
         guidance.setText(
             'Asset selected. Continue to Pricing to review cost, fees, shipping, profit, and target ROI.'
             if selected else
@@ -87,7 +83,7 @@ def _install_inventory_pricing_handoff(window, tabs):
         window.inventory_listing_workflow_guidance.setText(
             'Asset selected. Review pricing, then continue to Listing Workflow.'
             if selected else
-            'Select an inventory asset before continuing to Listing Workflow.'
+            'Pricing and Listing Workflow remain available for review. Select an inventory asset to enable the guided handoff.'
         )
 
     window.show_selected = show_selected
@@ -105,7 +101,7 @@ def _install_inventory_pricing_handoff(window, tabs):
 def _install_listing_workflow_handoff(window, pricing_layout):
     handoff = QGroupBox('🚀 NEXT: LISTING WORKFLOW')
     handoff_layout = QVBoxLayout(handoff)
-    guidance = QLabel('Select an inventory asset before continuing to Listing Workflow.')
+    guidance = QLabel('Pricing and Listing Workflow remain available for review. Select an inventory asset to enable the guided handoff.')
     guidance.setWordWrap(True)
     continue_button = QPushButton('Continue to Listing Workflow →')
     continue_button.setEnabled(False)
