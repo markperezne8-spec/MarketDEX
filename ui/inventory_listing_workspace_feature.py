@@ -4,13 +4,8 @@ from core.listing_plan_repository import ListingPlanRepository
 
 def listing_workspace_summary(asset_name, marketplace, target_price_minor, recommended_minor, net_profit_minor, roi_percent, readiness):
     variance = target_price_minor - recommended_minor
-    if variance == 0:
-        recommendation_position = 'ON RECOMMENDATION'
-    elif variance > 0:
-        recommendation_position = f'ABOVE RECOMMENDATION ${abs(variance)/100:,.2f}'
-    else:
-        recommendation_position = f'BELOW RECOMMENDATION ${abs(variance)/100:,.2f}'
-    return f"LISTING DECISION • {asset_name} • {marketplace} • Target ${target_price_minor/100:,.2f} • {recommendation_position} • Net ${net_profit_minor/100:,.2f} • ROI {roi_percent:.1f}% • {readiness}"
+    position = 'ON RECOMMENDATION' if variance == 0 else ('ABOVE RECOMMENDATION' if variance > 0 else 'BELOW RECOMMENDATION')
+    return f"LISTING DECISION • {asset_name} • {marketplace} • Target ${target_price_minor/100:,.2f} • {position} ${abs(variance)/100:,.2f} • Net ${net_profit_minor/100:,.2f} • ROI {roi_percent:.1f}% • {readiness}"
 
 
 def install_inventory_listing_workspace_feature(window):
