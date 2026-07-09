@@ -16,9 +16,11 @@ Legacy gates are retired from automatic pull-request execution in controlled bat
 
 Manual Windows RC Delivery remains separate because packaging and release publication are operator-authorized release actions, not ordinary pull-request CI.
 
-## First retirement batch
+## Retirement batches
 
-The first controlled batch retires five milestone authority workflow files: M51-M55, M71-M75, M101-M105, M126-M130, and M136-M140. Each legacy workflow only installed the same project dependencies and invoked named pytest files that are already discovered by the consolidated full-suite command.
+The first controlled batch retires five milestone authority workflow files: M51-M55, M71-M75, M101-M105, M126-M130, and M136-M140.
+
+The second controlled batch retires five duplicate feature gates: Viewport Fit, Listing Plan Queue, Listing Plan Queue Contract, Listing Plan Persistence, and Operator Sale Completion. Their pytest targets remain in `tests/` and are discovered by the consolidated full-suite command.
 
 No test file is deleted. No service, repository, SQLite, UI, pricing, listing, or sale authority is changed.
 
