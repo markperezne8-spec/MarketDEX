@@ -34,5 +34,7 @@ if __name__ == '__main__':
     install_inventory_marketplace_listing_preparation_feature(window)
     install_inventory_marketplace_listing_package_review_feature(window)
     install_viewport_fit_feature(window)
-    window.showMaximized()
+    available = app.primaryScreen().availableGeometry()
+    window.resize(min(1400, available.width()), min(900, available.height()))
+    window.show()
     sys.exit(app.exec())
