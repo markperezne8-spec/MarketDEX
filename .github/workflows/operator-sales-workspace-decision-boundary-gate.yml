@@ -1,0 +1,22 @@
+name: Operator Sales Workspace Decision Boundary Gate
+
+on:
+  pull_request:
+    paths:
+      - 'ui/viewport_fit_feature.py'
+      - 'tests/test_operator_sales_workspace_contract.py'
+      - 'docs/operator_workspace_recomposition.md'
+      - '.github/workflows/operator-sales-workspace-decision-boundary-gate.yml'
+  workflow_dispatch:
+
+jobs:
+  operator-sales-workspace-decision-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify sales decision boundary
+        run: |
+          grep -q "'inventory_listing_execution_history'" ui/viewport_fit_feature.py
+          grep -q "'inventory_sale_completion'" ui/viewport_fit_feature.py
+          grep -q "tabs.addTab(sales_page, 'Sales')" ui/viewport_fit_feature.py
+          grep -q 'repositories and services are untouched' docs/operator_sales_workspace_test_matrix.md
