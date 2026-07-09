@@ -57,7 +57,9 @@ def _install_listing_workflow_handoff(window, tabs):
     continue_button.clicked.connect(lambda: tabs.setCurrentIndex(1))
     handoff_layout.addWidget(guidance)
     handoff_layout.addWidget(continue_button)
-    panel_layout.insertWidget(panel_layout.indexOf(window.refresh_button), handoff)
+    refresh_button = getattr(window, 'refresh_button', None)
+    insert_at = panel_layout.indexOf(refresh_button) if refresh_button is not None else panel_layout.count()
+    panel_layout.insertWidget(insert_at, handoff)
     window.inventory_listing_workflow_handoff = handoff
     window.inventory_continue_to_listing_workflow = continue_button
 
