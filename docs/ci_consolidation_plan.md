@@ -22,6 +22,8 @@ The first controlled batch retires five milestone authority workflow files: M51-
 
 The second controlled batch retires five duplicate feature gates: Viewport Fit, Listing Plan Queue, Listing Plan Queue Contract, Listing Plan Persistence, and Operator Sale Completion. Their pytest targets remain in `tests/` and are discovered by the consolidated full-suite command.
 
+The third controlled batch retires five cumulative milestone gates: M66-M70, M81-M85, M106-M110, M116-M120, and M151-M155. Each gate only installed the same runtime and executed an explicit subset of tests already discovered by the consolidated full-suite command.
+
 No test file is deleted. No service, repository, SQLite, UI, pricing, listing, or sale authority is changed.
 
 ## Sequence
