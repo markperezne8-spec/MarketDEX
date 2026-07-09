@@ -7,6 +7,11 @@ RETIRED_DUPLICATE_WORKFLOWS = (
     'listing-plan-queue-contract-gate.yml',
     'listing-plan-persistence-gate.yml',
     'operator-sale-completion-gate.yml',
+    'm66-m70-authority-gate.yml',
+    'm81-m85-authority-gate.yml',
+    'm106-m110-contract-gate.yml',
+    'm116-m120-contract-gate.yml',
+    'm151-m155-contract-gate.yml',
 )
 
 PRESERVED_TESTS = (
@@ -17,6 +22,11 @@ PRESERVED_TESTS = (
     'test_inventory_listing_plan_ui.py',
     'test_operator_sale_completion.py',
     'test_operator_recorded_listing_outcome.py',
+    'test_m66_m70_strategic_control_loop.py',
+    'test_m81_m85_executive_control_cycle.py',
+    'test_m106_m110_executive_continuity_cycle.py',
+    'test_m116_m120_executive_perpetuity_cycle.py',
+    'test_m151_m155_executive_accountability_cycle.py',
 )
 
 
@@ -29,7 +39,7 @@ def test_consolidated_ci_runs_complete_pytest_suite():
     assert 'cancel-in-progress: true' in workflow
 
 
-def test_second_retirement_batch_removes_only_duplicate_workflow_triggers():
+def test_controlled_retirement_batches_remove_only_duplicate_workflow_triggers():
     workflow_dir = Path('.github/workflows')
     test_dir = Path('tests')
 
