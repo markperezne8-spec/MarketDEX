@@ -97,6 +97,42 @@ def _mission_control(window, tabs):
     return page
 
 
+def _pricing_workspace(window, tabs):
+    page = QWidget(tabs)
+    layout = QVBoxLayout(page)
+    layout.setContentsMargins(24, 20, 24, 20)
+    layout.setSpacing(12)
+    title = QLabel('Pricing')
+    title.setStyleSheet('font-size:30px;font-weight:700')
+    subtitle = QLabel('PRICE WITH COST, FEES, SHIPPING, PACKAGING, AND TARGET ROI IN VIEW')
+    subtitle.setStyleSheet('font-size:15px;font-weight:600')
+    layout.addWidget(title)
+    layout.addWidget(subtitle)
+    guidance = QGroupBox('💰 PRICING WORKSPACE')
+    guidance_layout = QVBoxLayout(guidance)
+    guidance_text = QLabel('Select an inventory asset first. MarketDEX preserves the current pricing authority and calculations while the operator shell separates each business workspace.')
+    guidance_text.setWordWrap(True)
+    inventory_button = QPushButton('Select Asset in Inventory →')
+    inventory_button.clicked.connect(lambda: tabs.setCurrentIndex(1))
+    guidance_layout.addWidget(guidance_text)
+    guidance_layout.addWidget(inventory_button)
+    layout.addWidget(guidance)
+    next_step = QGroupBox('🚀 NEXT: LISTINGS')
+    next_layout = QVBoxLayout(next_step)
+    next_text = QLabel('When pricing is complete, continue to Listings for listing decisions, package review, and operator handoff.')
+    next_text.setWordWrap(True)
+    listings_button = QPushButton('Continue to Listings →')
+    listings_button.clicked.connect(lambda: tabs.setCurrentIndex(3))
+    next_layout.addWidget(next_text)
+    next_layout.addWidget(listings_button)
+    layout.addWidget(next_step)
+    layout.addStretch(1)
+    window.marketdex_pricing_guidance = guidance_text
+    window.marketdex_pricing_inventory_button = inventory_button
+    window.marketdex_pricing_listings_button = listings_button
+    return page
+
+
 def _refresh_mission_control(window):
     snapshot = window.service.snapshot()
     for key in ('inventory_units', 'inventory_asset_count', 'completed_sales', 'verified_audits', 'authority_events'):
@@ -111,11 +147,11 @@ def _refresh_mission_control(window):
 
 def _install_listing_workflow_handoff(window, tabs):
     panel_layout = window.inventory_panel.layout()
-    handoff = QGroupBox('🚀 NEXT: LISTINGS')
+    handoff = QGroupBox('🚀 NEXT: PRICING')
     handoff_layout = QVBoxLayout(handoff)
-    guidance = QLabel('Pricing work is complete here. Continue to Listings for listing decisions, package review, and operator handoff.')
+    guidance = QLabel('Inventory work is complete here. Continue to Pricing to review sale price, true profit, and ROI before listing.')
     guidance.setWordWrap(True)
-    continue_button = QPushButton('Continue to Listings →')
+    continue_button = QPushButton('Continue to Pricing →')
     continue_button.clicked.connect(lambda: tabs.setCurrentIndex(2))
     handoff_layout.addWidget(guidance)
     handoff_layout.addWidget(continue_button)
@@ -147,10 +183,12 @@ def install_viewport_fit_feature(window):
     tabs = QTabWidget(window)
     mission_page = _mission_control(window, tabs)
     inventory_page, inventory_scroll = _scroll_page(content, tabs)
+    pricing_page = _pricing_workspace(window, tabs)
     listing_page, listing_scroll = _scroll_page(listing_content, tabs)
     sales_page, sales_scroll = _scroll_page(sales_content, tabs)
     tabs.addTab(mission_page, 'Mission Control')
-    tabs.addTab(inventory_page, 'Inventory & Pricing')
+    tabs.addTab(inventory_page, 'Inventory')
+    tabs.addTab(pricing_page, 'Pricing')
     tabs.addTab(listing_page, 'Listings')
     tabs.addTab(sales_page, 'Sales')
     _install_listing_workflow_handoff(window, tabs)
