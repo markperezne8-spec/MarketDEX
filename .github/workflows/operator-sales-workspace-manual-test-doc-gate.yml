@@ -1,0 +1,19 @@
+name: Operator Sales Workspace Manual Test Doc Gate
+
+on:
+  pull_request:
+    paths:
+      - 'ui/viewport_fit_feature.py'
+      - 'docs/operator_sales_workspace_test_plan.md'
+      - '.github/workflows/operator-sales-workspace-manual-test-doc-gate.yml'
+  workflow_dispatch:
+
+jobs:
+  operator-sales-workspace-manual-test-doc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify operator test plan
+        run: |
+          grep -q 'Mission Control, Inventory & Pricing, Listings, and Sales' docs/operator_sales_workspace_test_plan.md
+          grep -q 'listing execution history and sale completion' docs/operator_sales_workspace_test_plan.md
