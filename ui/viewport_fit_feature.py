@@ -47,14 +47,35 @@ def _compact_inventory_workspace(window):
     window.inventory_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
 
-def _install_listing_workflow_handoff(window, tabs):
+def _extract_mission_control(window):
+    panel_layout = window.inventory_panel.layout()
+    dashboard = QWidget()
+    dashboard_layout = QVBoxLayout(dashboard)
+    dashboard_layout.setContentsMargins(24, 20, 24, 20)
+    dashboard_layout.setSpacing(10)
+
+    title_item = panel_layout.takeAt(0)
+    subtitle_item = panel_layout.takeAt(0)
+    cards_item = panel_layout.takeAt(0)
+    dashboard_layout.addWidget(title_item.widget())
+    dashboard_layout.addWidget(subtitle_item.widget())
+    dashboard_layout.addLayout(cards_item.layout())
+
+    guidance = QLabel('Your business at a glance. Inventory, pricing, listings, and sales stay in their dedicated workspaces.')
+    guidance.setWordWrap(True)
+    dashboard_layout.addWidget(guidance)
+    dashboard_layout.addStretch(1)
+    return dashboard
+
+
+def _install_listing_workflow_handoff(window, tabs, listing_index):
     panel_layout = window.inventory_panel.layout()
     handoff = QGroupBox('🚀 NEXT: LISTING WORKFLOW')
     handoff_layout = QVBoxLayout(handoff)
-    guidance = QLabel('Pricing work is complete here. Continue to Listing Workflow for listing decisions, package review, operator handoff, LISTED outcomes, and confirmed sale completion.')
+    guidance = QLabel('Pricing work is complete here. Continue to Listings to prepare, review, and record marketplace work.')
     guidance.setWordWrap(True)
-    continue_button = QPushButton('Continue to Listing Workflow →')
-    continue_button.clicked.connect(lambda: tabs.setCurrentIndex(1))
+    continue_button = QPushButton('Continue to Listings →')
+    continue_button.clicked.connect(lambda: tabs.setCurrentIndex(listing_index))
     handoff_layout.addWidget(guidance)
     handoff_layout.addWidget(continue_button)
     refresh_button = getattr(window, 'refresh_button', None)
@@ -74,14 +95,19 @@ def install_viewport_fit_feature(window):
         panel_layout.removeWidget(widget)
         listing_layout.addWidget(widget)
     listing_layout.addStretch(1)
+
+    mission_control = _extract_mission_control(window)
     _compact_inventory_workspace(window)
     tabs = QTabWidget(window)
+    mission_page, mission_scroll = _scroll_page(mission_control, tabs)
     inventory_page, inventory_scroll = _scroll_page(content, tabs)
     listing_page, listing_scroll = _scroll_page(listing_content, tabs)
+    tabs.addTab(mission_page, 'Mission Control')
     tabs.addTab(inventory_page, 'Inventory & Pricing')
-    tabs.addTab(listing_page, 'Listing Workflow')
-    _install_listing_workflow_handoff(window, tabs)
+    listing_index = tabs.addTab(listing_page, 'Listings')
+    _install_listing_workflow_handoff(window, tabs, listing_index)
     window.setCentralWidget(tabs)
     window.marketdex_workspace_tabs = tabs
+    window.marketdex_mission_control_scroll = mission_scroll
     window.marketdex_workspace_scroll = inventory_scroll
     window.marketdex_listing_workflow_scroll = listing_scroll
