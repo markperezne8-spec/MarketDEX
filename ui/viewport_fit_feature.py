@@ -75,10 +75,6 @@ def _install_inventory_pricing_handoff(window, tabs):
         selected = window.selected_asset_id() is not None
         continue_button.setEnabled(selected)
         window.inventory_continue_to_listing_workflow.setEnabled(selected)
-        tabs.setTabEnabled(1, selected)
-        tabs.setTabEnabled(2, selected)
-        if not selected and tabs.currentIndex() != 0:
-            tabs.setCurrentIndex(0)
         guidance.setText(
             'Asset selected. Continue to Pricing to review cost, fees, shipping, profit, and target ROI.'
             if selected else
