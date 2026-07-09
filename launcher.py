@@ -14,6 +14,7 @@ from ui.inventory_listing_plan_queue_feature import install_inventory_listing_pl
 from ui.inventory_listing_execution_readiness_feature import install_inventory_listing_execution_readiness_feature
 from ui.inventory_marketplace_listing_preparation_feature import install_inventory_marketplace_listing_preparation_feature
 from ui.inventory_marketplace_listing_package_review_feature import install_inventory_marketplace_listing_package_review_feature
+from ui.inventory_completed_listing_package_queue_feature import install_inventory_completed_listing_package_queue_feature
 from ui.viewport_fit_feature import install_viewport_fit_feature
 
 
@@ -39,6 +40,7 @@ if __name__ == '__main__':
     install_inventory_listing_execution_readiness_feature(window)
     install_inventory_marketplace_listing_preparation_feature(window)
     install_inventory_marketplace_listing_package_review_feature(window)
+    install_inventory_completed_listing_package_queue_feature(window)
     install_viewport_fit_feature(window)
     available = app.primaryScreen().availableGeometry()
     window.resize(min(1400, available.width()), min(900, available.height()))
