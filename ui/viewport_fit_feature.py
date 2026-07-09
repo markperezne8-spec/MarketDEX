@@ -75,7 +75,10 @@ def _install_inventory_pricing_handoff(window, tabs):
         continue_button.setEnabled(window.selected_asset_id() is not None)
 
     window.show_selected = show_selected
-    window.inventory_table.itemSelectionChanged.disconnect()
+    try:
+        window.inventory_table.itemSelectionChanged.disconnect()
+    except RuntimeError:
+        pass
     window.inventory_table.itemSelectionChanged.connect(window.show_selected)
     window.inventory_pricing_handoff = handoff
     window.inventory_continue_to_pricing = continue_button
