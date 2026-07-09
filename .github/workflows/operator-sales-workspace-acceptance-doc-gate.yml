@@ -1,0 +1,15 @@
+name: Operator Sales Workspace Acceptance Doc Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/operator_sales_workspace_acceptance.md'
+      - '.github/workflows/operator-sales-workspace-acceptance-doc-gate.yml'
+  workflow_dispatch:
+
+jobs:
+  operator-sales-workspace-acceptance-doc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: grep -q 'Sales is a dedicated tab' docs/operator_sales_workspace_acceptance.md
