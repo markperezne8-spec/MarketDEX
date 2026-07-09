@@ -1,0 +1,21 @@
+name: Operator Shell Runtime Boundary Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/operator-shell-recomposition.md'
+      - 'tests/test_operator_shell_no_runtime_change.py'
+      - '.github/workflows/operator-shell-runtime-boundary-gate.yml'
+
+jobs:
+  operator-shell-runtime-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependencies
+        run: python -m pip install pytest
+      - name: Verify presentation-only boundary
+        run: python -m pytest -q tests/test_operator_shell_no_runtime_change.py
