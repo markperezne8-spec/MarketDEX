@@ -23,7 +23,7 @@ def _inventory_count(path):
 def migrate_legacy_database_if_needed(runtime_path, project_root=None):
     runtime_path = Path(runtime_path)
     root = Path(project_root) if project_root is not None else runtime_path.parent.parent
-    if _inventory_count(runtime_path) > 0:
+    if runtime_path.exists() and runtime_path.stat().st_size > 0:
         return None
     for relative_path in LEGACY_DATABASE_CANDIDATES:
         legacy_path = root / relative_path
