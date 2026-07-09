@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt pytest
       - run: pytest -q tests --ignore=tests/test_viewport_fit_feature.py -k 'database or service or schema or mission_control'
 
   inventory:
@@ -34,7 +34,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt pytest
       - run: pytest -q tests -k 'inventory and not pricing and not listing and not viewport'
 
   pricing:
@@ -46,7 +46,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt pytest
       - run: pytest -q tests -k 'pricing or profit or sale_readiness or price_guidance'
 
   listing:
@@ -58,7 +58,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt pytest
       - run: pytest -q tests -k 'listing or sale_completion'
 
   desktop-build:
@@ -70,6 +70,6 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt pytest
       - run: pytest -q tests/test_workspace_navigation_contract.py
       - run: python -m py_compile launcher.py
