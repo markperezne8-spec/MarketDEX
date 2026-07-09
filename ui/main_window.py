@@ -98,21 +98,27 @@ class MainWindow(QMainWindow):
         except Exception as exc:QMessageBox.critical(self,'Adjustment Blocked',str(exc))
 
     def bulk_adjust_selected(self):
-        selected=self.selected_asset_ids()
-        if len(selected)<2:return
-        dialog=BulkAdjustDialog(len(selected),self)
+        asset_ids=self.selected_asset_ids()
+        if len(asset_ids)<2:return
+        dialog=BulkAdjustDialog(len(asset_ids),self)
         if dialog.exec()!=QDialog.Accepted:return
-        try:self.inventory_service.bulk_adjust_assets(asset_ids=selected,quantity_delta=dialog.quantity_delta.value(),cost_delta_minor=round(dialog.cost_delta.value()*100),request_id=f'ui-bulk-adjust-{uuid4().hex}'); self.refresh()
+        quantity_delta=dialog.quantity_delta.value(); cost_delta_minor=round(dialog.cost_delta.value()*100); answer=QMessageBox.question(self,'Confirm Bulk Adjustment',f'Apply quantity delta {quantity_delta:+,} and cost delta {self._money(cost_delta_minor)} to each of {len(asset_ids):,} selected assets?',QMessageBox.Yes|QMessageBox.No)
+        if answer!=QMessageBox.Yes:return
+        try: adjusted=self.inventory_service.bulk_adjust_assets(asset_ids=asset_ids,quantity_delta=quantity_delta,cost_delta_minor=cost_delta_minor,request_prefix=f'ui-bulk-adjust-{uuid4().hex}'); self.refresh(); QMessageBox.information(self,'Bulk Adjustment Complete',f'Adjusted {len(adjusted):,} inventory assets through authoritative events.')
         except Exception as exc:QMessageBox.critical(self,'Bulk Adjustment Blocked',str(exc))
 
     def archive_selected(self):
         asset_id=self.selected_asset_id()
         if asset_id is None:return
-        try:self.inventory_service.archive_asset(asset_id,f'ui-archive-{uuid4().hex}'); self.refresh()
+        detail=self.inventory_service.get_asset_detail(asset_id); answer=QMessageBox.warning(self,'Archive Inventory Asset',f"Archive {detail['asset_name']}?\n\nIt will leave the active inventory view. Authority events, inventory history, movements, and audit evidence are preserved.",QMessageBox.Yes|QMessageBox.No)
+        if answer!=QMessageBox.Yes:return
+        try:self.inventory_service.archive_asset(asset_id=asset_id,request_id=f'ui-archive-{uuid4().hex}'); self.refresh(); QMessageBox.information(self,'Inventory Archived','Asset archived. Historical authority evidence was preserved.')
         except Exception as exc:QMessageBox.critical(self,'Archive Blocked',str(exc))
 
     def restore_selected(self):
         asset_id=self.selected_asset_id()
         if asset_id is None:return
-        try:self.inventory_service.restore_asset(asset_id,f'ui-restore-{uuid4().hex}'); self.refresh()
+        detail=self.inventory_service.get_asset_detail(asset_id); answer=QMessageBox.question(self,'Restore Inventory Asset',f"Restore {detail['asset_name']} to active inventory?\n\nExisting quantity, cost, history, movements, and audit evidence remain preserved.",QMessageBox.Yes|QMessageBox.No)
+        if answer!=QMessageBox.Yes:return
+        try:self.inventory_service.restore_asset(asset_id=asset_id,request_id=f'ui-restore-{uuid4().hex}'); self.refresh(); QMessageBox.information(self,'Inventory Restored','Asset restored to active inventory through an authoritative event.')
         except Exception as exc:QMessageBox.critical(self,'Restore Blocked',str(exc))
