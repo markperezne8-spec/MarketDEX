@@ -1,0 +1,15 @@
+name: Operator Sales Workspace Summary Doc Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/operator_sales_workspace_summary.md'
+      - '.github/workflows/operator-sales-workspace-summary-doc-gate.yml'
+  workflow_dispatch:
+
+jobs:
+  operator-sales-workspace-summary-doc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: grep -q 'separates listing preparation from post-listing sales work' docs/operator_sales_workspace_summary.md
