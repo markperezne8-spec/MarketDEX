@@ -1,0 +1,32 @@
+name: Windows RC Delivery
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows-rc-delivery:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-build.txt
+      - run: python -m PyInstaller --clean --noconfirm MarketDEX.spec
+      - name: Verify release candidate executable
+        shell: pwsh
+        run: |
+          if (-not (Test-Path 'dist/MarketDEX.exe')) { throw 'MarketDEX.exe was not produced' }
+          $size = (Get-Item 'dist/MarketDEX.exe').Length
+          if ($size -le 0) { throw 'MarketDEX.exe is empty' }
+          Write-Host "Verified dist/MarketDEX.exe ($size bytes)"
+      - name: Publish operator-facing RC release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = 'windows-rc-' + '${{ github.run_number }}'
+          gh release create $tag dist/MarketDEX.exe --target '${{ github.sha }}' --prerelease --title "MarketDEX Windows RC ${{ github.run_number }}" --notes "Standalone Windows Release Candidate. Download MarketDEX.exe and launch it directly. This is a prerelease build."
