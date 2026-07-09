@@ -1,0 +1,15 @@
+name: Operator Sales Workspace CI Doc Gate
+
+on:
+  pull_request:
+    paths:
+      - 'docs/operator_sales_workspace_ci.md'
+      - '.github/workflows/operator-sales-workspace-ci-doc-gate.yml'
+  workflow_dispatch:
+
+jobs:
+  operator-sales-workspace-ci-doc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: grep -q 'Focused gates cover' docs/operator_sales_workspace_ci.md
