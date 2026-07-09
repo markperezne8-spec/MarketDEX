@@ -74,10 +74,16 @@ def _install_inventory_pricing_handoff(window, tabs):
         original_show()
         selected = window.selected_asset_id() is not None
         continue_button.setEnabled(selected)
+        window.inventory_continue_to_listing_workflow.setEnabled(selected)
         guidance.setText(
             'Asset selected. Continue to Pricing to review cost, fees, shipping, profit, and target ROI.'
             if selected else
             'Select one inventory asset, then continue to Pricing to review cost, fees, shipping, profit, and target ROI.'
+        )
+        window.inventory_listing_workflow_guidance.setText(
+            'Asset selected. Review pricing, then continue to Listing Workflow.'
+            if selected else
+            'Select an inventory asset before continuing to Listing Workflow.'
         )
 
     window.show_selected = show_selected
@@ -95,14 +101,16 @@ def _install_inventory_pricing_handoff(window, tabs):
 def _install_listing_workflow_handoff(window, tabs, pricing_layout):
     handoff = QGroupBox('🚀 NEXT: LISTING WORKFLOW')
     handoff_layout = QVBoxLayout(handoff)
-    guidance = QLabel('Pricing work is complete. Continue to Listing Workflow for listing decisions, package review, operator handoff, LISTED outcomes, and confirmed sale completion.')
+    guidance = QLabel('Select an inventory asset before continuing to Listing Workflow.')
     guidance.setWordWrap(True)
     continue_button = QPushButton('Continue to Listing Workflow →')
+    continue_button.setEnabled(False)
     continue_button.clicked.connect(lambda: tabs.setCurrentIndex(2))
     handoff_layout.addWidget(guidance)
     handoff_layout.addWidget(continue_button)
     pricing_layout.addWidget(handoff)
     window.inventory_listing_workflow_handoff = handoff
+    window.inventory_listing_workflow_guidance = guidance
     window.inventory_continue_to_listing_workflow = continue_button
 
 
@@ -122,6 +130,7 @@ def install_viewport_fit_feature(window):
     pricing_title.setStyleSheet('font-size:30px;font-weight:700')
     pricing_layout.addWidget(pricing_title)
     pricing_layout.addWidget(QLabel('PRICE WITH COST, FEES, SHIPPING, PACKAGING, PROFIT, AND TARGET ROI IN VIEW'))
+    _install_listing_workflow_handoff(window, None, pricing_layout)
     for attribute in PRICING_WIDGETS:
         widget = getattr(window, attribute, None)
         if widget is not None:
@@ -136,8 +145,9 @@ def install_viewport_fit_feature(window):
     tabs.addTab(inventory_page, 'Inventory')
     tabs.addTab(pricing_page, 'Pricing')
     tabs.addTab(listing_page, 'Listing Workflow')
+    window.inventory_continue_to_listing_workflow.clicked.disconnect()
+    window.inventory_continue_to_listing_workflow.clicked.connect(lambda: tabs.setCurrentIndex(2))
     _install_inventory_pricing_handoff(window, tabs)
-    _install_listing_workflow_handoff(window, tabs, pricing_layout)
     window.setCentralWidget(tabs)
     window.marketdex_workspace_tabs = tabs
     window.marketdex_workspace_scroll = inventory_scroll

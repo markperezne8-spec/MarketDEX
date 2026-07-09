@@ -41,7 +41,9 @@ def test_viewport_fit_splits_inventory_pricing_and_listing_workflow_into_tabs():
     for attribute in LISTING_WORKFLOW_WIDGETS:
         assert getattr(window, attribute).parentWidget() is not panel
     assert window.inventory_continue_to_pricing.isEnabled() is False
+    assert window.inventory_continue_to_listing_workflow.isEnabled() is False
     assert panel.layout().indexOf(window.inventory_pricing_handoff) < panel.layout().indexOf(window.inventory_table)
+    assert window.marketdex_pricing_workspace_scroll.widget().layout().indexOf(window.inventory_listing_workflow_handoff) < window.marketdex_pricing_workspace_scroll.widget().layout().indexOf(window.inventory_cost_summary)
     window.close()
 
 
@@ -54,7 +56,9 @@ def test_inventory_and_pricing_handoffs_follow_operator_flow():
     tabs = window.marketdex_workspace_tabs
     selected['asset_id'] = 'asset-1'; window.show_selected()
     assert window.inventory_continue_to_pricing.isEnabled() is True
+    assert window.inventory_continue_to_listing_workflow.isEnabled() is True
     assert window.inventory_pricing_guidance.text().startswith('Asset selected.')
+    assert window.inventory_listing_workflow_guidance.text().startswith('Asset selected.')
     window.inventory_continue_to_pricing.click()
     assert tabs.currentIndex() == 1
     window.inventory_continue_to_listing_workflow.click()
