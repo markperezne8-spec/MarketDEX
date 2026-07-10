@@ -1,1 +1,0 @@
-Build 504 audit repairs are preserved in this directory.
