@@ -7,118 +7,87 @@ class SettlementAllocationConflict(RuntimeError):
 
 
 class SettlementAllocationRepository:
-    """Append-only persistence for settlement allocation evidence and Build 499 cross-check results."""
+    """Append-only persistence and queries for CAP-009 allocation authority."""
 
     def parent_by_id(self, c: sqlite3.Connection, settlement_evidence_id: str) -> Optional[sqlite3.Row]:
-        return c.execute(
-            "SELECT * FROM settlement_evidence WHERE settlement_evidence_id=?",
-            (settlement_evidence_id,),
-        ).fetchone()
+        return c.execute("SELECT * FROM settlement_evidence WHERE settlement_evidence_id=?", (settlement_evidence_id,)).fetchone()
 
     def line_by_id(self, c: sqlite3.Connection, allocation_line_id: str) -> Optional[sqlite3.Row]:
-        return c.execute(
-            "SELECT * FROM settlement_allocation_evidence WHERE allocation_line_id=?",
-            (allocation_line_id,),
-        ).fetchone()
+        return c.execute("SELECT * FROM settlement_allocation_evidence WHERE allocation_line_id=?", (allocation_line_id,)).fetchone()
 
     def lines_for_group(self, c: sqlite3.Connection, allocation_group_id: str) -> Sequence[sqlite3.Row]:
-        return c.execute(
-            "SELECT * FROM settlement_allocation_evidence WHERE allocation_group_id=? ORDER BY created_at, allocation_line_id",
-            (allocation_group_id,),
-        ).fetchall()
+        return c.execute("SELECT * FROM settlement_allocation_evidence WHERE allocation_group_id=? ORDER BY created_at, allocation_line_id", (allocation_group_id,)).fetchall()
 
     def cross_check_by_id(self, c: sqlite3.Connection, cross_check_id: str) -> Optional[sqlite3.Row]:
-        return c.execute(
-            "SELECT * FROM settlement_allocation_cross_checks WHERE cross_check_id=?",
-            (cross_check_id,),
-        ).fetchone()
+        return c.execute("SELECT * FROM settlement_allocation_cross_checks WHERE cross_check_id=?", (cross_check_id,)).fetchone()
+
+    def latest_cross_check_for_group(self, c: sqlite3.Connection, allocation_group_id: str) -> Optional[sqlite3.Row]:
+        return c.execute("SELECT * FROM settlement_allocation_cross_checks WHERE allocation_group_id=? ORDER BY created_at DESC, cross_check_id DESC LIMIT 1", (allocation_group_id,)).fetchone()
 
     def sale_marketplace(self, c: sqlite3.Connection, sale_id: str) -> Optional[str]:
-        row = c.execute(
-            """SELECT marketplace FROM publication_lifecycle_events
-               WHERE sale_id=? AND event_type='SOLD_CONVERSION'
-               ORDER BY created_at DESC LIMIT 1""",
-            (sale_id,),
-        ).fetchone()
+        row = c.execute("""SELECT marketplace FROM publication_lifecycle_events WHERE sale_id=? AND event_type='SOLD_CONVERSION' ORDER BY created_at DESC LIMIT 1""", (sale_id,)).fetchone()
         return None if row is None else str(row["marketplace"])
 
-    def append_line(self, c: sqlite3.Connection, *, allocation_group_id: str,
-                    allocation_line_id: str, settlement_evidence_id: str,
-                    linked_sale_id: Optional[str], source_traceability: str,
+    def attribution_readiness_by_event(self, c: sqlite3.Connection, event_id: str) -> Optional[sqlite3.Row]:
+        return c.execute("SELECT * FROM audit_events WHERE event_id=? AND authority_type='SETTLEMENT_ATTRIBUTION_READINESS'", (event_id,)).fetchone()
+
+    def append_attribution_readiness(self, c: sqlite3.Connection, *, event_id: str, sale_id: str,
+                                     allocation_group_id: str, recorded_at: str) -> sqlite3.Row:
+        authority_id = f"{sale_id}:{allocation_group_id}"
+        result = "READY FOR SETTLEMENT ATTRIBUTION"
+        prior = self.attribution_readiness_by_event(c, event_id)
+        if prior is not None:
+            expected = (event_id, "SETTLEMENT_ATTRIBUTION_READINESS", authority_id, result, recorded_at)
+            actual = tuple(prior[column] for column in ("event_id", "authority_type", "authority_id", "verification_result", "recorded_at"))
+            if actual != expected:
+                raise SettlementAllocationConflict("Contradictory settlement attribution readiness replay blocked")
+            return prior
+        c.execute("""INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)""",
+                  (event_id, "SETTLEMENT_ATTRIBUTION_READINESS", authority_id, result, recorded_at))
+        row = self.attribution_readiness_by_event(c, event_id)
+        if row is None:
+            raise SettlementAllocationConflict("Settlement attribution readiness persistence verification failed")
+        return row
+
+    def append_line(self, c: sqlite3.Connection, *, allocation_group_id: str, allocation_line_id: str,
+                    settlement_evidence_id: str, linked_sale_id: Optional[str], source_traceability: str,
                     evidence_date: str, currency: str, component_type: str,
-                    allocated_amount_minor: Optional[int], notes: str,
-                    allocation_status: str, created_event_id: str,
-                    created_at: str) -> sqlite3.Row:
-        group_parent = c.execute(
-            """SELECT settlement_evidence_id FROM settlement_allocation_evidence
-               WHERE allocation_group_id=? LIMIT 1""",
-            (allocation_group_id,),
-        ).fetchone()
+                    allocated_amount_minor: Optional[int], notes: str, allocation_status: str,
+                    created_event_id: str, created_at: str) -> sqlite3.Row:
+        group_parent = c.execute("SELECT settlement_evidence_id FROM settlement_allocation_evidence WHERE allocation_group_id=? LIMIT 1", (allocation_group_id,)).fetchone()
         if group_parent is not None and group_parent["settlement_evidence_id"] != settlement_evidence_id:
             raise SettlementAllocationConflict("Allocation group re-parenting blocked")
-
-        values = (
-            allocation_group_id, allocation_line_id, settlement_evidence_id,
-            linked_sale_id, source_traceability, evidence_date, currency,
-            component_type, allocated_amount_minor, notes, allocation_status,
-            created_event_id, created_at,
-        )
+        values = (allocation_group_id, allocation_line_id, settlement_evidence_id, linked_sale_id,
+                  source_traceability, evidence_date, currency, component_type, allocated_amount_minor,
+                  notes, allocation_status, created_event_id, created_at)
         prior = self.line_by_id(c, allocation_line_id)
         if prior is not None:
-            columns = (
-                "allocation_group_id", "allocation_line_id", "settlement_evidence_id",
-                "linked_sale_id", "source_traceability", "evidence_date", "currency",
-                "component_type", "allocated_amount_minor", "notes", "allocation_status",
-                "created_event_id", "created_at",
-            )
+            columns = ("allocation_group_id", "allocation_line_id", "settlement_evidence_id", "linked_sale_id",
+                       "source_traceability", "evidence_date", "currency", "component_type", "allocated_amount_minor",
+                       "notes", "allocation_status", "created_event_id", "created_at")
             if tuple(prior[column] for column in columns) != values:
                 raise SettlementAllocationConflict("Contradictory allocation evidence blocked")
             return prior
-
-        c.execute(
-            """INSERT INTO settlement_allocation_evidence(
-               allocation_group_id,allocation_line_id,settlement_evidence_id,
-               linked_sale_id,source_traceability,evidence_date,currency,component_type,
-               allocated_amount_minor,notes,allocation_status,created_event_id,created_at)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-            values,
-        )
+        c.execute("""INSERT INTO settlement_allocation_evidence(allocation_group_id,allocation_line_id,settlement_evidence_id,linked_sale_id,source_traceability,evidence_date,currency,component_type,allocated_amount_minor,notes,allocation_status,created_event_id,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""", values)
         row = self.line_by_id(c, allocation_line_id)
         if row is None:
             raise SettlementAllocationConflict("Allocation evidence persistence verification failed")
         return row
 
-    def append_cross_check(self, c: sqlite3.Connection, *, cross_check_id: str,
-                           allocation_group_id: str, settlement_evidence_id: str,
-                           allocation_group_total_minor: int, settlement_net_minor: int,
-                           allocation_remainder_minor: int, cross_check_status: str,
-                           created_event_id: str, created_at: str) -> sqlite3.Row:
-        values = (
-            cross_check_id, allocation_group_id, settlement_evidence_id,
-            int(allocation_group_total_minor), int(settlement_net_minor),
-            int(allocation_remainder_minor), cross_check_status,
-            created_event_id, created_at,
-        )
+    def append_cross_check(self, c: sqlite3.Connection, *, cross_check_id: str, allocation_group_id: str,
+                           settlement_evidence_id: str, allocation_group_total_minor: int, settlement_net_minor: int,
+                           allocation_remainder_minor: int, cross_check_status: str, created_event_id: str,
+                           created_at: str) -> sqlite3.Row:
+        values = (cross_check_id, allocation_group_id, settlement_evidence_id, int(allocation_group_total_minor),
+                  int(settlement_net_minor), int(allocation_remainder_minor), cross_check_status, created_event_id, created_at)
         prior = self.cross_check_by_id(c, cross_check_id)
         if prior is not None:
-            columns = (
-                "cross_check_id", "allocation_group_id", "settlement_evidence_id",
-                "allocation_group_total_minor", "settlement_net_minor",
-                "allocation_remainder_minor", "cross_check_status",
-                "created_event_id", "created_at",
-            )
+            columns = ("cross_check_id", "allocation_group_id", "settlement_evidence_id", "allocation_group_total_minor",
+                       "settlement_net_minor", "allocation_remainder_minor", "cross_check_status", "created_event_id", "created_at")
             if tuple(prior[column] for column in columns) != values:
                 raise SettlementAllocationConflict("Contradictory allocation cross-check blocked")
             return prior
-
-        c.execute(
-            """INSERT INTO settlement_allocation_cross_checks(
-               cross_check_id,allocation_group_id,settlement_evidence_id,
-               allocation_group_total_minor,settlement_net_minor,allocation_remainder_minor,
-               cross_check_status,created_event_id,created_at)
-               VALUES (?,?,?,?,?,?,?,?,?)""",
-            values,
-        )
+        c.execute("""INSERT INTO settlement_allocation_cross_checks(cross_check_id,allocation_group_id,settlement_evidence_id,allocation_group_total_minor,settlement_net_minor,allocation_remainder_minor,cross_check_status,created_event_id,created_at) VALUES (?,?,?,?,?,?,?,?,?)""", values)
         row = self.cross_check_by_id(c, cross_check_id)
         if row is None:
             raise SettlementAllocationConflict("Allocation cross-check persistence verification failed")
