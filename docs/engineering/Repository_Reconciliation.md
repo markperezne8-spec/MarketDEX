@@ -7,7 +7,7 @@
 
 ## Baseline
 
-Reconciliation performed after EC-001 and PR #121. Repository evidence, current CI gates, merged pull-request history, schema authority, and existing traceability records were inspected before capability classification.
+Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary.
 
 ## Permanent Runtime Authority
 
@@ -17,13 +17,15 @@ The root launcher is permanent runtime authority. A nested or competing launcher
 
 ## Persistence Authority
 
-`core/schema.py` is at schema version 17 and defines the current SQLite business persistence surface. Evidence includes event identity, audit history, assets, inventory authority and business details, listing plans and package reviews, inventory history and movements, controlled damage/loss adjustments, sales and financial history, replay defense, audit events, marketplace allocations, publication allocations and lifecycle events, exception authority, inventory reconciliation, settlement executions and history, and order closures and history.
+`core/schema.py` remains the single SQLite schema authority. CAP-008A introduced schema version 18 and the append-only `settlement_evidence` parent grain. CAP-009A advances the controlled delivery branch to schema version 19 with append-only `settlement_allocation_evidence` intake persistence against that canonical parent.
 
-Immutable and append-only triggers protect event identity, inventory history, publication lifecycle, replay defense, audit events, settlement execution/history, and order closure/history.
+Existing marketplace allocation and publication lifecycle tables remain inventory/publication authorities. They are not reclassified as settlement allocation evidence.
+
+Immutable and append-only triggers protect event identity, inventory history, publication lifecycle, replay defense, audit events, Settlement Evidence, Settlement Allocation Evidence, settlement execution/history, and order closure/history.
 
 ## Verified CI Topology
 
-The current permanent CI topology contains five successful gates on the PR #121 head:
+The permanent CI topology contains five gates:
 
 - Inventory
 - Pricing
@@ -31,7 +33,7 @@ The current permanent CI topology contains five successful gates on the PR #121 
 - Desktop Build
 - Core Tests
 
-The Desktop Build gate compiles root `launcher.py` and runs workspace navigation and maximized-launch contracts. Core Tests verify runtime database authority. The remaining gates execute focused capability regression suites.
+Desktop Build compiles root `launcher.py` and runs workspace navigation and maximized-launch contracts. Core Tests verify runtime database authority and now directly gate CAP-008A Settlement Evidence, CAP-009A Build 498 Settlement Allocation Evidence, and M39A settlement regression behavior.
 
 ## Capability Evidence Summary
 
@@ -43,19 +45,15 @@ Inventory has service, application service, repository, schema, UI feature, and 
 
 Mission Control/dashboard code exists in multiple repository surfaces, including root services and `app/` UI/service components. Product Registry service logic and product-aware lifecycle logic exist. Settlement service/repository and settlement persistence exist. Marketplace allocation and publication lifecycle infrastructure also exist.
 
-These areas are classified as `Partial` where workbook parity or canonical operator integration is not yet directly proven. Their existing implementation must be reconciled and extended rather than replaced.
+CAP-008A established a sale-independent Settlement Evidence parent. CAP-009A extends that authority with a distinct Build 498 settlement-allocation evidence intake repository/service/schema slice. No second allocation architecture was created; marketplace inventory allocation remains separate and preserved.
 
-### Workbook-to-desktop authority gap
+### Remaining workbook-to-desktop authority gap
 
-The accepted workbook evolved settlement authority through Builds 481-497 and settlement allocation authority through Builds 498-503. Recent workbook contracts explicitly define allocation evidence intake, group cross-check and remainder handling, sale-level attribution readiness, lifecycle transitions, evidence revision/supersession, and evidence lock/audit preservation.
-
-Repository search found settlement execution and marketplace allocation infrastructure, but did not find direct desktop implementation evidence for the Build 498-503 settlement-allocation evidence model, revision model, or lock contract. Existing marketplace allocation must not be assumed equivalent to settlement allocation evidence.
+The accepted workbook evolved settlement authority through Builds 481-497 and settlement allocation authority through Builds 498-503. CAP-009A addresses Build 498 intake persistence and fail-closed status derivation. Build 499 allocation group cross-check/remainder, Build 500 sale-level attribution readiness, Build 502 evidence revision/supersession, and Build 503 lock/audit preservation remain incomplete.
 
 ## Reconciliation Result
 
-The repository is substantially more mature than the desktop foundation planning record suggested. Inventory, Pricing, Listing, runtime database authority, audit/history, and shell/navigation are existing permanent capabilities. Collection and Reports lack verified permanent root vertical slices. Product Registry and Mission Control require canonical integration reconciliation. Settlement is partial relative to the latest workbook authority.
-
-The highest-value incomplete capability is CAP-009, Settlement allocation evidence and cross-check. Its first boundary is a Build 498-500 contract gap audit against existing schema, services, repositories, UI, and tests. No implementation should begin until that audit identifies reusable components and the exact missing authority surface.
+CAP-009 remains `Partial`. The exact next missing vertical slice after CAP-009A merge verification is Build 499 Allocation Group Cross-Check and Allocation Remainder authority, extending the canonical `settlement_allocation_evidence` grain. Build 500 remains a later controlled boundary.
 
 ## Known Reconciliation Debt
 
