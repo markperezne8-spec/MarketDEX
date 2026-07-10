@@ -7,7 +7,7 @@ class SettlementAllocationConflict(RuntimeError):
 
 
 class SettlementAllocationRepository:
-    """Append-only persistence for Build 498 settlement allocation evidence intake."""
+    """Append-only persistence for settlement allocation evidence and Build 499 cross-check results."""
 
     def parent_by_id(self, c: sqlite3.Connection, settlement_evidence_id: str) -> Optional[sqlite3.Row]:
         return c.execute(
@@ -26,6 +26,12 @@ class SettlementAllocationRepository:
             "SELECT * FROM settlement_allocation_evidence WHERE allocation_group_id=? ORDER BY created_at, allocation_line_id",
             (allocation_group_id,),
         ).fetchall()
+
+    def cross_check_by_id(self, c: sqlite3.Connection, cross_check_id: str) -> Optional[sqlite3.Row]:
+        return c.execute(
+            "SELECT * FROM settlement_allocation_cross_checks WHERE cross_check_id=?",
+            (cross_check_id,),
+        ).fetchone()
 
     def sale_marketplace(self, c: sqlite3.Connection, sale_id: str) -> Optional[str]:
         row = c.execute(
@@ -80,4 +86,40 @@ class SettlementAllocationRepository:
         row = self.line_by_id(c, allocation_line_id)
         if row is None:
             raise SettlementAllocationConflict("Allocation evidence persistence verification failed")
+        return row
+
+    def append_cross_check(self, c: sqlite3.Connection, *, cross_check_id: str,
+                           allocation_group_id: str, settlement_evidence_id: str,
+                           allocation_group_total_minor: int, settlement_net_minor: int,
+                           allocation_remainder_minor: int, cross_check_status: str,
+                           created_event_id: str, created_at: str) -> sqlite3.Row:
+        values = (
+            cross_check_id, allocation_group_id, settlement_evidence_id,
+            int(allocation_group_total_minor), int(settlement_net_minor),
+            int(allocation_remainder_minor), cross_check_status,
+            created_event_id, created_at,
+        )
+        prior = self.cross_check_by_id(c, cross_check_id)
+        if prior is not None:
+            columns = (
+                "cross_check_id", "allocation_group_id", "settlement_evidence_id",
+                "allocation_group_total_minor", "settlement_net_minor",
+                "allocation_remainder_minor", "cross_check_status",
+                "created_event_id", "created_at",
+            )
+            if tuple(prior[column] for column in columns) != values:
+                raise SettlementAllocationConflict("Contradictory allocation cross-check blocked")
+            return prior
+
+        c.execute(
+            """INSERT INTO settlement_allocation_cross_checks(
+               cross_check_id,allocation_group_id,settlement_evidence_id,
+               allocation_group_total_minor,settlement_net_minor,allocation_remainder_minor,
+               cross_check_status,created_event_id,created_at)
+               VALUES (?,?,?,?,?,?,?,?,?)""",
+            values,
+        )
+        row = self.cross_check_by_id(c, cross_check_id)
+        if row is None:
+            raise SettlementAllocationConflict("Allocation cross-check persistence verification failed")
         return row

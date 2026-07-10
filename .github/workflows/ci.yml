@@ -27,7 +27,7 @@ jobs:
           cache: pip
       - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
-      - run: pytest -q --tb=short tests/test_runtime_database_authority.py tests/test_cap008a_settlement_evidence_parent.py tests/test_cap009a_settlement_allocation_evidence.py tests/test_m39a_standalone_settlement.py
+      - run: pytest -q --tb=short tests/test_runtime_database_authority.py tests/test_cap008a_settlement_evidence_parent.py tests/test_cap009a_settlement_allocation_evidence.py tests/test_cap009b_allocation_group_cross_check.py tests/test_m39a_standalone_settlement.py
 
   inventory:
     name: Inventory
