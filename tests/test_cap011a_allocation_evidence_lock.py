@@ -73,3 +73,25 @@ def test_lock_replay_immutability_and_restart_reconstruction(tmp_path):
     authority = SettlementAllocationService(restarted).evidence_lock_authority("LINE-1")
     assert authority["evidence_lock_status"] == "LOCKED"
     assert authority["audit_preservation_result"] == "AUDIT PRESERVED — EDITS REQUIRE NEW REVISION"
+
+
+def test_persisted_locked_authority_fails_closed_when_group_cross_check_becomes_stale(tmp_path):
+    _, db, service = service_with_active_revision(tmp_path)
+    service.record_evidence_lock(allocation_evidence_id="LINE-1", lock_effective_date="2026-07-10",
+        locked_by_authority="Y", lock_reason="APPROVED", created_event_id="LOCK-EVENT", created_at="2026-07-10")
+    with db.transaction() as c:
+        c.execute("""INSERT INTO settlement_allocation_evidence(allocation_group_id,allocation_line_id,settlement_evidence_id,linked_sale_id,source_traceability,evidence_date,currency,component_type,allocated_amount_minor,notes,allocation_status,created_event_id,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                  ("GROUP-1", "LINE-2", "EVIDENCE-1", None, "ROW-2", "2026-07-10", "USD", "SALE", 100, "", "PENDING EVIDENCE", "ALLOC-EVENT-2", "2026-07-11"))
+    with pytest.raises(SettlementAllocationNotReady, match="currently LOCK ELIGIBLE"):
+        service.evidence_lock_authority("LINE-1")
+
+
+def test_persisted_locked_authority_fails_closed_when_active_revision_conflicts(tmp_path):
+    _, db, service = service_with_active_revision(tmp_path)
+    service.record_evidence_lock(allocation_evidence_id="LINE-1", lock_effective_date="2026-07-10",
+        locked_by_authority="Y", lock_reason="APPROVED", created_event_id="LOCK-EVENT", created_at="2026-07-10")
+    with db.transaction() as c:
+        c.execute("""INSERT INTO settlement_allocation_revisions(revision_id,allocation_evidence_id,supersedes_revision_id,current_revision_flag,revision_status,created_event_id,created_at) VALUES (?,?,?,?,?,?,?)""",
+                  ("REV-2", "LINE-1", "REV-1", "Y", "ACTIVE", "REV-EVENT-2", "2026-07-11"))
+    with pytest.raises(SettlementAllocationNotReady, match="single active revision"):
+        service.evidence_lock_authority("LINE-1")
