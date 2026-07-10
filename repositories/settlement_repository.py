@@ -65,8 +65,10 @@ class SettlementRepository:
             raise SettlementEvidenceConflict("Contradictory settlement linkage identity blocked")
         if status == "SINGLE_SALE_LINKED" and (sale_id is None or group_id is not None):
             raise SettlementEvidenceConflict("Single-sale linkage requires exactly one sale identity")
-        if status in ("MULTI_SALE_PENDING_ALLOCATION", "ALLOCATED") and (sale_id is not None or group_id is None):
-            raise SettlementEvidenceConflict("Allocation linkage requires allocation group identity")
+        if status == "MULTI_SALE_PENDING_ALLOCATION" and sale_id is not None:
+            raise SettlementEvidenceConflict("Pending multi-sale linkage cannot assert a sale identity")
+        if status == "ALLOCATED" and (sale_id is not None or group_id is None):
+            raise SettlementEvidenceConflict("Allocated linkage requires allocation group identity")
         values = (settlement_evidence_id, sale_id, group_id, status, created_event_id, created_at)
         prior = self.evidence_linkage_by_id(c, settlement_evidence_id)
         if prior is not None:
