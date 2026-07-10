@@ -20,11 +20,11 @@ When this command is received, do not begin with roadmap discussion or implement
 1. Inspect repository `main` and identify the permanent application entry point and current implementation structure.
 2. Review current CI health and permanent verification gates.
 3. Read this file.
-4. Read `docs/governance/Project_Manifest.md`.
-5. Read `docs/governance/Engineering_Protocol.md`.
-6. Read the latest `docs/governance/EC-XXX_*.md` engineering checkpoint.
-7. Read `docs/engineering/Capability_Matrix.md`.
-8. Read `docs/engineering/Repository_Reconciliation.md`.
+4. Read `docs/governance/Engineering_Protocol.md`.
+5. Read the latest `docs/governance/EC-XXX_*.md` engineering checkpoint.
+6. Read `docs/engineering/Capability_Matrix.md`.
+7. Read `docs/engineering/Repository_Reconciliation.md`.
+8. Read `docs/architecture/Desktop_Engineering_Charter.md` and `docs/architecture/Requirements_Traceability_Matrix.md`.
 9. Review active issues, open pull requests, and recent merged pull requests.
 10. Resume the active repository-backed delivery boundary.
 
