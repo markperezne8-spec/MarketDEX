@@ -10,10 +10,12 @@ class SettlementAllocationNotReady(RuntimeError):
 
 
 class SettlementAllocationService:
-    """Builds 498-500 and Builds 502-503 settlement allocation authority."""
+    """Builds 498-503 settlement allocation authority."""
 
     ACTIVE_REVISION_AUTHORITY = "ACTIVE REVISION AUTHORITY ONLY — NO TAX, RECONCILIATION, OR SETTLEMENT COMPLETION AUTHORITY"
     NO_REVISION_AUTHORITY = "NO REVISION AUTHORITY — FAIL CLOSED"
+    LOCK_AUTHORITY_ONLY = "LOCK AUTHORITY ONLY"
+    NO_LIFECYCLE_AUTHORITY = "NO LIFECYCLE AUTHORITY — FAIL CLOSED"
 
     def __init__(self, database: DatabaseManager, repository: Optional[SettlementAllocationRepository] = None) -> None:
         self.database = database
@@ -22,6 +24,23 @@ class SettlementAllocationService:
     @staticmethod
     def _required(value: object) -> bool:
         return value is not None and str(value).strip() != ""
+
+    def allocation_group_lifecycle(self, allocation_group_id: str) -> dict:
+        if not self._required(allocation_group_id):
+            raise SettlementAllocationNotReady("NO LIFECYCLE AUTHORITY — FAIL CLOSED: allocation group identity is blank")
+        with self.database.read_connection() as c:
+            lines = self.repository.lines_for_group(c, allocation_group_id)
+            cross_check = self.repository.latest_cross_check_for_group(c, allocation_group_id)
+            if cross_check is not None and cross_check["cross_check_status"] == "ALLOCATION EXCEPTION":
+                state, transition, boundary = "EXCEPTION", "FAIL CLOSED", self.NO_LIFECYCLE_AUTHORITY
+            elif cross_check is not None and cross_check["cross_check_status"] == "ALLOCATION CROSS-CHECKED" and int(cross_check["allocation_remainder_minor"]) == 0:
+                state, transition, boundary = "CROSS-CHECKED", "LOCK ELIGIBLE", self.LOCK_AUTHORITY_ONLY
+            elif lines:
+                state, transition, boundary = "EVIDENCE PENDING", "PENDING", self.NO_LIFECYCLE_AUTHORITY
+            else:
+                state, transition, boundary = "DRAFT", "PENDING", self.NO_LIFECYCLE_AUTHORITY
+            return {"allocation_group_id": allocation_group_id, "lifecycle_state": state,
+                    "transition_result": transition, "lifecycle_authority_boundary": boundary}
 
     def record_revision(self, *, allocation_evidence_id: str, revision_id: str, current_revision_flag: str,
                         created_event_id: str, created_at: str,
