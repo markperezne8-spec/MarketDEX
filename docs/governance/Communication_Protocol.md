@@ -1,6 +1,6 @@
 # MarketDEX OS Communication Protocol
 
-**Status:** Active candidate
+**Status:** Active
 **Authority:** Engineering governance
 **Owner:** Lead Software Architect
 **Update trigger:** Product Owner communication workflow changes

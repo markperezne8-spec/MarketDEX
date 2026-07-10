@@ -21,12 +21,13 @@ When this command is received, do not begin with roadmap discussion or implement
 2. Review current CI health and permanent verification gates.
 3. Read this file.
 4. Read `docs/governance/Engineering_Protocol.md`.
-5. Read the latest `docs/governance/EC-XXX_*.md` engineering checkpoint.
-6. Read `docs/engineering/Capability_Matrix.md`.
-7. Read `docs/engineering/Repository_Reconciliation.md`.
-8. Read `docs/architecture/Desktop_Engineering_Charter.md` and `docs/architecture/Requirements_Traceability_Matrix.md`.
-9. Review active issues, open pull requests, and recent merged pull requests.
-10. Resume the active repository-backed delivery boundary.
+5. Read `docs/governance/Communication_Protocol.md` and apply its Product Owner response contract for the session.
+6. Read the latest `docs/governance/EC-XXX_*.md` engineering checkpoint.
+7. Read `docs/engineering/Capability_Matrix.md`.
+8. Read `docs/engineering/Repository_Reconciliation.md`.
+9. Read `docs/architecture/Desktop_Engineering_Charter.md` and `docs/architecture/Requirements_Traceability_Matrix.md`.
+10. Review active issues, open pull requests, and recent merged pull requests.
+11. Resume the active repository-backed delivery boundary.
 
 If a canonical document listed above does not yet exist, record that fact as a reconciliation gap. Do not invent its contents from chat memory.
 
