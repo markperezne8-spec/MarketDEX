@@ -4,7 +4,7 @@
 **Authority:** Derived operational engineering status
 **Owner:** Lead Software Architect
 **Update trigger:** Merged delivery changes capability evidence or classification
-**Baseline:** `main` after PR #121 / EC-001
+**Baseline:** `main` after PR #121 / EC-001, with CAP-008A merged in PR #122 and CAP-009A delivery evidence pending PR #123 merge
 
 ## Status Vocabulary
 
@@ -19,19 +19,19 @@
 | CAP-005 | Product Registry | Product Registry / REQ-PROD-001 | `services/product_registry_service.py`; product-aware services reference `product_id` | Product-aware closure and M38/M39B acceptance tests provide indirect evidence | Partial | Verify persistence authority and operator surface; do not rebuild service logic |
 | CAP-006 | Collection | Collection / REQ-COL-001 | Collection navigation/card surfaces exist under `app/ui/`; no verified root collection service/repository found in reconciliation search | No dedicated collection test evidence found | Missing | Define first vertical slice only after confirming workbook authority and permanent runtime integration point |
 | CAP-007 | Audit and immutable history | Audit Trail / REQ-AUD-001 | `event_identity`; `audit_history`; `audit_events`; append-only and immutable schema triggers | Core runtime authority and multiple authority/conformance tests | Complete | Preserve append-only authority |
-| CAP-008 | Settlement execution authority | Settlement Evidence Intake and Linkage Rules / REQ-SET-001; workbook Builds 481-497 | `services/settlement_service.py`; `repositories/settlement_repository.py`; `settlement_executions`; `settlement_history` | Existing settlement and acceptance/conformance evidence exists, but current CI does not directly prove Builds 481-497 parity | Partial | Perform workbook-to-desktop settlement contract gap audit before implementation |
-| CAP-009 | Settlement allocation evidence and cross-check | Settlement Allocation Evidence / REQ-ALL-001; Builds 498-500 | Marketplace allocation tables/services exist, but no verified desktop settlement-allocation evidence model matching Builds 498-500 was found | Allocation-related lifecycle tests exist; no direct Build 498-500 parity evidence found | Partial | Highest-value gap: map Build 498-500 fields, statuses, fail-closed rules, and tests to desktop implementation |
+| CAP-008 | Settlement execution authority | Settlement Evidence Intake and Linkage Rules / REQ-SET-001; workbook Builds 481-497 | `services/settlement_service.py`; `repositories/settlement_repository.py`; `settlement_evidence`; `settlement_executions`; `settlement_history` | CAP-008A settlement evidence parent tests and M39A settlement regression suite run in Core Tests CI | Partial | Preserve CAP-008A parent authority; reconcile remaining Builds 481-497 parity separately |
+| CAP-009 | Settlement allocation evidence and cross-check | Settlement Allocation Evidence / REQ-ALL-001; Builds 498-500 | Build 498: `settlement_allocation_evidence`; `SettlementAllocationRepository`; `SettlementAllocationService`; existing marketplace allocation remains a separate inventory reservation authority | CAP-009A Build 498 fail-closed intake contract tests in Core Tests CI; Build 499-500 direct parity evidence still absent | Partial | After CAP-009A merge, implement the smallest Build 499 allocation group cross-check and remainder authority slice |
 | CAP-010 | Allocation evidence revision and supersession | Allocation Evidence Revisions / REQ-ALL-002; Build 502 | No verified allocation evidence revision service or persistence authority matching Build 502 found | No direct supersession test evidence found | Missing | Implement only after CAP-009 canonical evidence model exists |
 | CAP-011 | Allocation evidence lock and audit preservation | Allocation Evidence Locks / REQ-ALL-003; Build 503 | Existing immutable audit infrastructure is reusable; no verified allocation evidence lock service matching Build 503 found | No direct Build 503 lock/preservation parity test found | Missing | Implement after CAP-010 using existing immutable audit patterns |
 | CAP-012 | Reports | Workbook reporting surfaces; desktop charter release sequence | No verified canonical root report workflow found in reconciliation search | No dedicated report regression evidence found | Missing | Defer until authority-heavy settlement/allocation gap is closed |
-| CAP-013 | Runtime database authority and migration | Desktop implementation authority | `launcher.py`; `core/runtime_database_migration.py`; schema version 17; runtime SQLite path | Core Tests CI gate; `test_runtime_database_authority.py` | Complete | Preserve single database authority |
+| CAP-013 | Runtime database authority and migration | Desktop implementation authority | `launcher.py`; `core/runtime_database_migration.py`; schema version 19 on CAP-009A delivery branch; runtime SQLite path | Core Tests CI gate; `test_runtime_database_authority.py` | Complete | Preserve single database authority |
 | CAP-014 | Desktop shell and navigation | Desktop engineering authority | root `launcher.py`; `ui/main_window.py`; viewport feature; workspace/navigation surfaces | Desktop Build CI gate; workspace navigation and maximized-launch contract tests | Complete | Preserve permanent root launcher authority |
 
 ## Current Priority
 
-**CAP-009 — Settlement allocation evidence and cross-check** is the highest-value incomplete capability supported by current evidence. Builds 498-500 provide recent, explicit workbook authority, while the desktop repository already contains reusable settlement, allocation, audit, event, and lifecycle infrastructure but lacks direct parity evidence for the settlement-allocation contract.
+**CAP-009 — Settlement allocation evidence and cross-check** remains the highest-value incomplete capability. CAP-009A supplies the Build 498 intake grain and fail-closed status derivation against the CAP-008A Settlement Evidence parent without reusing marketplace inventory allocation as a competing settlement architecture.
 
-CAP-009 must begin with a contract gap audit, not a second allocation architecture.
+After CAP-009A is merged and verified on `main`, the next controlled boundary is the smallest missing Build 499 allocation group cross-check and allocation remainder authority slice. Build 500 sale-level settlement attribution readiness remains later.
 
 ## Matrix Rule
 
