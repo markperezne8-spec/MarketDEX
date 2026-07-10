@@ -1,3 +1,7 @@
+import sqlite3
+from typing import Optional
+
+from core.database_manager import DatabaseManager
 from repositories.settlement_allocation_repository import SettlementAllocationRepository
 
 
@@ -8,18 +12,22 @@ class SettlementAllocationNotReady(RuntimeError):
 class SettlementAllocationService:
     """Build 498 intake authority. Cross-check authority is intentionally out of scope."""
 
-    def __init__(self, database, repository=None):
+    def __init__(self, database: DatabaseManager,
+                 repository: Optional[SettlementAllocationRepository] = None) -> None:
         self.database = database
         self.repository = repository or SettlementAllocationRepository()
 
     @staticmethod
-    def _required(value):
+    def _required(value: object) -> bool:
         return value is not None and str(value).strip() != ""
 
-    def record_evidence(self, *, allocation_group_id, allocation_line_id,
-                        settlement_evidence_id, source_traceability, evidence_date,
-                        currency, component_type, created_event_id, created_at,
-                        linked_sale_id=None, allocated_amount_minor=None, notes=""):
+    def record_evidence(self, *, allocation_group_id: str, allocation_line_id: str,
+                        settlement_evidence_id: str, source_traceability: str,
+                        evidence_date: str, currency: str, component_type: str,
+                        created_event_id: str, created_at: str,
+                        linked_sale_id: Optional[str] = None,
+                        allocated_amount_minor: Optional[int] = None,
+                        notes: str = "") -> sqlite3.Row:
         required = (
             allocation_group_id, allocation_line_id, settlement_evidence_id,
             source_traceability, evidence_date, currency, component_type,
