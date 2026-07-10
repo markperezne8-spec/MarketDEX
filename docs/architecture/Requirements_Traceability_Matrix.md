@@ -11,7 +11,7 @@ Trace authoritative workbook specification sources to desktop implementation com
 | REQ-MIS-001 | Mission Control | Dashboard UI / Query Services | Planned dashboard regression tests | Planned |
 | REQ-AUD-001 | Audit Trail | Audit Domain / Service / Repository | Planned append-preservation tests | Planned |
 | REQ-SET-001 | Settlement Evidence Intake; Settlement Linkage Rules | `settlement_evidence`; `SettlementRepository`; settlement services | CAP-008A parent-grain contract tests and M39A regression tests in Core Tests CI | In Progress |
-| REQ-ALL-001 | Settlement Allocation Evidence; Builds 498-500 | `settlement_allocation_evidence`; `settlement_allocation_cross_checks`; `SettlementAllocationRepository`; `SettlementAllocationService` | CAP-009A Build 498 intake and CAP-009B Build 499 cross-check/remainder contract tests in Core Tests CI; Build 500 remains unimplemented | In Progress |
+| REQ-ALL-001 | Settlement Allocation Evidence; Builds 498-500 | `settlement_allocation_evidence`; `settlement_allocation_cross_checks`; immutable `audit_events` readiness evidence; `SettlementAllocationRepository`; `SettlementAllocationService` | CAP-009A Build 498 intake, CAP-009B Build 499 cross-check/remainder, and CAP-009C Build 500 sale-level Settlement Attribution Readiness contract tests in Core Tests CI | Verified |
 | REQ-ALL-002 | Allocation Evidence Revisions | Allocation Revision Service | Planned supersession tests | Planned |
 | REQ-ALL-003 | Allocation Evidence Locks | Allocation Lock Service | Planned lock and preservation tests | Planned |
 
