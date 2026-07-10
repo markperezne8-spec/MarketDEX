@@ -10,7 +10,10 @@ class SettlementAllocationNotReady(RuntimeError):
 
 
 class SettlementAllocationService:
-    """Builds 498-500 settlement allocation authority."""
+    """Builds 498-500 and Build 502 settlement allocation authority."""
+
+    ACTIVE_REVISION_AUTHORITY = "ACTIVE REVISION AUTHORITY ONLY — NO TAX, RECONCILIATION, OR SETTLEMENT COMPLETION AUTHORITY"
+    NO_REVISION_AUTHORITY = "NO REVISION AUTHORITY — FAIL CLOSED"
 
     def __init__(self, database: DatabaseManager, repository: Optional[SettlementAllocationRepository] = None) -> None:
         self.database = database
@@ -19,6 +22,50 @@ class SettlementAllocationService:
     @staticmethod
     def _required(value: object) -> bool:
         return value is not None and str(value).strip() != ""
+
+    def record_revision(self, *, allocation_evidence_id: str, revision_id: str, current_revision_flag: str,
+                        created_event_id: str, created_at: str,
+                        supersedes_revision_id: Optional[str] = None) -> dict:
+        required = (allocation_evidence_id, revision_id, created_event_id, created_at)
+        if not all(self._required(value) for value in required):
+            raise SettlementAllocationNotReady("NO REVISION AUTHORITY — FAIL CLOSED: required revision evidence is blank")
+        if current_revision_flag not in ("Y", ""):
+            raise SettlementAllocationNotReady("NO REVISION AUTHORITY — FAIL CLOSED: current revision flag is not canonical")
+        supersedes = None if not self._required(supersedes_revision_id) else str(supersedes_revision_id).strip()
+        status = "ACTIVE" if current_revision_flag == "Y" else ("REVISED" if supersedes is not None else "INITIAL")
+        with self.database.transaction() as c:
+            if self.repository.line_by_id(c, allocation_evidence_id) is None:
+                raise SettlementAllocationNotReady("NO REVISION AUTHORITY — FAIL CLOSED: allocation evidence is missing")
+            if supersedes is not None:
+                prior = self.repository.revision_by_id(c, supersedes)
+                if prior is None or prior["allocation_evidence_id"] != allocation_evidence_id or supersedes == revision_id:
+                    raise SettlementAllocationNotReady("NO REVISION AUTHORITY — FAIL CLOSED: supersedes revision linkage is invalid")
+            row = self.repository.append_revision(c, allocation_evidence_id=allocation_evidence_id,
+                revision_id=revision_id, supersedes_revision_id=supersedes,
+                current_revision_flag=current_revision_flag, revision_status=status,
+                created_event_id=created_event_id, created_at=created_at)
+            current = self.repository.current_revisions_for_evidence(c, allocation_evidence_id)
+            conflict = "CONFLICT" if len(current) > 1 else "NO CONFLICT"
+            boundary = self.ACTIVE_REVISION_AUTHORITY if current_revision_flag == "Y" and conflict == "NO CONFLICT" else self.NO_REVISION_AUTHORITY
+            return {"allocation_evidence_id": row["allocation_evidence_id"], "revision_id": row["revision_id"],
+                    "supersedes_revision_id": row["supersedes_revision_id"], "current_revision_flag": row["current_revision_flag"],
+                    "revision_status": row["revision_status"], "revision_conflict": conflict,
+                    "revision_authority_boundary": boundary}
+
+    def revision_authority(self, allocation_evidence_id: str) -> dict:
+        if not self._required(allocation_evidence_id):
+            raise SettlementAllocationNotReady("NO REVISION AUTHORITY — FAIL CLOSED: allocation evidence identity is blank")
+        with self.database.read_connection() as c:
+            revisions = self.repository.revisions_for_evidence(c, allocation_evidence_id)
+            current = self.repository.current_revisions_for_evidence(c, allocation_evidence_id)
+            conflict = "CONFLICT" if len(current) > 1 else "NO CONFLICT"
+            if len(current) != 1 or conflict != "NO CONFLICT":
+                return {"allocation_evidence_id": allocation_evidence_id, "revision_conflict": conflict,
+                        "revision_authority_boundary": self.NO_REVISION_AUTHORITY, "current_revision": None}
+            row = current[0]
+            return {"allocation_evidence_id": allocation_evidence_id, "revision_conflict": conflict,
+                    "revision_authority_boundary": self.ACTIVE_REVISION_AUTHORITY, "current_revision": dict(row),
+                    "revision_count": len(revisions)}
 
     def record_evidence(self, *, allocation_group_id: str, allocation_line_id: str, settlement_evidence_id: str,
                         source_traceability: str, evidence_date: str, currency: str, component_type: str,

@@ -7,7 +7,7 @@ class SettlementAllocationConflict(RuntimeError):
 
 
 class SettlementAllocationRepository:
-    """Append-only persistence and queries for CAP-009 allocation authority."""
+    """Append-only persistence and queries for settlement allocation authority."""
 
     def parent_by_id(self, c: sqlite3.Connection, settlement_evidence_id: str) -> Optional[sqlite3.Row]:
         return c.execute("SELECT * FROM settlement_evidence WHERE settlement_evidence_id=?", (settlement_evidence_id,)).fetchone()
@@ -17,6 +17,33 @@ class SettlementAllocationRepository:
 
     def lines_for_group(self, c: sqlite3.Connection, allocation_group_id: str) -> Sequence[sqlite3.Row]:
         return c.execute("SELECT * FROM settlement_allocation_evidence WHERE allocation_group_id=? ORDER BY created_at, allocation_line_id", (allocation_group_id,)).fetchall()
+
+    def revision_by_id(self, c: sqlite3.Connection, revision_id: str) -> Optional[sqlite3.Row]:
+        return c.execute("SELECT * FROM settlement_allocation_revisions WHERE revision_id=?", (revision_id,)).fetchone()
+
+    def revisions_for_evidence(self, c: sqlite3.Connection, allocation_evidence_id: str) -> Sequence[sqlite3.Row]:
+        return c.execute("SELECT * FROM settlement_allocation_revisions WHERE allocation_evidence_id=? ORDER BY created_at, revision_id", (allocation_evidence_id,)).fetchall()
+
+    def current_revisions_for_evidence(self, c: sqlite3.Connection, allocation_evidence_id: str) -> Sequence[sqlite3.Row]:
+        return c.execute("SELECT * FROM settlement_allocation_revisions WHERE allocation_evidence_id=? AND current_revision_flag='Y' ORDER BY created_at, revision_id", (allocation_evidence_id,)).fetchall()
+
+    def append_revision(self, c: sqlite3.Connection, *, allocation_evidence_id: str, revision_id: str,
+                        supersedes_revision_id: Optional[str], current_revision_flag: str, revision_status: str,
+                        created_event_id: str, created_at: str) -> sqlite3.Row:
+        values = (revision_id, allocation_evidence_id, supersedes_revision_id, current_revision_flag,
+                  revision_status, created_event_id, created_at)
+        prior = self.revision_by_id(c, revision_id)
+        if prior is not None:
+            columns = ("revision_id", "allocation_evidence_id", "supersedes_revision_id", "current_revision_flag",
+                       "revision_status", "created_event_id", "created_at")
+            if tuple(prior[column] for column in columns) != values:
+                raise SettlementAllocationConflict("Contradictory allocation revision replay blocked")
+            return prior
+        c.execute("""INSERT INTO settlement_allocation_revisions(revision_id,allocation_evidence_id,supersedes_revision_id,current_revision_flag,revision_status,created_event_id,created_at) VALUES (?,?,?,?,?,?,?)""", values)
+        row = self.revision_by_id(c, revision_id)
+        if row is None:
+            raise SettlementAllocationConflict("Allocation revision persistence verification failed")
+        return row
 
     def cross_check_by_id(self, c: sqlite3.Connection, cross_check_id: str) -> Optional[sqlite3.Row]:
         return c.execute("SELECT * FROM settlement_allocation_cross_checks WHERE cross_check_id=?", (cross_check_id,)).fetchone()
