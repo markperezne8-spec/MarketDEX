@@ -6,13 +6,13 @@ from repositories.settlement_repository import SettlementRepository
 from services.settlement_allocation_service import SettlementAllocationNotReady, SettlementAllocationService
 
 
-def parent(repository, c, evidence_id="EVIDENCE-1", marketplace="EBAY"):
+def parent(repository, c, evidence_id="EVIDENCE-1", marketplace="EBAY", event_id="PARENT-EVENT-1"):
     repository.append_evidence(c, settlement_evidence_id=evidence_id, marketplace=marketplace,
-        marketplace_settlement_reference="PAYOUT-1", settlement_date="2026-07-10",
+        marketplace_settlement_reference=f"PAYOUT-{evidence_id}", settlement_date="2026-07-10",
         settlement_currency="USD", evidence_source_type="MARKETPLACE_REPORT",
-        evidence_source_reference="REPORT-1", settlement_net_minor=1000,
+        evidence_source_reference=f"REPORT-{evidence_id}", settlement_net_minor=1000,
         evidence_status="VERIFIED", verification_result="VERIFIED",
-        created_event_id="PARENT-EVENT-1", created_at="2026-07-10")
+        created_event_id=event_id, created_at="2026-07-10")
 
 
 def args(**overrides):
@@ -23,6 +23,16 @@ def args(**overrides):
         linked_sale_id=None, allocated_amount_minor=None, notes="")
     values.update(overrides)
     return values
+
+
+def insert_sale_with_marketplace(c, sale_id, marketplace, suffix):
+    c.execute("INSERT INTO sales VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+        (sale_id,"A",1,1000,0,0,0,0,1000,"COMPLETED",f"SALE-EVENT-{suffix}","2026-07-10"))
+    c.execute("INSERT INTO publication_lifecycle_events VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        (f"LIFE-{suffix}",f"ALLOC-{suffix}","SOLD_CONVERSION",1,"REPORT","R",1,
+         marketplace,"PUB",f"IDENTITY-{suffix}",sale_id,f"SALE-EVENT-{suffix}",None,
+         f"LIFE-EVENT-{suffix}",f"REQ-{suffix}",f"REPLAY-{suffix}","2026-07-10",
+         "2026-07-10","2026-07-10"))
 
 
 def test_missing_parent_and_blank_required_evidence_fail_not_ready(tmp_path):
@@ -63,20 +73,24 @@ def test_unresolved_sale_derives_exception(tmp_path):
 def test_complete_agreeing_sale_derives_ready_and_marketplace_contradiction_exception(tmp_path):
     db = DatabaseManager(tmp_path / "db.sqlite3"); db.initialize()
     with db.transaction() as c:
-        parent(SettlementRepository(), c)
-        c.execute("INSERT INTO sales VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", ("SALE-1","A",1,1000,0,0,0,0,1000,"COMPLETED","SALE-EVENT","2026-07-10"))
-        c.execute("INSERT INTO publication_lifecycle_events VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", ("LIFE-1","ALLOC-1","SOLD_CONVERSION",1,"REPORT","R",1,"EBAY","PUB","IDENTITY","SALE-1","SALE-EVENT",None,"LIFE-EVENT","REQ","REPLAY","2026-07-10","2026-07-10","2026-07-10"))
+        repository = SettlementRepository()
+        parent(repository, c)
+        insert_sale_with_marketplace(c, "SALE-EBAY", "EBAY", "EBAY")
+        insert_sale_with_marketplace(c, "SALE-TCG", "TCGPLAYER", "TCG")
     service = SettlementAllocationService(db)
-    row = service.record_evidence(**args(linked_sale_id="SALE-1", allocated_amount_minor=100))
-    assert row["allocation_status"] == "READY FOR CROSS-CHECK"
-    assert row["allocation_status"] != "ALLOCATION CROSS-CHECKED"
+    ready = service.record_evidence(**args(linked_sale_id="SALE-EBAY", allocated_amount_minor=100))
+    exception = service.record_evidence(**args(allocation_line_id="LINE-2", created_event_id="ALLOC-EVENT-2",
+        linked_sale_id="SALE-TCG", allocated_amount_minor=100))
+    assert ready["allocation_status"] == "READY FOR CROSS-CHECK"
+    assert ready["allocation_status"] != "ALLOCATION CROSS-CHECKED"
+    assert exception["allocation_status"] == "ALLOCATION EXCEPTION"
 
 
 def test_identical_replay_is_idempotent_contradiction_and_reparent_fail_closed(tmp_path):
     db = DatabaseManager(tmp_path / "db.sqlite3"); db.initialize()
     with db.transaction() as c:
         repository = SettlementRepository(); parent(repository, c)
-        parent(repository, c, evidence_id="EVIDENCE-2")
+        parent(repository, c, evidence_id="EVIDENCE-2", event_id="PARENT-EVENT-2")
     service = SettlementAllocationService(db)
     service.record_evidence(**args()); service.record_evidence(**args())
     with pytest.raises(SettlementAllocationConflict): service.record_evidence(**args(notes="changed"))
