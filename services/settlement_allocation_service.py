@@ -10,7 +10,7 @@ class SettlementAllocationNotReady(RuntimeError):
 
 
 class SettlementAllocationService:
-    """Builds 498-500 and Build 502 settlement allocation authority."""
+    """Builds 498-500 and Builds 502-503 settlement allocation authority."""
 
     ACTIVE_REVISION_AUTHORITY = "ACTIVE REVISION AUTHORITY ONLY — NO TAX, RECONCILIATION, OR SETTLEMENT COMPLETION AUTHORITY"
     NO_REVISION_AUTHORITY = "NO REVISION AUTHORITY — FAIL CLOSED"
@@ -66,6 +66,46 @@ class SettlementAllocationService:
             return {"allocation_evidence_id": allocation_evidence_id, "revision_conflict": conflict,
                     "revision_authority_boundary": self.ACTIVE_REVISION_AUTHORITY, "current_revision": dict(row),
                     "revision_count": len(revisions)}
+
+    def record_evidence_lock(self, *, allocation_evidence_id: str, lock_effective_date: str,
+                             locked_by_authority: str, lock_reason: str, created_event_id: str,
+                             created_at: str) -> dict:
+        required = (allocation_evidence_id, created_event_id, created_at)
+        if not all(self._required(value) for value in required):
+            raise SettlementAllocationNotReady("NO LOCK AUTHORITY — FAIL CLOSED: required lock evidence is blank")
+        if locked_by_authority not in ("Y", ""):
+            raise SettlementAllocationNotReady("NO LOCK AUTHORITY — FAIL CLOSED: locked by authority is not canonical")
+        if locked_by_authority == "Y" and not self._required(lock_effective_date):
+            raise SettlementAllocationNotReady("NO LOCK AUTHORITY — FAIL CLOSED: lock effective date is blank")
+        status = "LOCKED" if locked_by_authority == "Y" else "UNLOCKED"
+        unlock_status = "NONE"
+        audit_result = "AUDIT PRESERVED — EDITS REQUIRE NEW REVISION" if status == "LOCKED" else "AUDIT PRESERVED"
+        with self.database.transaction() as c:
+            if self.repository.line_by_id(c, allocation_evidence_id) is None:
+                raise SettlementAllocationNotReady("NO LOCK AUTHORITY — FAIL CLOSED: allocation evidence is missing")
+            current = self.repository.current_revisions_for_evidence(c, allocation_evidence_id)
+            if len(current) != 1:
+                raise SettlementAllocationNotReady("NO LOCK AUTHORITY — FAIL CLOSED: single active revision authority is missing")
+            row = self.repository.append_evidence_lock(c, allocation_evidence_id=allocation_evidence_id,
+                evidence_lock_status=status, lock_effective_date=lock_effective_date or "",
+                locked_by_authority=locked_by_authority, lock_reason=lock_reason or "",
+                unlock_request_status=unlock_status, audit_preservation_result=audit_result,
+                created_event_id=created_event_id, created_at=created_at)
+            c.execute("""INSERT OR IGNORE INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)""",
+                      (created_event_id, "ALLOCATION_EVIDENCE_LOCK", allocation_evidence_id, audit_result, created_at))
+            audit = c.execute("SELECT * FROM audit_events WHERE event_id=? AND authority_type='ALLOCATION_EVIDENCE_LOCK' AND authority_id=?", (created_event_id, allocation_evidence_id)).fetchone()
+            if audit is None or audit["verification_result"] != audit_result or audit["recorded_at"] != created_at:
+                raise SettlementAllocationNotReady("NO LOCK AUTHORITY — FAIL CLOSED: audit preservation verification failed")
+            return dict(row)
+
+    def evidence_lock_authority(self, allocation_evidence_id: str) -> dict:
+        if not self._required(allocation_evidence_id):
+            raise SettlementAllocationNotReady("NO LOCK AUTHORITY — FAIL CLOSED: allocation evidence identity is blank")
+        with self.database.read_connection() as c:
+            row = self.repository.lock_by_evidence_id(c, allocation_evidence_id)
+            if row is None:
+                raise SettlementAllocationNotReady("NO LOCK AUTHORITY — FAIL CLOSED: allocation evidence lock is missing")
+            return dict(row)
 
     def record_evidence(self, *, allocation_group_id: str, allocation_line_id: str, settlement_evidence_id: str,
                         source_traceability: str, evidence_date: str, currency: str, component_type: str,
