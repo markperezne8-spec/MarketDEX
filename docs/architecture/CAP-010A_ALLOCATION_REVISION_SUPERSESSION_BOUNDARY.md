@@ -18,32 +18,54 @@ Desktop implementation: Missing.
 
 CAP-009 Builds 498-500 remain complete and are the permanent allocation evidence and cross-check authority. CAP-010A must extend that architecture and must not create a second allocation architecture.
 
-## Verified Build 502 Contract Boundary
+## Exact Build 502 Workbook Evidence
 
-Repository evidence from merged PR #115 confirms Build 502 requires:
+Direct ODS package inspection confirms the `Allocation Evidence Revisions` sheet contains exactly these seven contract columns:
 
-- immutable allocation evidence revision history;
-- Allocation Evidence ID identity control;
-- Revision ID identity control;
-- Supersedes Revision linkage;
-- current revision handling;
-- revision conflict detection;
-- fail-closed revision authority;
-- preservation of historical evidence without overwriting prior records.
+1. `Allocation Evidence ID`
+2. `Revision ID`
+3. `Supersedes Revision ID`
+4. `Current Revision Flag`
+5. `Revision Status`
+6. `Revision Conflict`
+7. `Revision Authority Boundary`
 
-Build 502 explicitly does not introduce tax authority, reconciliation authority, settlement completion authority, automatic matching, or automatic allocation.
+The canonical workbook derivations are:
 
-## Controlled Desktop Delivery Boundary
+- `Revision Status`: `ACTIVE` when Current Revision Flag is `Y`; otherwise `REVISED` when Supersedes Revision ID is present; otherwise `INITIAL`.
+- `Revision Conflict`: `CONFLICT` when more than one row for the same Allocation Evidence ID has Current Revision Flag `Y`; otherwise `NO CONFLICT`.
+- `Revision Authority Boundary`: `ACTIVE REVISION AUTHORITY ONLY — NO TAX, RECONCILIATION, OR SETTLEMENT COMPLETION AUTHORITY` only when Current Revision Flag is `Y` and Revision Conflict is `NO CONFLICT`; otherwise `NO REVISION AUTHORITY — FAIL CLOSED`.
 
-Before implementation, map the exact Build 502 workbook fields and canonical vocabulary against:
+Canonical Build 502 vocabulary is therefore:
 
-- `core/schema.py`;
-- `repositories/settlement_allocation_repository.py`;
-- `services/settlement_allocation_service.py`;
-- CAP-009A/B/C contract tests;
-- immutable audit/event infrastructure.
+- Current Revision Flag: `Y` or non-`Y`/blank workbook state;
+- Revision Status: `ACTIVE`, `REVISED`, `INITIAL`;
+- Revision Conflict: `CONFLICT`, `NO CONFLICT`;
+- Revision Authority Boundary: `ACTIVE REVISION AUTHORITY ONLY — NO TAX, RECONCILIATION, OR SETTLEMENT COMPLETION AUTHORITY`, `NO REVISION AUTHORITY — FAIL CLOSED`.
 
-Then implement only the smallest missing vertical slice required to persist immutable revision lineage, identify the current revision deterministically, reject contradictory or invalid supersession, preserve prior allocation evidence, reconstruct authority after restart, and prove the behavior in Core Tests CI.
+## Existing Desktop Support
+
+- CAP-009 `settlement_allocation_evidence` preserves allocation line evidence append-only but has no revision identity or supersession lineage columns.
+- `SettlementAllocationRepository` has no revision lineage persistence, current-revision query, or conflict query.
+- `SettlementAllocationService` has no Build 502 revision authority derivation.
+- Existing immutable triggers and transaction patterns are reusable.
+- No direct Build 502 desktop contract tests exist.
+
+## Smallest Missing Vertical Slice
+
+Implement an append-only allocation evidence revision authority table in `core/schema.py`, extending the established runtime database authority. Extend `SettlementAllocationRepository` and `SettlementAllocationService` only enough to:
+
+1. require explicit Allocation Evidence ID and Revision ID;
+2. preserve optional explicit Supersedes Revision ID;
+3. accept only canonical current-revision flag `Y` or blank;
+4. derive `ACTIVE`, `REVISED`, or `INITIAL` exactly from workbook rules;
+5. derive `CONFLICT` when multiple current revisions exist for one Allocation Evidence ID;
+6. grant active revision authority only for a current revision with no conflict;
+7. preserve every prior revision without update/delete;
+8. make identical replay idempotent and contradictory replay fail closed;
+9. reconstruct revision authority from persisted evidence after restart.
+
+This slice does not mutate CAP-009 allocation evidence, revise settlement truth, execute settlement, or implement Build 503 locking.
 
 ## Prohibited Architecture
 
@@ -59,4 +81,4 @@ Do not create a second launcher, application root, database authority, or compet
 
 ## Implementation Gate
 
-No schema, repository, or service implementation begins until exact workbook field/vocabulary evidence is available for inspection. Repository truth must remain stronger than chat inference.
+Exact workbook field and vocabulary evidence is now inspected and recorded. CAP-010A may proceed only through the smallest missing vertical slice above.
