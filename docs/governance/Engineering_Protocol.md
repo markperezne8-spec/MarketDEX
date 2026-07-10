@@ -62,4 +62,14 @@ The Product Owner owns business vision, priority, acceptance, and final product 
 
 ## Speed Policy
 
-Optimize for the smallest safe mergeable improvement. Encode approved decisions and move to implementation instead of repeatedly redescribing them.
+Optimize for maximum verified outcome with minimum workflow friction. Encode approved decisions and move to implementation instead of repeatedly redescribing them.
+
+Use **batch delivery mode** when multiple changes belong to the same low-risk authority family, such as repository hygiene or documentation consolidation. In batch delivery mode:
+
+- audit the complete authority family before editing;
+- combine proven duplicate, stale, superseded, naming, and folder-normalization changes into one controlled branch and PR;
+- run permanent CI once for the batch;
+- merge only when the complete batch boundary is green;
+- require the Product Owner to pull only at meaningful checkpoints, before a local/visual verification, or when local work depends on the new baseline.
+
+Do not split safe same-family cleanup into tiny PRs solely for ceremony. Do not use batching to mix application engineering, schema changes, business authority changes, or unrelated capability work. Important gates remain mandatory: repository reality check, authority classification, isolated branch, regression evidence where applicable, CI, merge verification, durable checkpoint, and explicit visual-check instruction.
