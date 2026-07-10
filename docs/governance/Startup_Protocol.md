@@ -31,6 +31,18 @@ When this command is received, do not begin with roadmap discussion or implement
 
 If a canonical document listed above does not yet exist, record that fact as a reconciliation gap. Do not invent its contents from chat memory.
 
+## Mandatory Bootstrap Output Gate
+
+The first material engineering progress response after `Bootstrap MarketDEX` must visibly render the Communication Protocol progress contract. It must include a labeled `MarketDEX Progress` bar, not only a percentage in prose.
+
+Use a compact visual bar plus an explicit percentage, for example:
+
+`MarketDEX Progress — [████████░░] 80%`
+
+The percentage must be grounded in a named repository-backed scope or tracker. Never infer whole-project completion from chat memory. The same response must also include `NEXT STEP — JARVIS ACTION`, `MARK ACTION`, the pull instruction, and the app visual-check instruction required by `docs/governance/Communication_Protocol.md`.
+
+This bootstrap output gate is repository authority. A new session must reconstruct and apply it from this protocol and the active Communication Protocol rather than relying on prior chat behavior.
+
 ## Low-Friction Session Rule
 
 After bootstrap, default to execution rather than repeated process narration. Preserve mandatory gates, but batch same-family low-risk work under the Engineering Protocol speed policy. Ask the Product Owner to pull only at a meaningful checkpoint, before local or visual verification, or when the local baseline is required for the next action.
