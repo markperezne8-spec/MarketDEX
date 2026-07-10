@@ -29,6 +29,7 @@ def repository_with_parent(tmp_path):
         ("", None, None),
         ("UNMATCHED", None, None),
         ("SINGLE_SALE_LINKED", "SALE-001", None),
+        ("MULTI_SALE_PENDING_ALLOCATION", None, None),
         ("MULTI_SALE_PENDING_ALLOCATION", None, "GROUP-001"),
         ("ALLOCATED", None, "GROUP-001"),
     ],
@@ -53,8 +54,10 @@ def test_build483_canonical_linkage_vocabulary_and_unknown_preservation(tmp_path
         ("UNMATCHED", "SALE-001", None),
         ("SINGLE_SALE_LINKED", None, None),
         ("SINGLE_SALE_LINKED", "SALE-001", "GROUP-001"),
+        ("MULTI_SALE_PENDING_ALLOCATION", "SALE-001", None),
         ("MULTI_SALE_PENDING_ALLOCATION", "SALE-001", "GROUP-001"),
         ("ALLOCATED", None, None),
+        ("ALLOCATED", "SALE-001", "GROUP-001"),
     ],
 )
 def test_build483_contradictory_linkage_identity_fails_closed(tmp_path, status, sale_id, group_id):
@@ -66,6 +69,18 @@ def test_build483_contradictory_linkage_identity_fails_closed(tmp_path, status, 
                 linked_sale_id=sale_id, allocation_group_id=group_id,
                 created_event_id="LINK-EVENT", created_at="2026-07-10",
             )
+
+
+def test_build484_pending_multi_sale_linkage_preserves_unknown_group_until_controlled_group_exists(tmp_path):
+    _, database, repository = repository_with_parent(tmp_path)
+    with database.transaction() as c:
+        row = repository.append_evidence_linkage(
+            c, settlement_evidence_id="EVIDENCE-001",
+            linkage_status="MULTI_SALE_PENDING_ALLOCATION",
+            created_event_id="LINK-EVENT", created_at="2026-07-10",
+        )
+    assert row["linked_sale_id"] is None
+    assert row["allocation_group_id"] is None
 
 
 def test_linkage_requires_parent_and_contradictory_replay_fails_closed(tmp_path):
