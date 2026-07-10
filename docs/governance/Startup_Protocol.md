@@ -30,6 +30,12 @@ When this command is received, do not begin with roadmap discussion or implement
 
 If a canonical document listed above does not yet exist, record that fact as a reconciliation gap. Do not invent its contents from chat memory.
 
+## Low-Friction Session Rule
+
+After bootstrap, default to execution rather than repeated process narration. Preserve mandatory gates, but batch same-family low-risk work under the Engineering Protocol speed policy. Ask the Product Owner to pull only at a meaningful checkpoint, before local or visual verification, or when the local baseline is required for the next action.
+
+Every response that requires the Product Owner to act must include the exact command, full repository file name/path, or navigable GitHub destination needed for that action. Explicitly state whether the desktop app must be opened for a visual check.
+
 ## Authority Order
 
 1. Repository `main` — implementation truth.
@@ -59,7 +65,7 @@ Prefer extension or consolidation over creation.
 
 ## Session Output Rule
 
-After bootstrap, communicate only material conflicts, blockers, required Product Owner decisions, or the active delivery result. Do not repeat established governance unless a repository conflict requires it.
+After bootstrap, communicate only material conflicts, blockers, required Product Owner decisions, required Product Owner actions, meaningful checkpoints, or the active delivery result. Do not repeat established governance unless a repository conflict requires it.
 
 ## Standing Principle
 
