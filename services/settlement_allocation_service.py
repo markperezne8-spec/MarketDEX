@@ -37,8 +37,15 @@ class SettlementAllocationService:
             raise SettlementAllocationNotReady("NOT READY: required allocation evidence is blank")
         if currency != "USD":
             raise SettlementAllocationNotReady("NOT READY: unsupported allocation currency")
-        if allocated_amount_minor is not None:
-            allocated_amount_minor = int(allocated_amount_minor)
+
+        normalized_sale_id = None if not self._required(linked_sale_id) else str(linked_sale_id).strip()
+        if allocated_amount_minor is None or not self._required(allocated_amount_minor):
+            normalized_amount = None
+        else:
+            try:
+                normalized_amount = int(allocated_amount_minor)
+            except (TypeError, ValueError) as exc:
+                raise SettlementAllocationNotReady("NOT READY: allocated amount evidence is invalid") from exc
 
         with self.database.transaction() as c:
             parent = self.repository.parent_by_id(c, settlement_evidence_id)
@@ -46,11 +53,11 @@ class SettlementAllocationService:
                 raise SettlementAllocationNotReady("NOT READY: settlement evidence parent is missing")
 
             status = "PENDING EVIDENCE"
-            if linked_sale_id is not None and str(linked_sale_id).strip() != "":
-                sale_marketplace = self.repository.sale_marketplace(c, linked_sale_id)
+            if normalized_sale_id is not None:
+                sale_marketplace = self.repository.sale_marketplace(c, normalized_sale_id)
                 if sale_marketplace is None or sale_marketplace != parent["marketplace"]:
                     status = "ALLOCATION EXCEPTION"
-                elif allocated_amount_minor is not None:
+                elif normalized_amount is not None:
                     status = "READY FOR CROSS-CHECK"
 
             return self.repository.append_line(
@@ -58,12 +65,12 @@ class SettlementAllocationService:
                 allocation_group_id=allocation_group_id,
                 allocation_line_id=allocation_line_id,
                 settlement_evidence_id=settlement_evidence_id,
-                linked_sale_id=linked_sale_id,
+                linked_sale_id=normalized_sale_id,
                 source_traceability=source_traceability,
                 evidence_date=evidence_date,
                 currency=currency,
                 component_type=component_type,
-                allocated_amount_minor=allocated_amount_minor,
+                allocated_amount_minor=normalized_amount,
                 notes=notes or "",
                 allocation_status=status,
                 created_event_id=created_event_id,
