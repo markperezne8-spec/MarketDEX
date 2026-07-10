@@ -65,7 +65,7 @@ def test_identical_replay_idempotent_contradiction_blocked_and_restart_reconstru
     path, _, service = ready_group(tmp_path)
     first = readiness(service); second = readiness(service)
     assert tuple(first) == tuple(second)
-    with pytest.raises(SettlementAllocationConflict): readiness(service, sale_id="OTHER")
+    with pytest.raises(SettlementAllocationConflict): readiness(service, recorded_at="2026-07-11")
     restarted = DatabaseManager(path); restarted.initialize()
     with restarted.read_connection() as c:
         row = SettlementAllocationService(restarted).repository.attribution_readiness_by_event(c, "READY-EVENT")
