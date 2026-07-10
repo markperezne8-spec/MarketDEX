@@ -52,6 +52,15 @@ class SettlementAllocationRepository:
                              lock_effective_date: str, locked_by_authority: str, lock_reason: str,
                              unlock_request_status: str, audit_preservation_result: str,
                              created_event_id: str, created_at: str) -> sqlite3.Row:
+        line = self.line_by_id(c, allocation_evidence_id)
+        if line is None:
+            raise SettlementAllocationConflict("Allocation evidence lock lifecycle verification failed")
+        cross_check = self.latest_cross_check_for_group(c, str(line["allocation_group_id"]))
+        lock_eligible = (cross_check is not None
+                         and cross_check["cross_check_status"] == "ALLOCATION CROSS-CHECKED"
+                         and int(cross_check["allocation_remainder_minor"]) == 0)
+        if evidence_lock_status == "LOCKED" and not lock_eligible:
+            raise SettlementAllocationConflict("Allocation evidence lock blocked: lifecycle is not LOCK ELIGIBLE")
         values = (allocation_evidence_id, evidence_lock_status, lock_effective_date, locked_by_authority,
                   lock_reason, unlock_request_status, audit_preservation_result, created_event_id, created_at)
         prior = self.lock_by_evidence_id(c, allocation_evidence_id)

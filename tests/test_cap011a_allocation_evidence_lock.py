@@ -7,13 +7,16 @@ from repositories.settlement_allocation_repository import SettlementAllocationCo
 from services.settlement_allocation_service import SettlementAllocationNotReady, SettlementAllocationService
 
 
-def service_with_active_revision(tmp_path):
+def service_with_active_revision(tmp_path, *, lock_eligible=True):
     path = tmp_path / "db.sqlite3"
     db = DatabaseManager(path)
     db.initialize()
     with db.transaction() as c:
         c.execute("""INSERT INTO settlement_allocation_evidence(allocation_group_id,allocation_line_id,settlement_evidence_id,linked_sale_id,source_traceability,evidence_date,currency,component_type,allocated_amount_minor,notes,allocation_status,created_event_id,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                   ("GROUP-1", "LINE-1", "EVIDENCE-1", None, "ROW-1", "2026-07-10", "USD", "SALE", 1000, "", "PENDING EVIDENCE", "ALLOC-EVENT", "2026-07-10"))
+        if lock_eligible:
+            c.execute("""INSERT INTO settlement_allocation_cross_checks(cross_check_id,allocation_group_id,settlement_evidence_id,allocation_group_total_minor,settlement_net_minor,allocation_remainder_minor,cross_check_status,created_event_id,created_at) VALUES (?,?,?,?,?,?,?,?,?)""",
+                      ("CC-1", "GROUP-1", "EVIDENCE-1", 1000, 1000, 0, "ALLOCATION CROSS-CHECKED", "CC-EVENT", "2026-07-10"))
     service = SettlementAllocationService(db)
     service.record_revision(allocation_evidence_id="LINE-1", revision_id="REV-1", current_revision_flag="Y", created_event_id="REV-EVENT", created_at="2026-07-10")
     return path, db, service
@@ -31,8 +34,15 @@ def test_build503_locked_contract_and_audit_preservation(tmp_path):
         assert audit["verification_result"] == "AUDIT PRESERVED — EDITS REQUIRE NEW REVISION"
 
 
+def test_build503_locked_authority_requires_build501_lock_eligible_lifecycle(tmp_path):
+    _, _, service = service_with_active_revision(tmp_path, lock_eligible=False)
+    with pytest.raises(SettlementAllocationConflict, match="LOCK ELIGIBLE"):
+        service.record_evidence_lock(allocation_evidence_id="LINE-1", lock_effective_date="2026-07-10",
+            locked_by_authority="Y", lock_reason="CURRENT EVIDENCE APPROVED", created_event_id="LOCK-EVENT", created_at="2026-07-10")
+
+
 def test_build503_unlocked_derivation(tmp_path):
-    _, _, service = service_with_active_revision(tmp_path)
+    _, _, service = service_with_active_revision(tmp_path, lock_eligible=False)
     result = service.record_evidence_lock(allocation_evidence_id="LINE-1", lock_effective_date="",
         locked_by_authority="", lock_reason="", created_event_id="LOCK-EVENT", created_at="2026-07-10")
     assert result["evidence_lock_status"] == "UNLOCKED"
