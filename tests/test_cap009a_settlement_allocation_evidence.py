@@ -35,17 +35,19 @@ def insert_sale_with_marketplace(c, sale_id, marketplace, suffix):
          "2026-07-10","2026-07-10"))
 
 
-def test_missing_parent_and_blank_required_evidence_fail_not_ready(tmp_path):
+def test_missing_parent_blank_required_and_invalid_amount_fail_not_ready(tmp_path):
     db = DatabaseManager(tmp_path / "db.sqlite3"); db.initialize()
     service = SettlementAllocationService(db)
     with pytest.raises(SettlementAllocationNotReady): service.record_evidence(**args())
+    with db.transaction() as c: parent(SettlementRepository(), c)
     with pytest.raises(SettlementAllocationNotReady): service.record_evidence(**args(source_traceability=""))
+    with pytest.raises(SettlementAllocationNotReady): service.record_evidence(**args(allocated_amount_minor="not-money"))
 
 
-def test_unknowns_remain_null_and_pending_then_reconstruct_after_restart(tmp_path):
+def test_unknowns_and_blank_unknowns_normalize_to_null_then_reconstruct_after_restart(tmp_path):
     path = tmp_path / "db.sqlite3"; db = DatabaseManager(path); db.initialize()
     with db.transaction() as c: parent(SettlementRepository(), c)
-    row = SettlementAllocationService(db).record_evidence(**args())
+    row = SettlementAllocationService(db).record_evidence(**args(linked_sale_id="  ", allocated_amount_minor=""))
     assert row["allocation_status"] == "PENDING EVIDENCE"
     assert row["linked_sale_id"] is None and row["allocated_amount_minor"] is None
     restarted = DatabaseManager(path); restarted.initialize()
@@ -53,6 +55,7 @@ def test_unknowns_remain_null_and_pending_then_reconstruct_after_restart(tmp_pat
         row = SettlementAllocationService(restarted).repository.line_by_id(c, "LINE-1")
         assert row["allocation_group_id"] == "GROUP-1"
         assert row["settlement_evidence_id"] == "EVIDENCE-1"
+        assert row["linked_sale_id"] is None and row["allocated_amount_minor"] is None
 
 
 def test_zero_amount_is_numeric_not_blank(tmp_path):
