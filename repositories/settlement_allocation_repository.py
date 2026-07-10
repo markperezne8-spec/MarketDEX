@@ -45,6 +45,28 @@ class SettlementAllocationRepository:
             raise SettlementAllocationConflict("Allocation revision persistence verification failed")
         return row
 
+    def lock_by_evidence_id(self, c: sqlite3.Connection, allocation_evidence_id: str) -> Optional[sqlite3.Row]:
+        return c.execute("SELECT * FROM settlement_allocation_locks WHERE allocation_evidence_id=?", (allocation_evidence_id,)).fetchone()
+
+    def append_evidence_lock(self, c: sqlite3.Connection, *, allocation_evidence_id: str, evidence_lock_status: str,
+                             lock_effective_date: str, locked_by_authority: str, lock_reason: str,
+                             unlock_request_status: str, audit_preservation_result: str,
+                             created_event_id: str, created_at: str) -> sqlite3.Row:
+        values = (allocation_evidence_id, evidence_lock_status, lock_effective_date, locked_by_authority,
+                  lock_reason, unlock_request_status, audit_preservation_result, created_event_id, created_at)
+        prior = self.lock_by_evidence_id(c, allocation_evidence_id)
+        columns = ("allocation_evidence_id", "evidence_lock_status", "lock_effective_date", "locked_by_authority",
+                   "lock_reason", "unlock_request_status", "audit_preservation_result", "created_event_id", "created_at")
+        if prior is not None:
+            if tuple(prior[column] for column in columns) != values:
+                raise SettlementAllocationConflict("Contradictory allocation evidence lock replay blocked")
+            return prior
+        c.execute("""INSERT INTO settlement_allocation_locks(allocation_evidence_id,evidence_lock_status,lock_effective_date,locked_by_authority,lock_reason,unlock_request_status,audit_preservation_result,created_event_id,created_at) VALUES (?,?,?,?,?,?,?,?,?)""", values)
+        row = self.lock_by_evidence_id(c, allocation_evidence_id)
+        if row is None:
+            raise SettlementAllocationConflict("Allocation evidence lock persistence verification failed")
+        return row
+
     def cross_check_by_id(self, c: sqlite3.Connection, cross_check_id: str) -> Optional[sqlite3.Row]:
         return c.execute("SELECT * FROM settlement_allocation_cross_checks WHERE cross_check_id=?", (cross_check_id,)).fetchone()
 
