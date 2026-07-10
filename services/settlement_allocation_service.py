@@ -124,6 +124,16 @@ class SettlementAllocationService:
             row = self.repository.lock_by_evidence_id(c, allocation_evidence_id)
             if row is None:
                 raise SettlementAllocationNotReady("NO LOCK AUTHORITY — FAIL CLOSED: allocation evidence lock is missing")
+            if row["evidence_lock_status"] == "LOCKED":
+                line = self.repository.line_by_id(c, allocation_evidence_id)
+                if line is None:
+                    raise SettlementAllocationNotReady("NO LOCK AUTHORITY — FAIL CLOSED: allocation evidence is missing")
+                current = self.repository.current_revisions_for_evidence(c, allocation_evidence_id)
+                cross_check = self.repository.latest_cross_check_for_group(c, str(line["allocation_group_id"]))
+                if len(current) != 1:
+                    raise SettlementAllocationNotReady("NO LOCK AUTHORITY — FAIL CLOSED: single active revision authority is missing")
+                if cross_check is None or cross_check["cross_check_status"] != "ALLOCATION CROSS-CHECKED" or int(cross_check["allocation_remainder_minor"]) != 0:
+                    raise SettlementAllocationNotReady("NO LOCK AUTHORITY — FAIL CLOSED: allocation group is not currently LOCK ELIGIBLE")
             return dict(row)
 
     def record_evidence(self, *, allocation_group_id: str, allocation_line_id: str, settlement_evidence_id: str,
@@ -219,9 +229,7 @@ class SettlementAllocationService:
             if sale_marketplace is None or sale_marketplace != parent["marketplace"]:
                 raise SettlementAllocationNotReady("NOT READY: sale linkage authority is inconsistent")
             cross_check = self.repository.latest_cross_check_for_group(c, allocation_group_id)
-            if cross_check is None or cross_check["settlement_evidence_id"] != parent_id:
-                raise SettlementAllocationNotReady("NOT READY: matching allocation cross-check authority is missing")
-            if cross_check["cross_check_status"] != "ALLOCATION CROSS-CHECKED" or int(cross_check["allocation_remainder_minor"]) != 0:
-                raise SettlementAllocationNotReady("NOT READY: allocation group is not cross-checked to zero remainder")
+            if cross_check is None or cross_check["cross_check_status"] != "ALLOCATION CROSS-CHECKED" or int(cross_check["allocation_remainder_minor"]) != 0:
+                raise SettlementAllocationNotReady("NOT READY: allocation group cross-check authority is incomplete")
             return self.repository.append_attribution_readiness(c, event_id=readiness_event_id,
                 sale_id=sale_id, allocation_group_id=allocation_group_id, recorded_at=recorded_at)
