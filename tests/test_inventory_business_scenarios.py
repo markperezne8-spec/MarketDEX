@@ -11,7 +11,7 @@ SCENARIOS = [
     ("Booster pack", 425, 600, 12.75, 73, 15, 11),
     ("Overpaid chase card", 8000, 6999, 13.25, 500, 100, -2528),
     ("Bulk energy lot", 300, 1200, 12.75, 500, 100, 147),
-    ("Free promotional card", 0, 499, 12.75, 73, 15, 348),
+    ("Free promotional card", 0, 499, 12.75, 73, 15, 347),
     ("High-fee marketplace item", 4500, 7000, 18.0, 600, 100, 540),
 ]
 
@@ -25,7 +25,7 @@ def test_realistic_inventory_profit_scenarios(name, cost, sale, fee, shipping, p
 
 def test_zero_cost_inventory_has_defined_roi_behavior():
     result = profit_decision(0, 499, 12.75, 73, 15)
-    assert result["net_profit_minor"] == 348
+    assert result["net_profit_minor"] == 347
     assert result["roi_percent"] == 0.0
 
 
