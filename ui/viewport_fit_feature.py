@@ -1,6 +1,9 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QGroupBox, QLabel, QPushButton, QScrollArea, QSizePolicy, QTabWidget, QWidget, QVBoxLayout
 
+from ui.workspace_contract import WorkspaceDefinition
+from ui.workspace_registry import WorkspaceRegistry
+
 
 LISTING_WORKFLOW_WIDGETS = (
     'inventory_listing_workspace',
@@ -18,6 +21,12 @@ PRICING_WIDGETS = (
     'inventory_sale_readiness',
     'inventory_profit_summary',
     'inventory_price_guidance',
+)
+
+CANONICAL_WORKSPACES = (
+    ('inventory', 'Inventory', 10),
+    ('pricing', 'Pricing', 20),
+    ('listing-workflow', 'Listing Workflow', 30),
 )
 
 
@@ -54,7 +63,15 @@ def _compact_inventory_workspace(window):
     window.inventory_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
 
-def _install_inventory_pricing_handoff(window, tabs):
+def _activate_workspace(window, workspace_id):
+    try:
+        index = window.marketdex_workspace_indexes[workspace_id]
+    except KeyError as exc:
+        raise KeyError(f'unknown shell workspace: {workspace_id}') from exc
+    window.marketdex_workspace_tabs.setCurrentIndex(index)
+
+
+def _install_inventory_pricing_handoff(window):
     panel_layout = window.inventory_panel.layout()
     handoff = QGroupBox('🚀 NEXT: PRICING')
     handoff_layout = QVBoxLayout(handoff)
@@ -62,7 +79,7 @@ def _install_inventory_pricing_handoff(window, tabs):
     guidance.setWordWrap(True)
     continue_button = QPushButton('Continue to Pricing →')
     continue_button.setEnabled(False)
-    continue_button.clicked.connect(lambda: tabs.setCurrentIndex(1))
+    continue_button.clicked.connect(lambda: _activate_workspace(window, 'pricing'))
     handoff_layout.addWidget(guidance)
     handoff_layout.addWidget(continue_button)
     table_index = panel_layout.indexOf(window.inventory_table)
@@ -105,6 +122,7 @@ def _install_listing_workflow_handoff(window, pricing_layout):
     guidance.setWordWrap(True)
     continue_button = QPushButton('Continue to Listing Workflow →')
     continue_button.setEnabled(False)
+    continue_button.clicked.connect(lambda: _activate_workspace(window, 'listing-workflow'))
     handoff_layout.addWidget(guidance)
     handoff_layout.addWidget(continue_button)
     pricing_layout.addWidget(handoff)
@@ -113,7 +131,23 @@ def _install_listing_workflow_handoff(window, pricing_layout):
     window.inventory_continue_to_listing_workflow = continue_button
 
 
-def install_viewport_fit_feature(window):
+def _register_canonical_workspaces(workspace_registry, workspace_pages):
+    for workspace_id, title, order in CANONICAL_WORKSPACES:
+        page = workspace_pages[workspace_id]
+        workspace_registry.register(
+            WorkspaceDefinition(
+                workspace_id=workspace_id,
+                title=title,
+                factory=lambda page=page: page,
+                order=order,
+            )
+        )
+
+
+def install_viewport_fit_feature(window, workspace_registry=None):
+    if workspace_registry is None:
+        workspace_registry = WorkspaceRegistry()
+
     content = window.takeCentralWidget()
     panel_layout = window.inventory_panel.layout()
     listing_content = QWidget()
@@ -123,6 +157,7 @@ def install_viewport_fit_feature(window):
         panel_layout.removeWidget(widget)
         listing_layout.addWidget(widget)
     listing_layout.addStretch(1)
+
     pricing_content = QWidget()
     pricing_layout = QVBoxLayout(pricing_content)
     pricing_title = QLabel('Pricing')
@@ -137,17 +172,30 @@ def install_viewport_fit_feature(window):
             pricing_layout.addWidget(widget)
     pricing_layout.addStretch(1)
     _compact_inventory_workspace(window)
+
     tabs = QTabWidget(window)
     inventory_page, inventory_scroll = _scroll_page(content, tabs)
     pricing_page, pricing_scroll = _scroll_page(pricing_content, tabs)
     listing_page, listing_scroll = _scroll_page(listing_content, tabs)
-    tabs.addTab(inventory_page, 'Inventory')
-    tabs.addTab(pricing_page, 'Pricing')
-    tabs.addTab(listing_page, 'Listing Workflow')
-    window.inventory_continue_to_listing_workflow.clicked.connect(lambda: tabs.setCurrentIndex(2))
-    _install_inventory_pricing_handoff(window, tabs)
+    workspace_pages = {
+        'inventory': inventory_page,
+        'pricing': pricing_page,
+        'listing-workflow': listing_page,
+    }
+    _register_canonical_workspaces(workspace_registry, workspace_pages)
+
+    workspace_indexes = {}
+    for workspace in workspace_registry.all():
+        page = workspace.factory()
+        if not isinstance(page, QWidget):
+            raise TypeError(f'workspace factory must return QWidget: {workspace.workspace_id}')
+        workspace_indexes[workspace.workspace_id] = tabs.addTab(page, workspace.title)
+
     window.setCentralWidget(tabs)
+    window.workspace_registry = workspace_registry
     window.marketdex_workspace_tabs = tabs
+    window.marketdex_workspace_indexes = workspace_indexes
     window.marketdex_workspace_scroll = inventory_scroll
     window.marketdex_pricing_workspace_scroll = pricing_scroll
     window.marketdex_listing_workflow_scroll = listing_scroll
+    _install_inventory_pricing_handoff(window)
