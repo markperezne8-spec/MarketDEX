@@ -72,6 +72,27 @@ jobs:
       - run: pip install -q -r requirements.txt pytest
       - run: pytest -q --tb=short tests/test_listing_plan_repository.py tests/test_operator_sale_completion.py tests/test_listing_workspace_ci_note.py
 
+  mission-control-visual-slice:
+    name: Mission Control Visual Slice
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: sudo apt-get update && sudo apt-get install -y libegl1
+      - run: pip install -q -r requirements.txt pytest
+      - name: Validate Mission Control design-system migration
+        run: >-
+          pytest -q --tb=short
+          tests/test_mission_control_design_system_migration.py
+          tests/test_design_system_foundation.py
+          tests/test_qt_design_system_primitives.py
+          tests/test_mission_control_integration.py
+      - name: Compile Mission Control presentation layer
+        run: python -m py_compile ui/main_window.py ui/design_system/tokens.py ui/design_system/qt_theme.py ui/design_system/widgets.py
+
   desktop-build:
     name: Desktop Build
     runs-on: windows-latest
