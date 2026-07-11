@@ -82,7 +82,7 @@ jobs:
           python-version: '3.12'
           cache: pip
       - run: pip install -q -r requirements-build.txt pytest
-      - run: pytest -q --tb=short tests/test_workspace_navigation_contract.py tests/test_maximized_desktop_launch_contract.py tests/test_packaged_launcher_contract.py tests/test_application_shell_contract.py tests/test_installer_contract.py
+      - run: pytest -q --tb=short tests/test_workspace_navigation_contract.py tests/test_maximized_desktop_launch_contract.py tests/test_packaged_launcher_contract.py tests/test_application_shell_contract.py tests/test_installer_contract.py tests/test_wheel_safe_value_controls.py
       - run: python -m py_compile launcher.py
       - run: pyinstaller --noconfirm --clean MarketDEX.spec
       - name: Verify packaged runtime
