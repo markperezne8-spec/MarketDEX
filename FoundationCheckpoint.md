@@ -1,102 +1,77 @@
-# MarketDEX Foundation Checkpoint 052
+# MarketDEX Foundation Checkpoint 053
 
-**Status:** 🏁 Checkpoint Complete — Controlled Financial Truth Cross-Check Gate
+**Status:** 🏗️ Active — Desktop Architecture Modernization and Market Intelligence Foundation
 
 ## Active Phase
-📊 ACTIVE — LibreOffice Workbook OS through Spreadsheet Design.
 
-🖥️ DORMANT — Desktop Application Foundation remains preserved.
+🖥️ **ACTIVE** — Permanent desktop application architecture, shell composition, market intelligence, and release gates.
+
+📊 **PRESERVED** — LibreOffice workbook artifacts remain business-specification and historical evidence authority where applicable.
 
 ## Permanent Direction
+
 > **Enter once. Understand everywhere.**
 
+MarketDEX is an offline-first desktop operating system for collectors and sellers. It must remain feature-rich underneath and decision-focused on the surface.
+
+## Current Product Rule
+
+> **Decisions first. Evidence second. Raw metrics on demand.**
+
+The primary user experience must show what changed, why it matters, confidence, freshness, and the safest next action without forcing the user to interpret every available metric.
+
+## Current Repository Authority
+
+1. `main` and merged commits are implementation authority.
+2. Accepted workbook artifacts are business-specification and traceability authority.
+3. GitHub Actions and permanent regression tests are verification authority.
+4. `FoundationCheckpoint.md` is current-state and exact-resume authority.
+5. `CheckpointManifest.md` is permanent checkpoint-history authority.
+6. Pull requests #164–#166 are proposed stacked changes until merged; they do not override `main` authority.
+
+## Current Architecture Progress
+
+- PR #163 merged: canonical workspace contract and registry foundation.
+- PR #164 draft: professional `WorkspaceHost`, canonical workspace identities, and stable navigation.
+- PR #165 draft: canonical `ApplicationComposition`, thin launcher, stable feature IDs, and dependency-safe installation.
+- PR #166 draft: Business/Collector modes, marketplace registry, normalized market observations, attention signals, visualization catalog, sealed-vs-open calculator, and Google Trends-compatible provider boundary.
+- `docs/governance/Architecture_Gates.md` defines mandatory authority, architecture, behavior, data, UX, integration, packaging, and release gates.
+- `docs/checkpoints/EC-005_Shell_Composition_Market_Intelligence.md` records detailed evidence for the current modernization sequence.
+
+## Mandatory Gate Status
+
+| Gate | Current status |
+|---|---|
+| Authority | PASS — single launcher, shell, workspace registry, and composition path preserved |
+| Architecture | PASS — explicit workspace, feature, marketplace, mode, observation, and chart contracts |
+| Behavior | PASS on focused tests; final stacked-head CI still required |
+| Data | No market-intelligence schema migration yet; migration gate required before persistence |
+| UX | Decision-first design contract established; rendered Collection Overview pending |
+| Integration | Provider boundaries established; live adapters deferred |
+| Packaging | Previously passed; final-head executable and installer revalidation required |
+| Release | BLOCKED until PRs #164–#166 are green, reconciled, and merged in order |
+
 ## Frictionless Working Contract
+
 `CAN JARVIS SAFELY DO THIS INSTEAD? → YES → JARVIS DOES IT → ZERO FAKE WORK FOR MARK`
 
-Communication is short, direct, emoji-forward, moderately narrow, and action-focused. Stack several workflow steps ahead when useful. Every Mark repository action includes exact copy-paste instructions. Visual review identifies worksheet, exact row range, section heading, and what to verify.
-
-Checkpoint headings use `🏁`. Milestones use `⚡🚀✨ MILESTONE`.
-
-Repository rule: remote checkpoint/progress synchronization occurs only after the accepted Calc baseline is confirmed remote.
-
-## Permanent Surgical Hotfix Workflow
-Small regressions must remain small.
-
-`REPRODUCE → ROOT CAUSE → CLEAN BRANCH → MINIMUM FIX → AUTHORITATIVE TEST → CI DEPENDENCY AUDIT → FIVE GATES → MERGE → PULL NOW → OPERATOR ACCEPTANCE`
-
-For a surgical hotfix, Jarvis audits the complete runtime → tests → CI dependency path before declaring the repair nearly done. Top-level behavior is protected by an authoritative regression test. CI gates use stable explicit test targets or stable markers instead of fragile broad keyword filters when zero-test collection can create false gate failures.
-
-If branch history, changed-file scope, or runtime mutations become unexpectedly large or unrelated, stop. Rebuild the hotfix cleanly from current `main` and remove leaked unrelated changes before merge.
-
-Permanent anti-patterns: documentation floods during a small regression; dozens of repository writes for one fix; contaminated branches; reacting to CI one layer at a time without auditing the whole validation chain; merging before required gates are green; telling Mark to pull before the merged commit is on `main`.
-
-Status language is authoritative: `ZERO ACTION FOR MARK` when no operator action is required; `PULL NOW` only when pull authority is real.
-
-## Current Approved Calc Baseline
-`artifacts/calc/MarketDEX_Calc_V0_Build480_Controlled_Financial_Truth_Cross_Check_Gate.ods`
-
-Remote GitHub blob SHA:
-`c0744a2068b0f2b9cff9cc74f8efb0ac7e593113`
-
-Build 480 is accepted and remotely verified.
-
-## Builds 361–480 — Authoritative SOLD State to Financial Truth
-Builds 361–380 establish authoritative sale value and revenue evidence.
-
-Builds 381–400 establish marketplace fee evidence and fee authority.
-
-Builds 401–420 establish shipping and packaging cost evidence and controlled sale cost authority.
-
-Builds 421–440 establish inventory cost basis evidence and authoritative cost basis cross-check.
-
-Builds 441–460 derive net profit from verified financial components.
-
-Builds 461–479 establish the financial truth cross-check.
-
-Build 480 establishes the Controlled Financial Truth Cross-Check Gate.
-
-## Accepted Build 480 Proof
-For `INV-000001` / `SALE-000001`:
-- Cost Basis Result = `COST BASIS VERIFIED`;
-- Net Profit = `32.74`;
-- Profit Status = `PROFIT`;
-- Financial Truth = `VERIFIED`;
-- Total Deductions = `69.26`;
-- Financial Truth Result = `FINANCIAL TRUTH VERIFIED`.
-
-Mark visually verified Inventory rows 935–957 in LibreOffice Calc. Package integrity, OpenFormula hygiene, LibreOffice headless evaluation, and Err:510 scan passed before visual acceptance.
-
-## Permanent Financial Truth Boundary
-`SOLD STATE ≠ REVENUE TRUTH`
-
-`SALE CLAIM ≠ AUTHORITATIVE REVENUE`
-
-`FEE CLAIM ≠ AUTHORITATIVE MARKETPLACE FEE`
-
-`COST CLAIM ≠ AUTHORITATIVE FULFILLMENT COST`
-
-`INVENTORY COST ≠ VERIFIED COST BASIS`
-
-`FINANCIAL COMPONENTS ≠ FINANCIAL TRUTH`
-
-Authoritative financial truth requires verified revenue, verified marketplace fee, verified fulfillment cost, and verified cost basis. Net Profit = Gross Revenue − Marketplace Fee − Fulfillment Cost − Cost Basis.
-
-Build 480 creates no cash settlement authority and no tax authority.
-
-## Copilot Status
-`COPILOT ACTION = INDEPENDENT CI / NAVIGATION AUDIT USED`
-
-Copilot independently confirmed the missing pytest CI dependency, identified broad `pytest -k` filters as a zero-test collection risk, and verified that `tests/test_workspace_navigation_contract.py` protects direct Pricing and Listing Workflow tab access. Repository evidence remains final merge authority.
-
-## Milestone Progress
-**Milestone 6:** Authoritative SOLD State to Financial Truth
-
-**Progress:** `[██████████] 100%`
-
-Completed: authoritative revenue; marketplace fee evidence; fulfillment cost evidence; inventory cost basis; net profit derivation; financial truth cross-check; Build 480 acceptance and remote verification.
+Communication stays short, direct, understandable, and action-focused. Progress updates include a labeled progress bar. Mark is asked only for genuine product decisions, credentials, destructive operations, or merge authorization.
 
 ## Exact Resume Point
-**Spreadsheet Design — Milestone 7 begins from verified financial truth. First business responsibility: distinguish derived profit from actual marketplace settlement and establish settlement evidence intake without creating tax authority. Desktop application implementation remains dormant.**
+
+1. Complete final CI for PR #166.
+2. Reconcile stacked PRs #164, #165, and #166 in order.
+3. Merge only after required gates are green and final heads are verified.
+4. Build the Collection Overview Workspace and Business/Collector Mode toggle.
+5. Before storing market history, design one canonical market-observation schema with backup, migration, restart, and rollback gates.
+6. Add marketplace adapters incrementally, beginning with manual/CSV evidence before live network integrations.
+
+## MarketDEX Progress
+
+**Foundation modernization:** `[█████████░] 90%`
+
+The shell, composition, and market-intelligence contracts are established. Remaining foundation work is final stacked validation, merge reconciliation, persistence design, and the first rendered Collection Overview.
 
 ## Core Operating Principle
+
 > **Enter once. Understand everywhere.**
