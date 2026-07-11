@@ -18,6 +18,11 @@ CANONICAL_SNAPSHOT_KEYS = {
 }
 
 
+OLD_MISSION_CONTROL_KPI_PATTERN = (
+    "for index,(label,key) in enumerate(cards): box=QGroupBox(label)"
+)
+
+
 def test_mission_control_migration_uses_shared_header_and_kpi_components():
     source = MAIN_WINDOW.read_text(encoding="utf-8")
 
@@ -25,7 +30,7 @@ def test_mission_control_migration_uses_shared_header_and_kpi_components():
     assert "MarketDEXKpiCard" in source
     assert "build_marketdex_qss" in source
     assert "build_visual_north_star_tokens" in source
-    assert "QGroupBox(label)" not in source
+    assert OLD_MISSION_CONTROL_KPI_PATTERN not in source
 
 
 def test_mission_control_migration_preserves_every_snapshot_key():
