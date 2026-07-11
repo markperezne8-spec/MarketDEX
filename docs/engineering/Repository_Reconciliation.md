@@ -17,7 +17,7 @@ The root launcher is permanent runtime authority. A nested or competing launcher
 
 ## Persistence Authority
 
-`core/schema.py` remains the single SQLite schema authority. CAP-008A introduced schema version 18 and the append-only `settlement_evidence` parent grain. CAP-009A advances the controlled delivery branch to schema version 19 with append-only `settlement_allocation_evidence` intake persistence against that canonical parent.
+`core/schema.py` remains the single SQLite schema authority. Settlement evidence, canonical linkage, allocation evidence, cross-checks, revisions, and locks extend that single authority through controlled schema versions.
 
 Existing marketplace allocation and publication lifecycle tables remain inventory/publication authorities. They are not reclassified as settlement allocation evidence.
 
@@ -33,7 +33,7 @@ The permanent CI topology contains five gates:
 - Desktop Build
 - Core Tests
 
-Desktop Build compiles root `launcher.py` and runs workspace navigation and maximized-launch contracts. Core Tests verify runtime database authority and now directly gate CAP-008A Settlement Evidence, CAP-009A Build 498 Settlement Allocation Evidence, and M39A settlement regression behavior.
+Desktop Build compiles root `launcher.py` and runs workspace navigation and maximized-launch contracts. Core Tests verify runtime database authority and directly gate CAP-008 settlement evidence/linkage/verification authority, CAP-009 settlement allocation authority, CAP-010 revisions, CAP-011 locks, and M39A settlement regression behavior.
 
 ## Capability Evidence Summary
 
@@ -41,19 +41,19 @@ Desktop Build compiles root `launcher.py` and runs workspace navigation and maxi
 
 Inventory has service, application service, repository, schema, UI feature, and focused CI evidence. Pricing/profit guidance and the listing-to-sale-completion workflow are integrated into the root launcher and have focused CI gates. Runtime database authority, audit/history controls, and the desktop shell are also directly protected.
 
+CAP-008 through CAP-011 now preserve the workbook settlement and settlement-allocation authority sequence through Builds 481-503, plus the Build 504 fail-closed authority audit repairs. CAP-008A established sale-independent Settlement Evidence. CAP-008B established canonical linkage. CAP-008C repaired Build 484 pending-allocation semantics. CAP-008D delivered the Builds 487-497 read-only settlement verification authority chain. CAP-009 through CAP-011 preserve allocation evidence, cross-check, readiness, lifecycle, revision, lock, and audit authority.
+
 ### Existing work that must be extended, not rebuilt
 
-Mission Control/dashboard code exists in multiple repository surfaces, including root services and `app/` UI/service components. Product Registry service logic and product-aware lifecycle logic exist. Settlement service/repository and settlement persistence exist. Marketplace allocation and publication lifecycle infrastructure also exist.
+Mission Control/dashboard code exists in multiple repository surfaces, including root services and `app/` UI/service components. Product Registry service logic and product-aware lifecycle logic exist. Marketplace allocation and publication lifecycle infrastructure also exist.
 
-CAP-008A established a sale-independent Settlement Evidence parent. CAP-009A extends that authority with a distinct Build 498 settlement-allocation evidence intake repository/service/schema slice. No second allocation architecture was created; marketplace inventory allocation remains separate and preserved.
+### Remaining repository-backed capability gaps
 
-### Remaining workbook-to-desktop authority gap
-
-The accepted workbook evolved settlement authority through Builds 481-497 and settlement allocation authority through Builds 498-503. CAP-009A addresses Build 498 intake persistence and fail-closed status derivation. Build 499 allocation group cross-check/remainder, Build 500 sale-level attribution readiness, Build 502 evidence revision/supersession, and Build 503 lock/audit preservation remain incomplete.
+The Capability Matrix identifies Mission Control as `Partial`, Product Registry as `Partial`, Collection as `Missing`, and Reports as `Missing`. Each requires fresh authority and permanent-runtime reconciliation before implementation. No capability may be selected from roadmap memory alone.
 
 ## Reconciliation Result
 
-CAP-009 remains `Partial`. The exact next missing vertical slice after CAP-009A merge verification is Build 499 Allocation Group Cross-Check and Allocation Remainder authority, extending the canonical `settlement_allocation_evidence` grain. Build 500 remains a later controlled boundary.
+CAP-008 / Builds 481-497 parity is `Complete` after PR #148. The next controlled action is to reconcile the remaining `Partial` and `Missing` capability candidates and select the first proven gap through the mandatory pre-build classification gate.
 
 ## Known Reconciliation Debt
 
