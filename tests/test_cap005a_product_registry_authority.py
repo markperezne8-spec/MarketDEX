@@ -2,7 +2,7 @@ import sqlite3
 
 import pytest
 
-from core.database_manager import DatabaseManager
+from core.database_manager import DatabaseManager, RUNTIME_SCHEMA_VERSION
 from core.schema import SCHEMA_VERSION
 from services.product_registry_service import ProductRegistryService
 
@@ -17,7 +17,8 @@ def test_product_registry_tables_are_owned_by_canonical_schema(tmp_path):
         version = connection.execute('SELECT schema_version FROM schema_metadata ORDER BY rowid DESC LIMIT 1').fetchone()['schema_version']
 
     assert SCHEMA_VERSION == 24
-    assert version == 24
+    assert RUNTIME_SCHEMA_VERSION == 25
+    assert version == RUNTIME_SCHEMA_VERSION
     assert {'products', 'product_aliases', 'product_registration_history', 'product_alias_history'} <= tables
 
 
