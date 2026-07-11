@@ -10,9 +10,10 @@ def test_architecture_gate_framework_is_repository_authority():
         'Architecture gate',
         'Terminology compatibility gate',
         'Visual identity gate',
+        'Design-system gate',
         'Behavior gate',
         'Data gate',
-        'UX gate',
+        'UX and accessibility gate',
         'Integration gate',
         'Platform compatibility gate',
         'AI safety gate',
@@ -24,8 +25,10 @@ def test_architecture_gate_framework_is_repository_authority():
     assert 'Every material pull request must record' in text
     assert 'No material approved idea may exist only in chat memory' in text
     assert 'No new user-facing top-level name' in text
-    assert 'No major UI delivery that ignores the Visual North Star' in text
+    assert 'No major UI delivery that ignores `docs/design/VISUAL_NORTH_STAR.md`' in text
     assert 'No replacement, deletion, redesign, recoloring' in text
+    assert 'No new production page built primarily from one-off colors' in text
+    assert 'No gamification that pressures unnecessary transactions' in text
     assert 'No second launcher, shell, database authority' in text
     assert 'No active mobile or web application tree' in text
     assert 'No direct AI mutation of SQLite' in text
@@ -109,12 +112,14 @@ def test_visual_north_star_and_mascot_standard_is_permanent_authority():
 
     for required in (
         'Permanent Product Requirement',
+        'marketdex_visual_north_star_v1.png',
         'MarketDEX_Mission_Control_Visual_North_Star.png',
         'MarketDEX_Official_Mascot.png',
         'permanent MarketDEX brand element',
         'No release may silently omit the mascot',
+        'Gamification',
         'shared design system',
-        'packaged executable and installer builds',
+        'Packaged executable and installer builds contain required assets',
     ):
         assert required in text
 
@@ -203,3 +208,23 @@ def test_ec007_records_visual_identity_and_mascot_lock():
     assert 'exact approved asset identities' in text
     assert 'Visual identity gate' in text
     assert 'Exact resume point' in text
+
+
+def test_ec008_records_active_gamified_visual_direction_and_foundation():
+    text = Path(
+        'docs/checkpoints/EC-008_Gamified_Visual_North_Star_Design_System.md'
+    ).read_text(encoding='utf-8')
+
+    for required in (
+        'gamified MarketDEX dashboard concept',
+        'marketdex_visual_north_star_v1.png',
+        'MarketDEX_Official_Mascot.png',
+        'trainer level',
+        'daily quests or objectives',
+        'Semantic token implementation',
+        'Component contracts',
+        'Active v1 Binary Asset',
+        'Current UI and Component Audit',
+        'Exact resume point',
+    ):
+        assert required in text
