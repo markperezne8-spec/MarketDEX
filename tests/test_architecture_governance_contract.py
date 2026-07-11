@@ -9,6 +9,7 @@ def test_architecture_gate_framework_is_repository_authority():
         'Authority gate',
         'Architecture gate',
         'Terminology compatibility gate',
+        'Visual identity gate',
         'Behavior gate',
         'Data gate',
         'UX gate',
@@ -23,6 +24,8 @@ def test_architecture_gate_framework_is_repository_authority():
     assert 'Every material pull request must record' in text
     assert 'No material approved idea may exist only in chat memory' in text
     assert 'No new user-facing top-level name' in text
+    assert 'No major UI delivery that ignores the Visual North Star' in text
+    assert 'No replacement, deletion, redesign, recoloring' in text
     assert 'No second launcher, shell, database authority' in text
     assert 'No active mobile or web application tree' in text
     assert 'No direct AI mutation of SQLite' in text
@@ -99,6 +102,23 @@ def test_canonical_product_terminology_resolves_known_conflicts():
     assert 'controlled compatibility migration' in text
 
 
+def test_visual_north_star_and_mascot_standard_is_permanent_authority():
+    text = Path(
+        'docs/governance/Visual_North_Star_and_Mascot_Standard.md'
+    ).read_text(encoding='utf-8')
+
+    for required in (
+        'Permanent Product Requirement',
+        'MarketDEX_Mission_Control_Visual_North_Star.png',
+        'MarketDEX_Official_Mascot.png',
+        'permanent MarketDEX brand element',
+        'No release may silently omit the mascot',
+        'shared design system',
+        'packaged executable and installer builds',
+    ):
+        assert required in text
+
+
 def test_modular_platform_blueprint_preserves_desktop_and_future_boundaries():
     text = Path(
         'docs/Architecture/Modular_Collectibles_Platform_Blueprint.md'
@@ -170,4 +190,16 @@ def test_ec006_records_vision_continuity_naming_and_deferred_fix():
     assert 'Modular_Collectibles_Platform_Blueprint.md' in text
     assert 'Current_to_Target_Module_Map.md' in text
     assert 'Listing gate remains failing' in text
+    assert 'Exact resume point' in text
+
+
+def test_ec007_records_visual_identity_and_mascot_lock():
+    text = Path(
+        'docs/checkpoints/EC-007_Visual_North_Star_Mascot_Lock.md'
+    ).read_text(encoding='utf-8')
+
+    assert 'Visual North Star' in text
+    assert 'MarketDEX_Official_Mascot.png' in text
+    assert 'exact approved asset identities' in text
+    assert 'Visual identity gate' in text
     assert 'Exact resume point' in text
