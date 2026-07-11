@@ -58,7 +58,7 @@ jobs:
           cache: pip
       - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
-      - run: pytest -q --tb=short tests/test_inventory_profit_feature.py tests/test_inventory_price_guidance_feature.py
+      - run: pytest -q --tb=short tests/test_inventory_profit_feature.py tests/test_inventory_price_guidance_feature.py tests/test_inventory_business_scenarios.py
 
   listing:
     name: Listing
