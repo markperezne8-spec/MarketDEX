@@ -10,10 +10,10 @@ Trace authoritative workbook specification sources to desktop implementation com
 | REQ-PROD-001 | Product Registry | Product Registry Domain / Service | Planned registry tests | Planned |
 | REQ-MIS-001 | Mission Control | Dashboard UI / Query Services | Planned dashboard regression tests | Planned |
 | REQ-AUD-001 | Audit Trail | Audit Domain / Service / Repository | Planned append-preservation tests | Planned |
-| REQ-SET-001 | Settlement Evidence Intake; Settlement Linkage Rules | `settlement_evidence`; `SettlementRepository`; settlement services | CAP-008A parent-grain contract tests and M39A regression tests in Core Tests CI | In Progress |
+| REQ-SET-001 | Settlement Evidence Intake; Settlement Linkage Rules; Builds 481-497 | `settlement_evidence`; `settlement_evidence_linkage`; `SettlementRepository`; settlement services and read-only verification authority derivation | CAP-008A parent-grain, CAP-008B linkage, CAP-008C Build 484 pending-allocation, CAP-008D Builds 487-497 verification authority-chain, and M39A regression tests in Core Tests CI | Verified |
 | REQ-ALL-001 | Settlement Allocation Evidence; Builds 498-500 | `settlement_allocation_evidence`; `settlement_allocation_cross_checks`; immutable `audit_events` readiness evidence; `SettlementAllocationRepository`; `SettlementAllocationService` | CAP-009A Build 498 intake, CAP-009B Build 499 cross-check/remainder, and CAP-009C Build 500 sale-level Settlement Attribution Readiness contract tests in Core Tests CI | Verified |
 | REQ-ALL-002 | Allocation Evidence Revisions; Build 502 | `settlement_allocation_revisions`; immutable revision triggers; `SettlementAllocationRepository`; `SettlementAllocationService` | CAP-010A Build 502 revision lineage, status, conflict, fail-closed, replay, immutability, and restart tests in Core Tests CI | Verified |
-| REQ-ALL-003 | Allocation Evidence Locks | Allocation Lock Service | Planned lock and preservation tests | Planned |
+| REQ-ALL-003 | Allocation Evidence Locks; Build 503 plus Build 504 authority audit | `settlement_allocation_locks`; `SettlementAllocationRepository`; `SettlementAllocationService`; immutable `audit_events` | CAP-011A lock, preservation, lifecycle, replay, immutability, restart, stale-cross-check, and active-revision conflict regressions in Core Tests CI | Verified |
 
 ## Traceability Rule
 A desktop requirement is not complete until its workbook source, implementation component, and verification evidence are identified. Status values are `Planned`, `In Progress`, `Verified`, or `Blocked`.
