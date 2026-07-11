@@ -20,14 +20,18 @@ When this command is received, do not begin with roadmap discussion or implement
 1. Inspect repository `main` and identify the permanent application entry point and current implementation structure.
 2. Review current CI health and permanent verification gates.
 3. Read this file.
-4. Read `docs/governance/Engineering_Protocol.md`.
-5. Read `docs/governance/Communication_Protocol.md` and apply its Product Owner response contract for the session.
-6. Read the latest `docs/governance/EC-XXX_*.md` engineering checkpoint.
-7. Read `docs/engineering/Capability_Matrix.md`.
-8. Read `docs/engineering/Repository_Reconciliation.md`.
-9. Read `docs/architecture/Desktop_Engineering_Charter.md` and `docs/architecture/Requirements_Traceability_Matrix.md`.
-10. Review active issues, open pull requests, and recent merged pull requests.
-11. Resume the active repository-backed delivery boundary.
+4. Read `FoundationCheckpoint.md` as the single authoritative current-state and exact-resume document.
+5. Read `CheckpointManifest.md` as the permanent historical checkpoint and synchronization index.
+6. Read `CommunicationWorkingContract.md` as the full repository-backed collaboration, workflow, and Product Owner preference contract.
+7. Read `docs/governance/Engineering_Protocol.md`.
+8. Read `docs/governance/Communication_Protocol.md` and apply its compact Product Owner response contract for the session.
+9. Read `docs/engineering/Capability_Matrix.md`.
+10. Read `docs/engineering/Repository_Reconciliation.md`.
+11. Read `docs/architecture/Desktop_Engineering_Charter.md` and `docs/architecture/Requirements_Traceability_Matrix.md`.
+12. Review active issues, open pull requests, recent merged pull requests, and current branch activity.
+13. Resume the active repository-backed delivery boundary from `FoundationCheckpoint.md` after reconciling it against `main`, accepted artifacts, merged history, CI, and the Capability Matrix.
+
+Historical `docs/governance/EC-XXX_*.md` files may be consulted when a current authority explicitly references them or when historical engineering evidence is required. They are not the default current-state resume authority and must not override `FoundationCheckpoint.md`, `CheckpointManifest.md`, repository `main`, accepted artifacts, or merged verification evidence.
 
 If a canonical document listed above does not yet exist, record that fact as a reconciliation gap. Do not invent its contents from chat memory.
 
@@ -54,8 +58,10 @@ Every response that requires the Product Owner to act must include the exact com
 1. Repository `main` — implementation truth.
 2. Accepted workbook artifact in `artifacts/calc/` — business specification truth.
 3. Merged pull request history and CI/test evidence — delivered capability evidence.
-4. Capability Matrix — operational engineering status derived from the authorities above.
-5. Chat context — collaboration context only.
+4. `FoundationCheckpoint.md` — current-state and exact-resume authority derived from the authorities above.
+5. `CheckpointManifest.md` — permanent historical checkpoint and synchronization index.
+6. Capability Matrix — operational engineering status derived from the authorities above.
+7. Chat context — collaboration context only.
 
 When sources conflict, reconcile against higher authority before recommending or implementing work.
 
