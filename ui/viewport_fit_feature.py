@@ -1,5 +1,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
+    QFrame,
     QGroupBox,
     QLabel,
     QPushButton,
@@ -44,7 +45,7 @@ def _scroll_page(widget: QWidget, parent: QWidget) -> tuple[QWidget, QScrollArea
     layout.setContentsMargins(0, 0, 0, 0)
 
     scroll = QScrollArea(page)
-    scroll.setFrameShape(QScrollArea.NoFrame)
+    scroll.setFrameShape(QFrame.Shape.NoFrame)
     scroll.setWidgetResizable(True)
     scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
     scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
