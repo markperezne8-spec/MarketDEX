@@ -27,7 +27,7 @@ jobs:
           cache: pip
       - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
-      - run: pytest -q --tb=short tests/test_runtime_database_authority.py tests/test_cap005a_product_registry_authority.py tests/test_cap008a_settlement_evidence_parent.py tests/test_cap008b_settlement_evidence_linkage.py tests/test_cap008d_settlement_verification_authority.py tests/test_cap009a_settlement_allocation_evidence.py tests/test_cap009b_allocation_group_cross_check.py tests/test_cap009c_sale_settlement_attribution_readiness.py tests/test_cap009d_allocation_group_lifecycle.py tests/test_build504_stale_cross_check_authority.py tests/test_build504_stale_cross_check_lock_authority.py tests/test_cap010a_allocation_revision_supersession.py tests/test_cap011a_allocation_evidence_lock.py tests/test_m39a_standalone_settlement.py
+      - run: pytest -q --tb=short tests/test_runtime_database_authority.py tests/test_cap005a_product_registry_authority.py tests/test_cap005b_inventory_product_link_authority.py tests/test_cap008a_settlement_evidence_parent.py tests/test_cap008b_settlement_evidence_linkage.py tests/test_cap008d_settlement_verification_authority.py tests/test_cap009a_settlement_allocation_evidence.py tests/test_cap009b_allocation_group_cross_check.py tests/test_cap009c_sale_settlement_attribution_readiness.py tests/test_cap009d_allocation_group_lifecycle.py tests/test_build504_stale_cross_check_authority.py tests/test_build504_stale_cross_check_lock_authority.py tests/test_cap010a_allocation_revision_supersession.py tests/test_cap011a_allocation_evidence_lock.py tests/test_m39a_standalone_settlement.py
 
   inventory:
     name: Inventory
