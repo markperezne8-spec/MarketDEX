@@ -32,3 +32,17 @@ def test_verify_runtime_initializes_database_without_opening_window(monkeypatch,
     result = launcher.main(['MarketDEX.exe', '--verify-runtime'])
     assert result == 0
     assert (tmp_path / 'marketdex.sqlite3').exists()
+
+
+def test_packaging_targets_the_permanent_root_launcher_and_single_executable():
+    project_root = Path(__file__).parents[1]
+    spec = (project_root / 'MarketDEX.spec').read_text(encoding='utf-8')
+    workflow = (project_root / '.github' / 'workflows' / 'ci.yml').read_text(encoding='utf-8')
+
+    assert "['launcher.py']" in spec
+    assert "name='MarketDEX'" in spec
+    assert 'console=False' in spec
+    assert 'desktop/launcher.py' not in spec
+    assert 'pyinstaller --noconfirm --clean MarketDEX.spec' in workflow
+    assert '.\\dist\\MarketDEX.exe' in workflow
+    assert 'path: dist/MarketDEX.exe' in workflow
