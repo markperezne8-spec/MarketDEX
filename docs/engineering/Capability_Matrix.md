@@ -4,7 +4,7 @@
 **Authority:** Derived operational engineering status
 **Owner:** Lead Software Architect
 **Update trigger:** Merged delivery changes capability evidence or classification
-**Baseline:** `main` after PR #148 / CAP-008 Builds 481-497 parity delivery
+**Baseline:** `main` after PR #151 / CAP-008 parity closeout
 
 ## Status Vocabulary
 
@@ -15,7 +15,7 @@
 | CAP-001 | Inventory authority and operator workflow | Inventory / REQ-INV-001 | `services/inventory_app_service.py`; `services/inventory_service.py`; `repositories/inventory_repository.py`; inventory UI feature modules; schema inventory tables | Inventory CI gate and inventory integration/default/sort tests | Complete | Preserve; extend only through a separately justified capability boundary |
 | CAP-002 | Pricing and profit guidance | Workbook pricing/profit surfaces | `ui/inventory_cost_feature.py`; `ui/inventory_profit_feature.py`; `ui/inventory_price_guidance_feature.py` | Pricing CI gate; profit and price-guidance feature tests | Complete | Preserve regression coverage |
 | CAP-003 | Listing planning and execution workflow | Listing workflow and sale-completion workbook authority | `listing_plans`; listing package review schema; listing UI feature chain; publication lifecycle services | Listing CI gate; listing plan repository and operator sale-completion tests | Complete | Preserve; reconcile future workbook changes before extension |
-| CAP-004 | Mission Control / dashboard | Mission Control / REQ-MIS-001 | `services/mission_control_service.py`; `services/dashboard_service.py`; dashboard and mission-control UI components | Dashboard layout, navigation, M27 Mission Control, and end-to-end conformance tests exist | Partial | Reconcile permanent root runtime dashboard against duplicated `app/` dashboard surfaces before changing behavior |
+| CAP-004 | Mission Control / dashboard | Mission Control / REQ-MIS-001 | root `launcher.py` selects `services/mission_control_service.py`; root `ui/main_window.py` renders the canonical nine-key read-only snapshot contract; broader `services/dashboard_service.py` remains non-root legacy/secondary evidence | `tests/test_mission_control_integration.py` gates protected SQLite projection semantics, read-only behavior, exact snapshot keys, and permanent-root launcher selection; dedicated Mission Control vertical-slice CI gate | Complete | Preserve root `MissionControlService` as canonical desktop projection; do not promote `DashboardService` or add metrics without a separately justified authority boundary |
 | CAP-005 | Product Registry | Product Registry / REQ-PROD-001 | `services/product_registry_service.py`; product-aware services reference `product_id` | Product-aware closure and M38/M39B acceptance tests provide indirect evidence | Partial | Verify persistence authority and operator surface; do not rebuild service logic |
 | CAP-006 | Collection | Collection / REQ-COL-001 | Collection navigation/card surfaces exist under `app/ui/`; no verified root collection service/repository found in reconciliation search | No dedicated collection test evidence found | Missing | Define first vertical slice only after confirming workbook authority and permanent runtime integration point |
 | CAP-007 | Audit and immutable history | Audit Trail / REQ-AUD-001 | `event_identity`; `audit_history`; `audit_events`; append-only and immutable schema triggers | Core runtime authority and multiple authority/conformance tests | Complete | Preserve append-only authority |
@@ -29,9 +29,9 @@
 
 ## Current Priority
 
-**CAP-008 through CAP-011 / workbook Builds 481-503 are Complete on `main` after PR #148.** CAP-008A established the settlement evidence parent, CAP-008B established canonical linkage, CAP-008C repaired Build 484 pending-allocation semantics, and CAP-008D delivered the missing Builds 487-497 fail-closed settlement verification authority chain without changing M39A standalone execution authority.
+**CAP-004 and CAP-008 through CAP-011 are Complete.** CAP-004A reconciled the permanent root Mission Control path: root `launcher.py` selects `MissionControlService`, root `MainWindow` consumes its exact nine-key read-only snapshot contract, and focused regression evidence prevents accidental promotion of the broader non-root `DashboardService` surface.
 
-The next controlled step is repository-backed capability selection. Reconcile the remaining `Partial` and `Missing` capabilities against workbook authority, permanent root runtime integration, and verification evidence. The first proven gap may create one controlled delivery boundary; Complete capabilities must not be rebuilt.
+The next controlled step is repository-backed capability selection among CAP-005 Product Registry (`Partial`), CAP-006 Collection (`Missing`), and CAP-012 Reports (`Missing`). The first proven gap may create one controlled delivery boundary; Complete capabilities must not be rebuilt.
 
 ## Matrix Rule
 
