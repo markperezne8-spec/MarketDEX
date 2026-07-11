@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from composition.feature_catalog import install_features
+from market_intelligence.composition import MarketIntelligenceComposition
 from services.inventory_app_service import InventoryAppService
 from services.mission_control_service import MissionControlService
 from ui.main_window import MainWindow
@@ -20,12 +21,14 @@ class ApplicationComposition:
         self.mission_control = MissionControlService(self.database_path)
         self.inventory = InventoryAppService(self.database_path)
         self.workspace_registry = WorkspaceRegistry()
+        self.market_intelligence = MarketIntelligenceComposition()
 
     def build_main_window(self) -> MainWindow:
         window = MainWindow(self.mission_control, self.inventory)
         install_features(window)
         install_viewport_fit_feature(window, self.workspace_registry)
         window.application_composition = self
+        window.market_intelligence = self.market_intelligence
         return window
 
     def verify_runtime(self) -> None:
