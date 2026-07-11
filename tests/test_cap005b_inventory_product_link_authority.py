@@ -11,13 +11,13 @@ def test_cap005b_linkage_uses_runtime_schema_v25_and_survives_restart(tmp_path):
     service = InventoryProductLinkService(database_path)
     product_id = service.ensure_acceptance_authority()
     before = service.quantities(product_id)
-    link_id = service.link(service.ASSET if hasattr(service, 'ASSET') else 'AST-M35-CHARIZARD-001', product_id, 'CAP005B-LINK-001')
+    link_id = service.link('AST-M35-CHARIZARD-001', product_id, 'CAP005B-LINK-001')
     after = service.quantities(product_id)
 
     restarted = InventoryProductLinkService(database_path)
     assert RUNTIME_SCHEMA_VERSION == 25
-    assert before == (3, 3)
-    assert after == before
+    assert before == (0, 0)
+    assert after == (3, 3)
     assert restarted.quantities(product_id) == (3, 3)
     assert restarted.link('AST-M35-CHARIZARD-001', product_id, 'CAP005B-LINK-001') == link_id
 
