@@ -1,43 +1,17 @@
-import sqlite3,uuid,json,hashlib,re
+import uuid,json,hashlib,re
 from pathlib import Path
 from datetime import datetime,timezone
 from contextlib import contextmanager
+from core.database_manager import DatabaseManager
 BASELINE='135066da16af816060d6d49e13e80e262f27efb1'
 REQ='M35-LINK-CHARIZARD-001'; ASSET='AST-M35-CHARIZARD-001'
 def now(): return datetime.now(timezone.utc).isoformat()
 def norm(v): return re.sub(r'[^a-z0-9]+',' ',(v or '').casefold()).strip()
 class InventoryProductLinkService:
- def __init__(self,path): self.path=Path(path); self.path.parent.mkdir(parents=True,exist_ok=True); self._init()
+ def __init__(self,path): self.path=Path(path); self.database=DatabaseManager(self.path); self.database.initialize()
  @contextmanager
  def _c(self):
-  c=sqlite3.connect(self.path)
-  c.row_factory=sqlite3.Row
-  c.execute('PRAGMA foreign_keys=ON')
-  try:
-   yield c
-   c.commit()
-  except Exception:
-   c.rollback()
-   raise
-  finally:
-   c.close()
- def _init(self):
-  with self._c() as c:c.executescript("""
-  CREATE TABLE IF NOT EXISTS event_identity(event_id TEXT PRIMARY KEY,event_type TEXT NOT NULL,request_id TEXT NOT NULL UNIQUE,occurred_at TEXT NOT NULL,committed_at TEXT NOT NULL,payload_json TEXT NOT NULL,payload_sha256 TEXT NOT NULL);
-  CREATE TABLE IF NOT EXISTS audit_history(audit_id INTEGER PRIMARY KEY AUTOINCREMENT,event_id TEXT NOT NULL,service_name TEXT NOT NULL,action_name TEXT NOT NULL,recorded_at TEXT NOT NULL,detail_json TEXT NOT NULL);
-  CREATE TABLE IF NOT EXISTS assets(asset_id TEXT PRIMARY KEY,asset_name TEXT NOT NULL,asset_type TEXT NOT NULL,state TEXT NOT NULL,created_event_id TEXT NOT NULL,created_at TEXT NOT NULL);
-  CREATE TABLE IF NOT EXISTS inventory_authority(asset_id TEXT PRIMARY KEY,quantity INTEGER NOT NULL CHECK(quantity>=0),total_cost_minor INTEGER NOT NULL CHECK(total_cost_minor>=0),last_event_id TEXT NOT NULL,verified_at TEXT NOT NULL);
-  CREATE TABLE IF NOT EXISTS inventory_history(history_id INTEGER PRIMARY KEY AUTOINCREMENT,event_id TEXT NOT NULL,asset_id TEXT NOT NULL,quantity_delta INTEGER NOT NULL,cost_delta_minor INTEGER NOT NULL,resulting_quantity INTEGER NOT NULL CHECK(resulting_quantity>=0),resulting_total_cost_minor INTEGER NOT NULL CHECK(resulting_total_cost_minor>=0),recorded_at TEXT NOT NULL,UNIQUE(event_id,asset_id));
-  CREATE TABLE IF NOT EXISTS replay_defense_history(replay_history_id INTEGER PRIMARY KEY AUTOINCREMENT,request_id TEXT NOT NULL,original_event_id TEXT NOT NULL,attempted_event_type TEXT NOT NULL,payload_sha256 TEXT NOT NULL,defense_result TEXT NOT NULL CHECK(defense_result='BLOCKED'),recorded_at TEXT NOT NULL,UNIQUE(request_id,attempted_event_type,payload_sha256));
-  CREATE TABLE IF NOT EXISTS audit_events(audit_event_id INTEGER PRIMARY KEY AUTOINCREMENT,event_id TEXT NOT NULL,authority_type TEXT NOT NULL,authority_id TEXT NOT NULL,verification_result TEXT NOT NULL,recorded_at TEXT NOT NULL,UNIQUE(event_id,authority_type,authority_id));
-  CREATE TABLE IF NOT EXISTS marketplace_publication_allocations(allocation_id TEXT PRIMARY KEY,asset_id TEXT NOT NULL,marketplace TEXT NOT NULL,publication_reference TEXT NOT NULL,publication_identity TEXT NOT NULL,requested_quantity INTEGER NOT NULL,allocated_quantity INTEGER NOT NULL,released_quantity INTEGER NOT NULL DEFAULT 0,cancelled_quantity INTEGER NOT NULL DEFAULT 0,consumed_quantity INTEGER NOT NULL DEFAULT 0,state TEXT NOT NULL,source_event_id TEXT NOT NULL,created_at TEXT NOT NULL,committed_at TEXT NOT NULL,verified_at TEXT NOT NULL);
-  CREATE TABLE IF NOT EXISTS products(product_id TEXT PRIMARY KEY,product_type TEXT NOT NULL,canonical_name TEXT NOT NULL,normalized_identity_key TEXT NOT NULL UNIQUE,set_name TEXT,card_number TEXT,variant_name TEXT,state TEXT NOT NULL,created_event_id TEXT NOT NULL UNIQUE,created_at TEXT NOT NULL);
-  CREATE TABLE IF NOT EXISTS product_registration_history(registration_history_id INTEGER PRIMARY KEY AUTOINCREMENT,product_id TEXT NOT NULL,registration_request_id TEXT NOT NULL,event_id TEXT NOT NULL,product_type TEXT NOT NULL,canonical_name TEXT NOT NULL,normalized_identity_key TEXT NOT NULL,resulting_state TEXT NOT NULL,recorded_at TEXT NOT NULL);
-  CREATE TABLE IF NOT EXISTS inventory_product_links(inventory_product_link_id TEXT PRIMARY KEY,asset_id TEXT NOT NULL UNIQUE,product_id TEXT NOT NULL,state TEXT NOT NULL CHECK(state='LINKED'),created_event_id TEXT NOT NULL UNIQUE,created_at TEXT NOT NULL);
-  CREATE TABLE IF NOT EXISTS inventory_product_link_history(linkage_history_id INTEGER PRIMARY KEY AUTOINCREMENT,inventory_product_link_id TEXT NOT NULL,asset_id TEXT NOT NULL,product_id TEXT NOT NULL,linkage_request_id TEXT NOT NULL,event_id TEXT NOT NULL,resulting_state TEXT NOT NULL,recorded_at TEXT NOT NULL);
-  CREATE TRIGGER IF NOT EXISTS iphl_no_update BEFORE UPDATE ON inventory_product_link_history BEGIN SELECT RAISE(ABORT,'inventory product link history is append-only'); END;
-  CREATE TRIGGER IF NOT EXISTS iphl_no_delete BEFORE DELETE ON inventory_product_link_history BEGIN SELECT RAISE(ABORT,'inventory product link history is append-only'); END;
-  """)
+  with self.database.transaction() as c: yield c
  def _event(self,c,event_type,request_id,payload):
   ts=now(); raw=json.dumps(payload,sort_keys=True,separators=(',',':')); sha=hashlib.sha256(raw.encode()).hexdigest(); eid='EVT-'+uuid.uuid4().hex.upper(); c.execute('INSERT INTO event_identity VALUES(?,?,?,?,?,?,?)',(eid,event_type,request_id,ts,ts,raw,sha)); return eid,sha,ts
  def ensure_acceptance_authority(self):
@@ -71,7 +45,7 @@ class InventoryProductLinkService:
    if not check or check['product_id']!=product_id: raise RuntimeError('post-write verification failed')
    return lid
  def quantities(self,product_id):
-  with self._c() as c:
+  with self.database.read_connection() as c:
    q=c.execute('SELECT COALESCE(SUM(i.quantity),0) q FROM inventory_product_links l JOIN inventory_authority i ON i.asset_id=l.asset_id WHERE l.product_id=?',(product_id,)).fetchone()['q']; a=c.execute("SELECT COALESCE(SUM(m.allocated_quantity-m.released_quantity-m.cancelled_quantity-m.consumed_quantity),0) a FROM inventory_product_links l JOIN marketplace_publication_allocations m ON m.asset_id=l.asset_id WHERE l.product_id=? AND m.state='ACTIVE'",(product_id,)).fetchone()['a']; available=int(q)-int(a)
    if q<0 or available<0: raise ValueError('negative product-aware quantity')
    return int(q),available
@@ -87,7 +61,7 @@ class InventoryProductLinkService:
    if r:return r['product_id']
    eid,sha,ts=self._event(c,'PRODUCT_REGISTRATION','M35-CONFLICT-PRODUCT-001',['SEALED','M35 Conflict Product']); pid='PRD-'+uuid.uuid4().hex[:16].upper(); key='sealed|m35 conflict product|||'; c.execute('INSERT INTO products VALUES(?,?,?,?,?,?,?,?,?,?)',(pid,'SEALED','M35 Conflict Product',key,None,None,None,'REGISTERED',eid,ts)); c.execute('INSERT INTO product_registration_history(product_id,registration_request_id,event_id,product_type,canonical_name,normalized_identity_key,resulting_state,recorded_at) VALUES(?,?,?,?,?,?,?,?)',(pid,'M35-CONFLICT-PRODUCT-001',eid,'SEALED','M35 Conflict Product',key,'REGISTERED',ts)); return pid
  def verify(self,pid=None,lid=None,conflict='BLOCKED',replay=True,before=None,after=None):
-  with self._c() as c:
+  with self.database.read_connection() as c:
    if pid is None:
     r=c.execute("SELECT product_id FROM products WHERE canonical_name='Charizard ex' AND card_number='125/197'").fetchone(); pid=r['product_id'] if r else None
    if lid is None and pid:

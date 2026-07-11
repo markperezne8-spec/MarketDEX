@@ -1,7 +1,8 @@
-import sqlite3, uuid, json, hashlib
+import uuid, json, hashlib
 from pathlib import Path
 from datetime import datetime, timezone
 from contextlib import contextmanager
+from core.database_manager import DatabaseManager
 
 BASELINE = "6bf853bfe09794d30af527ae1c48985bfb1e11ab"
 PRODUCT_NAME = "Charizard ex"
@@ -18,76 +19,13 @@ def payload_sha(payload):
 class MarketplaceListingReadinessService:
     def __init__(self, path):
         self.path = Path(path)
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        self._init()
+        self.database = DatabaseManager(self.path)
+        self.database.initialize()
 
     @contextmanager
     def _c(self):
-        c = sqlite3.connect(self.path)
-        c.row_factory = sqlite3.Row
-        c.execute("PRAGMA foreign_keys=ON")
-        try:
+        with self.database.transaction() as c:
             yield c
-            c.commit()
-        except Exception:
-            c.rollback()
-            raise
-        finally:
-            c.close()
-
-    def _init(self):
-        with self._c() as c:
-            c.executescript("""
-            CREATE TABLE IF NOT EXISTS event_identity(
-              event_id TEXT PRIMARY KEY,event_type TEXT NOT NULL,request_id TEXT NOT NULL UNIQUE,
-              occurred_at TEXT NOT NULL,committed_at TEXT NOT NULL,payload_json TEXT NOT NULL,payload_sha256 TEXT NOT NULL);
-            CREATE TABLE IF NOT EXISTS replay_defense_history(
-              replay_history_id INTEGER PRIMARY KEY AUTOINCREMENT,request_id TEXT NOT NULL,
-              original_event_id TEXT NOT NULL,attempted_event_type TEXT NOT NULL,payload_sha256 TEXT NOT NULL,
-              defense_result TEXT NOT NULL CHECK(defense_result='BLOCKED'),recorded_at TEXT NOT NULL,
-              UNIQUE(request_id,attempted_event_type,payload_sha256));
-            CREATE TABLE IF NOT EXISTS audit_events(
-              audit_event_id INTEGER PRIMARY KEY AUTOINCREMENT,event_id TEXT NOT NULL,authority_type TEXT NOT NULL,
-              authority_id TEXT NOT NULL,verification_result TEXT NOT NULL,recorded_at TEXT NOT NULL,
-              UNIQUE(event_id,authority_type,authority_id));
-            CREATE TABLE IF NOT EXISTS products(
-              product_id TEXT PRIMARY KEY,product_type TEXT NOT NULL,canonical_name TEXT NOT NULL,
-              normalized_identity_key TEXT NOT NULL UNIQUE,set_name TEXT,card_number TEXT,variant_name TEXT,
-              state TEXT NOT NULL,created_event_id TEXT NOT NULL UNIQUE,created_at TEXT NOT NULL);
-            CREATE TABLE IF NOT EXISTS inventory_authority(
-              asset_id TEXT PRIMARY KEY,quantity INTEGER NOT NULL CHECK(quantity>=0),total_cost_minor INTEGER NOT NULL CHECK(total_cost_minor>=0),
-              last_event_id TEXT NOT NULL,verified_at TEXT NOT NULL);
-            CREATE TABLE IF NOT EXISTS inventory_product_links(
-              inventory_product_link_id TEXT PRIMARY KEY,asset_id TEXT NOT NULL UNIQUE,product_id TEXT NOT NULL,
-              state TEXT NOT NULL CHECK(state='LINKED'),created_event_id TEXT NOT NULL UNIQUE,created_at TEXT NOT NULL);
-            CREATE TABLE IF NOT EXISTS marketplace_publication_allocations(
-              allocation_id TEXT PRIMARY KEY,asset_id TEXT NOT NULL,marketplace TEXT NOT NULL,publication_reference TEXT NOT NULL,
-              publication_identity TEXT NOT NULL,requested_quantity INTEGER NOT NULL,allocated_quantity INTEGER NOT NULL,
-              released_quantity INTEGER NOT NULL DEFAULT 0,cancelled_quantity INTEGER NOT NULL DEFAULT 0,
-              consumed_quantity INTEGER NOT NULL DEFAULT 0,state TEXT NOT NULL,source_event_id TEXT NOT NULL,
-              created_at TEXT NOT NULL,committed_at TEXT NOT NULL,verified_at TEXT NOT NULL);
-            CREATE TABLE IF NOT EXISTS marketplace_listing_identities(
-              listing_identity_id TEXT PRIMARY KEY,product_id TEXT NOT NULL,marketplace TEXT NOT NULL,
-              seller_listing_reference TEXT NOT NULL,listing_identity_key TEXT NOT NULL UNIQUE,
-              state TEXT NOT NULL CHECK(state='IDENTIFIED'),created_event_id TEXT NOT NULL UNIQUE,created_at TEXT NOT NULL,
-              UNIQUE(product_id,marketplace,seller_listing_reference));
-            CREATE TABLE IF NOT EXISTS marketplace_listing_identity_history(
-              history_id INTEGER PRIMARY KEY AUTOINCREMENT,listing_identity_id TEXT NOT NULL,product_id TEXT NOT NULL,
-              marketplace TEXT NOT NULL,seller_listing_reference TEXT NOT NULL,request_id TEXT NOT NULL,event_id TEXT NOT NULL,
-              resulting_state TEXT NOT NULL,recorded_at TEXT NOT NULL);
-            CREATE TABLE IF NOT EXISTS publication_readiness_history(
-              readiness_history_id INTEGER PRIMARY KEY AUTOINCREMENT,listing_identity_id TEXT NOT NULL,product_id TEXT NOT NULL,
-              request_id TEXT NOT NULL,event_id TEXT NOT NULL,authoritative_quantity INTEGER NOT NULL,
-              available_quantity INTEGER NOT NULL,result TEXT NOT NULL CHECK(result IN ('READY','BLOCKED')),recorded_at TEXT NOT NULL);
-            CREATE TRIGGER IF NOT EXISTS mlih_no_update BEFORE UPDATE ON marketplace_listing_identity_history
-              BEGIN SELECT RAISE(ABORT,'marketplace listing identity history is append-only'); END;
-            CREATE TRIGGER IF NOT EXISTS mlih_no_delete BEFORE DELETE ON marketplace_listing_identity_history
-              BEGIN SELECT RAISE(ABORT,'marketplace listing identity history is append-only'); END;
-            CREATE TRIGGER IF NOT EXISTS prh_no_update BEFORE UPDATE ON publication_readiness_history
-              BEGIN SELECT RAISE(ABORT,'publication readiness history is append-only'); END;
-            CREATE TRIGGER IF NOT EXISTS prh_no_delete BEFORE DELETE ON publication_readiness_history
-              BEGIN SELECT RAISE(ABORT,'publication readiness history is append-only'); END;
-            """)
 
     def _event(self, c, event_type, request_id, payload):
         raw, sha = payload_sha(payload)

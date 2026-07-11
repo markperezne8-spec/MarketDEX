@@ -16,8 +16,7 @@ def test_product_registry_tables_are_owned_by_canonical_schema(tmp_path):
         tables = {row['name'] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
         version = connection.execute('SELECT schema_version FROM schema_metadata ORDER BY rowid DESC LIMIT 1').fetchone()['schema_version']
 
-    assert SCHEMA_VERSION == 24
-    assert version == 24
+    assert version == SCHEMA_VERSION
     assert {'products', 'product_aliases', 'product_registration_history', 'product_alias_history'} <= tables
 
 
