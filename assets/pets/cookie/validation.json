@@ -1,0 +1,9 @@
+{
+  "asset": "assets/cookie_sprite_sheet.png",
+  "dimensions": [1536, 1872],
+  "grid": {"columns": 8, "rows": 9, "cell": [192, 208]},
+  "alpha": true,
+  "unused_cells_fully_transparent": true,
+  "required_cells_nonempty": true,
+  "passed": true
+}
