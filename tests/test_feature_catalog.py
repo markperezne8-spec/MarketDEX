@@ -8,7 +8,7 @@ from composition.feature_catalog import (
 )
 
 
-def test_core_desktop_feature_catalog_has_stable_unique_identity():
+def test_core_desktop_feature_catalog_has_stable_unique_identity_and_dependencies():
     catalog = validate_feature_catalog(CORE_DESKTOP_FEATURES)
     feature_ids = [feature.feature_id for feature in catalog]
 
@@ -21,6 +21,8 @@ def test_core_desktop_feature_catalog_has_stable_unique_identity():
         'inventory-price-guidance',
     ]
     assert feature_ids[-1] == 'wheel-safe-value-controls'
+    assert catalog[1].depends_on == ('inventory-edit',)
+    assert catalog[-2].depends_on == ('inventory-listing-execution-history',)
 
 
 def test_feature_catalog_rejects_duplicate_identity_before_installation():
@@ -37,6 +39,28 @@ def test_feature_catalog_rejects_duplicate_identity_before_installation():
     assert calls == []
 
 
+def test_feature_catalog_rejects_missing_and_out_of_order_dependencies_before_installation():
+    calls = []
+    installer = lambda window: calls.append(window)
+
+    with pytest.raises(ValueError, match='missing feature dependencies'):
+        install_features(
+            object(),
+            (FeatureDefinition('dependent', installer, ('missing',)),),
+        )
+
+    with pytest.raises(ValueError, match='must be installed first'):
+        install_features(
+            object(),
+            (
+                FeatureDefinition('dependent', installer, ('foundation',)),
+                FeatureDefinition('foundation', installer),
+            ),
+        )
+
+    assert calls == []
+
+
 def test_feature_definition_rejects_invalid_contracts():
     with pytest.raises(ValueError, match='must not be empty'):
         FeatureDefinition('', lambda window: None)
@@ -44,3 +68,7 @@ def test_feature_definition_rejects_invalid_contracts():
         FeatureDefinition(' invalid ', lambda window: None)
     with pytest.raises(TypeError, match='must be callable'):
         FeatureDefinition('invalid', object())
+    with pytest.raises(ValueError, match='duplicate feature dependencies'):
+        FeatureDefinition('invalid', lambda window: None, ('one', 'one'))
+    with pytest.raises(ValueError, match='must not depend on itself'):
+        FeatureDefinition('invalid', lambda window: None, ('invalid',))
