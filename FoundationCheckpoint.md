@@ -1,16 +1,16 @@
-# MarketDEX Foundation Checkpoint 055
+# MarketDEX Foundation Checkpoint 056
 
-**Status:** 🏗️ Active — Vision Continuity, Modular Platform Architecture, and Canonical Naming
+**Status:** 🏗️ Active — Visual Identity Lock, Modular Platform Architecture, and Canonical Foundation Planning
 
 ## Active Phase
 
 🖥️ **ACTIVE** — Plan and build the best Windows desktop application for effortless collectible selling, collection intelligence, market awareness, and safe AI-assisted operation.
 
+🎨 **DESIGN LOCKED** — The Visual North Star is a central product-quality authority. The official electric dog Pokémon mascot is a permanent MarketDEX brand requirement.
+
 📱🌐 **FUTURE COMPATIBILITY ONLY** — iOS, Android, and web browser clients are future plans. They are not current implementation targets.
 
-📊 **PRESERVED** — LibreOffice workbook artifacts remain business-specification and historical evidence authority where applicable.
-
-🧰 **FIXES DEFERRED BY PRODUCT OWNER FOR THIS STEP** — The known Listing CI failure remains real and blocking, but current work is focused on architecture planning, vision preservation, and naming clarity before returning to the repair.
+🧰 **FIXES DEFERRED BY PRODUCT OWNER FOR THIS STEP** — The known Listing CI failure remains real and blocking, but current work is focused on architecture, visual identity, and continuity before returning to repair.
 
 ## Permanent Direction
 
@@ -18,25 +18,23 @@
 
 > **Decisions first. Evidence second. Raw metrics on demand.**
 
-MarketDEX is an offline-first desktop operating system for collectors and sellers. Pokémon TCG is the first optimized workflow. The permanent architecture must remain extensible to other TCGs, sealed gaming products, graded cards, Funko Pops, gaming collectibles, and related collectible products.
+MarketDEX is an offline-first desktop operating system for collectors and sellers. Pokémon TCG is the first optimized workflow. The permanent architecture remains extensible to other TCGs, sealed gaming products, graded cards, Funko Pops, gaming collectibles, and related collectible products.
 
-## Product Owner Approval
+## Visual and Brand Authority
 
-The Product Owner approved all available prior MarketDEX architecture and product recommendations that do not conflict with a newer explicit decision or established source-of-truth rule.
+### Canonical Visual North Star
 
-This approval authorizes continued recommendation generation and controlled planning, implementation, and validation. It does not authorize destructive data changes, paid services, credentials, publishing, spending, or pull-request merges without the applicable authority and gates.
+- `MarketDEX_Mission_Control_Visual_North_Star.png`
+- Protected Git blob identity: `2ad414034ab1715c2f5019acc2ccff71f213706c`
 
-## Current Product Rule
+### Canonical mascot
 
-The primary user experience must show:
+- `MarketDEX_Official_Mascot.png`
+- Protected Git blob identity: `5c192e8833896cf754f20fcb636d30098bc75ecf`
 
-1. what changed
-2. why it matters
-3. freshness and confidence
-4. what deserves attention
-5. the safest next action to consider
+The mascot may not be replaced, removed, significantly redesigned, recolored, or silently substituted. Missing assets must fail visibly. Future UI, packaging, installer, and release work must preserve both assets.
 
-The app may be feature-rich underneath, but default screens must remain simple, progressively disclosed, and understandable.
+The Visual North Star guides layout, navigation, typography, spacing, cards, panels, tables, forms, charts, states, feedback, onboarding, accessibility, and the balance between professional software and Pokémon-inspired personality.
 
 ## Permanent Continuity Authorities
 
@@ -47,45 +45,23 @@ The app may be feature-rich underneath, but default screens must remain simple, 
 5. `CheckpointManifest.md` is completed historical checkpoint authority.
 6. `docs/governance/Product_Vision_Idea_Register.md` is the living approved idea and product-direction register.
 7. `docs/governance/Canonical_Product_Terminology.md` is naming and compatibility authority.
-8. `docs/Architecture/Modular_Collectibles_Platform_Blueprint.md` is target modular architecture authority.
-9. `docs/Architecture/Current_to_Target_Module_Map.md` maps current repository surfaces into the target modules without deletion by assumption.
-10. `docs/governance/Approved_Architecture_Roadmap.md` is the approved implementation backlog.
-11. The latest EC checkpoint records detailed in-progress evidence.
-12. Draft PRs remain proposals until merged and do not override `main`.
-
-## Canonical User-Facing Names
-
-- Mission Control
-- Inventory
-- Collection
-- Pricing
-- Listings
-- Orders & Shipping
-- Sales & Settlement
-- Market Compass
-- Collector Pulse
-- Research Lab
-- Portfolio
-- Reports & Insights
-- Settings
-
-Important conflict resolutions:
-
-- Dashboard → Mission Control
-- Platform for eBay/TCGplayer → Marketplace
-- Asset Manager → Inventory or Collection
-- Business module → Business Operations
-- Alerts/Attention Center → Needs Attention
-- Listing Workflow → Listings as the long-term visible label, with legacy ID compatibility preserved until a gated migration
+8. `docs/governance/Visual_North_Star_and_Mascot_Standard.md` is visual identity and mascot authority.
+9. `branding/asset_manifest.py` is the application-facing required brand-asset manifest.
+10. `docs/Architecture/Modular_Collectibles_Platform_Blueprint.md` is target modular architecture authority.
+11. `docs/Architecture/Current_to_Target_Module_Map.md` maps current repository surfaces into target modules without deletion by assumption.
+12. `docs/governance/Approved_Architecture_Roadmap.md` is the approved implementation backlog.
+13. The latest EC checkpoint records detailed in-progress evidence.
+14. Draft PRs remain proposals until merged and do not override `main`.
 
 ## Current Architecture Progress
 
 - PR #163 merged: canonical workspace contract and registry foundation.
 - PR #164 draft: professional `WorkspaceHost`, canonical workspace identities, and stable navigation.
 - PR #165 draft: canonical `ApplicationComposition`, thin launcher, stable feature IDs, and dependency-safe installation.
-- PR #166 draft: Business/Collector modes, marketplace registry, normalized market observations, attention signals, visualization catalog, sealed-vs-open calculator, Google Trends-compatible provider boundary, platform strategy, AI boundaries, architecture gates, vision register, terminology authority, modular platform blueprint, repository-to-module map, and checkpoints.
+- PR #166 draft: market intelligence, platform strategy, AI boundaries, governance, vision continuity, terminology, modular architecture, current-to-target mapping, Visual North Star standard, mascot manifest, and permanent brand tests.
 - EC-005 records the shell/composition/market-intelligence stack.
-- EC-006 records vision continuity, modular architecture, canonical naming, and the first current-to-target module classification.
+- EC-006 records vision continuity, modular architecture, canonical naming, and repository mapping.
+- EC-007 records the Visual North Star and exact mascot lock.
 
 ## Mandatory Gate Status
 
@@ -95,35 +71,33 @@ Important conflict resolutions:
 | Authority | PASS FOR PLANNING — source-of-truth hierarchy preserved |
 | Architecture | PASS FOR PLANNING — modular target blueprint and migration map established |
 | Terminology Compatibility | PASS FOR NEW WORK — canonical names and migration rules established |
+| Visual Identity | PASS FOR FOUNDATION — exact assets, standard, manifest, and tests established |
+| Mascot Protection | PASS FOR FOUNDATION — canonical file and exact identity protected |
 | Behavior | BLOCKED FOR STACK — Listing test failure remains unresolved |
 | Data and Migration | DESIGN PENDING — canonical persistence and migration authority is next foundation work |
-| UX and Accessibility | DESIGN PASS — decision-first and progressive-disclosure rules preserved |
+| UX and Accessibility | DESIGN PASS — Visual North Star ambition, progressive disclosure, states, and accessibility requirements documented |
 | Integration and Provenance | FOUNDATION PASS — replaceable adapter and evidence boundaries established |
 | Platform Compatibility | FOUNDATION PASS — desktop-first with reusable presentation-independent contracts |
 | AI Safety | FOUNDATION PASS — controlled commands/read models; direct database mutation forbidden |
-| Packaging | PASSED ON OBSERVED HEAD — executable, installer, packaged runtime, and installed runtime passed; final-head revalidation required |
+| Packaging | REQUIREMENT EXPANDED — brand assets must be verified in executable, installer, and installed runtime; final-head validation required |
 | Release | BLOCKED — stacked PRs remain draft and Listing remains red |
 
 ## Exact Resume Point
 
 1. Design one persistence, schema, and migration authority with backup, transaction, validation, restart, rollback, and historical-fixture gates.
-2. Define first command, query, event, repository, provider, and read-model contracts for Catalog, Inventory, Collection, Listings, Market Data, and Attention.
-3. Define the canonical domain identity and ownership model covering Product, Product Variant, Inventory Position, Collection Position, Lot, Condition, Grade, and Product Form.
-4. Preserve every material new idea or name in the idea register and EC checkpoint history.
-5. Return to the Listing CI failure before marking any stacked PR ready or merging.
-6. Re-run all gates on final heads and reconcile PRs #164, #165, and #166 in dependency order.
-7. Build the desktop Collection Overview and Business/Collector mode toggle after the foundation stack is green and reconciled.
+2. Define the canonical domain identity and ownership model covering Product, Product Variant, Inventory Position, Collection Position, Lot, Condition, Grade, and Product Form.
+3. Define first command, query, event, repository, provider, and read-model contracts for Catalog, Inventory, Collection, Listings, Market Data, and Attention.
+4. Before major desktop UI implementation, define semantic design tokens and reusable component contracts from the Visual North Star standard.
+5. Before branded packaging, connect `branding/asset_manifest.py` to executable, installer, and installed-runtime verification.
+6. Preserve every material new idea, name, or design decision in repository authority and checkpoint history.
+7. Return to the Listing CI failure before marking any stacked PR ready or merging.
+8. Re-run all gates on final heads and reconcile PRs #164, #165, and #166 in dependency order.
+9. Build the desktop Collection Overview and Business/Collector mode toggle after the foundation stack is green and reconciled.
 
 ## Progress
 
-**Vision and architecture planning:** `[██████████] 100%` for this checkpoint  
+**Vision, brand, and architecture planning:** `[██████████] 100%` for this checkpoint  
 **Foundation implementation and validation:** `[█████████░] 92%`
-
-## Frictionless Working Contract
-
-`CAN JARVIS SAFELY DO THIS INSTEAD? → YES → JARVIS DOES IT → ZERO FAKE WORK FOR MARK`
-
-Communication stays short, direct, understandable, and action-focused. Progress updates include a labeled progress bar. Mark is asked only for genuine product decisions, credentials, destructive operations, paid services, or merge authority.
 
 ## Core Operating Principle
 
