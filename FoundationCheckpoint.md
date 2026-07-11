@@ -1,149 +1,245 @@
-# MarketDEX Foundation Checkpoint 058
+# MarketDEX Foundation Checkpoint 059
 
-**Status:** 🏗️ Active — Gamified Visual North Star, First UI Primitives, and Canonical Architecture Planning
+**Status:** Active — Sprint 1 shell transformation, permanent collaboration protocol, and build recovery
 
-## Active Phase
+## Mandatory resume summary
 
-🖥️ **ACTIVE** — Build the best Windows desktop application for effortless collectible selling, collection intelligence, market awareness, and safe AI-assisted operation.
+MarketDEX is an offline-first, Windows-desktop collectibles business operating system. Pokémon TCG is the first optimized workflow. Continue the existing permanent codebase; do not restart it, create a competing shell, duplicate persistence authority, or treat chat memory as product authority.
 
-🎨 **DESIGN LOCKED** — The approved gamified dashboard is the active Visual North Star and long-term UI quality benchmark.
+Current active pull request:
 
-🐺 **PERMANENT BRAND** — The original gray-and-white electric dog Pokémon mascot remains the canonical MarketDEX mascot forever.
+- PR: `#166`
+- URL: `https://github.com/markperezne8-spec/MarketDEX/pull/166`
+- State: open draft
+- Base: `agent/application-composition-root`
+- Head: `agent/market-intelligence-foundation`
 
-🧩 **FIRST PRIMITIVES COMPLETE** — Semantic tokens, component contracts, a PySide theme adapter, and the first reusable widgets now exist.
+## Product Owner operating preferences
 
-📱🌐 **FUTURE COMPATIBILITY ONLY** — iOS, Android, and web browser clients are future plans, not current implementation targets.
+The permanent communication and delivery authority is:
 
-🧰 **FIXES DEFERRED BY PRODUCT OWNER FOR THIS STEP** — The known Listing CI failure remains real and blocking. Current work is focused on visual, architecture, and continuity foundations before returning to repair.
+- `docs/governance/AI_COLLABORATION_AND_DELIVERY_PROTOCOL.md`
 
-## Permanent Direction
+Required behavior for future engineering sessions:
 
-> **Enter once. Understand everywhere.**
+- show a progress bar in every meaningful milestone update
+- show one clear next step
+- include direct GitHub links when relevant
+- distinguish planned, in-progress, committed, validated, packaged, and released work
+- make routine reversible engineering decisions without unnecessary approval stops
+- reserve Product Owner approval for product direction, visual direction, strategic scope, and irreversible decisions
+- multitask on another safe approved track while GitHub Actions or another external dependency is pending
+- use milestone-based reviews instead of constant micro-reviews
+- explicitly say `READY FOR VISUAL INSPECTION — PULL NOW` or `SPRINT REVIEW READY — PULL NOW`
+- state exact branch, expected commit, launch method, review scope, and known limitations when a pull is required
+- update repository memory before declaring a milestone complete
 
-> **Decisions first. Evidence second. Raw metrics on demand.**
+When the Product Owner says `Next step`, inspect repository authority and CI, select the highest-value safe task within approved scope, proceed without unnecessary clarification, multitask when blocked, and report the next meaningful checkpoint.
 
-> **Scan → Recognize → Understand → Investigate.**
+## Permanent product and architecture direction
 
-MarketDEX is an offline-first desktop operating system for collectors and sellers. Pokémon TCG is the first optimized workflow. The permanent architecture remains extensible to other TCGs, sealed gaming products, graded cards, Funko Pops, gaming collectibles, and related products.
+- One launcher: `launcher.py`
+- One composition root: `composition/application_composition.py`
+- One canonical desktop window and shell path
+- One workspace registry and feature catalog
+- One SQLite persistence, schema, and migration authority
+- One semantic token and reusable component authority
+- Windows desktop first
+- Offline first
+- No mandatory subscription dependency
+- No prototype branch represented as the permanent product
+- No presentation migration may silently change business authority
+- No release without applicable source, executable, installer, installed-runtime, accessibility, visual, and checkpoint gates
 
-## Active Visual North Star
+## Visual and brand authority
 
-### Approved v1 destination
+Active Visual North Star:
 
-- Intended canonical path: `assets/brand/visual_north_star/marketdex_visual_north_star_v1.png`
-- Dimensions: `1536 × 1024`
-- SHA-256: `1269e2af119c569cc5d4f76b82a6f92984a04f6f752119d8e1dcf417557909a5`
-- Expected Git blob SHA: `27d4b34b24984678225ae38c7e77240a02d521b4`
-- Binary synchronization gate: Issue #167
+- `docs/design/VISUAL_NORTH_STAR.md`
+- `assets/brand/visual_north_star/marketdex_visual_north_star_v1.png`
+- approved SHA-256: `1269e2af119c569cc5d4f76b82a6f92984a04f6f752119d8e1dcf417557909a5`
+- approved Git blob SHA: `27d4b34b24984678225ae38c7e77240a02d521b4`
 
-The prior root asset `MarketDEX_Mission_Control_Visual_North_Star.png` remains historical evidence but no longer controls the active visual destination.
+The approved PNG exists on `main`. The stacked PR branch may not inherit it until its ancestry is synchronized or merged. Do not claim the binary is present on PR #166 without verifying the branch.
 
-### Canonical mascot
+The permanent electric dog Pokémon mascot remains protected and must not be silently removed, replaced, or substantially redesigned.
 
-- Current source: `MarketDEX_Official_Mascot.png`
-- Git blob SHA: `5c192e8833896cf754f20fcb636d30098bc75ecf`
+## Completed repository-backed work in this sequence
 
-The mascot may not be replaced, removed, significantly redesigned, recolored, restyled, or silently substituted. Approved use is compact and intentional so dashboards and business workflows remain primary.
+### Visual source and package authority
 
-## Approved Experience Direction
+- Canonical Visual North Star PNG synchronized on `main` and identity verified.
+- `MarketDEX.spec` on `main` updated to package the canonical Visual North Star and mascot.
+- Packaging contract test added on `main` to lock the approved asset identity and spec references.
 
-MarketDEX should feel like a polished, energetic, gamified Pokémon TCG business and collecting operating system—not a generic database or disconnected forms.
+### Mission Control visual slice on PR #166
 
-The interface combines:
+- `ui/main_window.py` now applies the shared token theme.
+- The Mission Control title surface uses `MarketDEXWorkspaceHeader`.
+- The eight Mission Control KPI surfaces use `MarketDEXKpiCard`.
+- Existing snapshot keys, refresh behavior, Inventory services, and SQLite reads remain preserved.
+- A dedicated Mission Control CI gate was added and corrected to validate only the visual slice.
+- Latest Mission Control Visual Slice job passed.
 
-- premium dark command-center structure
-- clear KPI and attention hierarchy
-- explainable opportunities and risks
-- Business / Collector mode
-- marketplace and market-intelligence visibility
-- charts, volume, sentiment, and heat maps
-- optional trainer levels, badges, quests, and achievements
-- professional mascot integration
-- accessibility, high-DPI behavior, performance, and offline reliability
+### Modern application shell on PR #166
 
-Gamification remains optional, meaningful, evidence-based, and subordinate to financial and operational truth.
+- Boundary contract added in `tests/test_modern_application_shell_migration.py`.
+- Canonical `WorkspaceHost` upgraded rather than introducing a second shell.
+- Persistent branded left navigation rail added.
+- Workspace content moved to a stacked workspace frame.
+- Inventory, Pricing, and Listing Workflow navigation remains identity-based.
+- Offline/SQLite status presentation and workspace status area added.
+- Existing feature installers and compatibility aliases remain supported.
 
-## Permanent Continuity Authorities
+Latest shell implementation commit before this checkpoint:
 
-1. `main` and merged commits are implementation authority.
-2. Accepted workbook artifacts are business-specification and traceability authority.
-3. GitHub Actions and permanent tests are verification authority.
-4. `FoundationCheckpoint.md` is current-state and exact-resume authority.
-5. `CheckpointManifest.md` is completed historical checkpoint authority.
-6. `MARKETDEX_START_HERE.md` is permanent orientation.
-7. `docs/governance/Product_Vision_Idea_Register.md` is the living approved idea register.
-8. `docs/design/VISUAL_NORTH_STAR.md` is the active visual-direction authority.
-9. `docs/design/DESIGN_SYSTEM_FOUNDATION.md` is the reusable visual foundation authority.
-10. `docs/design/CURRENT_UI_COMPONENT_AUDIT.md` is the current presentation migration baseline.
-11. `docs/governance/Visual_North_Star_and_Mascot_Standard.md` is visual identity and mascot governance.
-12. `ui/design_system/tokens.py` is semantic token authority.
-13. `ui/design_system/component_contracts.py` is the component contract catalog.
-14. `ui/design_system/qt_theme.py` is the PySide token adapter.
-15. `ui/design_system/widgets.py` contains the first reusable PySide components.
-16. `docs/governance/Canonical_Product_Terminology.md` is naming and compatibility authority.
-17. `docs/Architecture/Modular_Collectibles_Platform_Blueprint.md` is target modular architecture authority.
-18. `docs/Architecture/Current_to_Target_Module_Map.md` maps current repository surfaces without deletion by assumption.
-19. `docs/governance/Architecture_Gates.md` controls mandatory pass/fail requirements.
-20. The latest EC checkpoint records detailed in-progress evidence.
-21. Draft PRs remain proposals until merged and do not override `main`.
+- `ae89f7201cb20351f7a31dfd3cfc5eaad4635c08`
+- message: `ui: modernize canonical workspace host shell`
 
-## Current Architecture Progress
+### Permanent collaboration continuity
 
-- PR #163 merged: canonical workspace contract and registry foundation.
-- PR #164 draft: professional `WorkspaceHost`, canonical workspace identities, and stable navigation.
-- PR #165 draft: canonical `ApplicationComposition`, thin launcher, stable feature IDs, and dependency-safe installation.
-- PR #166 draft: market intelligence, platform strategy, AI boundaries, vision continuity, naming, architecture, brand governance, active Visual North Star, semantic tokens, reusable component contracts, UI audit, PySide theme adapter, first reusable widgets, and checkpoints.
-- EC-005 records shell/composition/market intelligence.
-- EC-006 records vision continuity, modular architecture, naming, and repository mapping.
-- EC-007 records the original Visual North Star and exact mascot lock.
-- EC-008 records the approved gamified Visual North Star and design-system contracts.
-- EC-009 records the Current UI Audit and first PySide primitives.
+- `MARKETDEX_START_HERE.md` remains the canonical orientation file.
+- `docs/governance/AI_COLLABORATION_AND_DELIVERY_PROTOCOL.md` records the permanent communication, multitasking, review, Definition of Ready, Definition of Done, and resume protocol.
 
-## Mandatory Gate Status
+## Latest verified CI state
 
-| Gate | Current status |
-|---|---|
-| Vision Continuity | PASS — approved direction is repository-backed |
-| Authority | PASS FOR PLANNING — active v1 and historical predecessor are distinguished |
-| Architecture | PASS FOR FOUNDATION — reusable UI components do not alter business authority |
-| Terminology Compatibility | PASS — canonical workspace names preserved |
-| Visual Identity | PASS FOR DIRECTION — exact v1 and mascot identities documented |
-| Design System | PASS FOR FIRST PRIMITIVES — tokens, contracts, theme, and widgets exist |
-| Current UI Audit | PASS — current/legacy surfaces are classified |
-| Mascot Protection | PASS FOR FOUNDATION — canonical source and identity preserved |
-| Gamification | FOUNDATION PASS — optional, meaningful, non-disruptive rules established |
-| Behavior | BLOCKED FOR STACK — Listing test failure remains unresolved |
-| Data and Migration | DESIGN PENDING — canonical persistence and migration authority remains required |
-| UX and Accessibility | FOUNDATION PASS — focus, keyboard, scaling, contrast, and state rules established |
-| Integration and Provenance | FOUNDATION PASS — replaceable adapters and evidence boundaries preserved |
-| Platform Compatibility | FOUNDATION PASS — desktop-first with presentation-independent contracts |
-| AI Safety | FOUNDATION PASS — controlled commands/read models; direct database mutation forbidden |
-| Active v1 Binary Asset | PENDING — exact PNG must still be synchronized to its canonical path |
-| Mission Control Adoption | NEXT — first real visual slice has not yet been integrated |
-| Packaging | BLOCKED — v1 asset resolver and executable/installer inclusion are not yet implemented |
-| Release | BLOCKED — draft stack, Listing failure, asset synchronization, and production visual adoption remain incomplete |
+Workflow run for shell commit `ae89f720`:
 
-## Exact Resume Point
+- Core Tests: PASS
+- Inventory: PASS
+- Pricing: PASS
+- Mission Control Visual Slice: PASS
+- Listing: FAIL — existing unresolved Listing gate
+- Desktop Build: FAIL during contract-test stage
+- PyInstaller EXE: skipped because Desktop contract tests failed
+- Packaged-runtime verification: skipped
+- Installer build: skipped
+- Installed-runtime verification: skipped
 
-1. Synchronize the exact v1 PNG through issue #167 and verify its identity.
-2. Promote v1 to required source and package authority while preserving v0 as historical evidence.
-3. Apply `build_marketdex_qss()` at one controlled root UI integration point.
-4. Replace only the existing Mission Control title and KPI `QGroupBox` surface with `MarketDEXWorkspaceHeader` and `MarketDEXKpiCard` while preserving every existing snapshot key and refresh behavior.
-5. Add focused UI tests for value parity, accessibility, resizing, and interaction behavior.
-6. Obtain visual acceptance at practical desktop resolutions.
-7. Migrate Inventory summary cards and table chrome only after the Mission Control slice passes.
-8. Define the canonical domain identity and ownership model.
-9. Design one persistence, schema, and migration authority with backup, validation, restart, rollback, and historical fixtures.
-10. Return to the Listing CI failure before marking any stacked PR ready or merging.
-11. Re-run all architecture, behavior, accessibility, packaging, installed-runtime, and release gates on final heads.
+Do not describe the full workflow as green. The shell-specific and Mission Control focused checks are green; broader release readiness is still blocked.
 
-## Progress
+## Known blockers
 
-**Vision, visual direction, brand, and architecture planning:** `[██████████] 100%`  
-**Design-system foundation:** `[██████████] 100%`  
-**Production visual implementation:** `[██░░░░░░░░] 20%`  
-**Stack validation and merge readiness:** `[█████████░] 92%`
+### Listing gate
 
-## Core Operating Principle
+The Listing CI job remains an existing blocker. It must be repaired before the stacked PR is marked ready or merged for release.
 
-> **Enter once. Understand everywhere.**
+### Desktop Build gate
+
+The Desktop Build job fails during its contract-test command before compilation and packaging. The exact failing assertion must be isolated from the Windows job log, classified as either an outdated contract or a real architecture defect, and repaired with the smallest safe change.
+
+Until Desktop Build passes, no current Windows EXE or installer artifact from this branch should be claimed.
+
+## Local source launch and review
+
+Local repository path used by the Product Owner:
+
+- `C:\Projects\MarketDEX_OS`
+
+Required branch for current visual work:
+
+- `agent/market-intelligence-foundation`
+
+Source launch:
+
+```powershell
+cd C:\Projects\MarketDEX_OS
+python -m pip install -r requirements.txt
+python launcher.py
+```
+
+The Product Owner successfully installed Python and launched the source application.
+
+Source runtime database:
+
+- `C:\Projects\MarketDEX_OS\runtime\marketdex.sqlite3`
+
+Installed application target after a successful future installer build:
+
+- `%LOCALAPPDATA%\Programs\MarketDEX\MarketDEX.exe`
+
+An existing `dist\MarketDEX.exe`, when present locally, may be older than the active branch because the current Desktop Build gate has not produced a fresh artifact.
+
+## Current visual evidence
+
+The Product Owner supplied a source-build screenshot. It confirmed:
+
+- the application launches
+- SQLite-backed data loads
+- Inventory, Pricing, and Listing workflow structure is present
+- the engineering foundation is ahead of the final Visual North Star presentation
+
+The Product Owner approved the recommendation to modernize the canonical shell and continue with milestone-based visual transformation.
+
+## Sprint 1 scope
+
+Active Sprint 1 tracks:
+
+1. Modern Application Shell
+2. Mission Control visual modernization
+3. Engineering continuity and self-documenting repository
+4. Desktop Build contract recovery
+5. Listing blocker isolation and repair
+6. CI monitoring and immediate focused fixes
+
+## Definition of Ready
+
+A task may enter implementation only when it has:
+
+- product and Visual North Star alignment
+- clear scope and exclusions
+- architecture fit
+- acceptance criteria
+- validation strategy
+- rollback or safe-recovery approach
+- documentation impact identified
+- no unresolved Product Owner decision that would materially change implementation
+
+## Definition of Done
+
+A milestone is complete only when applicable items are true:
+
+- implementation is committed to the intended branch
+- focused tests pass
+- broader CI is inspected and accurately reported
+- no business-authority regression is introduced
+- checkpoint and relevant governance documents are updated
+- known blockers and remaining work are recorded
+- next approved task is selected
+- pull/review requirement is stated explicitly
+
+## Exact next approved task
+
+**Desktop Build contract recovery while the new shell remains available for focused source validation.**
+
+Execution order:
+
+1. inspect the failing Desktop Build job log for run `29152389969`
+2. identify the exact failed test and assertion
+3. determine whether it is stale contract drift or a real implementation defect
+4. apply the smallest safe repair
+5. rerun CI
+6. allow PyInstaller, packaged-runtime verification, installer build, and installed-runtime verification to execute
+7. provide artifact or pull instructions only after truthful validation
+
+Parallel safe work may continue on documentation, shell-focused tests, and non-conflicting visual polish while Desktop CI is being diagnosed.
+
+## Pull and review status
+
+- Pull required now: **NO**
+- Visual review required now: **NO**
+- Next explicit review signal: `SPRINT REVIEW READY — PULL NOW`
+
+## Progress snapshot
+
+- Foundation and permanent direction: `[██████████] 100%`
+- Engineering continuity protocol: `[█████████░] 90%`
+- Mission Control first visual slice: `[██████████] 100%` focused validation
+- Modern application shell: `[████████░░] 80%`
+- Desktop Build pipeline: `[████░░░░░░] 40%`
+- Windows EXE and installer: `[██░░░░░░░░] 20%`
+- Sprint 1 integrated readiness: `[██████░░░░] 60%`
+
+## Core instruction
+
+> Improve the existing MarketDEX foundation. Do not restart it, duplicate it, silently redefine it, or rely on chat-only memory.
