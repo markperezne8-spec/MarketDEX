@@ -43,7 +43,7 @@ def test_desktop_places_sale_completion_after_listing_history():
     assert feature_ids.index('inventory-listing-execution-history') < feature_ids.index(
         'inventory-sale-completion'
     )
-    assert "'inventory-listing-execution-history'" in CORE_DESKTOP_FEATURES[
+    assert 'inventory-listing-execution-history' in CORE_DESKTOP_FEATURES[
         feature_ids.index('inventory-sale-completion')
     ].depends_on
     assert "'inventory_sale_completion'" in viewport
