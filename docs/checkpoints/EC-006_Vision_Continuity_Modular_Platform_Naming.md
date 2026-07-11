@@ -27,6 +27,8 @@ The checkpoint reviewed and preserved direction from:
 - `Vision.md`
 - `WorkbookBlueprint.md`
 - `FoundationCheckpoint.md`
+- `docs/engineering/Capability_Matrix.md`
+- `docs/engineering/Repository_Reconciliation.md`
 - `docs/governance/Approved_Architecture_Roadmap.md`
 - `docs/governance/Platform_Strategy.md`
 - `docs/governance/Architecture_Gates.md`
@@ -71,6 +73,14 @@ Defines:
 - persistence, migration, identity, settings, jobs, diagnostics, and future-client readiness
 - recommended implementation order
 
+### Current-to-target module map
+
+`docs/Architecture/Current_to_Target_Module_Map.md`
+
+Classifies current repository surfaces as `KEEP`, `ADAPT`, `MIGRATE`, `RETIRE`, or `REVIEW` and maps them into the target modular architecture.
+
+The map protects mature Inventory, Pricing, Listings, Mission Control, Settlement, audit, and shell capabilities from accidental rebuilds. It also identifies competing `app/` trees, duplicate database managers, legacy shells, direct SQLite access, and unclear service families for evidence-based review rather than deletion by assumption.
+
 ## Naming conflicts resolved
 
 | Conflicting or overloaded term | Canonical direction |
@@ -109,7 +119,7 @@ These naming decisions do not authorize immediate persisted-ID or API renames. C
 |---|---|---|
 | Vision Continuity | PASS | Approved ideas consolidated in a living repository register |
 | Authority | PASS FOR PLANNING | Existing source-of-truth hierarchy preserved; draft PRs remain proposals |
-| Architecture | PASS FOR PLANNING | Modular platform blueprint defines target boundaries and extension model |
+| Architecture | PASS FOR PLANNING | Modular blueprint and current-to-target map define target boundaries and migration classifications |
 | Terminology Compatibility | PASS FOR NEW WORK | Canonical dictionary and controlled legacy-alias rule established |
 | Behavior | NOT CHANGED | No business behavior changed in this checkpoint |
 | Data | NOT CHANGED | No schema, migration, or persisted identifier changed |
@@ -127,16 +137,16 @@ These naming decisions do not authorize immediate persisted-ID or API renames. C
 - Core, Inventory, Pricing, governance, Windows build, packaged runtime, installer, and installed runtime gates passed on the latest observed run.
 - The Listing gate remains failing and must be repaired before merge.
 - The Product Owner explicitly directed architecture planning and vision preservation to continue before returning to that fix.
+- The first current-to-target repository module map is complete.
 
 ## Exact resume point
 
-1. Continue canonical domain and data architecture planning from the modular blueprint.
-2. Produce a current-code-to-target-module map with `KEEP`, `ADAPT`, `MIGRATE`, `RETIRE`, and `REVIEW` classifications.
-3. Design the canonical persistence and migration authority, including historical upgrade fixtures and rollback.
-4. Define first-version command, query, event, and read-model contracts for Inventory, Collection, Listings, Market Data, and Attention.
-5. Preserve each new product or architecture idea in the idea register and checkpoint history.
-6. Return to the Listing CI failure before any stacked PR is marked ready or merged.
-7. Re-run all mandatory gates on final heads and reconcile the stack in dependency order.
+1. Design the canonical persistence, schema, and migration authority, including historical upgrade fixtures, backup, restart, and rollback.
+2. Define first-version command, query, event, repository, provider, and read-model contracts for Catalog, Inventory, Collection, Listings, Market Data, and Attention.
+3. Produce the first domain identity and ownership model covering Product, Product Variant, Inventory Position, Collection Position, Lot, Condition, Grade, and Product Form.
+4. Preserve each new product or architecture idea in the idea register and checkpoint history.
+5. Return to the Listing CI failure before any stacked PR is marked ready or merged.
+6. Re-run all mandatory gates on final heads and reconcile the stack in dependency order.
 
 ## Continuity rule
 
@@ -146,8 +156,9 @@ Future MarketDEX work should begin by reading, in order:
 2. `docs/governance/Product_Vision_Idea_Register.md`
 3. `docs/governance/Canonical_Product_Terminology.md`
 4. `docs/Architecture/Modular_Collectibles_Platform_Blueprint.md`
-5. `docs/governance/Approved_Architecture_Roadmap.md`
-6. the latest EC checkpoint
-7. current PR and CI state
+5. `docs/Architecture/Current_to_Target_Module_Map.md`
+6. `docs/governance/Approved_Architecture_Roadmap.md`
+7. the latest EC checkpoint
+8. current PR and CI state
 
 This sequence preserves the vision, prevents rediscovery, and supplies the exact resume point.
