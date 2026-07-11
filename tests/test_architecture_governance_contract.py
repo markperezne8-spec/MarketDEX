@@ -121,6 +121,29 @@ def test_modular_platform_blueprint_preserves_desktop_and_future_boundaries():
         assert required in text
 
 
+def test_current_to_target_module_map_protects_migration_classification():
+    text = Path('docs/Architecture/Current_to_Target_Module_Map.md').read_text(
+        encoding='utf-8'
+    )
+
+    for classification in ('KEEP', 'ADAPT', 'MIGRATE', 'RETIRE', 'REVIEW'):
+        assert classification in text
+
+    for required in (
+        'root `launcher.py`',
+        'root `ui/main_window.py`',
+        '`core/schema.py`',
+        '`core/database_manager.py`',
+        '`app/database/database_manager.py`',
+        '`services/inventory_app_service.py`',
+        '`services/mission_control_service.py`',
+        '`services/dashboard_service.py`',
+        '`market_intelligence/*` contracts',
+        'never deleted by assumption',
+    ):
+        assert required in text
+
+
 def test_ec005_records_current_stacked_history_and_exact_resume_point():
     text = Path(
         'docs/checkpoints/EC-005_Shell_Composition_Market_Intelligence.md'
@@ -145,5 +168,6 @@ def test_ec006_records_vision_continuity_naming_and_deferred_fix():
     assert 'Product_Vision_Idea_Register.md' in text
     assert 'Canonical_Product_Terminology.md' in text
     assert 'Modular_Collectibles_Platform_Blueprint.md' in text
+    assert 'Current_to_Target_Module_Map.md' in text
     assert 'Listing gate remains failing' in text
     assert 'Exact resume point' in text
