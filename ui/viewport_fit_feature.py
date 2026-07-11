@@ -259,7 +259,11 @@ def install_viewport_fit_feature(
     window,
     workspace_registry: WorkspaceRegistry | None = None,
 ) -> None:
-    registry = workspace_registry or WorkspaceRegistry()
+    registry = (
+        workspace_registry
+        if workspace_registry is not None
+        else WorkspaceRegistry()
+    )
     content = window.takeCentralWidget()
     if content is None:
         raise RuntimeError('application shell has no central content to compose')
