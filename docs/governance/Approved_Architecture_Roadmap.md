@@ -4,7 +4,7 @@
 
 On 2026-07-11, the Product Owner approved the architecture and product recommendations from the recent MarketDEX modernization discussions. This document consolidates that approval into one repository-backed execution backlog.
 
-Approval authorizes controlled implementation and validation. It does not authorize destructive data changes, paid services, credential use, or merging pull requests without the applicable release authority.
+Approval authorizes controlled implementation, validation, and ordered progression through the stacked architecture work. It does not authorize destructive data changes, paid services, credential use, or merging pull requests before the applicable gates are green and the final stacked heads are verified.
 
 ## Product direction
 
