@@ -70,16 +70,17 @@ class WorkspaceHost(QTabWidget):
         if self._mounted:
             raise RuntimeError('workspace host is already mounted')
 
+        resolved_pages: list[tuple[str, str, QWidget]] = []
         for workspace in self._registry.all():
             page = workspace.factory()
             if not isinstance(page, QWidget):
                 raise TypeError(
                     f'workspace factory must return QWidget: {workspace.workspace_id}'
                 )
-            self._workspace_indexes[workspace.workspace_id] = self.addTab(
-                page,
-                workspace.title,
-            )
+            resolved_pages.append((workspace.workspace_id, workspace.title, page))
+
+        for workspace_id, title, page in resolved_pages:
+            self._workspace_indexes[workspace_id] = self.addTab(page, title)
 
         self._mounted = True
 
@@ -95,4 +96,8 @@ class WorkspaceHost(QTabWidget):
             index = self._workspace_indexes[workspace_id]
         except KeyError as exc:
             raise KeyError(f'unknown shell workspace: {workspace_id}') from exc
-        return self.widget(index)
+
+        widget = self.widget(index)
+        if widget is None:
+            raise RuntimeError(f'workspace widget is unavailable: {workspace_id}')
+        return widget
