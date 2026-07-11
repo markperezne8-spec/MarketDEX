@@ -89,10 +89,13 @@ def test_top_level_workspaces_remain_available_without_inventory_selection():
 
     install_viewport_fit_feature(window)
 
+    assert window.workspace_host.count() == 3
     assert all(
-        window.workspace_host.isTabEnabled(index)
+        window.workspace_host.widget(index) is not None
         for index in range(window.workspace_host.count())
     )
+    assert len(window.workspace_host._navigation_buttons) == 3
+    assert all(button.isEnabled() for button in window.workspace_host._navigation_buttons)
     window.close()
 
 
