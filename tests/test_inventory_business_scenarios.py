@@ -33,10 +33,16 @@ def test_price_guidance_round_trips_to_target_roi_or_better():
     for name, cost, _sale, fee, shipping, packaging, _expected_profit in SCENARIOS:
         guidance = price_guidance(cost, fee, shipping, packaging, 20.0)
         result = profit_decision(cost, guidance["recommended_minor"], fee, shipping, packaging)
+        assert guidance["minimum_profit_minor"] > guidance["break_even_minor"], name
         if cost > 0:
             assert result["roi_percent"] >= 20.0, name
-        assert guidance["minimum_profit_minor"] > guidance["break_even_minor"], name
-        assert guidance["recommended_minor"] >= guidance["minimum_profit_minor"], name
+            assert guidance["recommended_minor"] >= guidance["minimum_profit_minor"], name
+        else:
+            # ROI is intentionally defined as 0.0 for zero-cost inventory.
+            # Target-ROI guidance therefore resolves to break-even rather than
+            # pretending a percentage return can be computed from a zero basis.
+            assert result["roi_percent"] == 0.0, name
+            assert guidance["recommended_minor"] == guidance["break_even_minor"], name
 
 
 def test_quantity_rollup_uses_per_unit_profit_consistently():
