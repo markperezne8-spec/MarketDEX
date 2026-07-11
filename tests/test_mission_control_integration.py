@@ -1,4 +1,19 @@
+from pathlib import Path
+
 from services.mission_control_service import MissionControlService
+
+
+CANONICAL_SNAPSHOT_KEYS = {
+    'inventory_units',
+    'inventory_asset_count',
+    'inventory_cost_minor',
+    'completed_sales',
+    'revenue_minor',
+    'profit_minor',
+    'verified_audits',
+    'authority_events',
+    'database_path',
+}
 
 
 def test_mission_control_snapshot_reads_protected_sqlite_authority(tmp_path):
@@ -11,6 +26,7 @@ def test_mission_control_snapshot_reads_protected_sqlite_authority(tmp_path):
         connection.execute("INSERT INTO event_identity(event_id,event_type,request_id,occurred_at,committed_at,payload_json,payload_sha256) VALUES (?,?,?,?,?,?,?)",('event-1','TEST_EVENT','request-1','2026-07-07T00:00:00Z','2026-07-07T00:00:00Z','{}','hash'))
 
     snapshot = service.snapshot()
+    assert set(snapshot) == CANONICAL_SNAPSHOT_KEYS
     assert snapshot['inventory_units'] == 3
     assert snapshot['inventory_asset_count'] == 1
     assert snapshot['inventory_cost_minor'] == 12500
@@ -26,3 +42,12 @@ def test_mission_control_snapshot_is_read_only(tmp_path):
     before = service.snapshot()
     after = service.snapshot()
     assert before == after
+
+
+def test_permanent_root_launcher_selects_mission_control_projection():
+    launcher_source = (Path(__file__).parents[1] / 'launcher.py').read_text(encoding='utf-8')
+
+    assert 'from services.mission_control_service import MissionControlService' in launcher_source
+    assert 'mission_control = MissionControlService(database_path)' in launcher_source
+    assert 'window = MainWindow(mission_control, inventory)' in launcher_source
+    assert 'DashboardService' not in launcher_source
