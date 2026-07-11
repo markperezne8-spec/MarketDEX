@@ -81,7 +81,7 @@ Gamification remains optional, meaningful, evidence-based, and subordinate to fi
 14. `ui/design_system/qt_theme.py` is the PySide token adapter.
 15. `ui/design_system/widgets.py` contains the first reusable PySide components.
 16. `docs/governance/Canonical_Product_Terminology.md` is naming and compatibility authority.
-17. `docs/Architecture/Modular_Collectibles_Platform_Blprint.md` is target modular architecture authority.
+17. `docs/Architecture/Modular_Collectibles_Platform_Blueprint.md` is target modular architecture authority.
 18. `docs/Architecture/Current_to_Target_Module_Map.md` maps current repository surfaces without deletion by assumption.
 19. `docs/governance/Architecture_Gates.md` controls mandatory pass/fail requirements.
 20. The latest EC checkpoint records detailed in-progress evidence.
