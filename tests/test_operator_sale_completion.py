@@ -34,9 +34,14 @@ def test_operator_sale_completion_creates_one_sale_one_financial_event_and_one_i
 
 def test_desktop_places_sale_completion_after_listing_history():
     launcher = Path('launcher.py').read_text(encoding='utf-8')
+    catalog = Path('composition/feature_catalog.py').read_text(encoding='utf-8')
     viewport = Path('ui/viewport_fit_feature.py').read_text(encoding='utf-8')
     feature = Path('ui/inventory_sale_completion_feature.py').read_text(encoding='utf-8')
-    assert launcher.index('install_inventory_listing_execution_history_feature(window)') < launcher.index('install_inventory_sale_completion_feature(window)')
+
+    assert 'install_inventory_' not in launcher
+    assert catalog.index("FeatureDefinition('inventory-listing-execution-history'") < catalog.index(
+        "FeatureDefinition('inventory-sale-completion'"
+    )
     assert "'inventory_sale_completion'" in viewport
     assert 'OperatorSaleCompletionService' in feature
     assert "intent='SOLD'" in feature
