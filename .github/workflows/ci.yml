@@ -88,11 +88,13 @@ jobs:
       - name: Verify packaged runtime
         shell: pwsh
         run: |
-          $env:MARKETDEX_DATA_DIR = "$env:RUNNER_TEMP\marketdex-data"
-          & ".\dist\MarketDEX\MarketDEX.exe" --verify-runtime
+          $env:MARKETDEX_DATA_DIR = Join-Path $env:RUNNER_TEMP "marketdex-data"
+          $process = Start-Process -FilePath ".\dist\MarketDEX.exe" -ArgumentList "--verify-runtime" -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw "Packaged MarketDEX runtime verification failed with exit code $($process.ExitCode)." }
           if (!(Test-Path "$env:MARKETDEX_DATA_DIR\marketdex.sqlite3")) { throw "Packaged runtime database was not created." }
       - name: Upload MarketDEX Windows build
         uses: actions/upload-artifact@v4
         with:
           name: MarketDEX-Windows
-          path: dist/MarketDEX
+          path: dist/MarketDEX.exe
+          if-no-files-found: error
