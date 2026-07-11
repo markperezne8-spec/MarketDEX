@@ -39,8 +39,9 @@ def test_visual_north_star_and_mascot_are_documented_as_permanent_requirements()
         / "docs/governance/Visual_North_Star_and_Mascot_Standard.md"
     ).read_text(encoding="utf-8")
     vision = (REPOSITORY_ROOT / "Vision.md").read_text(encoding="utf-8")
-    idea_register = (
-        REPOSITORY_ROOT / "docs/governance/Product_Vision_Idea_Register.md"
+    checkpoint = (
+        REPOSITORY_ROOT
+        / "docs/checkpoints/EC-007_Visual_North_Star_Mascot_Lock.md"
     ).read_text(encoding="utf-8")
 
     for required in (
@@ -55,5 +56,5 @@ def test_visual_north_star_and_mascot_are_documented_as_permanent_requirements()
 
     assert "Mission Control Visual North Star — Design Locked" in vision
     assert "MarketDEX Mascot" in vision
-    assert "Visual North Star" in idea_register
-    assert "mascot" in idea_register.lower()
+    assert VISUAL_NORTH_STAR.relative_path in checkpoint
+    assert OFFICIAL_MASCOT.relative_path in checkpoint
