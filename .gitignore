@@ -26,6 +26,10 @@ runtime/
 .coverage
 htmlcov/
 
+# Local packaging output
+build/
+dist/
+
 # OS/editor residue
 .DS_Store
 Thumbs.db
