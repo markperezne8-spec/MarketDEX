@@ -3,7 +3,7 @@ import os
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
 import pytest
-from PySide6.QtWidgets import QApplication, QWidget
+from PySide6.QtWidgets import QApplication, QStackedWidget, QWidget
 
 from ui.workspace_contract import WorkspaceDefinition
 from ui.workspace_host import WorkspaceHost
@@ -30,6 +30,7 @@ def test_workspace_host_mounts_registry_order_and_activates_by_identity():
     ]
     host.activate('pricing')
     assert host.currentWidget() is host.workspace_widget('pricing')
+    assert host.currentIndex() == host.workspace_indexes['pricing']
     host.close()
 
 
@@ -60,15 +61,20 @@ def test_workspace_host_rejects_factory_results_that_are_not_widgets():
     host.close()
 
 
-def test_workspace_host_exposes_professional_shell_presentation_contract():
+def test_workspace_host_exposes_navigation_rail_shell_contract():
     app = QApplication.instance() or QApplication([])
     host = WorkspaceHost(WorkspaceRegistry())
 
-    assert host.objectName() == 'marketdexWorkspaceHost'
+    assert host.objectName() == 'marketdexApplicationShell'
     assert host.accessibleName() == 'MarketDEX workspaces'
+    assert host.navigation_rail.objectName() == 'marketdexNavigationRail'
+    assert host.workspace_frame.objectName() == 'marketdexWorkspaceFrame'
+    assert host.status_bar.objectName() == 'marketdexStatusBar'
+    assert isinstance(host.workspace_stack, QStackedWidget)
+    assert host.workspace_stack.objectName() == 'marketdexWorkspaceStack'
     assert host.documentMode() is True
     assert host.isMovable() is False
     assert host.tabsClosable() is False
     assert host.tabBar().expanding() is False
-    assert '#2563eb' in host.styleSheet()
+    assert '#38bdf8' in host.styleSheet()
     host.close()
