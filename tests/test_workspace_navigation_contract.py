@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
@@ -135,4 +136,29 @@ def test_shell_publishes_legacy_tab_aliases_without_duplicate_navigation_state()
     assert window.marketdex_workspace_scroll.widget() is not None
     assert window.marketdex_pricing_workspace_scroll.widget() is not None
     assert window.marketdex_listing_workflow_scroll.widget() is not None
+    window.close()
+
+
+def test_pricing_workspace_uses_canonical_dark_theme_contract():
+    app = QApplication.instance() or QApplication([])
+    window = _window_fixture()
+
+    install_viewport_fit_feature(window)
+
+    pricing = window.workspace_host.workspace_widget(PRICING_WORKSPACE_ID)
+    content = window.marketdex_pricing_workspace_scroll.widget()
+    assert pricing is not None
+    assert content.objectName() == 'marketdexPricingWorkspace'
+    assert window.inventory_listing_workflow_handoff.objectName() == (
+        'workspaceHandoffCard'
+    )
+    assert window.inventory_listing_workflow_guidance.objectName() == (
+        'workspaceHandoffGuidance'
+    )
+
+    source = Path(__file__).resolve().parents[1].joinpath(
+        'ui', 'viewport_fit_feature.py'
+    ).read_text(encoding='utf-8')
+    for legacy_color in ('#ffffff', '#d7dee8', '#0f172a', '#475569', '#64748b'):
+        assert legacy_color not in source
     window.close()
