@@ -8,6 +8,7 @@ from ui.workspace_registry import WorkspaceRegistry
 
 
 INVENTORY_WORKSPACE_ID = 'inventory'
+PRODUCT_REGISTRY_WORKSPACE_ID = 'product-registry'
 PRICING_WORKSPACE_ID = 'pricing'
 LISTING_WORKFLOW_WORKSPACE_ID = 'listing-workflow'
 
@@ -19,11 +20,33 @@ class ShellWorkspaceSpec:
     order: int
 
 
+PRODUCT_REGISTRY_WORKSPACE = ShellWorkspaceSpec(
+    PRODUCT_REGISTRY_WORKSPACE_ID,
+    'Product Registry',
+    15,
+)
+
 CORE_SHELL_WORKSPACES = (
     ShellWorkspaceSpec(INVENTORY_WORKSPACE_ID, 'Inventory', 10),
     ShellWorkspaceSpec(PRICING_WORKSPACE_ID, 'Pricing', 20),
     ShellWorkspaceSpec(LISTING_WORKFLOW_WORKSPACE_ID, 'Listing Workflow', 30),
 )
+
+
+def register_product_registry_workspace(
+    registry: WorkspaceRegistry,
+    page: QWidget,
+) -> None:
+    if not isinstance(page, QWidget):
+        raise TypeError('workspace page must be QWidget: product-registry')
+    registry.register(
+        WorkspaceDefinition(
+            workspace_id=PRODUCT_REGISTRY_WORKSPACE.workspace_id,
+            title=PRODUCT_REGISTRY_WORKSPACE.title,
+            factory=lambda page=page: page,
+            order=PRODUCT_REGISTRY_WORKSPACE.order,
+        )
+    )
 
 
 def register_core_shell_workspaces(
