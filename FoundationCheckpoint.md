@@ -1,18 +1,17 @@
-# MarketDEX Foundation Checkpoint 060
+# MarketDEX Foundation Checkpoint 061
 
-**Status:** Active — RT-0.1 Sprint 001 Release Candidate integration
+**Status:** 🏁 Checkpoint Complete — RT-0.1 Sprint 001 Release Candidate
 
 ## Mandatory resume summary
 
 MarketDEX is an offline-first, Windows-desktop collectibles business operating system. Pokémon TCG is the first optimized workflow. Continue the existing permanent codebase; do not restart it, create a competing shell, duplicate persistence authority, or treat chat memory as product authority.
 
-Current active pull request:
+Completed Release Candidate integration:
 
-- PR: `#166`
-- URL: `https://github.com/markperezne8-spec/MarketDEX/pull/166`
-- State: open draft
-- Base: `main`
-- Head: `agent/market-intelligence-foundation`
+- PR #164 merged to `main` at `e6a742b0732222a84986abd5032b792094f34401`.
+- PR #165 merged to `main` at `c535fb5ec85e697f094552712942fa36bba6a6dd`.
+- PR #166 merged to `main` at `fa627032cdab51927b8d257ac89c74578a859d26`.
+- Canonical branch: `main`.
 
 ## Product Owner operating preferences
 
@@ -109,8 +108,8 @@ Sequential RC integration is active:
 - PR #164 post-boundary workflow passed.
 - PR #165 was retargeted to `main`, repaired with the proven Listing Qt dependency and feature-catalog ordering contract, and passed fresh integrated CI.
 - PR #165 merged to `main` at `c535fb5ec85e697f094552712942fa36bba6a6dd`.
-- PR #166 is retargeted to `main` as the final Sprint 001 RC boundary.
-- Latest fully verified PR #166 workflow before final retarget: run `29192808275`, all jobs passed, including source tests, executable packaging, packaged-runtime verification, installer build, and installed-runtime verification.
+- PR #166 final integrated workflow `29193312462` passed against current `main`, including Core, Inventory, Pricing, Listing, Mission Control, Desktop Build, executable packaging, packaged-runtime verification, installer build, and installed-runtime verification.
+- PR #166 merged to `main` at `fa627032cdab51927b8d257ac89c74578a859d26`.
 
 ## Resolved blockers
 
@@ -201,22 +200,19 @@ A milestone is complete only when applicable items are true:
 
 ## Exact next approved task
 
-**Final PR #166 Release Candidate validation and merge.**
+**Product Owner RC synchronization and final smoke check.**
 
-Execution order:
-
-1. run the final integrated PR #166 workflow against current `main`;
-2. verify Core, Inventory, Pricing, Listing, Mission Control, Desktop Build, executable, packaged runtime, installer, and installed runtime;
-3. confirm no duplicate launcher, shell, database, schema, theme, or canonical governance authority;
-4. mark PR #166 ready and merge only when every required gate is green;
-5. verify merged `main`;
-6. pull the final RC baseline and perform one narrow installed/source visual smoke check.
+1. pull canonical `main`;
+2. verify commit `fa62703`;
+3. launch the source application;
+4. confirm Mission Control, Inventory, Pricing, and Listing navigation;
+5. record RT-0.1 RC operator acceptance.
 
 ## Pull and review status
 
-- Pull required now: **NO**
-- Visual review required now: **NO**
-- Next explicit review signal: `RT-0.1 RC READY — PULL NOW`
+- Pull required now: **YES**
+- Visual review required now: **YES — one final RC smoke check**
+- Review signal: `RT-0.1 RC READY — PULL NOW`
 
 ## Progress snapshot
 
@@ -226,7 +222,7 @@ Execution order:
 - Modern application shell: `[██████████] 100%` visually accepted
 - Desktop Build pipeline: `[██████████] 100%` on latest verified integrated run
 - Windows EXE and installer: `[██████████] 100%` on latest verified integrated run
-- Sprint 1 integrated readiness: `[█████████░] 95%` pending final PR #166 RC merge
+- Sprint 1 integrated readiness: `[██████████] 100%` repository and CI verified; Product Owner RC smoke check pending
 
 ## Core instruction
 
