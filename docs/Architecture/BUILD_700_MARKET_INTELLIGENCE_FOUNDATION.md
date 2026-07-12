@@ -1,28 +1,49 @@
 # Build 700 — Market Intelligence Foundation
 
-**Status:** PLAN — architecture reconciliation and authority lock  
+**Status:** PARTIAL — offline read-only operator slice delivered  
 **Workstream:** Market Intelligence  
-**Issue:** #183  
+**Foundation issue:** #183  
+**Status reconciliation issue:** #199  
 **Repository authority:** existing `market_intelligence` package and permanent application composition
 
 ## Decision
 
 Build 700 extends the existing Market Intelligence foundation. It must not create a second composition root, provider registry, observation model, recommendation model, or visualization catalog.
 
-The current implementation is classified as a **Partial foundation**. It already provides stable application-owned catalogs and pure domain models, but it does not yet provide approved live-provider ingestion, persistent observation authority, or an operator workspace.
+The current implementation is classified as a **delivered Partial capability**. It now provides a provider-neutral fixture-backed observation gateway, deterministic attention-signal derivation, an application-owned read-only workspace, an offline Market Signal Explorer, and a catalog-backed offline sample evidence visualization.
+
+No live provider is approved. No persistent market-price authority is approved. No automated execution authority is approved.
+
+## Delivered Build 700 evidence
+
+- Build 700A / PR #184 locked the architecture and authority boundaries.
+- Build 700B / PR #186 added the provider-neutral, fixture-backed Market Observation Gateway.
+- Build 700C / PR #188 added the deterministic Market Attention Signal service.
+- Build 700D / PR #192 mounted the read-only Market Intelligence workspace in the desktop shell.
+- Build 700E / PR #194 added the offline Market Signal Explorer using normalized fixture evidence.
+- Build 700F / PR #196 added the first catalog-backed offline sample evidence visualization for observed price and daily volume.
+
+The delivered operator slice remains offline-first, read-only, deterministic, source-attributed, and non-authoritative for valuation or execution.
 
 ## Existing permanent evidence
 
-- `market_intelligence/composition.py` owns the mode, marketplace, and visualization catalogs.
+- `market_intelligence/composition.py` owns the mode, marketplace, visualization, observation-gateway, and attention-signal composition.
 - `composition/application_composition.py` owns one `MarketIntelligenceComposition` instance.
 - `market_intelligence/modes.py` separates Business and Collector presentation categories.
 - `market_intelligence/marketplaces.py` declares provider capabilities without performing network access.
 - `market_intelligence/observations.py` models source-attributed market observations.
+- `market_intelligence/observation_gateway.py` provides the provider-neutral gateway boundary.
+- `market_intelligence/offline_fixtures.py` provides deterministic offline fixture evidence.
 - `market_intelligence/trends.py` models ordered relative-interest series.
 - `market_intelligence/attention.py` models evidence-backed attention signals and suggested review actions.
+- `market_intelligence/attention_service.py` derives deterministic read-only attention signals.
 - `market_intelligence/sealed_decision.py` provides a pure sealed-versus-open decision calculation.
 - `market_intelligence/visualizations.py` declares supported visualization contracts.
-- `tests/test_market_intelligence_foundation.py` verifies composition ownership and the current domain contracts.
+- `ui/market_intelligence_workspace.py` presents readiness, evidence, signals, and relative offline evidence bars.
+- `tests/test_market_intelligence_foundation.py` verifies composition ownership and domain contracts.
+- `tests/test_build700b_market_observation_gateway.py` verifies gateway behavior and provider isolation.
+- `tests/test_build700c_market_attention_signals.py` verifies deterministic signal derivation and evidence preservation.
+- `tests/test_build700d_market_intelligence_workspace.py` verifies the read-only workspace, explorer, and visualization surface.
 
 ## Authority boundaries
 
@@ -44,7 +65,7 @@ Recommendations such as review, hold, sell, grade, or restock are advisory. They
 
 ### Market Intelligence owns derived evidence
 
-Once separately approved, Market Intelligence may own:
+Within separately approved slices, Market Intelligence may own:
 
 - normalized source observations;
 - source and confidence metadata;
@@ -100,9 +121,10 @@ Market Intelligence presentation must distinguish:
 - cached observation available;
 - provider unavailable;
 - observation stale;
-- observation rejected or low-confidence.
+- observation rejected or low-confidence;
+- deterministic fixture evidence used for offline verification.
 
-No placeholder price, fake trend, or inferred market fact may be shown as authoritative data.
+No placeholder price, fake trend, or inferred market fact may be shown as authoritative data. Fixture-backed values must remain visibly labeled as offline sample evidence.
 
 ## Recommendation rule
 
@@ -118,28 +140,18 @@ A recommendation must include:
 
 Recommendations are read-only decision support. User approval and the owning domain command are always required for execution.
 
-## Build 700A deliverable
+## Delivered partial boundary
 
-This architecture lock is documentation-only. It reconciles the existing foundation and prevents duplicate or speculative implementation.
+Builds 700B through 700F prove a safe read-only vertical slice. They do not authorize:
 
-## Build 700B implementation gate
-
-The next authorized implementation slice is a **read-only Market Observation Gateway contract** using an in-memory or fixture-backed adapter. Build 700B may:
-
-- define a provider-neutral adapter protocol;
-- define explicit success, unavailable, stale, and rejected result states;
-- normalize fixture observations into the existing `MarketObservation` model;
-- register adapters through the existing `MarketIntelligenceComposition`;
-- add deterministic tests for source preservation, ordering, offline behavior, and zero mutation.
-
-Build 700B must not:
-
-- call a live external API;
-- add credentials;
-- scrape websites;
-- persist market prices;
-- create automatic alerts or actions;
-- modify Product Registry, Inventory, Collection, Listing, Portfolio, Reports, or Settlement authority.
+- live external-provider calls;
+- credentials or secrets storage;
+- scraping or browser automation;
+- persistent market-price or valuation authority;
+- background refresh jobs;
+- automatic alerts that execute actions;
+- automatic buying, selling, grading, restocking, repricing, or listing;
+- mutation of Product Registry, Inventory, Collection, Listing, Portfolio, Reports, or Settlement.
 
 ## Verification strategy
 
@@ -151,8 +163,14 @@ Permanent verification must cover:
 - deterministic calculations and ordering;
 - fail-closed invalid inputs;
 - explicit offline/unavailable behavior;
+- fixture evidence labeling;
 - zero mutation of canonical business domains;
-- no provider-specific dependencies in presentation code.
+- no provider-specific dependencies in presentation code;
+- repository status documentation that cites delivered PR evidence without expanding authority.
+
+## Next authorization gate
+
+Further runtime work requires a new repository-backed issue that explicitly selects one narrow extension. A future build must not infer approval for live providers, persistence, background jobs, alerts, valuation authority, or execution commands from the delivered offline read-only slice.
 
 ## Non-goals
 
