@@ -1,5 +1,6 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
+    QAbstractItemView,
     QComboBox,
     QHBoxLayout,
     QHeaderView,
@@ -63,7 +64,7 @@ class ProductRegistryWorkspace(QWidget):
         self.results_table = QTableWidget(0, len(self.COLUMN_HEADERS))
         self.results_table.setObjectName('productRegistryResultsTable')
         self.results_table.setHorizontalHeaderLabels(self.COLUMN_HEADERS)
-        self.results_table.setEditTriggers(QTableWidget.NoEditTriggers)
+        self.results_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.results_table.setSelectionBehavior(QTableWidget.SelectRows)
         self.results_table.setSortingEnabled(False)
         self.results_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)

@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QAbstractItemView
 
 from services.product_registry_lookup_service import ProductRegistryLookupService
 from services.product_registry_service import ProductRegistryService
@@ -33,7 +33,7 @@ def test_workspace_shell_exposes_read_only_search_controls(tmp_path):
     assert workspace.product_type_filter.objectName() == 'productRegistryTypeFilter'
     assert workspace.search_button.text() == 'Search'
     assert workspace.results_table.columnCount() == 8
-    assert workspace.results_table.editTriggers() == workspace.results_table.NoEditTriggers
+    assert workspace.results_table.editTriggers() == QAbstractItemView.NoEditTriggers
 
 
 def test_workspace_search_renders_stable_product_record(tmp_path):

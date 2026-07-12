@@ -62,7 +62,7 @@ def test_product_registry_navigation_remains_read_only(tmp_path):
 
     window.workspace_host.activate(PRODUCT_REGISTRY_WORKSPACE_ID)
     window.product_registry_workspace.search_input.setText('not-present')
-    window.product_registry_workspace.run_search()
+    window.product_registry_workspace.refresh_results()
 
     with composition.product_registry_lookup.database.read_connection() as connection:
         after = {
