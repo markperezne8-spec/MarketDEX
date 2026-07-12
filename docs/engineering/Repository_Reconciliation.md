@@ -53,11 +53,11 @@ Mission Control/dashboard code exists in multiple repository surfaces, including
 
 ### Remaining repository-backed capability gaps
 
-The Capability Matrix identifies Collection and Reports as Missing. Collection is next because Collection Position is the remaining ownership model needed before portfolio or reporting read models can be authoritative. No capability may be selected from roadmap memory alone.
+The Capability Matrix identifies Collection as Partial and Reports as Missing. The provisional Collection read-only projection is now present, but Collection Position remains incomplete as an ownership model until its workbook-backed field vocabulary and transitions are accepted. Reports must continue to wait for that ownership model; no capability may be selected from roadmap memory alone.
 
 ## Reconciliation Result
 
-CAP-008 / Builds 481-497 parity is `Complete` after PR #148, and CAP-005 Product Registry is `Complete` after PR #171. The next controlled action is CAP-006 Collection pre-build classification: establish the workbook-backed Collection Position and ownership boundary before any Collection persistence or workspace implementation.
+CAP-008 / Builds 481-497 parity is `Complete` after PR #148, CAP-005 Product Registry is `Complete` after PR #171, and CAP-006 has a provisional read-only slice after PR #175. The next controlled action is CAP-006 authority expansion: establish the workbook-backed Collection Position field vocabulary and ownership boundary before adding Collection persistence or mutation behavior.
 
 ## Known Reconciliation Debt
 

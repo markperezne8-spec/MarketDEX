@@ -1,8 +1,8 @@
 # CAP-006 — Collection Business Responsibility Intake
 
-**Status:** PLAN — awaiting Spreadsheet Design authority  
+**Status:** PROVISIONAL BUILD SLICE COMPLETE — awaiting Spreadsheet Design authority
 **Source boundary:** M19 authoritative workbook, `❤️ Collection` / `CALC V0 · BUILD 007`  
-**Implementation status:** No Collection schema, service, repository, or UI is authorized
+**Implementation status:** The approved read-only Collection Overview projection is merged; Collection authority expansion remains gated.
 
 ## Confirmed facts
 
@@ -45,7 +45,7 @@ Spreadsheet Design should produce one accepted responsibility contract containin
 
 ## Implementation gate
 
-CAP-006 may move from PLAN to BUILD only after the responsibility contract is accepted and recorded in repository authority. Until then:
+The first read-only projection was explicitly approved as a provisional build boundary and is recorded in `CAP-006_COLLECTION_READONLY_IMPLEMENTATION.md`. Authority expansion still requires the responsibility contract to be accepted and recorded in repository authority. Until then:
 
 - do not add Collection tables or migrations;
 - do not copy Inventory tables into a Collection schema;
@@ -55,4 +55,4 @@ CAP-006 may move from PLAN to BUILD only after the responsibility contract is ac
 
 ## Next action
 
-Resolve the OPEN decisions through Spreadsheet Design, then update this intake document with the accepted vocabulary and link it to the first implementation work order.
+Resolve the OPEN decisions through Spreadsheet Design, then update this intake document with the accepted vocabulary and link it to the authority-expansion work order. The current read-only projection must remain non-mutating while those decisions are open.
