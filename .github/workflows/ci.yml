@@ -27,7 +27,7 @@ jobs:
           cache: pip
       - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
-      - run: pytest -q --tb=short --junitxml=core-results.xml tests/test_runtime_database_authority.py tests/test_cap005a_product_registry_authority.py tests/test_cap005b_inventory_product_link_authority.py tests/test_cap008a_settlement_evidence_parent.py tests/test_cap008b_settlement_evidence_linkage.py tests/test_cap008d_settlement_verification_authority.py tests/test_cap008e_linkage_contradiction_guidance.py tests/test_cap009a_settlement_allocation_evidence.py tests/test_cap009b_allocation_group_cross_check.py tests/test_cap009c_sale_settlement_attribution_readiness.py tests/test_cap009d_allocation_group_lifecycle.py tests/test_build504_stale_cross_check_authority.py tests/test_build504_stale_cross_check_lock_authority.py tests/test_cap010a_allocation_revision_supersession.py tests/test_cap011a_allocation_evidence_lock.py tests/test_m39a_standalone_settlement.py
+      - run: pytest -q --tb=short --junitxml=core-results.xml tests/test_runtime_database_authority.py tests/test_cap005a_product_registry_authority.py tests/test_cap005b_inventory_product_link_authority.py tests/test_cap005c_product_registry_lookup.py tests/test_cap008a_settlement_evidence_parent.py tests/test_cap008b_settlement_evidence_linkage.py tests/test_cap008d_settlement_verification_authority.py tests/test_cap008e_linkage_contradiction_guidance.py tests/test_cap009a_settlement_allocation_evidence.py tests/test_cap009b_allocation_group_cross_check.py tests/test_cap009c_sale_settlement_attribution_readiness.py tests/test_cap009d_allocation_group_lifecycle.py tests/test_build504_stale_cross_check_authority.py tests/test_build504_stale_cross_check_lock_authority.py tests/test_cap010a_allocation_revision_supersession.py tests/test_cap011a_allocation_evidence_lock.py tests/test_m39a_standalone_settlement.py
       - name: Upload core test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -112,7 +112,7 @@ jobs:
           cache: pip
       - run: pip install -q -r requirements-build.txt pytest
       - name: Run Desktop contract gate
-        run: pytest -q --tb=short --junitxml=desktop-results.xml tests/test_architecture_governance_contract.py tests/test_market_intelligence_foundation.py tests/test_application_composition.py tests/test_feature_catalog.py tests/test_workspace_navigation_contract.py tests/test_workspace_host.py tests/test_shell_workspace_catalog.py tests/test_maximized_desktop_launch_contract.py tests/test_packaged_launcher_contract.py tests/test_application_shell_contract.py tests/test_installer_contract.py tests/test_wheel_safe_value_controls.py tests/test_shell_workspace_foundation.py
+        run: pytest -q --tb=short --junitxml=desktop-results.xml tests/test_architecture_governance_contract.py tests/test_market_intelligence_foundation.py tests/test_application_composition.py tests/test_feature_catalog.py tests/test_workspace_navigation_contract.py tests/test_workspace_host.py tests/test_shell_workspace_catalog.py tests/test_product_registry_workspace.py tests/test_product_registry_navigation.py tests/test_maximized_desktop_launch_contract.py tests/test_packaged_launcher_contract.py tests/test_application_shell_contract.py tests/test_installer_contract.py tests/test_wheel_safe_value_controls.py tests/test_shell_workspace_foundation.py
       - name: Upload Desktop test results
         if: always()
         uses: actions/upload-artifact@v4
