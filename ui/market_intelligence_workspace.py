@@ -74,12 +74,12 @@ class MarketIntelligenceWorkspace(QWidget):
             ),
             (
                 'Marketplace Catalog',
-                f'{len(self.intelligence.marketplace_registry.marketplaces)} marketplace(s)',
+                f'{len(self.intelligence.marketplace_registry.definitions)} marketplace(s)',
                 'Static capability registry; no credential access.',
             ),
             (
                 'Mode Catalog',
-                f'{len(self.intelligence.mode_catalog.modes)} mode(s)',
+                f'{len(self.intelligence.mode_catalog.definitions)} mode(s)',
                 'Business and collector categories only.',
             ),
             (
