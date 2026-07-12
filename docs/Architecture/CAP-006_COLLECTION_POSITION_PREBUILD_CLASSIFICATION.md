@@ -15,11 +15,12 @@ Define the smallest safe Collection boundary before implementation begins. This 
 - `docs/Architecture/Modular_Collectibles_Platform_Blueprint.md` requires Collection Position, collection queries, and explicit ownership transitions.
 - `docs/governance/Canonical_Product_Terminology.md` defines Collection as personally held items governed by collector intent and prohibits a competing Personal Collection workspace name.
 - CAP-005 Product Registry is now complete for `REQ-PROD-001` and provides the catalog identity boundary Collection must reference.
+- `artifacts/calc/MarketDEX_Calc_V0_M19_B1_Authoritative_Workbook_Specification_Freeze.ods`, sheet `❤️ Collection`, identifies `CALC V0 · BUILD 007` as a protected worksheet responsibility whose business interface is not yet implemented.
 - No verified root Collection service, repository, schema authority, or dedicated regression suite exists on `main`.
 
 ## Classification
 
-CAP-006 is **Missing** in the permanent runtime. Existing `app/ui/` collection cards, navigation labels, and placeholders are presentation evidence only; they do not establish Collection ownership authority and must not be promoted by assumption.
+CAP-006 is **Missing** in the permanent runtime. The authoritative workbook currently provides only a protected Collection shell and explicitly prohibits speculative formulas, fake metrics, and architecture redesign. Existing `app/ui/` collection cards, navigation labels, and placeholders are presentation evidence only; they do not establish Collection ownership authority and must not be promoted by assumption.
 
 ## Required ownership boundary
 
@@ -37,7 +38,7 @@ The first specification must resolve:
 
 ## Proposed first vertical slice
 
-After workbook authority is approved, the first implementation may be limited to:
+After the Collection worksheet responsibility is expanded and approved by Spreadsheet Design, the first implementation may be limited to:
 
 1. a canonical Collection Position read model over one authoritative persistence boundary;
 2. a read-only Collection Overview workspace using the existing workspace registry and design system;
