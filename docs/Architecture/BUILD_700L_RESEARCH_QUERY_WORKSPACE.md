@@ -1,23 +1,44 @@
-# Build 700L — Research Query Workspace
+# Build 700L — Read-Only Research Query Workspace
 
-**Status:** IMPLEMENTATION — read-only workspace slice
+**Status:** IMPLEMENTED — pending CI and visual verification  
 **Workstream:** Market Intelligence
 
-## Goal
+## Delivered slice
 
-Add a deterministic, read-only saved research query section to the existing Market Intelligence workspace.
+Build 700L adds one read-only saved research query section to the existing Market Intelligence workspace.
 
-## Authorized scope
+The section consumes only `MarketIntelligenceComposition.research_query_catalog` and displays:
 
-- read definitions only from the composition-owned in-memory catalog;
-- display query ID, name, canonical product references, marketplace filters, observation-kind filters, and notes;
-- show explicit offline, in-memory, non-persistent status;
-- preserve the existing readiness, evidence, signal, and visualization sections.
+- query ID;
+- operator-facing name;
+- canonical Product Registry references;
+- marketplace filters;
+- observation-kind filters;
+- notes;
+- explicit in-memory, non-persistent, non-executable status.
 
-## Boundaries
+## Wiring decision
 
-This build introduces no editing controls, persistence, migrations, provider calls, alerts, schedulers, automation, or canonical-domain mutation authority.
+No rewiring was required. `ApplicationComposition` already owns exactly one `MarketIntelligenceComposition`, and the existing workspace receives that same instance. Build 700L preserves that path and introduces no duplicate catalog, service locator, global singleton, persistence adapter, or UI-owned data source.
+
+## Boundaries preserved
+
+Build 700L does not add:
+
+- create, edit, delete, import, or execution controls;
+- database schema or migrations;
+- live providers, credentials, scraping, or cloud sync;
+- alerts, schedulers, background jobs, or automated actions;
+- mutation authority over Product Registry or any other canonical domain.
 
 ## Verification
 
-Focused UI contracts must verify read-only behavior, deterministic ordering, empty-state status, and preservation of existing Market Intelligence sections.
+Automated checks cover:
+
+- explicit empty state;
+- deterministic catalog ordering;
+- normalized field display;
+- read-only table behavior;
+- preservation of readiness, evidence, signal, and visualization sections.
+
+Visual verification is required after merge.
