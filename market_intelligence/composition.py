@@ -10,6 +10,10 @@ from market_intelligence.observation_gateway import (
     MarketObservationGateway,
     build_market_observation_gateway,
 )
+from market_intelligence.research_queries import (
+    ResearchQueryCatalog,
+    build_research_query_catalog,
+)
 from market_intelligence.visualizations import VisualizationCatalog, build_visualization_catalog
 
 
@@ -25,4 +29,7 @@ class MarketIntelligenceComposition:
     )
     attention_signal_service: MarketAttentionSignalService = field(
         default_factory=build_market_attention_signal_service
+    )
+    research_query_catalog: ResearchQueryCatalog = field(
+        default_factory=build_research_query_catalog
     )
