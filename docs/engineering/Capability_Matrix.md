@@ -4,7 +4,7 @@
 **Authority:** Derived operational engineering status
 **Owner:** Lead Software Architect
 **Update trigger:** Merged delivery changes capability evidence or classification
-**Baseline:** `main` after PR #151 / CAP-008 parity closeout
+**Baseline:** `main` after PR #171 / CAP-005C Product Registry operator lookup
 
 ## Status Vocabulary
 
@@ -16,7 +16,7 @@
 | CAP-002 | Pricing and profit guidance | Workbook pricing/profit surfaces | `ui/inventory_cost_feature.py`; `ui/inventory_profit_feature.py`; `ui/inventory_price_guidance_feature.py` | Pricing CI gate; profit and price-guidance feature tests | Complete | Preserve regression coverage |
 | CAP-003 | Listing planning and execution workflow | Listing workflow and sale-completion workbook authority | `listing_plans`; listing package review schema; listing UI feature chain; publication lifecycle services | Listing CI gate; listing plan repository and operator sale-completion tests | Complete | Preserve; reconcile future workbook changes before extension |
 | CAP-004 | Mission Control / dashboard | Mission Control / REQ-MIS-001 | root `launcher.py` selects `services/mission_control_service.py`; root `ui/main_window.py` renders the canonical nine-key read-only snapshot contract; broader `services/dashboard_service.py` remains non-root legacy/secondary evidence | `tests/test_mission_control_integration.py` gates protected SQLite projection semantics, read-only behavior, exact snapshot keys, and permanent-root launcher selection; dedicated Mission Control vertical-slice CI gate | Complete | Preserve root `MissionControlService` as canonical desktop projection; do not promote `DashboardService` or add metrics without a separately justified authority boundary |
-| CAP-005 | Product Registry | Product Registry / REQ-PROD-001 | `services/product_registry_service.py`; product-aware services reference `product_id` | Product-aware closure and M38/M39B acceptance tests provide indirect evidence | Partial | Verify persistence authority and operator surface; do not rebuild service logic |
+| CAP-005 | Product Registry | Product Registry / REQ-PROD-001 | `services/product_registry_service.py`; `services/product_registry_lookup_service.py`; read-only `ui/product_registry_workspace.py`; root application composition and workspace catalog registration | CAP-005A persistence, CAP-005B inventory linkage, CAP-005C lookup/workspace/navigation/zero-mutation tests; Core Tests and Desktop Build CI | Complete | Preserve the canonical registry and read-only operator lookup; extend only through a separately justified capability boundary |
 | CAP-006 | Collection | Collection / REQ-COL-001 | Collection navigation/card surfaces exist under `app/ui/`; no verified root collection service/repository found in reconciliation search | No dedicated collection test evidence found | Missing | Define first vertical slice only after confirming workbook authority and permanent runtime integration point |
 | CAP-007 | Audit and immutable history | Audit Trail / REQ-AUD-001 | `event_identity`; `audit_history`; `audit_events`; append-only and immutable schema triggers | Core runtime authority and multiple authority/conformance tests | Complete | Preserve append-only authority |
 | CAP-008 | Settlement execution authority | Settlement Evidence Intake and Linkage Rules / REQ-SET-001; workbook Builds 481-497 | `services/settlement_service.py`; `repositories/settlement_repository.py`; `settlement_evidence`; `settlement_evidence_linkage`; `settlement_executions`; `settlement_history`; read-only settlement verification authority derivation | CAP-008A parent evidence, CAP-008B linkage, CAP-008C Build 484 pending-allocation, CAP-008D Builds 487-497 verification authority-chain, and M39A settlement regression suites in Core Tests CI; PR #148 green | Complete | Preserve settlement evidence and verification authority; do not create tax, reconciliation, automatic matching/allocation, or settlement-completion authority by assumption |
@@ -29,9 +29,9 @@
 
 ## Current Priority
 
-**CAP-004 and CAP-008 through CAP-011 are Complete.** CAP-004A reconciled the permanent root Mission Control path: root `launcher.py` selects `MissionControlService`, root `MainWindow` consumes its exact nine-key read-only snapshot contract, and focused regression evidence prevents accidental promotion of the broader non-root `DashboardService` surface.
+**CAP-004, CAP-005, and CAP-008 through CAP-011 are Complete.** CAP-004A reconciled the permanent root Mission Control path: root `launcher.py` selects `MissionControlService`, root `MainWindow` consumes its exact nine-key read-only snapshot contract, and focused regression evidence prevents accidental promotion of the broader non-root `DashboardService` surface. CAP-005C closes the prior Product Registry operator-surface gap with a deterministic, read-only workspace over existing registry authority.
 
-The next controlled step is repository-backed capability selection among CAP-005 Product Registry (`Partial`), CAP-006 Collection (`Missing`), and CAP-012 Reports (`Missing`). The first proven gap may create one controlled delivery boundary; Complete capabilities must not be rebuilt.
+The next controlled step is **CAP-006 Collection pre-build classification**. Its first deliverable is a Collection Position and ownership-boundary specification that identifies workbook authority, command/query/event contracts, persistence ownership, and a read-only overview acceptance path. CAP-012 Reports remains Missing and follows that ownership model; it must not create a second collection or inventory authority.
 
 ## Matrix Rule
 

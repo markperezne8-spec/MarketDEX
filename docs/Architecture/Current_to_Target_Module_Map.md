@@ -46,7 +46,7 @@ Map the current repository into the approved modular architecture without rebuil
 
 | Current surface | Classification | Target responsibility | Notes |
 |---|---|---|---|
-| `services/product_registry_service.py` | KEEP / ADAPT | Catalog application service | CAP-005 is Partial; extend existing logic rather than rebuild. |
+| `services/product_registry_service.py`; `services/product_registry_lookup_service.py` | KEEP / ADAPT | Catalog application service and read-only operator lookup | CAP-005 is Complete for REQ-PROD-001; preserve the existing registry and extend only through a separately justified capability boundary. |
 | product-aware lifecycle services | KEEP / ADAPT | Catalog integrations | Preserve `product_id` and existing authority; add explicit module boundaries. |
 | source/product mapping and bill-of-contents structures | REVIEW / ADAPT | Catalog adapters and relationships | Preserve source identity, versioning, and lineage. |
 | Pokémon-specific parsing/rules | MIGRATE | Pokémon TCG category extension | Shared Product/Variant/Set concepts remain category-neutral. |
