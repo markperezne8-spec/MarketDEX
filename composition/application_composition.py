@@ -6,9 +6,11 @@ from market_intelligence.composition import MarketIntelligenceComposition
 from services.inventory_app_service import InventoryAppService
 from services.mission_control_service import MissionControlService
 from services.product_registry_lookup_service import ProductRegistryLookupService
+from services.collection_position_service import CollectionPositionService
 from ui.main_window import MainWindow
 from ui.product_registry_workspace import ProductRegistryWorkspace
-from ui.shell_workspace_catalog import register_product_registry_workspace
+from ui.collection_position_workspace import CollectionPositionWorkspace
+from ui.shell_workspace_catalog import register_collection_position_workspace, register_product_registry_workspace
 from ui.viewport_fit_feature import install_viewport_fit_feature
 from ui.workspace_registry import WorkspaceRegistry
 
@@ -24,6 +26,7 @@ class ApplicationComposition:
         self.mission_control = MissionControlService(self.database_path)
         self.inventory = InventoryAppService(self.database_path)
         self.product_registry_lookup = ProductRegistryLookupService(self.database_path)
+        self.collection_positions = CollectionPositionService(self.database_path)
         self.workspace_registry = WorkspaceRegistry()
         self.market_intelligence = MarketIntelligenceComposition()
 
@@ -38,8 +41,17 @@ class ApplicationComposition:
             self.workspace_registry,
             product_registry_workspace,
         )
+        collection_position_workspace = CollectionPositionWorkspace(
+            self.collection_positions,
+            window,
+        )
+        register_collection_position_workspace(
+            self.workspace_registry,
+            collection_position_workspace,
+        )
         install_viewport_fit_feature(window, self.workspace_registry)
         window.product_registry_workspace = product_registry_workspace
+        window.collection_position_workspace = collection_position_workspace
         window.application_composition = self
         window.market_intelligence = self.market_intelligence
         return window
@@ -48,3 +60,4 @@ class ApplicationComposition:
         self.mission_control.snapshot()
         self.inventory.list_inventory()
         self.product_registry_lookup.search('runtime-verification')
+        self.collection_positions.list_positions()

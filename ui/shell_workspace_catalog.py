@@ -9,6 +9,7 @@ from ui.workspace_registry import WorkspaceRegistry
 
 INVENTORY_WORKSPACE_ID = 'inventory'
 PRODUCT_REGISTRY_WORKSPACE_ID = 'product-registry'
+COLLECTION_POSITION_WORKSPACE_ID = 'collection-position'
 PRICING_WORKSPACE_ID = 'pricing'
 LISTING_WORKFLOW_WORKSPACE_ID = 'listing-workflow'
 
@@ -24,6 +25,11 @@ PRODUCT_REGISTRY_WORKSPACE = ShellWorkspaceSpec(
     PRODUCT_REGISTRY_WORKSPACE_ID,
     'Product Registry',
     15,
+)
+COLLECTION_POSITION_WORKSPACE = ShellWorkspaceSpec(
+    COLLECTION_POSITION_WORKSPACE_ID,
+    'Collection Overview',
+    16,
 )
 
 CORE_SHELL_WORKSPACES = (
@@ -45,6 +51,22 @@ def register_product_registry_workspace(
             title=PRODUCT_REGISTRY_WORKSPACE.title,
             factory=lambda page=page: page,
             order=PRODUCT_REGISTRY_WORKSPACE.order,
+        )
+    )
+
+
+def register_collection_position_workspace(
+    registry: WorkspaceRegistry,
+    page: QWidget,
+) -> None:
+    if not isinstance(page, QWidget):
+        raise TypeError('workspace page must be QWidget: collection-position')
+    registry.register(
+        WorkspaceDefinition(
+            workspace_id=COLLECTION_POSITION_WORKSPACE.workspace_id,
+            title=COLLECTION_POSITION_WORKSPACE.title,
+            factory=lambda page=page: page,
+            order=COLLECTION_POSITION_WORKSPACE.order,
         )
     )
 
