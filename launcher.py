@@ -23,6 +23,7 @@ from ui.inventory_sale_readiness_feature import install_inventory_sale_readiness
 from ui.main_window import MainWindow
 from ui.viewport_fit_feature import install_viewport_fit_feature
 from ui.wheel_safe_value_controls_feature import install_wheel_safe_value_controls_feature
+from ui.workspace_registry import WorkspaceRegistry
 
 APP_NAME = 'MarketDEX'
 DATABASE_FILENAME = 'marketdex.sqlite3'
@@ -53,6 +54,7 @@ def runtime_database_path() -> Path:
 def build_main_window(database_path: Path) -> MainWindow:
     mission_control = MissionControlService(database_path)
     inventory = InventoryAppService(database_path)
+    workspace_registry = WorkspaceRegistry()
     window = MainWindow(mission_control, inventory)
     install_inventory_edit_feature(window)
     install_inventory_cost_feature(window)
@@ -67,7 +69,7 @@ def build_main_window(database_path: Path) -> MainWindow:
     install_inventory_completed_listing_package_queue_feature(window)
     install_inventory_listing_execution_history_feature(window)
     install_inventory_sale_completion_feature(window)
-    install_viewport_fit_feature(window)
+    install_viewport_fit_feature(window, workspace_registry)
     install_wheel_safe_value_controls_feature(window)
     return window
 

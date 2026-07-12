@@ -1,5 +1,23 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QGroupBox, QLabel, QPushButton, QScrollArea, QSizePolicy, QTabWidget, QWidget, QVBoxLayout
+from PySide6.QtWidgets import (
+    QFrame,
+    QGroupBox,
+    QLabel,
+    QPushButton,
+    QScrollArea,
+    QSizePolicy,
+    QWidget,
+    QVBoxLayout,
+)
+
+from ui.shell_workspace_catalog import (
+    INVENTORY_WORKSPACE_ID,
+    LISTING_WORKFLOW_WORKSPACE_ID,
+    PRICING_WORKSPACE_ID,
+    register_core_shell_workspaces,
+)
+from ui.workspace_host import WorkspaceHost
+from ui.workspace_registry import WorkspaceRegistry
 
 
 LISTING_WORKFLOW_WIDGETS = (
@@ -21,11 +39,13 @@ PRICING_WIDGETS = (
 )
 
 
-def _scroll_page(widget, parent):
+def _scroll_page(widget: QWidget, parent: QWidget) -> tuple[QWidget, QScrollArea]:
     page = QWidget(parent)
     layout = QVBoxLayout(page)
     layout.setContentsMargins(0, 0, 0, 0)
+
     scroll = QScrollArea(page)
+    scroll.setFrameShape(QFrame.Shape.NoFrame)
     scroll.setWidgetResizable(True)
     scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
     scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
@@ -34,37 +54,88 @@ def _scroll_page(widget, parent):
     return page, scroll
 
 
-def _compact_inventory_workspace(window):
+def _compact_inventory_workspace(window) -> None:
     panel = window.inventory_panel
     layout = panel.layout()
-    layout.setContentsMargins(12, 10, 12, 10)
-    layout.setSpacing(5)
+    layout.setContentsMargins(16, 14, 16, 14)
+    layout.setSpacing(7)
+
     for value in window.values.values():
         value.setStyleSheet('font-size:18px;font-weight:700')
         box = value.parentWidget()
         if isinstance(box, QGroupBox):
-            box.setMinimumHeight(54); box.setMaximumHeight(64); box.layout().setContentsMargins(8, 8, 8, 5)
+            box.setMinimumHeight(54)
+            box.setMaximumHeight(64)
+            box.layout().setContentsMargins(8, 8, 8, 5)
+
     for value in window.inventory_summary.values():
         value.setStyleSheet('font-size:16px;font-weight:700')
         box = value.parentWidget()
         if isinstance(box, QGroupBox):
-            box.setMinimumHeight(48); box.setMaximumHeight(58); box.layout().setContentsMargins(8, 7, 8, 4)
+            box.setMinimumHeight(48)
+            box.setMaximumHeight(58)
+            box.layout().setContentsMargins(8, 7, 8, 4)
+
     window.inventory_table.setMinimumHeight(120)
     window.inventory_table.setMaximumHeight(16777215)
-    window.inventory_table.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+    window.inventory_table.setSizePolicy(
+        QSizePolicy.Expanding,
+        QSizePolicy.Expanding,
+    )
 
 
-def _install_inventory_pricing_handoff(window, tabs):
-    panel_layout = window.inventory_panel.layout()
-    handoff = QGroupBox('🚀 NEXT: PRICING')
-    handoff_layout = QVBoxLayout(handoff)
-    guidance = QLabel('Select one inventory asset, then continue to Pricing to review cost, fees, shipping, profit, and target ROI.')
+def _create_handoff_card(
+    title: str,
+    guidance_text: str,
+    button_text: str,
+) -> tuple[QGroupBox, QLabel, QPushButton]:
+    card = QGroupBox(title)
+    card.setObjectName('workspaceHandoffCard')
+    card.setStyleSheet(
+        """
+        QGroupBox#workspaceHandoffCard {
+            background: #ffffff;
+            border: 1px solid #d7dee8;
+            border-radius: 8px;
+            font-weight: 700;
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+        QGroupBox#workspaceHandoffCard::title {
+            color: #0f172a;
+            left: 12px;
+            padding: 0 5px;
+        }
+        """
+    )
+    layout = QVBoxLayout(card)
+    layout.setContentsMargins(14, 14, 14, 12)
+    layout.setSpacing(8)
+
+    guidance = QLabel(guidance_text)
     guidance.setWordWrap(True)
-    continue_button = QPushButton('Continue to Pricing →')
+    guidance.setStyleSheet('color:#475569')
+
+    continue_button = QPushButton(button_text)
+    continue_button.setMinimumHeight(34)
+
+    layout.addWidget(guidance)
+    layout.addWidget(continue_button)
+    return card, guidance, continue_button
+
+
+def _install_inventory_pricing_handoff(window, host: WorkspaceHost) -> None:
+    panel_layout = window.inventory_panel.layout()
+    handoff, guidance, continue_button = _create_handoff_card(
+        'Next step: Pricing',
+        'Select one inventory asset, then review cost, fees, shipping, profit, and target ROI.',
+        'Continue to Pricing',
+    )
     continue_button.setEnabled(False)
-    continue_button.clicked.connect(lambda: tabs.setCurrentIndex(1))
-    handoff_layout.addWidget(guidance)
-    handoff_layout.addWidget(continue_button)
+    continue_button.clicked.connect(
+        lambda: host.activate(PRICING_WORKSPACE_ID)
+    )
+
     table_index = panel_layout.indexOf(window.inventory_table)
     insert_at = table_index if table_index >= 0 else panel_layout.count()
     panel_layout.insertWidget(insert_at, handoff)
@@ -77,13 +148,13 @@ def _install_inventory_pricing_handoff(window, tabs):
         window.inventory_continue_to_listing_workflow.setEnabled(selected)
         guidance.setText(
             'Asset selected. Continue to Pricing to review cost, fees, shipping, profit, and target ROI.'
-            if selected else
-            'Select one inventory asset, then continue to Pricing to review cost, fees, shipping, profit, and target ROI.'
+            if selected
+            else 'Select one inventory asset, then review cost, fees, shipping, profit, and target ROI.'
         )
         window.inventory_listing_workflow_guidance.setText(
             'Asset selected. Review pricing, then continue to Listing Workflow.'
-            if selected else
-            'Select an inventory asset before continuing to Listing Workflow.'
+            if selected
+            else 'Select an inventory asset before continuing to Listing Workflow.'
         )
 
     window.show_selected = show_selected
@@ -92,62 +163,141 @@ def _install_inventory_pricing_handoff(window, tabs):
     except RuntimeError:
         pass
     window.inventory_table.itemSelectionChanged.connect(window.show_selected)
+
     window.inventory_pricing_handoff = handoff
     window.inventory_pricing_guidance = guidance
     window.inventory_continue_to_pricing = continue_button
     show_selected()
 
 
-def _install_listing_workflow_handoff(window, pricing_layout):
-    handoff = QGroupBox('🚀 NEXT: LISTING WORKFLOW')
-    handoff_layout = QVBoxLayout(handoff)
-    guidance = QLabel('Select an inventory asset before continuing to Listing Workflow.')
-    guidance.setWordWrap(True)
-    continue_button = QPushButton('Continue to Listing Workflow →')
+def _install_listing_workflow_handoff(
+    window,
+    pricing_layout: QVBoxLayout,
+    host: WorkspaceHost,
+) -> None:
+    handoff, guidance, continue_button = _create_handoff_card(
+        'Next step: Listing Workflow',
+        'Select an inventory asset before continuing to Listing Workflow.',
+        'Continue to Listing Workflow',
+    )
     continue_button.setEnabled(False)
-    handoff_layout.addWidget(guidance)
-    handoff_layout.addWidget(continue_button)
+    continue_button.clicked.connect(
+        lambda: host.activate(LISTING_WORKFLOW_WORKSPACE_ID)
+    )
     pricing_layout.addWidget(handoff)
+
     window.inventory_listing_workflow_handoff = handoff
     window.inventory_listing_workflow_guidance = guidance
     window.inventory_continue_to_listing_workflow = continue_button
 
 
-def install_viewport_fit_feature(window):
-    content = window.takeCentralWidget()
-    panel_layout = window.inventory_panel.layout()
-    listing_content = QWidget()
-    listing_layout = QVBoxLayout(listing_content)
+def _build_listing_workspace(window, panel_layout) -> QWidget:
+    content = QWidget()
+    layout = QVBoxLayout(content)
+    layout.setContentsMargins(16, 14, 16, 14)
+    layout.setSpacing(8)
+
     for attribute in LISTING_WORKFLOW_WIDGETS:
         widget = getattr(window, attribute)
         panel_layout.removeWidget(widget)
-        listing_layout.addWidget(widget)
-    listing_layout.addStretch(1)
-    pricing_content = QWidget()
-    pricing_layout = QVBoxLayout(pricing_content)
-    pricing_title = QLabel('Pricing')
-    pricing_title.setStyleSheet('font-size:30px;font-weight:700')
-    pricing_layout.addWidget(pricing_title)
-    pricing_layout.addWidget(QLabel('PRICE WITH COST, FEES, SHIPPING, PACKAGING, PROFIT, AND TARGET ROI IN VIEW'))
-    _install_listing_workflow_handoff(window, pricing_layout)
+        layout.addWidget(widget)
+
+    layout.addStretch(1)
+    return content
+
+
+def _build_pricing_workspace(
+    window,
+    panel_layout,
+    host: WorkspaceHost,
+) -> QWidget:
+    content = QWidget()
+    layout = QVBoxLayout(content)
+    layout.setContentsMargins(16, 14, 16, 14)
+    layout.setSpacing(8)
+
+    title = QLabel('Pricing')
+    title.setStyleSheet('font-size:30px;font-weight:700;color:#0f172a')
+    subtitle = QLabel(
+        'Price with cost, fees, shipping, packaging, profit, and target ROI in view.'
+    )
+    subtitle.setStyleSheet('color:#64748b;font-size:13px;font-weight:600')
+    layout.addWidget(title)
+    layout.addWidget(subtitle)
+
+    _install_listing_workflow_handoff(window, layout, host)
     for attribute in PRICING_WIDGETS:
         widget = getattr(window, attribute, None)
         if widget is not None:
             panel_layout.removeWidget(widget)
-            pricing_layout.addWidget(widget)
-    pricing_layout.addStretch(1)
-    _compact_inventory_workspace(window)
-    tabs = QTabWidget(window)
-    inventory_page, inventory_scroll = _scroll_page(content, tabs)
-    pricing_page, pricing_scroll = _scroll_page(pricing_content, tabs)
-    listing_page, listing_scroll = _scroll_page(listing_content, tabs)
-    tabs.addTab(inventory_page, 'Inventory')
-    tabs.addTab(pricing_page, 'Pricing')
-    tabs.addTab(listing_page, 'Listing Workflow')
-    window.inventory_continue_to_listing_workflow.clicked.connect(lambda: tabs.setCurrentIndex(2))
-    _install_inventory_pricing_handoff(window, tabs)
-    window.setCentralWidget(tabs)
-    window.marketdex_workspace_tabs = tabs
+            layout.addWidget(widget)
+
+    layout.addStretch(1)
+    return content
+
+
+def _publish_shell_handles(
+    window,
+    registry: WorkspaceRegistry,
+    host: WorkspaceHost,
+    inventory_scroll: QScrollArea,
+    pricing_scroll: QScrollArea,
+    listing_scroll: QScrollArea,
+) -> None:
+    window.workspace_registry = registry
+    window.workspace_host = host
+
+    # Compatibility aliases for existing feature and test boundaries.
+    window.marketdex_workspace_tabs = host
+    window.marketdex_workspace_indexes = host.workspace_indexes
     window.marketdex_workspace_scroll = inventory_scroll
     window.marketdex_pricing_workspace_scroll = pricing_scroll
     window.marketdex_listing_workflow_scroll = listing_scroll
+
+
+def install_viewport_fit_feature(
+    window,
+    workspace_registry: WorkspaceRegistry | None = None,
+) -> None:
+    registry = (
+        workspace_registry
+        if workspace_registry is not None
+        else WorkspaceRegistry()
+    )
+    content = window.takeCentralWidget()
+    if content is None:
+        raise RuntimeError('application shell has no central content to compose')
+
+    panel_layout = window.inventory_panel.layout()
+    if panel_layout is None:
+        raise RuntimeError('inventory panel has no layout')
+
+    host = WorkspaceHost(registry, window)
+    listing_content = _build_listing_workspace(window, panel_layout)
+    pricing_content = _build_pricing_workspace(window, panel_layout, host)
+    _compact_inventory_workspace(window)
+
+    inventory_page, inventory_scroll = _scroll_page(content, host)
+    pricing_page, pricing_scroll = _scroll_page(pricing_content, host)
+    listing_page, listing_scroll = _scroll_page(listing_content, host)
+
+    register_core_shell_workspaces(
+        registry,
+        {
+            INVENTORY_WORKSPACE_ID: inventory_page,
+            PRICING_WORKSPACE_ID: pricing_page,
+            LISTING_WORKFLOW_WORKSPACE_ID: listing_page,
+        },
+    )
+    host.mount_registered_workspaces()
+
+    window.setCentralWidget(host)
+    _publish_shell_handles(
+        window,
+        registry,
+        host,
+        inventory_scroll,
+        pricing_scroll,
+        listing_scroll,
+    )
+    _install_inventory_pricing_handoff(window, host)
