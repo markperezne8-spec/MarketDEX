@@ -35,6 +35,31 @@ jobs:
           name: core-test-results
           path: core-results.xml
 
+  collection:
+    name: Collection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: sudo apt-get update && sudo apt-get install -y libegl1
+      - run: pip install -q -r requirements.txt pytest
+      - name: Run Collection gate
+        run: >-
+          pytest -q --tb=short --junitxml=collection-results.xml
+          tests/test_cap006_collection_position_slice.py
+          tests/test_cap006_collection_position_workspace.py
+          tests/test_cap005c_product_registry_navigation.py
+      - name: Upload Collection test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: collection-test-results
+          path: collection-results.xml
+          if-no-files-found: error
+
   inventory:
     name: Inventory
     runs-on: ubuntu-latest
