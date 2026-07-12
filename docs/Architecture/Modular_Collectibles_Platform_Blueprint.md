@@ -40,6 +40,7 @@ The desktop UI may depend on application contracts. Domain and application rules
 
 MarketDEX should have:
 
+- one application composition root
 - one root `launcher.py`
 - one authoritative `MainWindow`
 - one `ApplicationComposition`
@@ -191,7 +192,7 @@ Recommended pattern:
 - source and provenance metadata
 - explicit schema and contract version
 
-Future synchronization may use a change journal or outbox, but no cloud sync is required now. Current desktop performance and simplicity remain the priority.
+No cloud sync is required now. Future synchronization may use a change journal or outbox. Current desktop performance and simplicity remain the priority.
 
 ## Commands, queries, and events
 
