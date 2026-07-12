@@ -21,13 +21,14 @@ def test_application_composition_mounts_product_registry_in_shell_order(tmp_path
     assert window.workspace_host.workspace_ids == (
         'inventory',
         PRODUCT_REGISTRY_WORKSPACE_ID,
+        'collection-position',
         'pricing',
         'listing-workflow',
     )
     assert [
         window.workspace_host.tabText(index)
         for index in range(window.workspace_host.count())
-    ] == ['Inventory', 'Product Registry', 'Pricing', 'Listing Workflow']
+    ] == ['Inventory', 'Product Registry', 'Collection Overview', 'Pricing', 'Listing Workflow']
     window.close()
 
 
