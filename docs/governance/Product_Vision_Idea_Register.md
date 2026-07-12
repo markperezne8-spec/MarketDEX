@@ -361,7 +361,7 @@ History should support reaction-lag studies, seasonal windows, release behavior,
 
 ## AI-assisted operation
 
-People and authorized AI assistants should use the same application contracts.
+People and authorized AI assistants should use the same controlled application contracts.
 
 AI may:
 
