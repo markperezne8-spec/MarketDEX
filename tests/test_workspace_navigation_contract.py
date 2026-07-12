@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
@@ -89,10 +90,13 @@ def test_top_level_workspaces_remain_available_without_inventory_selection():
 
     install_viewport_fit_feature(window)
 
+    assert window.workspace_host.count() == 3
     assert all(
-        window.workspace_host.isTabEnabled(index)
+        window.workspace_host.widget(index) is not None
         for index in range(window.workspace_host.count())
     )
+    assert len(window.workspace_host._navigation_buttons) == 3
+    assert all(button.isEnabled() for button in window.workspace_host._navigation_buttons)
     window.close()
 
 
@@ -132,4 +136,51 @@ def test_shell_publishes_legacy_tab_aliases_without_duplicate_navigation_state()
     assert window.marketdex_workspace_scroll.widget() is not None
     assert window.marketdex_pricing_workspace_scroll.widget() is not None
     assert window.marketdex_listing_workflow_scroll.widget() is not None
+    window.close()
+
+
+def test_pricing_workspace_uses_canonical_dark_theme_contract():
+    app = QApplication.instance() or QApplication([])
+    window = _window_fixture()
+
+    install_viewport_fit_feature(window)
+
+    pricing = window.workspace_host.workspace_widget(PRICING_WORKSPACE_ID)
+    content = window.marketdex_pricing_workspace_scroll.widget()
+    assert pricing is not None
+    assert content.objectName() == 'marketdexPricingWorkspace'
+    assert window.inventory_listing_workflow_handoff.objectName() == (
+        'workspaceHandoffCard'
+    )
+    assert window.inventory_listing_workflow_guidance.objectName() == (
+        'workspaceHandoffGuidance'
+    )
+
+    source = Path(__file__).resolve().parents[1].joinpath(
+        'ui', 'viewport_fit_feature.py'
+    ).read_text(encoding='utf-8')
+    for legacy_color in ('#ffffff', '#d7dee8', '#0f172a', '#475569', '#64748b'):
+        assert legacy_color not in source
+    window.close()
+
+
+def test_listing_workspace_uses_canonical_dark_theme_contract():
+    app = QApplication.instance() or QApplication([])
+    window = _window_fixture()
+
+    install_viewport_fit_feature(window)
+
+    listing = window.workspace_host.workspace_widget(
+        LISTING_WORKFLOW_WORKSPACE_ID
+    )
+    content = window.marketdex_listing_workflow_scroll.widget()
+    assert listing is not None
+    assert content.objectName() == 'marketdexListingWorkspace'
+
+    theme = Path(__file__).resolve().parents[1].joinpath(
+        'ui', 'design_system', 'qt_theme.py'
+    ).read_text(encoding='utf-8')
+    assert 'QWidget#marketdexListingWorkspace QGroupBox' in theme
+    assert 'QWidget#marketdexListingWorkspace QGroupBox::title' in theme
+    assert 'QWidget#marketdexListingWorkspace QLabel' in theme
     window.close()

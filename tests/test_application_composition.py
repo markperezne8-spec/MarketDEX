@@ -5,6 +5,7 @@ os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 from PySide6.QtWidgets import QApplication
 
 from composition.application_composition import ApplicationComposition
+from market_intelligence.composition import MarketIntelligenceComposition
 from services.inventory_app_service import InventoryAppService
 from services.mission_control_service import MissionControlService
 from ui.main_window import MainWindow
@@ -17,6 +18,7 @@ def test_application_composition_owns_one_shared_runtime_graph(tmp_path):
     assert isinstance(composition.mission_control, MissionControlService)
     assert isinstance(composition.inventory, InventoryAppService)
     assert isinstance(composition.workspace_registry, WorkspaceRegistry)
+    assert isinstance(composition.market_intelligence, MarketIntelligenceComposition)
     assert composition.database_path == tmp_path / 'marketdex.sqlite3'
 
 
@@ -32,6 +34,7 @@ def test_application_composition_builds_the_existing_shell_and_preserves_identit
     assert window.inventory_service is composition.inventory
     assert window.workspace_registry is composition.workspace_registry
     assert window.workspace_host.registry is composition.workspace_registry
+    assert window.market_intelligence is composition.market_intelligence
     window.close()
 
 

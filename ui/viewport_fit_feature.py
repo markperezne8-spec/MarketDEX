@@ -91,30 +91,13 @@ def _create_handoff_card(
 ) -> tuple[QGroupBox, QLabel, QPushButton]:
     card = QGroupBox(title)
     card.setObjectName('workspaceHandoffCard')
-    card.setStyleSheet(
-        """
-        QGroupBox#workspaceHandoffCard {
-            background: #ffffff;
-            border: 1px solid #d7dee8;
-            border-radius: 8px;
-            font-weight: 700;
-            margin-top: 10px;
-            padding-top: 10px;
-        }
-        QGroupBox#workspaceHandoffCard::title {
-            color: #0f172a;
-            left: 12px;
-            padding: 0 5px;
-        }
-        """
-    )
     layout = QVBoxLayout(card)
     layout.setContentsMargins(14, 14, 14, 12)
     layout.setSpacing(8)
 
     guidance = QLabel(guidance_text)
+    guidance.setObjectName('workspaceHandoffGuidance')
     guidance.setWordWrap(True)
-    guidance.setStyleSheet('color:#475569')
 
     continue_button = QPushButton(button_text)
     continue_button.setMinimumHeight(34)
@@ -193,6 +176,7 @@ def _install_listing_workflow_handoff(
 
 def _build_listing_workspace(window, panel_layout) -> QWidget:
     content = QWidget()
+    content.setObjectName('marketdexListingWorkspace')
     layout = QVBoxLayout(content)
     layout.setContentsMargins(16, 14, 16, 14)
     layout.setSpacing(8)
@@ -212,16 +196,17 @@ def _build_pricing_workspace(
     host: WorkspaceHost,
 ) -> QWidget:
     content = QWidget()
+    content.setObjectName('marketdexPricingWorkspace')
     layout = QVBoxLayout(content)
     layout.setContentsMargins(16, 14, 16, 14)
     layout.setSpacing(8)
 
     title = QLabel('Pricing')
-    title.setStyleSheet('font-size:30px;font-weight:700;color:#0f172a')
+    title.setObjectName('marketdexPricingTitle')
     subtitle = QLabel(
         'Price with cost, fees, shipping, packaging, profit, and target ROI in view.'
     )
-    subtitle.setStyleSheet('color:#64748b;font-size:13px;font-weight:600')
+    subtitle.setObjectName('marketdexPricingSubtitle')
     layout.addWidget(title)
     layout.addWidget(subtitle)
 
