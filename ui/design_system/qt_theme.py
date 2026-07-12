@@ -54,10 +54,43 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
     }}
 
     QLabel#marketdexWorkspaceSubtitle,
+    QLabel#marketdexPricingSubtitle,
+    QLabel#workspaceHandoffGuidance,
     QLabel#marketdexPanelDescription,
     QLabel#marketdexKpiEvidence,
     QLabel#marketdexStateDetail {{
         color: {color(ColorRole.TEXT_SECONDARY)};
+    }}
+
+    QWidget#marketdexPricingWorkspace {{
+        background: {color(ColorRole.APP_BACKGROUND)};
+    }}
+
+    QLabel#marketdexPricingTitle {{
+        color: {color(ColorRole.TEXT_PRIMARY)};
+        font-size: 20pt;
+        font-weight: 700;
+    }}
+
+    QLabel#marketdexPricingSubtitle {{
+        font-size: 10pt;
+        font-weight: 600;
+    }}
+
+    QGroupBox#workspaceHandoffCard {{
+        background: {color(ColorRole.SURFACE_PRIMARY)};
+        border: {border['standard']}px solid {color(ColorRole.BORDER_SUBTLE)};
+        border-radius: {radius['panel']}px;
+        color: {color(ColorRole.TEXT_PRIMARY)};
+        font-weight: 700;
+        margin-top: 10px;
+        padding-top: 10px;
+    }}
+
+    QGroupBox#workspaceHandoffCard::title {{
+        color: {color(ColorRole.TEXT_SECONDARY)};
+        left: 12px;
+        padding: 0 5px;
     }}
 
     QLabel#marketdexPanelTitle,
