@@ -24,8 +24,12 @@ def test_market_intelligence_workspace_is_read_only_and_offline_safe():
     assert workspace.readiness_table.item(0, 0).text() == 'Observation Gateway'
     assert workspace.readiness_table.item(0, 1).text() == '1 provider(s) registered'
     assert 'fixture only' in workspace.readiness_table.item(0, 2).text()
-    assert workspace.evidence_table.item(0, 0).text() == 'Mega Evolution ETB'
-    assert workspace.evidence_table.item(0, 1).text() == 'USD 89.99'
+
+    evidence_rows = {
+        workspace.evidence_table.item(row, 0).text(): workspace.evidence_table.item(row, 1).text()
+        for row in range(workspace.evidence_table.rowCount())
+    }
+    assert evidence_rows['Mega Evolution ETB'] == 'USD 89.99'
     assert workspace.signal_table.item(0, 0).text() == 'Demand signal increased'
     assert workspace.visualization_status.text().startswith('Catalog definition: Daily Market Volume')
     assert workspace.price_bar.value() == 89
