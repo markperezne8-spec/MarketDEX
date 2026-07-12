@@ -1,8 +1,10 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QAbstractItemView,
+    QHBoxLayout,
     QHeaderView,
     QLabel,
+    QProgressBar,
     QTableWidget,
     QTableWidgetItem,
     QVBoxLayout,
@@ -45,6 +47,18 @@ class MarketIntelligenceWorkspace(QWidget):
         evidence_title.setObjectName('marketIntelligenceEvidenceTitle')
         signal_title = QLabel('Derived attention signals · read-only')
         signal_title.setObjectName('marketIntelligenceSignalTitle')
+        visualization_title = QLabel('Offline visualization · relative evidence view')
+        visualization_title.setObjectName('marketIntelligenceVisualizationTitle')
+        self.visualization_status = QLabel('Catalog definition: Daily Market Volume · fixture evidence only')
+        self.visualization_status.setObjectName('marketIntelligenceVisualizationStatus')
+
+        self.price_bar = self._bar('Observed price · USD 89.99')
+        self.volume_bar = self._bar('Daily volume · 25 samples')
+        visualization_layout = QVBoxLayout()
+        visualization_layout.addWidget(visualization_title)
+        visualization_layout.addWidget(self.visualization_status)
+        visualization_layout.addLayout(self._bar_row('Market price', self.price_bar))
+        visualization_layout.addLayout(self._bar_row('Daily volume', self.volume_bar))
 
         layout = QVBoxLayout(self)
         layout.addWidget(title)
@@ -55,6 +69,8 @@ class MarketIntelligenceWorkspace(QWidget):
         layout.addWidget(self.evidence_table, 2)
         layout.addWidget(signal_title)
         layout.addWidget(self.signal_table, 1)
+        layout.addLayout(visualization_layout)
+
         self.refresh_results()
 
     def _table(self, headers: tuple[str, ...], object_name: str) -> QTableWidget:
@@ -66,6 +82,21 @@ class MarketIntelligenceWorkspace(QWidget):
         table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         table.horizontalHeader().setStretchLastSection(True)
         return table
+
+    def _bar(self, text: str) -> QProgressBar:
+        bar = QProgressBar()
+        bar.setRange(0, 100)
+        bar.setValue(0)
+        bar.setFormat(text)
+        bar.setTextVisible(True)
+        bar.setObjectName('marketIntelligenceEvidenceBar')
+        return bar
+
+    def _bar_row(self, label: str, bar: QProgressBar) -> QHBoxLayout:
+        row = QHBoxLayout()
+        row.addWidget(QLabel(label))
+        row.addWidget(bar, 1)
+        return row
 
     def refresh_results(self) -> None:
         self._set_rows(self.readiness_table, self.READINESS_HEADERS, self._readiness_rows())
@@ -95,6 +126,12 @@ class MarketIntelligenceWorkspace(QWidget):
             for signal in signals
         )
         self._set_rows(self.signal_table, self.SIGNAL_HEADERS, signal_rows)
+        price = next(item for item in observations if item.kind is ObservationKind.MARKET_PRICE)
+        volume = next(item for item in observations if item.kind is ObservationKind.DAILY_VOLUME)
+        self.price_bar.setValue(min(100, int(price.value)))
+        self.price_bar.setFormat(f'USD {price.value} · offline sample')
+        self.volume_bar.setValue(min(100, int(volume.value * 4)))
+        self.volume_bar.setFormat(f'{volume.value} daily volume · offline sample')
         self.status_label.setText(
             'Market Intelligence is mounted in read-only offline mode · fixture evidence only.'
         )
@@ -142,6 +179,6 @@ class MarketIntelligenceWorkspace(QWidget):
             (
                 'Visualization Catalog',
                 f'{len(self.intelligence.visualization_catalog.definitions)} definition(s)',
-                'Catalog definitions only; no charts rendered in this slice.',
+                'Catalog-backed read-only visualization; no persistent valuation.',
             ),
         )
