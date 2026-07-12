@@ -162,3 +162,25 @@ def test_pricing_workspace_uses_canonical_dark_theme_contract():
     for legacy_color in ('#ffffff', '#d7dee8', '#0f172a', '#475569', '#64748b'):
         assert legacy_color not in source
     window.close()
+
+
+def test_listing_workspace_uses_canonical_dark_theme_contract():
+    app = QApplication.instance() or QApplication([])
+    window = _window_fixture()
+
+    install_viewport_fit_feature(window)
+
+    listing = window.workspace_host.workspace_widget(
+        LISTING_WORKFLOW_WORKSPACE_ID
+    )
+    content = window.marketdex_listing_workflow_scroll.widget()
+    assert listing is not None
+    assert content.objectName() == 'marketdexListingWorkspace'
+
+    theme = Path(__file__).resolve().parents[1].joinpath(
+        'ui', 'design_system', 'qt_theme.py'
+    ).read_text(encoding='utf-8')
+    assert 'QWidget#marketdexListingWorkspace QGroupBox' in theme
+    assert 'QWidget#marketdexListingWorkspace QGroupBox::title' in theme
+    assert 'QWidget#marketdexListingWorkspace QLabel' in theme
+    window.close()
