@@ -16,7 +16,7 @@ def test_market_intelligence_workspace_is_read_only_and_offline_safe():
 
     assert workspace.objectName() == 'marketIntelligenceWorkspace'
     assert workspace.readiness_table.columnCount() == 3
-    assert workspace.readiness_table.rowCount() == 5
+    assert workspace.readiness_table.rowCount() == 6
     assert workspace.evidence_table.rowCount() == 3
     assert workspace.signal_table.rowCount() == 1
     assert workspace.readiness_table.editTriggers() == QAbstractItemView.NoEditTriggers
@@ -24,6 +24,18 @@ def test_market_intelligence_workspace_is_read_only_and_offline_safe():
     assert workspace.readiness_table.item(0, 0).text() == 'Observation Gateway'
     assert workspace.readiness_table.item(0, 1).text() == '1 provider(s) registered'
     assert 'fixture only' in workspace.readiness_table.item(0, 2).text()
+
+    readiness_rows = {
+        workspace.readiness_table.item(row, 0).text(): (
+            workspace.readiness_table.item(row, 1).text(),
+            workspace.readiness_table.item(row, 2).text(),
+        )
+        for row in range(workspace.readiness_table.rowCount())
+    }
+    query_status, query_boundary = readiness_rows['Research Query Catalog']
+    assert query_status == '0 saved query definition(s)'
+    assert 'in-memory' in query_boundary
+    assert 'non-persistent' in query_boundary
 
     evidence_rows = {
         workspace.evidence_table.item(row, 0).text(): workspace.evidence_table.item(row, 1).text()
