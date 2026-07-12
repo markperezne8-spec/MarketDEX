@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 059
+# MarketDEX Foundation Checkpoint 060
 
-**Status:** Active — Sprint 1 shell transformation, permanent collaboration protocol, and build recovery
+**Status:** Active — RT-0.1 Sprint 001 Release Candidate integration
 
 ## Mandatory resume summary
 
@@ -11,7 +11,7 @@ Current active pull request:
 - PR: `#166`
 - URL: `https://github.com/markperezne8-spec/MarketDEX/pull/166`
 - State: open draft
-- Base: `agent/application-composition-root`
+- Base: `main`
 - Head: `agent/market-intelligence-foundation`
 
 ## Product Owner operating preferences
@@ -60,7 +60,7 @@ Active Visual North Star:
 - approved SHA-256: `1269e2af119c569cc5d4f76b82a6f92984a04f6f752119d8e1dcf417557909a5`
 - approved Git blob SHA: `27d4b34b24984678225ae38c7e77240a02d521b4`
 
-The approved PNG exists on `main`. The stacked PR branch may not inherit it until its ancestry is synchronized or merged. Do not claim the binary is present on PR #166 without verifying the branch.
+The approved PNG exists on `main`, is packaged by `MarketDEX.spec`, and is protected by the canonical brand asset packaging contract.
 
 The permanent electric dog Pokémon mascot remains protected and must not be silently removed, replaced, or substantially redesigned.
 
@@ -103,32 +103,23 @@ Latest shell implementation commit before this checkpoint:
 
 ## Latest verified CI state
 
-Workflow run for shell commit `ae89f720`:
+Sequential RC integration is active:
 
-- Core Tests: PASS
-- Inventory: PASS
-- Pricing: PASS
-- Mission Control Visual Slice: PASS
-- Listing: FAIL — existing unresolved Listing gate
-- Desktop Build: FAIL during contract-test stage
-- PyInstaller EXE: skipped because Desktop contract tests failed
-- Packaged-runtime verification: skipped
-- Installer build: skipped
-- Installed-runtime verification: skipped
+- PR #164 merged to `main` at `e6a742b0732222a84986abd5032b792094f34401`.
+- PR #164 post-boundary workflow passed.
+- PR #165 was retargeted to `main`, repaired with the proven Listing Qt dependency and feature-catalog ordering contract, and passed fresh integrated CI.
+- PR #165 merged to `main` at `c535fb5ec85e697f094552712942fa36bba6a6dd`.
+- PR #166 is retargeted to `main` as the final Sprint 001 RC boundary.
+- Latest fully verified PR #166 workflow before final retarget: run `29192808275`, all jobs passed, including source tests, executable packaging, packaged-runtime verification, installer build, and installed-runtime verification.
 
-Do not describe the full workflow as green. The shell-specific and Mission Control focused checks are green; broader release readiness is still blocked.
+## Resolved blockers
 
-## Known blockers
-
-### Listing gate
-
-The Listing CI job remains an existing blocker. It must be repaired before the stacked PR is marked ready or merged for release.
-
-### Desktop Build gate
-
-The Desktop Build job fails during its contract-test command before compilation and packaging. The exact failing assertion must be isolated from the Windows job log, classified as either an outdated contract or a real architecture defect, and repaired with the smallest safe change.
-
-Until Desktop Build passes, no current Windows EXE or installer artifact from this branch should be claimed.
+- Desktop Build contract drift: resolved.
+- Listing Linux Qt runtime dependency: resolved with explicit `libegl1` installation.
+- Sale-completion ordering contract: resolved through canonical `CORE_DESKTOP_FEATURES` dependency evidence.
+- Pricing legacy contrast: resolved and visually accepted.
+- Listing legacy panel styling: resolved and visually accepted.
+- Visual North Star source and package authority: present on `main`.
 
 ## Local source launch and review
 
@@ -210,35 +201,32 @@ A milestone is complete only when applicable items are true:
 
 ## Exact next approved task
 
-**Desktop Build contract recovery while the new shell remains available for focused source validation.**
+**Final PR #166 Release Candidate validation and merge.**
 
 Execution order:
 
-1. inspect the failing Desktop Build job log for run `29152389969`
-2. identify the exact failed test and assertion
-3. determine whether it is stale contract drift or a real implementation defect
-4. apply the smallest safe repair
-5. rerun CI
-6. allow PyInstaller, packaged-runtime verification, installer build, and installed-runtime verification to execute
-7. provide artifact or pull instructions only after truthful validation
-
-Parallel safe work may continue on documentation, shell-focused tests, and non-conflicting visual polish while Desktop CI is being diagnosed.
+1. run the final integrated PR #166 workflow against current `main`;
+2. verify Core, Inventory, Pricing, Listing, Mission Control, Desktop Build, executable, packaged runtime, installer, and installed runtime;
+3. confirm no duplicate launcher, shell, database, schema, theme, or canonical governance authority;
+4. mark PR #166 ready and merge only when every required gate is green;
+5. verify merged `main`;
+6. pull the final RC baseline and perform one narrow installed/source visual smoke check.
 
 ## Pull and review status
 
 - Pull required now: **NO**
 - Visual review required now: **NO**
-- Next explicit review signal: `SPRINT REVIEW READY — PULL NOW`
+- Next explicit review signal: `RT-0.1 RC READY — PULL NOW`
 
 ## Progress snapshot
 
 - Foundation and permanent direction: `[██████████] 100%`
 - Engineering continuity protocol: `[█████████░] 90%`
 - Mission Control first visual slice: `[██████████] 100%` focused validation
-- Modern application shell: `[████████░░] 80%`
-- Desktop Build pipeline: `[████░░░░░░] 40%`
-- Windows EXE and installer: `[██░░░░░░░░] 20%`
-- Sprint 1 integrated readiness: `[██████░░░░] 60%`
+- Modern application shell: `[██████████] 100%` visually accepted
+- Desktop Build pipeline: `[██████████] 100%` on latest verified integrated run
+- Windows EXE and installer: `[██████████] 100%` on latest verified integrated run
+- Sprint 1 integrated readiness: `[█████████░] 95%` pending final PR #166 RC merge
 
 ## Core instruction
 
