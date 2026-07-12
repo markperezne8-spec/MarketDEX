@@ -176,6 +176,7 @@ def _install_listing_workflow_handoff(
 
 def _build_listing_workspace(window, panel_layout) -> QWidget:
     content = QWidget()
+    content.setObjectName('marketdexListingWorkspace')
     layout = QVBoxLayout(content)
     layout.setContentsMargins(16, 14, 16, 14)
     layout.setSpacing(8)
