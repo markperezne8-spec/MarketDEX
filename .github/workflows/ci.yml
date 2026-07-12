@@ -69,6 +69,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+      - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
       - run: pytest -q --tb=short tests/test_listing_plan_repository.py tests/test_operator_sale_completion.py tests/test_listing_workspace_ci_note.py
 
