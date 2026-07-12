@@ -27,6 +27,9 @@ def test_market_intelligence_workspace_is_read_only_and_offline_safe():
     assert workspace.evidence_table.item(0, 0).text() == 'Mega Evolution ETB'
     assert workspace.evidence_table.item(0, 1).text() == 'USD 89.99'
     assert workspace.signal_table.item(0, 0).text() == 'Demand signal increased'
+    assert workspace.visualization_status.text().startswith('Catalog definition: Daily Market Volume')
+    assert workspace.price_bar.value() == 89
+    assert workspace.volume_bar.value() == 100
     workspace.close()
 
 
