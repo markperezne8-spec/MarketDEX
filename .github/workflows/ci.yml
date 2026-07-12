@@ -60,6 +60,32 @@ jobs:
           path: collection-results.xml
           if-no-files-found: error
 
+  market-intelligence:
+    name: Market Intelligence
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: sudo apt-get update && sudo apt-get install -y libegl1
+      - run: pip install -q -r requirements.txt pytest
+      - name: Run Market Intelligence gate
+        run: >-
+          pytest -q --tb=short --junitxml=market-intelligence-results.xml
+          tests/test_market_intelligence_foundation.py
+          tests/test_build700b_market_observation_gateway.py
+          tests/test_build700c_market_attention_signals.py
+          tests/test_build700d_market_intelligence_workspace.py
+      - name: Upload Market Intelligence test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-intelligence-test-results
+          path: market-intelligence-results.xml
+          if-no-files-found: error
+
   inventory:
     name: Inventory
     runs-on: ubuntu-latest
