@@ -15,13 +15,18 @@ def test_market_intelligence_workspace_is_read_only_and_offline_safe():
     workspace = MarketIntelligenceWorkspace(MarketIntelligenceComposition())
 
     assert workspace.objectName() == 'marketIntelligenceWorkspace'
-    assert workspace.results_table.columnCount() == 3
-    assert workspace.results_table.rowCount() == 5
-    assert workspace.results_table.editTriggers() == QAbstractItemView.NoEditTriggers
-    assert workspace.status_label.text() == 'Market Intelligence is mounted in read-only offline mode.'
-    assert workspace.results_table.item(0, 0).text() == 'Observation Gateway'
-    assert workspace.results_table.item(0, 1).text() == '0 provider(s) registered'
-    assert 'no live network calls' in workspace.results_table.item(0, 2).text()
+    assert workspace.readiness_table.columnCount() == 3
+    assert workspace.readiness_table.rowCount() == 5
+    assert workspace.evidence_table.rowCount() == 3
+    assert workspace.signal_table.rowCount() == 1
+    assert workspace.readiness_table.editTriggers() == QAbstractItemView.NoEditTriggers
+    assert workspace.status_label.text().endswith('fixture evidence only.')
+    assert workspace.readiness_table.item(0, 0).text() == 'Observation Gateway'
+    assert workspace.readiness_table.item(0, 1).text() == '1 provider(s) registered'
+    assert 'fixture only' in workspace.readiness_table.item(0, 2).text()
+    assert workspace.evidence_table.item(0, 0).text() == 'Mega Evolution ETB'
+    assert workspace.evidence_table.item(0, 1).text() == 'USD 89.99'
+    assert workspace.signal_table.item(0, 0).text() == 'Demand signal increased'
     workspace.close()
 
 

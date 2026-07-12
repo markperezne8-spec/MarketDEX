@@ -104,4 +104,16 @@ class MarketObservationGateway:
 
 
 def build_market_observation_gateway() -> MarketObservationGateway:
-    return MarketObservationGateway()
+    from market_intelligence.offline_fixtures import (
+        OFFLINE_SAMPLE_SOURCE_ID,
+        build_offline_fixture_observations,
+    )
+
+    return MarketObservationGateway(
+        (
+            FixtureObservationProvider(
+                OFFLINE_SAMPLE_SOURCE_ID,
+                build_offline_fixture_observations(),
+            ),
+        )
+    )
