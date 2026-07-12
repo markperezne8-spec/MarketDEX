@@ -94,8 +94,8 @@ def test_gateway_validates_query_limits_and_duplicate_registration():
         gateway.register(FixtureObservationProvider('FIXTURE'))
 
 
-def test_market_intelligence_composition_owns_single_empty_gateway():
+def test_market_intelligence_composition_owns_single_offline_fixture_gateway():
     composition = MarketIntelligenceComposition()
 
     assert isinstance(composition.observation_gateway, MarketObservationGateway)
-    assert composition.observation_gateway.provider_ids == ()
+    assert composition.observation_gateway.provider_ids == ('offline-fixture',)
