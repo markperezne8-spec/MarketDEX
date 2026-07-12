@@ -60,7 +60,14 @@ def main(argv=None) -> int:
         return 0
     app = QApplication(arguments)
     window = composition.build_main_window()
-    window.showMaximized()
+    screen = app.primaryScreen()
+    if screen is not None:
+        available_geometry = screen.availableGeometry()
+        window.resize(
+            min(1280, available_geometry.width()),
+            min(800, available_geometry.height()),
+        )
+    window.show()
     return app.exec()
 
 

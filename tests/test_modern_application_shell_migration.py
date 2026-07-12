@@ -5,11 +5,13 @@ from pathlib import Path
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 MAIN_WINDOW = REPOSITORY_ROOT / "ui" / "main_window.py"
+WORKSPACE_HOST = REPOSITORY_ROOT / "ui" / "workspace_host.py"
+WORKSPACE_CATALOG = REPOSITORY_ROOT / "ui" / "shell_workspace_catalog.py"
 APPLICATION_COMPOSITION = REPOSITORY_ROOT / "composition" / "application_composition.py"
 
 
 def test_main_window_declares_one_branded_application_shell():
-    source = MAIN_WINDOW.read_text(encoding="utf-8")
+    source = WORKSPACE_HOST.read_text(encoding="utf-8")
 
     assert "marketdexApplicationShell" in source
     assert "marketdexNavigationRail" in source
@@ -19,17 +21,20 @@ def test_main_window_declares_one_branded_application_shell():
 
 
 def test_shell_exposes_persistent_workspace_navigation():
-    source = MAIN_WINDOW.read_text(encoding="utf-8")
+    source = WORKSPACE_HOST.read_text(encoding="utf-8")
+    catalog = WORKSPACE_CATALOG.read_text(encoding="utf-8")
 
     for label in (
-        "Mission Control",
         "Inventory",
         "Pricing",
         "Listing Workflow",
     ):
-        assert repr(label) in source
+        assert label in catalog
 
     assert "setCurrentIndex" in source
+
+    mission_control = MAIN_WINDOW.read_text(encoding="utf-8")
+    assert "Mission Control" in mission_control
 
 
 def test_shell_migration_preserves_existing_business_surfaces():

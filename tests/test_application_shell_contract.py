@@ -13,7 +13,8 @@ def test_root_launcher_delegates_to_the_canonical_application_composition():
     assert 'return ApplicationComposition(database_path)' in launcher
     assert 'return build_application(database_path).build_main_window()' in launcher
     assert 'window = composition.build_main_window()' in launcher
-    assert 'window.showMaximized()' in launcher
+    assert 'window.show()' in launcher
+    assert 'availableGeometry()' in launcher
     assert 'window = MainWindow(self.mission_control, self.inventory)' in composition
     assert 'class MainWindow(QMainWindow):' in main_window
 

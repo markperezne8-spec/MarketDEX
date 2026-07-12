@@ -4,7 +4,7 @@ from pathlib import Path
 def test_windows_rc_packaging_contract_is_present():
     spec = Path('MarketDEX.spec').read_text(encoding='utf-8')
     build_requirements = Path('requirements-build.txt').read_text(encoding='utf-8')
-    workflow = Path('.github/workflows/windows-rc-package-gate.yml').read_text(encoding='utf-8')
+    workflow = Path('.github/workflows/ci.yml').read_text(encoding='utf-8')
 
     assert "['launcher.py']" in spec
     assert "name='MarketDEX'" in spec

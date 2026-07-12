@@ -40,3 +40,4 @@ Thumbs.db
 # LibreOffice temporary/lock files
 .~lock.*#
 *.~lock.*
+.venv-rc/
