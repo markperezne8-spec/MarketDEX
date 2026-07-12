@@ -7,7 +7,10 @@ from PySide6.QtWidgets import QApplication
 from composition.application_composition import ApplicationComposition
 from services.product_registry_lookup_service import ProductRegistryLookupService
 from ui.product_registry_workspace import ProductRegistryWorkspace
-from ui.shell_workspace_catalog import PRODUCT_REGISTRY_WORKSPACE_ID
+from ui.shell_workspace_catalog import (
+    MARKET_INTELLIGENCE_WORKSPACE_ID,
+    PRODUCT_REGISTRY_WORKSPACE_ID,
+)
 
 
 def test_application_composition_mounts_product_registry_in_shell_order(tmp_path):
@@ -22,13 +25,21 @@ def test_application_composition_mounts_product_registry_in_shell_order(tmp_path
         'inventory',
         PRODUCT_REGISTRY_WORKSPACE_ID,
         'collection-position',
+        MARKET_INTELLIGENCE_WORKSPACE_ID,
         'pricing',
         'listing-workflow',
     )
     assert [
         window.workspace_host.tabText(index)
         for index in range(window.workspace_host.count())
-    ] == ['Inventory', 'Product Registry', 'Collection Overview', 'Pricing', 'Listing Workflow']
+    ] == [
+        'Inventory',
+        'Product Registry',
+        'Collection Overview',
+        'Market Intelligence',
+        'Pricing',
+        'Listing Workflow',
+    ]
     window.close()
 
 

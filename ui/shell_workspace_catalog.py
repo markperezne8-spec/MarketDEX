@@ -10,6 +10,7 @@ from ui.workspace_registry import WorkspaceRegistry
 INVENTORY_WORKSPACE_ID = 'inventory'
 PRODUCT_REGISTRY_WORKSPACE_ID = 'product-registry'
 COLLECTION_POSITION_WORKSPACE_ID = 'collection-position'
+MARKET_INTELLIGENCE_WORKSPACE_ID = 'market-intelligence'
 PRICING_WORKSPACE_ID = 'pricing'
 LISTING_WORKFLOW_WORKSPACE_ID = 'listing-workflow'
 
@@ -30,6 +31,11 @@ COLLECTION_POSITION_WORKSPACE = ShellWorkspaceSpec(
     COLLECTION_POSITION_WORKSPACE_ID,
     'Collection Overview',
     16,
+)
+MARKET_INTELLIGENCE_WORKSPACE = ShellWorkspaceSpec(
+    MARKET_INTELLIGENCE_WORKSPACE_ID,
+    'Market Intelligence',
+    17,
 )
 
 CORE_SHELL_WORKSPACES = (
@@ -67,6 +73,22 @@ def register_collection_position_workspace(
             title=COLLECTION_POSITION_WORKSPACE.title,
             factory=lambda page=page: page,
             order=COLLECTION_POSITION_WORKSPACE.order,
+        )
+    )
+
+
+def register_market_intelligence_workspace(
+    registry: WorkspaceRegistry,
+    page: QWidget,
+) -> None:
+    if not isinstance(page, QWidget):
+        raise TypeError('workspace page must be QWidget: market-intelligence')
+    registry.register(
+        WorkspaceDefinition(
+            workspace_id=MARKET_INTELLIGENCE_WORKSPACE.workspace_id,
+            title=MARKET_INTELLIGENCE_WORKSPACE.title,
+            factory=lambda page=page: page,
+            order=MARKET_INTELLIGENCE_WORKSPACE.order,
         )
     )
 

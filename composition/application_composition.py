@@ -10,7 +10,12 @@ from services.collection_position_service import CollectionPositionService
 from ui.main_window import MainWindow
 from ui.product_registry_workspace import ProductRegistryWorkspace
 from ui.collection_position_workspace import CollectionPositionWorkspace
-from ui.shell_workspace_catalog import register_collection_position_workspace, register_product_registry_workspace
+from ui.market_intelligence_workspace import MarketIntelligenceWorkspace
+from ui.shell_workspace_catalog import (
+    register_collection_position_workspace,
+    register_market_intelligence_workspace,
+    register_product_registry_workspace,
+)
 from ui.viewport_fit_feature import install_viewport_fit_feature
 from ui.workspace_registry import WorkspaceRegistry
 
@@ -49,9 +54,18 @@ class ApplicationComposition:
             self.workspace_registry,
             collection_position_workspace,
         )
+        market_intelligence_workspace = MarketIntelligenceWorkspace(
+            self.market_intelligence,
+            window,
+        )
+        register_market_intelligence_workspace(
+            self.workspace_registry,
+            market_intelligence_workspace,
+        )
         install_viewport_fit_feature(window, self.workspace_registry)
         window.product_registry_workspace = product_registry_workspace
         window.collection_position_workspace = collection_position_workspace
+        window.market_intelligence_workspace = market_intelligence_workspace
         window.application_composition = self
         window.market_intelligence = self.market_intelligence
         return window
