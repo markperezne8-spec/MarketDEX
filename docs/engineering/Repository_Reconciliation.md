@@ -47,17 +47,29 @@ CAP-008 through CAP-011 now preserve the workbook settlement and settlement-allo
 
 CAP-005 is Complete for `REQ-PROD-001`. CAP-005A established Product Registry persistence, CAP-005B established inventory-to-product linkage, and CAP-005C established deterministic read-only operator lookup and the canonical Product Registry workspace. Searches by Product ID, canonical name, alias, set, card number, variant, and product type are zero-mutation reads over the existing SQLite authority.
 
+### Delivered Collection read-only slice
+
+PR #175 introduced the provisional CAP-006 Collection Position query surface through `services/collection_position_service.py`, `ui/collection_position_workspace.py`, canonical application composition, workspace registration, and focused projection/workspace/navigation tests.
+
+The delivered contract is intentionally limited to canonical Product Registry identity plus linked Inventory quantity, location, and acquisition evidence. Condition, grade, collector intent, valuation, and Collection lifecycle facts remain absent and must not be inferred.
+
+`docs/Architecture/CAP-006B_COLLECTION_WRITE_AUTHORITY_GATE.md` records the controlling authority boundary. CAP-006 remains `Partial`; no Collection persistence, CRUD, lifecycle command, automatic Inventory conversion, or speculative business vocabulary is authorized.
+
 ### Existing work that must be extended, not rebuilt
 
 Mission Control/dashboard code exists in multiple repository surfaces, including root services and `app/` UI/service components. Product Registry service logic and product-aware lifecycle logic exist. Marketplace allocation and publication lifecycle infrastructure also exist.
 
+The read-only Collection Position service and workspace are now permanent extension points. A later Collection build must extend those surfaces through the existing application composition, runtime database, Product Registry references, Inventory authority separation, and audit architecture rather than introducing parallel replacements.
+
 ### Remaining repository-backed capability gaps
 
-The Capability Matrix identifies Collection as Partial and Reports as Missing. The provisional Collection read-only projection is now present, but Collection Position remains incomplete as an ownership model until its workbook-backed field vocabulary and transitions are accepted. Reports must continue to wait for that ownership model; no capability may be selected from roadmap memory alone.
+The Capability Matrix identifies Collection as Partial and Reports as Missing. Collection Position remains incomplete as an ownership model until its workbook-backed position grain, field vocabulary, evidence ownership, transition rules, and archive semantics are accepted. Reports must continue to wait for that ownership model; no capability may be selected from roadmap memory alone.
 
 ## Reconciliation Result
 
-CAP-008 / Builds 481-497 parity is `Complete` after PR #148, CAP-005 Product Registry is `Complete` after PR #171, and CAP-006 has a provisional read-only slice after PR #175. The next controlled action is CAP-006 authority expansion: establish the workbook-backed Collection Position field vocabulary and ownership boundary before adding Collection persistence or mutation behavior.
+CAP-008 / Builds 481-497 parity is `Complete` after PR #148, CAP-005 Product Registry is `Complete` after PR #171, and CAP-006 has a provisional read-only slice after PR #175.
+
+CAP-006B establishes the next controlled boundary: preserve the existing query-only projection, classify CAP-006 as `Partial`, and block Collection-owned persistence or mutation until the authority gate is satisfied. The next implementation build must be separately approved and must not derive authority from placeholder UI, roadmap language, or this planning record alone.
 
 ## Known Reconciliation Debt
 

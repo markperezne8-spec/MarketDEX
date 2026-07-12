@@ -6,7 +6,7 @@ Trace authoritative workbook specification sources to desktop implementation com
 | Requirement ID | Workbook Source | Desktop Component | Verification | Status |
 |---|---|---|---|---|
 | REQ-INV-001 | Inventory | Inventory Domain / Service / UI | Planned inventory vertical-slice tests | Planned |
-| REQ-COL-001 | Collection | Provisional read-only `CollectionPositionService`; `CollectionPositionWorkspace`; canonical workspace registration and application composition | CAP-006 projection, empty/unmatched, read-only workspace, and navigation tests merged in PR #175 | In Progress |
+| REQ-COL-001 | Collection | Provisional read-only `CollectionPositionService`; `CollectionPositionWorkspace`; canonical workspace registration and application composition; `CAP-006B_COLLECTION_WRITE_AUTHORITY_GATE.md` blocks unapproved Collection persistence and mutations | CAP-006 deterministic projection, bounded search, empty/unmatched, restart-safe read, zero-mutation, read-only workspace, and navigation evidence merged in PR #175; CAP-006B authority separation is documentation-gated | In Progress |
 | REQ-PROD-001 | Product Registry | `ProductRegistryService`; `ProductRegistryLookupService`; read-only `ProductRegistryWorkspace`; canonical workspace catalog and application composition | CAP-005A persistence, CAP-005B linkage, and CAP-005C lookup/workspace/navigation/zero-mutation tests in Core Tests and Desktop Build CI | Verified |
 | REQ-MIS-001 | Mission Control | root `launcher.py`; `MissionControlService`; root `MainWindow` Mission Control cards | Exact snapshot contract, protected SQLite projection, read-only behavior, and permanent-root launcher selection in `test_mission_control_integration.py`; dedicated Mission Control vertical-slice CI gate | Verified |
 | REQ-AUD-001 | Audit Trail | Audit Domain / Service / Repository | Planned append-preservation tests | Planned |
@@ -17,3 +17,5 @@ Trace authoritative workbook specification sources to desktop implementation com
 
 ## Traceability Rule
 A desktop requirement is not complete until its workbook source, implementation component, and verification evidence are identified. Status values are `Planned`, `In Progress`, `Verified`, or `Blocked`.
+
+REQ-COL-001 remains `In Progress` because its read-only projection is verified while its Collection-owned position grain, field vocabulary, evidence ownership, lifecycle, persistence, and mutation contracts remain blocked by the CAP-006B authority gate.
