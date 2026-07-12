@@ -10,12 +10,16 @@ from PySide6.QtWidgets import (
 )
 
 from market_intelligence.composition import MarketIntelligenceComposition
+from market_intelligence.observations import ObservationKind
+from market_intelligence.offline_fixtures import OFFLINE_SAMPLE_PRODUCT_ID, OFFLINE_SAMPLE_SOURCE_ID
 
 
 class MarketIntelligenceWorkspace(QWidget):
     """Read-only Market Intelligence command-center surface."""
 
-    COLUMN_HEADERS = ('Capability', 'Status', 'Boundary')
+    READINESS_HEADERS = ('Capability', 'Status', 'Boundary')
+    EVIDENCE_HEADERS = ('Evidence', 'Value', 'Confidence', 'Sample', 'Observed')
+    SIGNAL_HEADERS = ('Signal', 'Severity', 'Action', 'Evidence')
 
     def __init__(self, intelligence: MarketIntelligenceComposition, parent=None):
         super().__init__(parent)
@@ -25,7 +29,7 @@ class MarketIntelligenceWorkspace(QWidget):
         title = QLabel('Market Intelligence')
         title.setObjectName('marketIntelligenceTitle')
         subtitle = QLabel(
-            'Read-only market signal foundation. Live providers, automation, and mutation authority are intentionally disabled.'
+            'Read-only offline sample evidence. Live providers, automation, and mutation authority are intentionally disabled.'
         )
         subtitle.setWordWrap(True)
         subtitle.setObjectName('marketIntelligenceSubtitle')
@@ -33,39 +37,92 @@ class MarketIntelligenceWorkspace(QWidget):
         self.status_label = QLabel('Market Intelligence readiness not loaded.')
         self.status_label.setObjectName('marketIntelligenceStatusLabel')
 
-        self.results_table = QTableWidget(0, len(self.COLUMN_HEADERS))
-        self.results_table.setObjectName('marketIntelligenceReadinessTable')
-        self.results_table.setHorizontalHeaderLabels(self.COLUMN_HEADERS)
-        self.results_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.results_table.setSelectionBehavior(QTableWidget.SelectRows)
-        self.results_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.results_table.horizontalHeader().setStretchLastSection(True)
+        self.readiness_table = self._table(self.READINESS_HEADERS, 'marketIntelligenceReadinessTable')
+        self.evidence_table = self._table(self.EVIDENCE_HEADERS, 'marketIntelligenceEvidenceTable')
+        self.signal_table = self._table(self.SIGNAL_HEADERS, 'marketIntelligenceSignalTable')
+
+        evidence_title = QLabel('Offline sample evidence · Mega Evolution ETB')
+        evidence_title.setObjectName('marketIntelligenceEvidenceTitle')
+        signal_title = QLabel('Derived attention signals · read-only')
+        signal_title.setObjectName('marketIntelligenceSignalTitle')
 
         layout = QVBoxLayout(self)
         layout.addWidget(title)
         layout.addWidget(subtitle)
         layout.addWidget(self.status_label)
-        layout.addWidget(self.results_table, 1)
+        layout.addWidget(self.readiness_table, 2)
+        layout.addWidget(evidence_title)
+        layout.addWidget(self.evidence_table, 2)
+        layout.addWidget(signal_title)
+        layout.addWidget(self.signal_table, 1)
         self.refresh_results()
 
+    def _table(self, headers: tuple[str, ...], object_name: str) -> QTableWidget:
+        table = QTableWidget(0, len(headers))
+        table.setObjectName(object_name)
+        table.setHorizontalHeaderLabels(headers)
+        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        table.setSelectionBehavior(QTableWidget.SelectRows)
+        table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        table.horizontalHeader().setStretchLastSection(True)
+        return table
+
     def refresh_results(self) -> None:
-        rows = self._readiness_rows()
-        self.results_table.setRowCount(len(rows))
+        self._set_rows(self.readiness_table, self.READINESS_HEADERS, self._readiness_rows())
+        observations = self.intelligence.observation_gateway.list_observations(
+            OFFLINE_SAMPLE_SOURCE_ID,
+            OFFLINE_SAMPLE_PRODUCT_ID,
+        )
+        evidence_rows = tuple(
+            (
+                observation.metadata.get('label', observation.kind.value),
+                self._format_value(observation),
+                f'{observation.confidence:.0%}',
+                str(observation.sample_size or '—'),
+                observation.observed_at.strftime('%Y-%m-%d %H:%M UTC'),
+            )
+            for observation in observations
+        )
+        self._set_rows(self.evidence_table, self.EVIDENCE_HEADERS, evidence_rows)
+        signals = self.intelligence.attention_signal_service.derive_signals(observations)
+        signal_rows = tuple(
+            (
+                signal.title,
+                signal.severity.name.title(),
+                signal.suggested_action.value.title(),
+                ', '.join(signal.evidence_ids),
+            )
+            for signal in signals
+        )
+        self._set_rows(self.signal_table, self.SIGNAL_HEADERS, signal_rows)
+        self.status_label.setText(
+            'Market Intelligence is mounted in read-only offline mode · fixture evidence only.'
+        )
+
+    def _set_rows(
+        self,
+        table: QTableWidget,
+        headers: tuple[str, ...],
+        rows: tuple[tuple[str, ...], ...],
+    ) -> None:
+        table.setRowCount(len(rows))
         for row_index, row in enumerate(rows):
             for column_index, value in enumerate(row):
                 item = QTableWidgetItem(str(value))
                 item.setFlags(item.flags() & ~Qt.ItemIsEditable)
-                self.results_table.setItem(row_index, column_index, item)
-        self.status_label.setText(
-            'Market Intelligence is mounted in read-only offline mode.'
-        )
+                table.setItem(row_index, column_index, item)
+
+    def _format_value(self, observation) -> str:
+        if observation.kind is ObservationKind.MARKET_PRICE:
+            return f'{observation.currency or ""} {observation.value}'
+        return f'{observation.value}'
 
     def _readiness_rows(self) -> tuple[tuple[str, str, str], ...]:
         return (
             (
                 'Observation Gateway',
                 f'{len(self.intelligence.observation_gateway.provider_ids)} provider(s) registered',
-                'Provider-neutral read boundary; no live network calls.',
+                'Provider-neutral read boundary; fixture only, no live network calls.',
             ),
             (
                 'Attention Signal Service',
