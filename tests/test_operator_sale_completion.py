@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from composition.feature_catalog import CORE_DESKTOP_FEATURES
 from core.database_manager import DatabaseManager
 from core.event_repository import EventRepository
 from services.marketplace_lifecycle_service import MarketplaceLifecycleService
@@ -36,7 +37,15 @@ def test_desktop_places_sale_completion_after_listing_history():
     launcher = Path('launcher.py').read_text(encoding='utf-8')
     viewport = Path('ui/viewport_fit_feature.py').read_text(encoding='utf-8')
     feature = Path('ui/inventory_sale_completion_feature.py').read_text(encoding='utf-8')
-    assert launcher.index('install_inventory_listing_execution_history_feature(window)') < launcher.index('install_inventory_sale_completion_feature(window)')
+    feature_ids = [definition.feature_id for definition in CORE_DESKTOP_FEATURES]
+
+    assert 'install_inventory_' not in launcher
+    assert feature_ids.index('inventory-listing-execution-history') < feature_ids.index(
+        'inventory-sale-completion'
+    )
+    assert 'inventory-listing-execution-history' in CORE_DESKTOP_FEATURES[
+        feature_ids.index('inventory-sale-completion')
+    ].depends_on
     assert "'inventory_sale_completion'" in viewport
     assert 'OperatorSaleCompletionService' in feature
     assert "intent='SOLD'" in feature
