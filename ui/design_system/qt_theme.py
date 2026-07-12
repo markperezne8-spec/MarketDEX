@@ -62,8 +62,28 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         color: {color(ColorRole.TEXT_SECONDARY)};
     }}
 
-    QWidget#marketdexPricingWorkspace {{
+    QWidget#marketdexPricingWorkspace,
+    QWidget#marketdexListingWorkspace {{
         background: {color(ColorRole.APP_BACKGROUND)};
+    }}
+
+    QWidget#marketdexListingWorkspace QGroupBox {{
+        background: {color(ColorRole.SURFACE_PRIMARY)};
+        border: {border['standard']}px solid {color(ColorRole.BORDER_SUBTLE)};
+        border-radius: {radius['panel']}px;
+        color: {color(ColorRole.TEXT_PRIMARY)};
+        margin-top: 10px;
+        padding-top: 10px;
+    }}
+
+    QWidget#marketdexListingWorkspace QGroupBox::title {{
+        color: {color(ColorRole.TEXT_SECONDARY)};
+        left: 12px;
+        padding: 0 5px;
+    }}
+
+    QWidget#marketdexListingWorkspace QLabel {{
+        color: {color(ColorRole.TEXT_PRIMARY)};
     }}
 
     QLabel#marketdexPricingTitle {{
