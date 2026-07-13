@@ -4,10 +4,13 @@ from pathlib import Path
 from composition.feature_catalog import install_features
 from market_intelligence.composition import MarketIntelligenceComposition
 from reports.definitions import ReportCatalog, build_report_catalog
+from reports.inventory_age_provider import ApplicationInventoryAgeInputProvider
+from services.collection_position_service import CollectionPositionService
 from services.inventory_app_service import InventoryAppService
+from services.inventory_detail_read import InventoryDetailReadAdapter
+from services.inventory_product_link_read import InventoryProductLinkReadAdapter
 from services.mission_control_service import MissionControlService
 from services.product_registry_lookup_service import ProductRegistryLookupService
-from services.collection_position_service import CollectionPositionService
 from ui.main_window import MainWindow
 from ui.product_registry_workspace import ProductRegistryWorkspace
 from ui.collection_position_workspace import CollectionPositionWorkspace
@@ -31,6 +34,10 @@ class ApplicationComposition:
         self.database_path = Path(self.database_path)
         self.mission_control = MissionControlService(self.database_path)
         self.inventory = InventoryAppService(self.database_path)
+        self.inventory_age_input_provider = ApplicationInventoryAgeInputProvider(
+            InventoryDetailReadAdapter(self.inventory.database.read_connection),
+            InventoryProductLinkReadAdapter(self.inventory.database.read_connection),
+        )
         self.product_registry_lookup = ProductRegistryLookupService(self.database_path)
         self.collection_positions = CollectionPositionService(self.database_path)
         self.workspace_registry = WorkspaceRegistry()
