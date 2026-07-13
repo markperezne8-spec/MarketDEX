@@ -30,6 +30,10 @@ class ReportQueryService:
         | None = None,
     ) -> InventoryAgeReportQueryResult:
         """Execute the only currently approved report through its query boundary."""
+        if not isinstance(request, InventoryAgeReportQueryRequest):
+            raise TypeError(
+                'Inventory Age report query requires InventoryAgeReportQueryRequest'
+            )
         normalized_report_id = str(report_id).strip().lower()
         self._catalog.get(normalized_report_id)
         if normalized_report_id != 'inventory-age-patterns':
