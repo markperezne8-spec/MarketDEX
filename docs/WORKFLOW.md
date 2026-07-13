@@ -9,6 +9,16 @@ This document is the permanent operating contract for ChatGPT-led MarketDEX deve
 - GitHub is always the source of truth.
 - Do not use Codex unless the user explicitly requests it.
 
+## Permanent guidance set
+
+Before selecting a new milestone or runtime capability, review:
+
+- `Vision.md` for product purpose, comprehension, business-value, history, and offline-first guidance;
+- `Workbook_Blueprint.md` for workbook authority and proven business workflow guidance;
+- `docs/WORKFLOW.md` for the permanent delivery and communication contract.
+
+If a required guidance file cannot be located on current `main`, record that gap in the active checkpoint and resolve it before authorizing runtime implementation.
+
 ## Response contract
 
 - Keep responses concise and action-oriented.
@@ -65,6 +75,19 @@ Never instruct the user to pull an unmerged draft branch.
 ## Multitasking rule
 
 While one PR is waiting on CI, another build may start only when it is clearly non-conflicting. Prefer documentation, architecture classification, or tests that do not touch the same files or authority path.
+
+## Mandatory checkpoints
+
+Create a repository checkpoint when the user requests one and at major milestone boundaries. The checkpoint must record:
+
+- builds, issues, PRs, CI runs, and merge commits completed during the session;
+- architecture and authority decisions learned;
+- guidance files reviewed;
+- unresolved evidence or path gaps;
+- the exact next build gate;
+- pull and visual-check status.
+
+A checkpoint is documentation evidence. It does not authorize new runtime, persistence, network, UI, or mutation scope.
 
 ## Merge rule
 
