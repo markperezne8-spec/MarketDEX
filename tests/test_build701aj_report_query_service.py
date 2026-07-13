@@ -40,3 +40,16 @@ def test_build701aj_rejects_unknown_report_before_query() -> None:
         service.query_inventory_age_report('missing-report', request)
 
     assert query.requests == []
+
+
+def test_build701al_rejects_non_contract_request_before_query() -> None:
+    query = _InventoryAgeQuery()
+    service = ReportQueryService(build_report_catalog(), query)
+
+    with pytest.raises(TypeError, match='InventoryAgeReportQueryRequest'):
+        service.query_inventory_age_report(
+            'inventory-age-patterns',
+            object(),
+        )
+
+    assert query.requests == []
