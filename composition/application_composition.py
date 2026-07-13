@@ -137,7 +137,7 @@ class ApplicationComposition:
             self.workspace_registry,
             market_intelligence_workspace,
         )
-        reports_workspace = ReportsWorkspace(self.report_catalog, window)
+        reports_workspace = ReportsWorkspace(self.report_catalog, self.query_report, window)
         register_reports_workspace(
             self.workspace_registry,
             reports_workspace,
