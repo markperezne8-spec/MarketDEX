@@ -296,6 +296,15 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - No Reports workspace, UI, presentation, chart, export, persistence, provider, network, scheduler, alert, or automation behavior was introduced.
 - Next movement remains a separately scoped UI-free Reports integration slice.
 
+---
+
+## 🏁 Checkpoint 031 — Reports Composition Envelope Verification (Build 701AP)
+- Build 701AP verified application composition constructs and routes the immutable `ReportQueryRequest` envelope.
+- Normalized report identity and Inventory Age request values reach the Reports query service.
+- CI run #511 passed all required jobs; PR #327 was squash-merged as `b0e38cbcdcd26936645d51b6bad4b071c6390786`.
+- No Reports workspace, UI, presentation, chart, export, persistence, provider, network, scheduler, alert, or automation behavior was introduced.
+- Next movement remains a separately scoped UI-free Reports integration slice.
+
 ## 📁 Document Governance
 **Permanent Filename:** `CheckpointManifest.md`
 
