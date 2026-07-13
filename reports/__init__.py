@@ -111,3 +111,7 @@ __all__ += (
     'InventoryAgeReportQueryResult',
     'InventoryAgeReportQueryService',
 )
+
+from reports.report_query_service import ReportQueryService
+
+__all__ += ('ReportQueryService',)
