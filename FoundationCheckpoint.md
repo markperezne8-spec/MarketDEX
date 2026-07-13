@@ -49,10 +49,10 @@ The Reports foundation has advanced through controlled, read-only Inventory Age 
 | 701AL | #318 | #319 | #503 | `e34b3bcc` | Enforced the immutable Inventory Age Reports request contract at the routing boundary. |
 | 701AN | #322 | #323 | #507 | `68bd3be3` | Added the immutable `ReportQueryRequest` envelope and composed it through the Reports query service. |
 | 701AP | #326 | #327 | #511 | `b0e38cbc` | Verified application composition constructs and routes the immutable Reports query envelope. |
-| 701BA | #341 | #342 | #512 | `PENDING` | Added the first read-only Inventory Age result presentation surface. |
-| 701BB | #342 | #342 | #514 | `PENDING` | Preserved selected Reports context in result status. |
-| 701BC | #343 | #343 | #516 | `PENDING` | Made catalog-only/read-only execution status explicit in results. |
-| 701BD | #344 | #344 | #538 | `PENDING` | Preserved query context for non-found outcomes. |
+| 701BA | #341 | #341 | #536 | `db7e29db` | Added the first read-only Inventory Age result presentation surface. |
+| 701BB | #342 | #342 | #538 | `3e10020c` | Preserved selected Reports context in result status. |
+| 701BC | #343 | #343 | #540 | `5a92d0f1` | Made catalog-only/read-only execution status explicit in results. |
+| 701BD | #344 | #344 | #542 | `db050228` | Preserved query context for non-found outcomes. |
 | 701BE | #345 | #345 | #544 | `cf3eb90c` | Exposed source authority in found Inventory Age results. |
 | 701BF | #346 | #346 | #546 | `b7e7efd0` | Exposed inventory source authority for all Reports outcomes; visual confirmation pending. |
 
