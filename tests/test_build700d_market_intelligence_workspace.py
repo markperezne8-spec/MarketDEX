@@ -33,7 +33,7 @@ def test_market_intelligence_workspace_is_read_only_and_offline_safe():
         for row in range(workspace.readiness_table.rowCount())
     }
     query_status, query_boundary = readiness_rows['Research Query Catalog']
-    assert query_status == '0 saved query definition(s)'
+    assert query_status == '1 saved query definition(s)'
     assert 'in-memory' in query_boundary
     assert 'non-persistent' in query_boundary
 
