@@ -11,6 +11,7 @@ INVENTORY_WORKSPACE_ID = 'inventory'
 PRODUCT_REGISTRY_WORKSPACE_ID = 'product-registry'
 COLLECTION_POSITION_WORKSPACE_ID = 'collection-position'
 MARKET_INTELLIGENCE_WORKSPACE_ID = 'market-intelligence'
+REPORTS_WORKSPACE_ID = 'reports'
 PRICING_WORKSPACE_ID = 'pricing'
 LISTING_WORKFLOW_WORKSPACE_ID = 'listing-workflow'
 
@@ -36,6 +37,11 @@ MARKET_INTELLIGENCE_WORKSPACE = ShellWorkspaceSpec(
     MARKET_INTELLIGENCE_WORKSPACE_ID,
     'Market Intelligence',
     17,
+)
+REPORTS_WORKSPACE = ShellWorkspaceSpec(
+    REPORTS_WORKSPACE_ID,
+    'Reports',
+    18,
 )
 
 CORE_SHELL_WORKSPACES = (
@@ -89,6 +95,22 @@ def register_market_intelligence_workspace(
             title=MARKET_INTELLIGENCE_WORKSPACE.title,
             factory=lambda page=page: page,
             order=MARKET_INTELLIGENCE_WORKSPACE.order,
+        )
+    )
+
+
+def register_reports_workspace(
+    registry: WorkspaceRegistry,
+    page: QWidget,
+) -> None:
+    if not isinstance(page, QWidget):
+        raise TypeError('workspace page must be QWidget: reports')
+    registry.register(
+        WorkspaceDefinition(
+            workspace_id=REPORTS_WORKSPACE.workspace_id,
+            title=REPORTS_WORKSPACE.title,
+            factory=lambda page=page: page,
+            order=REPORTS_WORKSPACE.order,
         )
     )
 
