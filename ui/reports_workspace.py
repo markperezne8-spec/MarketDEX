@@ -171,7 +171,7 @@ class ReportsWorkspace(QWidget):
         self.result_table.setRowCount(0)
         if not result.is_found or result.row is None:
             self.result_status_label.setText(
-                f'{report_name}: {result.outcome.upper()} · '
+                f'{report_name}: CATALOG-ONLY · {result.outcome.upper()} · '
                 f'{result.reason or "No report row available"}'
             )
             self._set_result_rows(
@@ -184,7 +184,7 @@ class ReportsWorkspace(QWidget):
 
         row = result.row
         self.result_status_label.setText(
-            f'{report_name}: FOUND · read-only evidence'
+            f'{report_name}: FOUND · CATALOG-ONLY · READ-ONLY EVIDENCE'
         )
         self._set_result_rows(
             (

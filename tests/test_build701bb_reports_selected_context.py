@@ -19,7 +19,7 @@ def test_build701bb_result_status_preserves_selected_report_context() -> None:
     )
 
     assert workspace.result_status_label.text() == (
-        'Inventory Age Patterns: NOT_FOUND · not found'
+        'Inventory Age Patterns: CATALOG-ONLY · NOT_FOUND · not found'
     )
     assert workspace.result_table.item(0, 0).text() == 'Outcome'
     workspace.close()
