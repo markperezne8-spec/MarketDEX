@@ -219,6 +219,6 @@ class MarketIntelligenceWorkspace(QWidget):
             (
                 'Research Query Catalog',
                 f'{len(self.intelligence.research_query_catalog.query_ids)} saved query definition(s)',
-                'Composition-owned in-memory definitions; no persistence or execution.',
+                'Composition-owned in-memory definitions; non-persistent and non-executable.',
             ),
         )
