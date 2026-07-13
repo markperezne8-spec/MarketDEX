@@ -3,7 +3,9 @@ from dataclasses import FrozenInstanceError
 import pytest
 
 from market_intelligence.composition import MarketIntelligenceComposition
+from market_intelligence.offline_fixtures import OFFLINE_SAMPLE_PRODUCT_ID
 from market_intelligence.research_queries import (
+    OFFLINE_RESEARCH_QUERY_FIXTURE,
     ResearchQueryCatalog,
     ResearchQueryDefinition,
 )
@@ -86,11 +88,25 @@ def test_research_query_catalog_is_deterministic_and_rejects_duplicates():
         catalog.get('missing')
 
 
-def test_market_intelligence_composition_owns_one_empty_in_memory_catalog():
+def test_offline_research_query_fixture_is_provider_neutral_and_read_only():
+    assert OFFLINE_RESEARCH_QUERY_FIXTURE.query_id == 'mega-evolution-etb-watch'
+    assert OFFLINE_RESEARCH_QUERY_FIXTURE.name == 'Mega Evolution ETB Watch'
+    assert OFFLINE_RESEARCH_QUERY_FIXTURE.product_ids == (OFFLINE_SAMPLE_PRODUCT_ID,)
+    assert OFFLINE_RESEARCH_QUERY_FIXTURE.marketplace_ids == ('ebay', 'tcgplayer')
+    assert OFFLINE_RESEARCH_QUERY_FIXTURE.observation_kinds == (
+        'active_listing',
+        'daily_volume',
+        'market_price',
+    )
+    assert 'Offline fixture only' in OFFLINE_RESEARCH_QUERY_FIXTURE.notes
+
+
+def test_market_intelligence_composition_owns_one_in_memory_fixture_catalog():
     first = MarketIntelligenceComposition()
     second = MarketIntelligenceComposition()
 
     assert isinstance(first.research_query_catalog, ResearchQueryCatalog)
-    assert first.research_query_catalog.query_ids == ()
-    assert second.research_query_catalog.query_ids == ()
+    assert first.research_query_catalog.query_ids == ('mega-evolution-etb-watch',)
+    assert second.research_query_catalog.query_ids == ('mega-evolution-etb-watch',)
     assert first.research_query_catalog is not second.research_query_catalog
+    assert first.research_query_catalog.get('mega-evolution-etb-watch') is OFFLINE_RESEARCH_QUERY_FIXTURE
