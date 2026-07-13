@@ -107,3 +107,17 @@ Every future MarketDEX chat must preserve this operating rule:
 - Codex must not be used unless Mark explicitly authorizes it in the current conversation.
 - The default handover state is **No Codex**.
 - Future chats must read this workflow contract and the required checkpoint documents before taking action.
+
+
+## Accelerated batch-build rhythm
+
+When Mark requests faster progress, future chats may bundle up to three tightly related, non-conflicting micro-features into one build.
+
+The accelerated rhythm uses:
+
+1. One narrowly scoped issue, branch, draft PR, and CI gate.
+2. One consolidated visual check when the batch changes visible behavior.
+3. One checkpoint synchronization after the batch.
+4. The same CI → ready → squash-merge and GitHub Desktop pull rules.
+
+Do not batch unrelated architecture, authority, persistence, migration, provider, or automation changes. Preserve composition ownership, explicit non-goals, and the smallest coherent build boundary.
