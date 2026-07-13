@@ -14,6 +14,10 @@ from market_intelligence.research_queries import (
     ResearchQueryCatalog,
     build_research_query_catalog,
 )
+from market_intelligence.research_query_preview import (
+    ResearchQueryPreviewService,
+    build_research_query_preview_service,
+)
 from market_intelligence.visualizations import VisualizationCatalog, build_visualization_catalog
 
 
@@ -33,3 +37,9 @@ class MarketIntelligenceComposition:
     research_query_catalog: ResearchQueryCatalog = field(
         default_factory=build_research_query_catalog
     )
+    research_query_preview_service: ResearchQueryPreviewService = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.research_query_preview_service = build_research_query_preview_service(
+            self.observation_gateway
+        )
