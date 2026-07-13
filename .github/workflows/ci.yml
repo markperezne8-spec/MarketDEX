@@ -202,7 +202,7 @@ jobs:
           cache: pip
       - run: pip install -q -r requirements-build.txt pytest
       - name: Run Desktop contract gate
-        run: pytest -q --tb=short --junitxml=desktop-results.xml tests/test_architecture_governance_contract.py tests/test_market_intelligence_foundation.py tests/test_application_composition.py tests/test_build701w_inventory_age_composition.py tests/test_feature_catalog.py tests/test_workspace_navigation_contract.py tests/test_workspace_host.py tests/test_shell_workspace_catalog.py tests/test_cap005c_product_registry_workspace.py tests/test_cap005c_product_registry_navigation.py tests/test_maximized_desktop_launch_contract.py tests/test_packaged_launcher_contract.py tests/test_application_shell_contract.py tests/test_installer_contract.py tests/test_wheel_safe_value_controls.py tests/test_shell_workspace_foundation.py
+        run: pytest -q --tb=short --junitxml=desktop-results.xml tests/test_architecture_governance_contract.py tests/test_market_intelligence_foundation.py tests/test_application_composition.py tests/test_build701w_inventory_age_composition.py tests/test_build701aa_inventory_age_query_composition.py tests/test_feature_catalog.py tests/test_workspace_navigation_contract.py tests/test_workspace_host.py tests/test_shell_workspace_catalog.py tests/test_cap005c_product_registry_workspace.py tests/test_cap005c_product_registry_navigation.py tests/test_maximized_desktop_launch_contract.py tests/test_packaged_launcher_contract.py tests/test_application_shell_contract.py tests/test_installer_contract.py tests/test_wheel_safe_value_controls.py tests/test_shell_workspace_foundation.py
       - name: Upload Desktop test results
         if: always()
         uses: actions/upload-artifact@v4
