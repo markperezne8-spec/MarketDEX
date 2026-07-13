@@ -11,6 +11,7 @@ from reports.inventory_age_query import (
     InventoryAgeReportQueryResult,
     InventoryAgeReportQueryService,
 )
+from reports.report_query_service import ReportQueryService
 from services.collection_position_service import CollectionPositionService
 from services.inventory_app_service import InventoryAppService
 from services.inventory_detail_read import InventoryDetailReadAdapter
@@ -52,6 +53,10 @@ class ApplicationComposition:
         self.workspace_registry = WorkspaceRegistry()
         self.market_intelligence = MarketIntelligenceComposition()
         self.report_catalog: ReportCatalog = build_report_catalog()
+        self.report_query = ReportQueryService(
+            self.report_catalog,
+            self.inventory_age_report_query,
+        )
 
     def query_inventory_age(
         self,
@@ -68,11 +73,13 @@ class ApplicationComposition:
         inventory_position_id: str,
         as_of_date: date,
     ) -> InventoryAgeReportQueryResult:
-        """Route a catalog-approved report to its composition-owned query boundary."""
-        self.report_catalog.get(report_id)
-        if report_id.strip().lower() != 'inventory-age-patterns':
-            raise KeyError(f'unsupported executable report: {report_id.strip().lower()}')
-        return self.query_inventory_age(inventory_position_id, as_of_date)
+        """Route a catalog-approved report through the Reports query service."""
+        request = InventoryAgeReportQueryRequest(inventory_position_id, as_of_date)
+        return self.report_query.query_inventory_age_report(
+            report_id,
+            request,
+            query_inventory_age=self.query_inventory_age,
+        )
 
     def build_main_window(self) -> MainWindow:
         window = MainWindow(self.mission_control, self.inventory)
