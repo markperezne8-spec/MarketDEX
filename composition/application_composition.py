@@ -73,6 +73,10 @@ class ApplicationComposition:
         """Return canonical evidence families for one approved report."""
         return self.get_report_definition(report_id).evidence_families
 
+    def report_source_domains(self, report_id: str) -> tuple[str, ...]:
+        """Return canonical source domains for one approved report."""
+        return self.get_report_definition(report_id).source_domains
+
     def query_inventory_age(
         self,
         inventory_position_id: str,
