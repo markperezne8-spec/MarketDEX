@@ -10,6 +10,7 @@ from ui.product_registry_workspace import ProductRegistryWorkspace
 from ui.shell_workspace_catalog import (
     MARKET_INTELLIGENCE_WORKSPACE_ID,
     PRODUCT_REGISTRY_WORKSPACE_ID,
+    REPORTS_WORKSPACE_ID,
 )
 
 
@@ -26,6 +27,7 @@ def test_application_composition_mounts_product_registry_in_shell_order(tmp_path
         PRODUCT_REGISTRY_WORKSPACE_ID,
         'collection-position',
         MARKET_INTELLIGENCE_WORKSPACE_ID,
+        REPORTS_WORKSPACE_ID,
         'pricing',
         'listing-workflow',
     )
@@ -37,6 +39,7 @@ def test_application_composition_mounts_product_registry_in_shell_order(tmp_path
         'Product Registry',
         'Collection Overview',
         'Market Intelligence',
+        'Reports',
         'Pricing',
         'Listing Workflow',
     ]
