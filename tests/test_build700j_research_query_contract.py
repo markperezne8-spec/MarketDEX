@@ -12,8 +12,8 @@ from market_intelligence.research_queries import (
 def test_research_query_definition_normalizes_provider_neutral_fields():
     definition = ResearchQueryDefinition(
         query_id='  Sealed-Watch  ',
-        name='  Sealed Watch  ',
-        product_ids=('PRODUCT-2', 'PRODUCT-1', 'PRODUCT-1'),
+        name='  Sealed   Watch  ',
+        product_ids=('PRODUCT-2', 'PRODUCT-1'),
         observation_kinds=('DAILY_VOLUME', 'market_price'),
         marketplace_ids=('TCGPLAYER', 'ebay'),
         notes='  review only  ',
@@ -38,6 +38,33 @@ def test_research_query_definition_fails_closed_for_blank_required_values():
         ResearchQueryDefinition(query_id='valid', name='Valid', product_ids=(' ',))
 
 
+def test_research_query_definition_requires_canonical_query_id():
+    for invalid_query_id in ('sealed watch', 'sealed_watch', '-sealed', 'sealed-', 'sealed--watch'):
+        with pytest.raises(ValueError, match='canonical lowercase letters'):
+            ResearchQueryDefinition(query_id=invalid_query_id, name='Valid')
+
+
+def test_research_query_definition_rejects_duplicate_filters_after_normalization():
+    with pytest.raises(ValueError, match='duplicate product_id values: PRODUCT-1'):
+        ResearchQueryDefinition(
+            query_id='products',
+            name='Products',
+            product_ids=(' PRODUCT-1 ', 'PRODUCT-1'),
+        )
+    with pytest.raises(ValueError, match='duplicate observation_kind values: daily_volume'):
+        ResearchQueryDefinition(
+            query_id='observations',
+            name='Observations',
+            observation_kinds=('DAILY_VOLUME', 'daily_volume'),
+        )
+    with pytest.raises(ValueError, match='duplicate marketplace_id values: ebay'):
+        ResearchQueryDefinition(
+            query_id='marketplaces',
+            name='Marketplaces',
+            marketplace_ids=('EBAY', ' ebay '),
+        )
+
+
 def test_research_query_catalog_is_deterministic_and_rejects_duplicates():
     beta = ResearchQueryDefinition(query_id='beta', name='Beta')
     alpha_b = ResearchQueryDefinition(query_id='alpha-b', name='Alpha')
@@ -53,6 +80,8 @@ def test_research_query_catalog_is_deterministic_and_rejects_duplicates():
     assert catalog.get(' ALPHA-A ') is alpha_a
     with pytest.raises(ValueError, match='already registered'):
         catalog.register(ResearchQueryDefinition(query_id='ALPHA-A', name='Duplicate'))
+    with pytest.raises(TypeError, match='definition must be ResearchQueryDefinition'):
+        catalog.register(object())
     with pytest.raises(KeyError, match='unknown research query'):
         catalog.get('missing')
 
