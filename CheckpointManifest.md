@@ -257,6 +257,16 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 
 ---
 
+## 🏁 Checkpoint 027 — Reports Request Continuity and Chat Handoff (Builds 701AF–701AH)
+- Build 701AF defined the immutable validated `InventoryAgeReportQueryRequest`.
+- Build 701AG connected that request to the query service while preserving one provider call and explicit outcomes.
+- Build 701AH routed the application composition boundary through the validated request.
+- The next chat must read the five governing documents plus `FoundationCheckpoint.md` and this manifest before taking action.
+- Reports remains offline-first, deterministic, read-only, UI-free, export-free, persistence-free, and forbidden from direct source-domain SQLite access.
+- Next runtime gate remains a separately scoped UI-free integration slice after Mark pulls current `main`.
+
+---
+
 ## 📁 Document Governance
 **Permanent Filename:** `CheckpointManifest.md`
 
