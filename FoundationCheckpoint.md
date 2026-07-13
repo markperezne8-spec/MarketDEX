@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 069
+# MarketDEX Foundation Checkpoint 071
 
-**Status:** 🏁 Checkpoint Complete — Reports Foundation Progression
+**Status:** 🔄 Checkpoint Synchronization — Reports Result Presentation
 **Canonical branch:** `main`
 **Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
@@ -8,7 +8,7 @@
 
 MarketDEX remains an offline-first Windows desktop collectibles operating system. Pokémon TCG is the first optimized workflow. Continue the existing permanent codebase; do not restart it, create a competing shell, duplicate persistence authority, or treat chat history as product authority.
 
-The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, and catalog-routing, immutable-request, and request-service integration, catalog-approved routing, request-contract hardening, immutable request-envelope integration, composition-envelope verification, and checkpoint synchronization slices. No Reports workspace, UI, export, persistence authority, cache, mutation, network behavior, or automation was introduced.
+The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, catalog-routing, immutable-request, request-service integration, catalog-approved routing, request-contract hardening, immutable request-envelope integration, composition-envelope verification, catalog-to-composition presentation, and result-context/source-authority slices. Reports remains offline-first, deterministic, read-only, and composition-owned; no live provider, persistence authority, cache, mutation, network behavior, export, scheduler, alert, or automation was introduced.
 
 ## Permanent operating rules
 
@@ -49,6 +49,12 @@ The Reports foundation has advanced through controlled, read-only Inventory Age 
 | 701AL | #318 | #319 | #503 | `e34b3bcc` | Enforced the immutable Inventory Age Reports request contract at the routing boundary. |
 | 701AN | #322 | #323 | #507 | `68bd3be3` | Added the immutable `ReportQueryRequest` envelope and composed it through the Reports query service. |
 | 701AP | #326 | #327 | #511 | `b0e38cbc` | Verified application composition constructs and routes the immutable Reports query envelope. |
+| 701BA | #341 | #342 | #512 | `PENDING` | Added the first read-only Inventory Age result presentation surface. |
+| 701BB | #342 | #342 | #514 | `PENDING` | Preserved selected Reports context in result status. |
+| 701BC | #343 | #343 | #516 | `PENDING` | Made catalog-only/read-only execution status explicit in results. |
+| 701BD | #344 | #344 | #538 | `PENDING` | Preserved query context for non-found outcomes. |
+| 701BE | #345 | #345 | #544 | `cf3eb90c` | Exposed source authority in found Inventory Age results. |
+| 701BF | #346 | #346 | #546 | `b7e7efd0` | Exposed inventory source authority for all Reports outcomes; visual confirmation pending. |
 
 All listed CI runs passed their complete required jobs, including Reports, Core Tests, Desktop Build, packaged runtime, installer build, and installed-runtime verification.
 
@@ -70,7 +76,9 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 
 ## Exact next gate
 
-**A further UI-free Reports integration slice may proceed after local synchronization.**
+**Complete the Build 701BF visual acceptance gate, then proceed with the next separately scoped Reports slice.**
+
+Required visual confirmation: a deliberately nonexistent inventory position produces a `NOT_FOUND` result whose result table shows `Source domain = inventory`, while preserving outcome, reason, inventory position, and as-of date.
 
 The next runtime build may extend the composed Inventory Age query path only through deterministic, read-only application boundaries and approved evidence. It must:
 
@@ -81,8 +89,8 @@ The next runtime build may extend the composed Inventory Age query path only thr
 ## Pull and visual status
 
 - Pull required now: **NO**
-- Pull scope: Builds **701AJ, 701AL, 701AN, and 701AP**
-- Visual review required now: **NO**
+- Pull scope: Build **701BF** is merged and must already be synchronized locally for visual review.
+- Visual review required now: **YES — Build 701BF confirmation pending**
 - ChatGPT Work required now: **NO**
 
 ## Progress snapshot
@@ -95,7 +103,7 @@ The next runtime build may extend the composed Inventory Age query path only thr
 - Reports request contract enforcement: `[██████████] 100%` — immutable request type is enforced before query invocation.
 - Reports request-envelope integration: `[██████████] 100%` — report identity and approved Inventory Age request are composed immutably.
 - Composition-envelope verification: `[██████████] 100%` — normalized request routing is covered.
-- Reports workspace and visual presentation: `[░░░░░░░░░░] 0%` — not authorized.
+- Reports workspace and visual presentation: `[██████████] 100%` — first read-only result surface complete; Build 701BF source-authority visual acceptance pending.
 
 ## Next-chat handoff
 
@@ -138,6 +146,15 @@ Treat GitHub as the source of truth. Preserve the concise progress-bar workflow,
 - Merge commit: `b0e38cbcdcd26936645d51b6bad4b071c6390786`.
 - No visible application change was introduced; visual review remains not required.
 - Next movement remains a separately scoped UI-free Reports integration slice after local synchronization.
+
+## Checkpoint 071 synchronization
+
+- Builds 701BA–701BF completed the first read-only Inventory Age result-presentation sequence.
+- Build 701BA introduced the result surface; Builds 701BB–701BD preserved selected report context, catalog-only status, and non-found query context.
+- Build 701BE exposed source authority for found results; Build 701BF exposed `Source domain = inventory` for non-found results.
+- PR #346 passed CI run #546 and was squash-merged as `b7e7efd021826698b88daad43ba0c9cad47261d0`.
+- Visual acceptance remains pending until the deliberate `NOT_FOUND` test confirms `Source domain = inventory`.
+- Build 701BG is documentation-only checkpoint synchronization and introduces no runtime or visual change.
 
 ## Core instruction
 
