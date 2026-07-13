@@ -225,8 +225,7 @@ jobs:
           if-no-files-found: error
       - name: Install Inno Setup compiler
         shell: pwsh
-        run: |
-          choco install innosetup -y --no-progress
+        run: choco install innosetup -y --no-progress
       - name: Build MarketDEX installer
         shell: pwsh
         run: |
