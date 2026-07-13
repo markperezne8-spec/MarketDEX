@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from datetime import date
 
 from reports.definitions import ReportCatalog
 from reports.inventory_age_query import (
@@ -25,7 +26,7 @@ class ReportQueryService:
         self,
         report_id: str,
         request: InventoryAgeReportQueryRequest,
-        query_inventory_age: Callable[[str, object], InventoryAgeReportQueryResult]
+        query_inventory_age: Callable[[str, date], InventoryAgeReportQueryResult]
         | None = None,
     ) -> InventoryAgeReportQueryResult:
         """Execute the only currently approved report through its query boundary."""
