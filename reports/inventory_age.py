@@ -46,6 +46,8 @@ class InventoryAgeReportRow:
     evidence_state: str
     storage_location: str = ''
     source_domain: str = 'inventory'
+    source_date_raw: str = ''
+    evidence_reason: str = ''
 
     def __post_init__(self) -> None:
         object.__setattr__(
@@ -75,21 +77,48 @@ class InventoryAgeReportRow:
             raise ValueError(f'unsupported evidence_state: {evidence_state}')
         object.__setattr__(self, 'evidence_state', evidence_state)
 
+        raw_value = self.source_date_raw.strip()
+        reason = self.evidence_reason.strip()
         if evidence_state == EVIDENCE_AVAILABLE:
             if self.source_start_date is None or self.age_days is None:
                 raise ValueError('available evidence requires source_start_date and age_days')
             expected_age = (self.as_of_date - self.source_start_date).days
             if expected_age < 0 or self.age_days != expected_age:
                 raise ValueError('available age_days must match the explicit dates')
+            expected_raw = self.source_start_date.isoformat()
+            if raw_value and raw_value != expected_raw:
+                raise ValueError('available source_date_raw must match source_start_date')
+            raw_value = expected_raw
+            reason = reason or 'source_date_available'
         elif evidence_state == EVIDENCE_UNAVAILABLE:
             if self.source_start_date is not None or self.age_days is not None:
                 raise ValueError('unavailable evidence must not contain source date or age')
+            if raw_value:
+                raise ValueError('unavailable evidence must not contain source_date_raw')
+            reason = reason or 'source_date_missing'
         else:
-            if self.source_start_date is None or self.source_start_date <= self.as_of_date:
-                raise ValueError('invalid evidence requires a source date after the as-of date')
             if self.age_days is not None:
                 raise ValueError('invalid evidence must not contain age_days')
+            malformed = self.source_start_date is None and bool(raw_value)
+            future_date = (
+                self.source_start_date is not None
+                and self.source_start_date > self.as_of_date
+            )
+            if not malformed and not future_date:
+                raise ValueError(
+                    'invalid evidence requires malformed raw evidence or a source date after the as-of date'
+                )
+            if future_date:
+                expected_raw = self.source_start_date.isoformat()
+                if raw_value and raw_value != expected_raw:
+                    raise ValueError('invalid future-date source_date_raw must match source_start_date')
+                raw_value = expected_raw
+                reason = reason or 'source_date_after_as_of'
+            else:
+                reason = reason or 'source_date_invalid'
 
+        object.__setattr__(self, 'source_date_raw', raw_value)
+        object.__setattr__(self, 'evidence_reason', reason)
         object.__setattr__(self, 'storage_location', self.storage_location.strip())
         source_domain = _required_text(self.source_domain, 'source_domain').lower()
         if source_domain != 'inventory':
