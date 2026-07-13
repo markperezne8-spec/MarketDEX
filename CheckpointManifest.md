@@ -249,6 +249,14 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 
 ---
 
+## 🏁 Checkpoint 026 — Reports Catalog Query Continuity (Build 701AD)
+- Build 701AD bound the catalog's `inventory-age-patterns` definition to the composition-owned Inventory Age query boundary.
+- Unknown report identifiers fail through the existing `ReportCatalog`; no unsupported executable report was introduced.
+- Reports remains offline-first, deterministic, read-only, UI-free, export-free, persistence-free, and forbidden from direct source-domain SQLite access.
+- Next runtime gate remains a separately scoped UI-free integration slice after Mark pulls current `main`.
+
+---
+
 ## 📁 Document Governance
 **Permanent Filename:** `CheckpointManifest.md`
 
