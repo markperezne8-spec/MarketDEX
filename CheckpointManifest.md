@@ -267,6 +267,16 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 
 ---
 
+---
+
+## 🏁 Checkpoint 028 — Reports Catalog Routing Integration (Build 701AJ)
+- Build 701AJ added the deterministic in-memory `ReportQueryService` routing boundary.
+- Catalog-approved `inventory-age-patterns` requests route through the existing validated Inventory Age query path.
+- Existing composition forwarding and explicit unknown-report rejection were preserved.
+- CI run #499 passed all required jobs; PR #315 was squash-merged as `5c20976d06ef57c0a397999260e8bc41a699b27b`.
+- No Reports workspace, UI, presentation, chart, export, persistence, provider, network, scheduler, alert, or automation behavior was introduced.
+- Next movement remains a separately scoped UI-free Reports integration slice.
+
 ## 📁 Document Governance
 **Permanent Filename:** `CheckpointManifest.md`
 
