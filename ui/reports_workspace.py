@@ -161,12 +161,19 @@ class ReportsWorkspace(QWidget):
             inventory_position_id,
             self.as_of_date_input.date().toPython(),
         )
-        self._render_result(result, report_name)
+        self._render_result(
+            result,
+            report_name,
+            inventory_position_id,
+            self.as_of_date_input.date().toPython(),
+        )
 
     def _render_result(
         self,
         result: InventoryAgeReportQueryResult,
         report_name: str,
+        inventory_position_id: str = '',
+        as_of_date: date | None = None,
     ) -> None:
         self.result_table.setRowCount(0)
         if not result.is_found or result.row is None:
@@ -178,6 +185,11 @@ class ReportsWorkspace(QWidget):
                 (
                     ('Outcome', result.outcome.upper()),
                     ('Reason', result.reason or 'No report row available'),
+                    ('Inventory position', inventory_position_id or 'Not provided'),
+                    (
+                        'As-of date',
+                        as_of_date.isoformat() if as_of_date is not None else 'Not provided',
+                    ),
                 )
             )
             return
