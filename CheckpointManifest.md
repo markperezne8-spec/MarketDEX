@@ -337,3 +337,10 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Visual acceptance remains pending until the deliberate NOT_FOUND test confirms `Source domain = inventory`.
 - Reports remains offline-first, deterministic, read-only, composition-owned, and without live providers, persistence, export, scheduler, alert, or automation.
 - Build 701BG synchronizes this checkpoint authority without changing runtime or UI behavior.
+
+
+## 🏁 Checkpoint 034 — Reports Visual Acceptance Recorded (Build 701BH)
+- Build 701BF visual acceptance passed after the deliberate `Test_Inventory` NOT_FOUND test.
+- The result table displayed `Source domain = inventory` and preserved outcome, reason, inventory position, and as-of date.
+- Build 701BH records the visual gate in the permanent checkpoint authority without changing runtime or UI behavior.
+- The next Reports slice may proceed from synchronized `main`.

@@ -1,6 +1,6 @@
 # MarketDEX Foundation Checkpoint 071
 
-**Status:** 🔄 Checkpoint Synchronization — Reports Result Presentation
+**Status:** 🏁 Checkpoint Complete — Reports Result Presentation
 **Canonical branch:** `main`
 **Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
@@ -76,9 +76,9 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 
 ## Exact next gate
 
-**Complete the Build 701BF visual acceptance gate, then proceed with the next separately scoped Reports slice.**
+**Build 701BF visual acceptance is complete. The next separately scoped Reports slice may proceed.**
 
-Required visual confirmation: a deliberately nonexistent inventory position produces a `NOT_FOUND` result whose result table shows `Source domain = inventory`, while preserving outcome, reason, inventory position, and as-of date.
+Verified visual acceptance: `Test_Inventory` produced `NOT_FOUND`; the result table showed `Source domain = inventory`, while preserving outcome, reason, inventory position, and as-of date.
 
 The next runtime build may extend the composed Inventory Age query path only through deterministic, read-only application boundaries and approved evidence. It must:
 
@@ -89,8 +89,8 @@ The next runtime build may extend the composed Inventory Age query path only thr
 ## Pull and visual status
 
 - Pull required now: **NO**
-- Pull scope: Build **701BF** is merged and must already be synchronized locally for visual review.
-- Visual review required now: **YES — Build 701BF confirmation pending**
+- Pull scope: Build **701BF** was merged and visually accepted.
+- Visual review required now: **NO — Build 701BF passed**
 - ChatGPT Work required now: **NO**
 
 ## Progress snapshot
@@ -103,7 +103,7 @@ The next runtime build may extend the composed Inventory Age query path only thr
 - Reports request contract enforcement: `[██████████] 100%` — immutable request type is enforced before query invocation.
 - Reports request-envelope integration: `[██████████] 100%` — report identity and approved Inventory Age request are composed immutably.
 - Composition-envelope verification: `[██████████] 100%` — normalized request routing is covered.
-- Reports workspace and visual presentation: `[██████████] 100%` — first read-only result surface complete; Build 701BF source-authority visual acceptance pending.
+- Reports workspace and visual presentation: `[██████████] 100%` — first read-only result surface and source-authority acceptance complete.
 
 ## Next-chat handoff
 
@@ -153,8 +153,8 @@ Treat GitHub as the source of truth. Preserve the concise progress-bar workflow,
 - Build 701BA introduced the result surface; Builds 701BB–701BD preserved selected report context, catalog-only status, and non-found query context.
 - Build 701BE exposed source authority for found results; Build 701BF exposed `Source domain = inventory` for non-found results.
 - PR #346 passed CI run #546 and was squash-merged as `b7e7efd021826698b88daad43ba0c9cad47261d0`.
-- Visual acceptance remains pending until the deliberate `NOT_FOUND` test confirms `Source domain = inventory`.
-- Build 701BG is documentation-only checkpoint synchronization and introduces no runtime or visual change.
+- Visual acceptance passed: `Test_Inventory` produced `NOT_FOUND` with `Source domain = inventory` visible, plus outcome, reason, inventory position, and as-of date.
+- Build 701BG synchronized checkpoint authority; Build 701BH records this visual acceptance and introduces no runtime or visual change.
 
 ## Core instruction
 
@@ -173,3 +173,10 @@ Treat GitHub as the source of truth. Preserve the concise progress-bar workflow,
 ## Core instruction
 
 > Improve the existing MarketDEX foundation. Do not restart it, duplicate it, silently redefine it, or rely on chat-only memory.
+
+## Checkpoint 072 synchronization
+
+- Build 701BF visual acceptance was completed after pull and test-position review.
+- The deliberate `Test_Inventory` NOT_FOUND result displayed `Source domain = inventory` and preserved outcome, reason, inventory position, and as-of date.
+- Build 701BH records the completed visual gate without changing runtime or UI behavior.
+- The next Reports slice may proceed from synchronized `main`.
