@@ -77,6 +77,10 @@ class ApplicationComposition:
         """Return canonical source domains for one approved report."""
         return self.get_report_definition(report_id).source_domains
 
+    def report_description(self, report_id: str) -> str:
+        """Return the canonical description for one approved report."""
+        return self.get_report_definition(report_id).description
+
     def query_inventory_age(
         self,
         inventory_position_id: str,
