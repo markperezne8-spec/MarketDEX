@@ -4,6 +4,8 @@ import re
 from dataclasses import dataclass
 from typing import Callable, Iterable
 
+from market_intelligence.offline_fixtures import OFFLINE_SAMPLE_PRODUCT_ID
+
 
 _CANONICAL_QUERY_ID = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
 
@@ -125,5 +127,15 @@ class ResearchQueryCatalog:
         return tuple(sorted(self._definitions))
 
 
+OFFLINE_RESEARCH_QUERY_FIXTURE = ResearchQueryDefinition(
+    query_id='mega-evolution-etb-watch',
+    name='Mega Evolution ETB Watch',
+    product_ids=(OFFLINE_SAMPLE_PRODUCT_ID,),
+    marketplace_ids=('ebay', 'tcgplayer'),
+    observation_kinds=('active_listing', 'daily_volume', 'market_price'),
+    notes='Offline fixture only; review evidence without execution.',
+)
+
+
 def build_research_query_catalog() -> ResearchQueryCatalog:
-    return ResearchQueryCatalog()
+    return ResearchQueryCatalog((OFFLINE_RESEARCH_QUERY_FIXTURE,))
