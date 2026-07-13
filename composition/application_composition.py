@@ -5,6 +5,7 @@ from composition.feature_catalog import install_features
 from market_intelligence.composition import MarketIntelligenceComposition
 from reports.definitions import ReportCatalog, build_report_catalog
 from reports.inventory_age_provider import ApplicationInventoryAgeInputProvider
+from reports.inventory_age_query import InventoryAgeReportQueryService
 from services.collection_position_service import CollectionPositionService
 from services.inventory_app_service import InventoryAppService
 from services.inventory_detail_read import InventoryDetailReadAdapter
@@ -37,6 +38,9 @@ class ApplicationComposition:
         self.inventory_age_input_provider = ApplicationInventoryAgeInputProvider(
             InventoryDetailReadAdapter(self.inventory.database.read_connection),
             InventoryProductLinkReadAdapter(self.inventory.database.read_connection),
+        )
+        self.inventory_age_report_query = InventoryAgeReportQueryService(
+            self.inventory_age_input_provider
         )
         self.product_registry_lookup = ProductRegistryLookupService(self.database_path)
         self.collection_positions = CollectionPositionService(self.database_path)
