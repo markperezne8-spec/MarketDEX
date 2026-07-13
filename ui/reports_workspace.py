@@ -192,6 +192,7 @@ class ReportsWorkspace(QWidget):
                     ),
                     ('Source domain', 'inventory'),
                     ('Source date', 'unavailable · no Inventory detail evidence'),
+                    ('Source field', 'purchase_date'),
                 )
             )
             return
@@ -212,6 +213,7 @@ class ReportsWorkspace(QWidget):
                 ('Source domain', row.source_domain),
                 ('Age (days)', row.age_days),
                 ('Source date', row.source_start_date.isoformat()),
+                ('Source field', 'purchase_date'),
             )
         )
 
