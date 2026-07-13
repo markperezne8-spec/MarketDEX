@@ -240,6 +240,15 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 
 ---
 
+## 🏁 Checkpoint 025 — Reports Query Composition Continuity (Builds 701Z–701AB)
+- Build 701Z implemented the immutable Inventory Age query result and injected query service.
+- Build 701AA composed that service over the existing application-owned Inventory Age input provider without startup invocation.
+- Build 701AB exposed `ApplicationComposition.query_inventory_age(...)` as the narrow application-level read-only forwarding boundary.
+- Reports remains offline-first, deterministic, read-only, UI-free, export-free, persistence-free, and forbidden from direct source-domain SQLite access.
+- Next runtime gate remains a separately scoped UI-free integration slice after Mark pulls current `main`.
+
+---
+
 ## 📁 Document Governance
 **Permanent Filename:** `CheckpointManifest.md`
 

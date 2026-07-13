@@ -1,4 +1,4 @@
-# MarketDEX Foundation Checkpoint 062
+# MarketDEX Foundation Checkpoint 063
 
 **Status:** 🏁 Checkpoint Complete — Reports Foundation Progression
 **Canonical branch:** `main`
@@ -8,7 +8,7 @@
 
 MarketDEX remains an offline-first Windows desktop collectibles operating system. Pokémon TCG is the first optimized workflow. Continue the existing permanent codebase; do not restart it, create a competing shell, duplicate persistence authority, or treat chat history as product authority.
 
-The Reports foundation has advanced through controlled, read-only Inventory Age preparation and composition slices. No Reports workspace, UI, export, persistence authority, cache, mutation, network behavior, automation, or live provider was introduced.
+The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, and application-boundary slices. No Reports workspace, UI, export, persistence authority, cache, mutation, network behavior, or automation was introduced.
 
 ## Permanent operating rules
 
@@ -38,6 +38,9 @@ The Reports foundation has advanced through controlled, read-only Inventory Age 
 | 701V | #286 | #287 | #465 | `32d699b2` | Composition integration gate locked; no wiring before local synchronization. |
 | 701W | #288 | #289 | #467 | `6d0b6c87` | Canonical application composition constructs the provider using Inventory's existing read-connection authority. |
 | 701X | #290 | #291 | #469 | `7d2e94b2` | Future query-service contract locked: exactly one provider call and pure bridge only for verified found evidence. |
+| 701Z | #294 | #295 | #473 | `a1990d2c` | Implemented immutable Inventory Age query results and injected query service with explicit outcome preservation. |
+| 701AA | #296 | #297 | #475 | `2669f81e` | Composed the query service over the existing application-owned input provider without startup invocation. |
+| 701AB | #298 | #299 | #479 | `7ad56e5a` | Exposed one read-only application query boundary with focused forwarding and startup-safety coverage. |
 
 All listed CI runs passed their complete required jobs, including Reports, Core Tests, Desktop Build, packaged runtime, installer build, and installed-runtime verification.
 
@@ -45,29 +48,26 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 
 - `composition/application_composition.py` remains the only application composition root.
 - `InventoryAppService` remains the owner of the existing runtime `database.read_connection` authority used by Build 701W.
-- `ApplicationInventoryAgeInputProvider` is constructed through composition but is not invoked during startup or runtime verification.
+- `ApplicationInventoryAgeInputProvider` and `InventoryAgeReportQueryService` are constructed through composition but are not invoked during startup or runtime verification.
+- `ApplicationComposition.query_inventory_age(...)` is the only application-level forwarding boundary for Inventory Age query results.
 - Inventory detail and CAP-005B product-link adapters remain the only approved evidence paths.
 - Reports presentation, workspaces, and domain code do not open SQLite connections, construct database managers, query source tables directly, or repair evidence.
 - The existing `build_inventory_age_row_from_input` bridge remains pure and may receive only verified found input evidence in a later query service.
 
 ## Exact next gate
 
-**Local synchronization required before the next runtime build.**
+**A further UI-free Reports integration slice may proceed after local synchronization.**
 
-After Mark pulls current `main`, Build 701Z may implement the injected Inventory Age report query service and immutable result envelope.
+The next runtime build may extend the composed Inventory Age query path only through deterministic, read-only application boundaries and approved evidence. It must:
 
-That runtime slice must remain UI-free and must:
-
-1. call the injected provider exactly once;
-2. preserve found, not-found, unlinked, conflicting, and unavailable outcomes;
-3. invoke the pure row bridge only for verified found evidence;
-4. reuse existing composition-owned dependencies;
-5. add no database manager, schema initialization, direct Reports persistence access, write, event, audit, repair, migration, network, export, scheduler, alert, cloud sync, or automation behavior.
+1. preserve the immutable query-result outcomes and verified-found row derivation;
+2. reuse the composition-owned query service and existing database authority;
+3. add no Reports workspace, presentation, chart, export, persistence, write, event, audit, repair, migration, network, scheduler, alert, cloud sync, or automation behavior.
 
 ## Pull and visual status
 
 - Pull required now: **YES**
-- Pull scope: Builds **701W, 701X, and 701Y**
+- Pull scope: Builds **701Z, 701AA, and 701AB**
 - Visual review required now: **NO**
 - ChatGPT Work required now: **NO**
 
@@ -76,7 +76,7 @@ That runtime slice must remain UI-free and must:
 - Permanent desktop/runtime authority: `[██████████] 100%`
 - Reports architecture and evidence boundaries: `[██████████] 100%`
 - Inventory Age provider composition: `[██████████] 100%`
-- Inventory Age query-service implementation: `[████░░░░░░] 40%` — runtime slice gated by local synchronization.
+- Inventory Age query-service implementation: `[██████████] 100%` — implementation, composition wiring, and application boundary complete.
 - Reports workspace and visual presentation: `[░░░░░░░░░░] 0%` — not authorized.
 
 ## Core instruction
