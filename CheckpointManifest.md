@@ -344,3 +344,10 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - The result table displayed `Source domain = inventory` and preserved outcome, reason, inventory position, and as-of date.
 - Build 701BH records the visual gate in the permanent checkpoint authority without changing runtime or UI behavior.
 - The next Reports slice may proceed from synchronized `main`.
+
+
+## 🏁 Checkpoint 035 — Source-Date and No-Codex Continuity (Builds 701BI–701BJ)
+- Build 701BI exposed explicit source-date authority for all Reports outcomes; CI run #553 passed and PR #349 was squash-merged as `a210be2378eecb34e8cad6b11dd236c181ecbb4d`.
+- Build 701BI visual acceptance passed with `Source date = unavailable · no Inventory detail evidence` for the deliberate NOT_FOUND result.
+- Build 701BJ preserved the no-Codex handover rule in `docs/WORKFLOW.md`; CI run #554 passed and PR #350 was squash-merged as `0f2b726ab64f5247b30776ba4969d609755814aa`.
+- Build 701BK synchronizes permanent checkpoint authority without runtime or visual change.
