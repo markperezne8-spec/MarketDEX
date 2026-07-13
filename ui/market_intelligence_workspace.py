@@ -21,6 +21,15 @@ class MarketIntelligenceWorkspace(QWidget):
 
     READINESS_HEADERS = ('Capability', 'Status', 'Boundary')
     QUERY_HEADERS = ('Query ID', 'Name', 'Products', 'Marketplaces', 'Observations', 'Notes')
+    PREVIEW_HEADERS = (
+        'Query ID',
+        'Product',
+        'Evidence',
+        'Kind',
+        'Value',
+        'Confidence',
+        'Observed',
+    )
     EVIDENCE_HEADERS = ('Evidence', 'Value', 'Confidence', 'Sample', 'Observed')
     SIGNAL_HEADERS = ('Signal', 'Severity', 'Action', 'Evidence')
 
@@ -42,6 +51,10 @@ class MarketIntelligenceWorkspace(QWidget):
 
         self.readiness_table = self._table(self.READINESS_HEADERS, 'marketIntelligenceReadinessTable')
         self.query_table = self._table(self.QUERY_HEADERS, 'marketIntelligenceResearchQueryTable')
+        self.preview_table = self._table(
+            self.PREVIEW_HEADERS,
+            'marketIntelligenceResearchQueryPreviewTable',
+        )
         self.evidence_table = self._table(self.EVIDENCE_HEADERS, 'marketIntelligenceEvidenceTable')
         self.signal_table = self._table(self.SIGNAL_HEADERS, 'marketIntelligenceSignalTable')
 
@@ -50,6 +63,12 @@ class MarketIntelligenceWorkspace(QWidget):
         self.query_status = QLabel('Research query catalog not loaded.')
         self.query_status.setWordWrap(True)
         self.query_status.setObjectName('marketIntelligenceResearchQueryStatus')
+
+        preview_title = QLabel('Saved query preview · offline fixture evidence only')
+        preview_title.setObjectName('marketIntelligenceResearchQueryPreviewTitle')
+        self.preview_status = QLabel('Research query preview not loaded.')
+        self.preview_status.setWordWrap(True)
+        self.preview_status.setObjectName('marketIntelligenceResearchQueryPreviewStatus')
 
         evidence_title = QLabel('Offline sample evidence · Mega Evolution ETB')
         evidence_title.setObjectName('marketIntelligenceEvidenceTitle')
@@ -76,6 +95,9 @@ class MarketIntelligenceWorkspace(QWidget):
         layout.addWidget(query_title)
         layout.addWidget(self.query_status)
         layout.addWidget(self.query_table, 1)
+        layout.addWidget(preview_title)
+        layout.addWidget(self.preview_status)
+        layout.addWidget(self.preview_table, 1)
         layout.addWidget(evidence_title)
         layout.addWidget(self.evidence_table, 2)
         layout.addWidget(signal_title)
@@ -112,6 +134,7 @@ class MarketIntelligenceWorkspace(QWidget):
     def refresh_results(self) -> None:
         self._set_rows(self.readiness_table, self.READINESS_HEADERS, self._readiness_rows())
         self._refresh_query_rows()
+        self._refresh_preview_rows()
         observations = self.intelligence.observation_gateway.list_observations(
             OFFLINE_SAMPLE_SOURCE_ID,
             OFFLINE_SAMPLE_PRODUCT_ID,
@@ -169,6 +192,34 @@ class MarketIntelligenceWorkspace(QWidget):
         else:
             self.query_status.setText(
                 'No saved research queries registered · in-memory only · not persisted · not executable.'
+            )
+
+    def _refresh_preview_rows(self) -> None:
+        definitions = self.intelligence.research_query_catalog.list_definitions()
+        preview_rows = self.intelligence.research_query_preview_service.preview(definitions)
+        self._set_rows(
+            self.preview_table,
+            self.PREVIEW_HEADERS,
+            tuple(
+                (
+                    row.query_id,
+                    row.product_id,
+                    row.evidence_label,
+                    row.observation_kind,
+                    row.value,
+                    row.confidence,
+                    row.observed_at,
+                )
+                for row in preview_rows
+            ),
+        )
+        if preview_rows:
+            self.preview_status.setText(
+                f'{len(preview_rows)} offline fixture preview row(s) · read-only · not persisted · not executable.'
+            )
+        else:
+            self.preview_status.setText(
+                'No offline fixture evidence matches saved research queries · read-only · not persisted · not executable.'
             )
 
     def _set_rows(
