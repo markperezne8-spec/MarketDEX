@@ -81,6 +81,10 @@ class ApplicationComposition:
         """Return the canonical description for one approved report."""
         return self.get_report_definition(report_id).description
 
+    def report_execution_mode(self, report_id: str) -> str:
+        """Return the validated execution mode for one approved report."""
+        return self.get_report_definition(report_id).execution_mode
+
     def query_inventory_age(
         self,
         inventory_position_id: str,
