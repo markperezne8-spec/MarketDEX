@@ -115,6 +115,7 @@ jobs:
           tests/test_build701o_inventory_age_read_api_audit.py
           tests/test_build701u_inventory_age_input_provider.py
           tests/test_build701v_inventory_age_provider_composition_gate.py
+          tests/test_build701x_inventory_age_report_query_service_boundary.py
       - name: Upload Reports test results
         if: always()
         uses: actions/upload-artifact@v4
