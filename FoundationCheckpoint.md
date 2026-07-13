@@ -1,4 +1,4 @@
-# MarketDEX Foundation Checkpoint 066
+# MarketDEX Foundation Checkpoint 067
 
 **Status:** 🏁 Checkpoint Complete — Reports Foundation Progression
 **Canonical branch:** `main`
@@ -8,7 +8,7 @@
 
 MarketDEX remains an offline-first Windows desktop collectibles operating system. Pokémon TCG is the first optimized workflow. Continue the existing permanent codebase; do not restart it, create a competing shell, duplicate persistence authority, or treat chat history as product authority.
 
-The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, and catalog-routing, immutable-request, and request-service integration, catalog-approved routing, and checkpoint synchronization slices. No Reports workspace, UI, export, persistence authority, cache, mutation, network behavior, or automation was introduced.
+The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, and catalog-routing, immutable-request, and request-service integration, catalog-approved routing, request-contract hardening, and checkpoint synchronization slices. No Reports workspace, UI, export, persistence authority, cache, mutation, network behavior, or automation was introduced.
 
 ## Permanent operating rules
 
@@ -46,6 +46,7 @@ The Reports foundation has advanced through controlled, read-only Inventory Age 
 | 701AG | #308 | #309 | #489 | `4a2e5fee` | Added request-based query-service entrypoint preserving one provider call and outcomes. |
 | 701AH | #310 | #311 | #492 | `cd71ad4b` | Routed application composition through validated query requests. |
 | 701AJ | #314 | #315 | #499 | `5c20976d` | Added deterministic catalog-approved Reports query routing while preserving the composition boundary and explicit rejection. |
+| 701AL | #318 | #319 | #503 | `e34b3bcc` | Enforced the immutable Inventory Age Reports request contract at the routing boundary. |
 
 All listed CI runs passed their complete required jobs, including Reports, Core Tests, Desktop Build, packaged runtime, installer build, and installed-runtime verification.
 
@@ -57,6 +58,7 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 - `ApplicationComposition.query_inventory_age(...)` is the application-level forwarding boundary for Inventory Age query results.
 - `ApplicationComposition.query_report(...)` validates the catalog and routes only the supported `inventory-age-patterns` definition to that boundary.
 - `ReportQueryService` is the deterministic in-memory routing boundary for catalog-approved report requests; it adds no provider, persistence, or UI authority.
+- `ReportQueryService` rejects non-`InventoryAgeReportQueryRequest` values before query invocation.
 - `InventoryAgeReportQueryRequest` is the immutable validated request value used by the query service and composition boundary.
 - Inventory detail and CAP-005B product-link adapters remain the only approved evidence paths.
 - Reports presentation, workspaces, and domain code do not open SQLite connections, construct database managers, query source tables directly, or repair evidence.
@@ -75,7 +77,7 @@ The next runtime build may extend the composed Inventory Age query path only thr
 ## Pull and visual status
 
 - Pull required now: **NO**
-- Pull scope: Build **701AJ**
+- Pull scope: Builds **701AJ and 701AL**
 - Visual review required now: **NO**
 - ChatGPT Work required now: **NO**
 
@@ -86,6 +88,7 @@ The next runtime build may extend the composed Inventory Age query path only thr
 - Inventory Age provider composition: `[██████████] 100%`
 - Inventory Age query-service implementation: `[██████████] 100%` — implementation, composition wiring, and application boundary complete.
 - Catalog-approved Reports routing: `[██████████] 100%` — deterministic routing boundary complete; presentation remains unauthorized.
+- Reports request contract enforcement: `[██████████] 100%` — immutable request type is enforced before query invocation.
 - Reports workspace and visual presentation: `[░░░░░░░░░░] 0%` — not authorized.
 
 ## Next-chat handoff
@@ -106,6 +109,13 @@ Treat GitHub as the source of truth. Preserve the concise progress-bar workflow,
 
 - Build 701AJ was merged through PR #315 after CI run #499 passed all required jobs.
 - Merge commit: `5c20976d06ef57c0a397999260e8bc41a699b27b`.
+- No visible application change was introduced; visual review remains not required.
+- Next movement remains a separately scoped UI-free Reports integration slice after local synchronization.
+
+## Checkpoint 067 synchronization
+
+- Build 701AL was merged through PR #319 after CI run #503 passed all required jobs.
+- Merge commit: `e34b3bcc08cf4396a590461e97b5de3424065ef7`.
 - No visible application change was introduced; visual review remains not required.
 - Next movement remains a separately scoped UI-free Reports integration slice after local synchronization.
 
