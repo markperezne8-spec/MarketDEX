@@ -23,3 +23,23 @@ __all__ = (
     'ReportCatalog',
     'build_report_catalog',
 )
+
+from reports.inventory_age import (
+    EVIDENCE_AVAILABLE,
+    EVIDENCE_INVALID,
+    EVIDENCE_UNAVAILABLE,
+    INVENTORY_AGE_EVIDENCE_STATES,
+    InventoryAgeReportRow,
+    derive_inventory_age_row,
+    sort_inventory_age_rows,
+)
+
+__all__ += (
+    'EVIDENCE_AVAILABLE',
+    'EVIDENCE_UNAVAILABLE',
+    'EVIDENCE_INVALID',
+    'INVENTORY_AGE_EVIDENCE_STATES',
+    'InventoryAgeReportRow',
+    'derive_inventory_age_row',
+    'sort_inventory_age_rows',
+)
