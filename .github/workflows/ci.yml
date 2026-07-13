@@ -86,6 +86,27 @@ jobs:
           path: market-intelligence-results.xml
           if-no-files-found: error
 
+  reports:
+    name: Reports
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: sudo apt-get update && sudo apt-get install -y libegl1
+      - run: pip install -q -r requirements.txt pytest
+      - name: Run Reports gate
+        run: pytest -q --tb=short --junitxml=reports-results.xml tests/test_build701c_reports_definition_catalog.py
+      - name: Upload Reports test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-test-results
+          path: reports-results.xml
+          if-no-files-found: error
+
   inventory:
     name: Inventory
     runs-on: ubuntu-latest
