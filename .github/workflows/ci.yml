@@ -107,6 +107,7 @@ jobs:
           tests/test_build701g_inventory_age_source_date_authority_doc.py
           tests/test_build701h_inventory_age_source_adapter.py
           tests/test_build701i_inventory_age_invalid_evidence.py
+          tests/test_build701j_inventory_age_product_link_boundary_doc.py
       - name: Upload Reports test results
         if: always()
         uses: actions/upload-artifact@v4
