@@ -77,3 +77,25 @@ __all__ += (
 from reports.inventory_age_bridge import build_inventory_age_row_from_input
 
 __all__ += ('build_inventory_age_row_from_input',)
+
+from reports.inventory_age_provider import (
+    INPUT_CONFLICTING,
+    INPUT_FOUND,
+    INPUT_NOT_FOUND,
+    INPUT_UNAVAILABLE,
+    INPUT_UNLINKED,
+    INVENTORY_AGE_INPUT_OUTCOMES,
+    InventoryAgeInputProvider,
+    InventoryAgeInputProviderResult,
+)
+
+__all__ += (
+    'INPUT_FOUND',
+    'INPUT_NOT_FOUND',
+    'INPUT_UNLINKED',
+    'INPUT_CONFLICTING',
+    'INPUT_UNAVAILABLE',
+    'INVENTORY_AGE_INPUT_OUTCOMES',
+    'InventoryAgeInputProvider',
+    'InventoryAgeInputProviderResult',
+)
