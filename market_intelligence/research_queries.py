@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
-from typing import Iterable
+from typing import Callable, Iterable
+
+
+_CANONICAL_QUERY_ID = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
 
 
 def _required_text(value: str, field_name: str) -> str:
@@ -9,6 +13,41 @@ def _required_text(value: str, field_name: str) -> str:
     if not normalized:
         raise ValueError(f'{field_name} is required')
     return normalized
+
+
+def _normalized_name(value: str) -> str:
+    return ' '.join(_required_text(value, 'name').split())
+
+
+def _canonical_query_id(value: str) -> str:
+    normalized = _required_text(value, 'query_id').lower()
+    if not _CANONICAL_QUERY_ID.fullmatch(normalized):
+        raise ValueError(
+            'query_id must use canonical lowercase letters, numbers, and single hyphens'
+        )
+    return normalized
+
+
+def _normalized_unique_values(
+    values: Iterable[str],
+    field_name: str,
+    normalizer: Callable[[str], str],
+) -> tuple[str, ...]:
+    normalized_values: list[str] = []
+    seen: set[str] = set()
+    duplicates: set[str] = set()
+    for value in values:
+        normalized = normalizer(_required_text(value, field_name))
+        if normalized in seen:
+            duplicates.add(normalized)
+        else:
+            seen.add(normalized)
+            normalized_values.append(normalized)
+    if duplicates:
+        raise ValueError(
+            f'duplicate {field_name} values: {", ".join(sorted(duplicates))}'
+        )
+    return tuple(sorted(normalized_values))
 
 
 @dataclass(frozen=True, slots=True)
@@ -23,22 +62,30 @@ class ResearchQueryDefinition:
     notes: str = ''
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, 'query_id', _required_text(self.query_id, 'query_id').lower())
-        object.__setattr__(self, 'name', _required_text(self.name, 'name'))
+        object.__setattr__(self, 'query_id', _canonical_query_id(self.query_id))
+        object.__setattr__(self, 'name', _normalized_name(self.name))
         object.__setattr__(
             self,
             'product_ids',
-            tuple(sorted({_required_text(item, 'product_id') for item in self.product_ids})),
+            _normalized_unique_values(self.product_ids, 'product_id', lambda item: item),
         )
         object.__setattr__(
             self,
             'observation_kinds',
-            tuple(sorted({_required_text(item, 'observation_kind').lower() for item in self.observation_kinds})),
+            _normalized_unique_values(
+                self.observation_kinds,
+                'observation_kind',
+                str.lower,
+            ),
         )
         object.__setattr__(
             self,
             'marketplace_ids',
-            tuple(sorted({_required_text(item, 'marketplace_id').lower() for item in self.marketplace_ids})),
+            _normalized_unique_values(
+                self.marketplace_ids,
+                'marketplace_id',
+                str.lower,
+            ),
         )
         object.__setattr__(self, 'notes', self.notes.strip())
 
@@ -52,12 +99,14 @@ class ResearchQueryCatalog:
             self.register(definition)
 
     def register(self, definition: ResearchQueryDefinition) -> None:
+        if not isinstance(definition, ResearchQueryDefinition):
+            raise TypeError('definition must be ResearchQueryDefinition')
         if definition.query_id in self._definitions:
             raise ValueError(f'research query already registered: {definition.query_id}')
         self._definitions[definition.query_id] = definition
 
     def get(self, query_id: str) -> ResearchQueryDefinition:
-        normalized = _required_text(query_id, 'query_id').lower()
+        normalized = _canonical_query_id(query_id)
         try:
             return self._definitions[normalized]
         except KeyError as exc:
