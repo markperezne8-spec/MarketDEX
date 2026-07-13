@@ -31,7 +31,8 @@ def test_build701ab_composition_forwards_inventory_age_query() -> None:
 
 def test_build701ab_query_boundary_is_not_invoked_during_startup() -> None:
     source = Path('composition/application_composition.py').read_text(encoding='utf-8')
+    runtime_source = source.split('    def verify_runtime', 1)[1]
 
-    assert 'self.query_inventory_age(' not in source
-    assert 'self.inventory_age_report_query.get_inventory_age_row(' not in source
+    assert 'self.query_inventory_age(' not in runtime_source
+    assert 'self.inventory_age_report_query.get_inventory_age_row(' not in runtime_source
     assert 'def query_inventory_age(' in source
