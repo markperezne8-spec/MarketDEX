@@ -80,11 +80,29 @@ Reports must distinguish:
 - offline fixture evidence from authoritative business records;
 - unavailable data from zero values.
 
+## Workbook-backed Reports responsibility
+
+`WorkbookBlueprint.md` defines the workbook Analytics responsibility through the business question:
+
+> **What patterns does the business history reveal?**
+
+The Reports workstream must therefore begin with business questions and authoritative evidence, not with a chart inventory. It must preserve the workbook distinction between Current State, Event History, Snapshots, Decision History, and Outcomes.
+
+Reports and later Analytics presentation must follow these rules:
+
+- every report definition names the business question it answers;
+- charts explain, tables prove, and history remembers;
+- missing evidence is unavailable, not zero;
+- summary visuals point to authoritative detail instead of duplicating it;
+- historical period, source coverage, freshness, and calculation meaning remain visible;
+- more reports or charts are not automatically better;
+- real business use and the Simplicity Gate determine later expansion.
+
 ## First runtime authorization gate
 
-After Build 701A merges, the smallest permitted implementation candidate is a composition-owned, persistence-free Reports catalog and immutable report-definition contract.
+After Build 701B reconciles the approved Workbook Blueprint, Build 701C may introduce a composition-owned, persistence-free Reports catalog and immutable report-definition contract.
 
-That later slice must remain offline, deterministic, read-only, and UI-free. It must not query live providers, create exports, add database tables, or calculate business totals until separately authorized.
+Build 701C must remain offline, deterministic, read-only, and UI-free. It must not query live providers, create exports, add database tables, or calculate business totals until separately authorized.
 
 ## Verification strategy
 
@@ -95,6 +113,7 @@ Permanent verification for this architecture lock must assert:
 - report presentation depends on a composition-owned query boundary;
 - offline and deterministic behavior is required;
 - persistence, exports, UI, network activity, and mutation remain unauthorized;
+- the workbook-backed Analytics business question and history distinctions are preserved;
 - the first later runtime slice is narrow and persistence-free.
 
 ## Non-goals for Build 701A
