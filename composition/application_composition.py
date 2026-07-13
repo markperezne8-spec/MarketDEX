@@ -1,11 +1,15 @@
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 
 from composition.feature_catalog import install_features
 from market_intelligence.composition import MarketIntelligenceComposition
 from reports.definitions import ReportCatalog, build_report_catalog
 from reports.inventory_age_provider import ApplicationInventoryAgeInputProvider
-from reports.inventory_age_query import InventoryAgeReportQueryService
+from reports.inventory_age_query import (
+    InventoryAgeReportQueryResult,
+    InventoryAgeReportQueryService,
+)
 from services.collection_position_service import CollectionPositionService
 from services.inventory_app_service import InventoryAppService
 from services.inventory_detail_read import InventoryDetailReadAdapter
@@ -47,6 +51,17 @@ class ApplicationComposition:
         self.workspace_registry = WorkspaceRegistry()
         self.market_intelligence = MarketIntelligenceComposition()
         self.report_catalog: ReportCatalog = build_report_catalog()
+
+    def query_inventory_age(
+        self,
+        inventory_position_id: str,
+        as_of_date: date,
+    ) -> InventoryAgeReportQueryResult:
+        """Query Inventory Age through the composition-owned report service."""
+        return self.inventory_age_report_query.get_inventory_age_row(
+            inventory_position_id,
+            as_of_date,
+        )
 
     def build_main_window(self) -> MainWindow:
         window = MainWindow(self.mission_control, self.inventory)

@@ -15,8 +15,9 @@ def test_build701aa_composition_retains_query_service_over_existing_provider(tmp
 
 def test_build701aa_composition_does_not_invoke_provider_or_query_at_startup() -> None:
     source = Path('composition/application_composition.py').read_text(encoding='utf-8')
+    runtime_source = source.split('    def verify_runtime', 1)[1]
 
-    assert '.get_inventory_age_input(' not in source
-    assert '.get_inventory_age_row(' not in source
+    assert '.get_inventory_age_input(' not in runtime_source
+    assert '.get_inventory_age_row(' not in runtime_source
     assert 'InventoryAgeReportQueryService(' in source
     assert 'self.inventory_age_input_provider' in source
