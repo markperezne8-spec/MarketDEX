@@ -65,6 +65,10 @@ class ApplicationComposition:
         """Return the immutable, composition-owned report catalog view."""
         return self.report_catalog.list_definitions()
 
+    def get_report_definition(self, report_id: str) -> ReportDefinition:
+        """Resolve one immutable report definition through the composition boundary."""
+        return self.report_catalog.get(report_id)
+
     def query_inventory_age(
         self,
         inventory_position_id: str,
