@@ -109,6 +109,7 @@ jobs:
           tests/test_build701i_inventory_age_invalid_evidence.py
           tests/test_build701j_inventory_age_product_link_boundary_doc.py
           tests/test_build701k_inventory_age_input_record.py
+          tests/test_build701l_inventory_age_input_row_bridge.py
       - name: Upload Reports test results
         if: always()
         uses: actions/upload-artifact@v4

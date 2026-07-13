@@ -73,3 +73,7 @@ __all__ += (
     'PRODUCT_LINK_EVIDENCE_STATES',
     'InventoryAgeInputRecord',
 )
+
+from reports.inventory_age_bridge import build_inventory_age_row_from_input
+
+__all__ += ('build_inventory_age_row_from_input',)
