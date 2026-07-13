@@ -10,6 +10,7 @@ from services.inventory_product_link_read import (
     PRODUCT_LINK_UNAVAILABLE,
     PRODUCT_LINK_UNLINKED,
     InventoryProductLinkReadBoundary,
+    InventoryProductLinkReadRequest,
     InventoryProductLinkReadResult,
 )
 
@@ -46,13 +47,17 @@ def test_build701p_result_rejects_guessed_or_missing_product_identity() -> None:
 
 def test_build701p_protocol_is_structural_and_persistence_free() -> None:
     class FixedBoundary:
-        def get_product_link(self, inventory_position_id: str) -> InventoryProductLinkReadResult:
-            assert inventory_position_id == 'asset-001'
+        def get_product_link(
+            self,
+            request: InventoryProductLinkReadRequest,
+        ) -> InventoryProductLinkReadResult:
+            assert request.inventory_position_id == 'asset-001'
             return InventoryProductLinkReadResult(PRODUCT_LINK_UNAVAILABLE, reason='not configured')
 
     source = Path('services/inventory_product_link_read.py').read_text(encoding='utf-8').lower()
 
     assert isinstance(FixedBoundary(), InventoryProductLinkReadBoundary)
+    assert FixedBoundary().get_product_link(InventoryProductLinkReadRequest('asset-001')).outcome == PRODUCT_LINK_UNAVAILABLE
     assert INVENTORY_PRODUCT_LINK_READ_OUTCOMES == frozenset(
         {PRODUCT_LINK_FOUND, PRODUCT_LINK_UNLINKED, PRODUCT_LINK_CONFLICTING, PRODUCT_LINK_UNAVAILABLE}
     )

@@ -20,6 +20,19 @@ INVENTORY_PRODUCT_LINK_READ_OUTCOMES = frozenset(
 
 
 @dataclass(frozen=True, slots=True)
+class InventoryProductLinkReadRequest:
+    """Validated request for one CAP-005B asset-to-product read."""
+
+    inventory_position_id: str
+
+    def __post_init__(self) -> None:
+        inventory_position_id = str(self.inventory_position_id).strip()
+        if not inventory_position_id:
+            raise ValueError('inventory_position_id is required')
+        object.__setattr__(self, 'inventory_position_id', inventory_position_id)
+
+
+@dataclass(frozen=True, slots=True)
 class InventoryProductLinkReadResult:
     """Immutable CAP-005B evidence returned by an injected read boundary."""
 
@@ -30,7 +43,7 @@ class InventoryProductLinkReadResult:
     def __post_init__(self) -> None:
         outcome = str(self.outcome).strip().lower()
         if outcome not in INVENTORY_PRODUCT_LINK_READ_OUTCOMES:
-            raise ValueError(f'unsupported InventoryâProduct Link outcome: {outcome}')
+            raise ValueError(f'unsupported Inventory-Product Link outcome: {outcome}')
         object.__setattr__(self, 'outcome', outcome)
 
         product_id = None if self.product_id is None else str(self.product_id).strip()
@@ -50,5 +63,8 @@ class InventoryProductLinkReadResult:
 class InventoryProductLinkReadBoundary(Protocol):
     """Read-only CAP-005B boundary; implementations must not mutate authority."""
 
-    def get_product_link(self, inventory_position_id: str) -> InventoryProductLinkReadResult:
+    def get_product_link(
+        self,
+        request: InventoryProductLinkReadRequest,
+    ) -> InventoryProductLinkReadResult:
         """Return explicit asset-to-product evidence for one Inventory position."""
