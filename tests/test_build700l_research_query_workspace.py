@@ -1,12 +1,12 @@
 from PySide6.QtWidgets import QAbstractItemView
 
 from market_intelligence.composition import MarketIntelligenceComposition
-from market_intelligence.research_queries import ResearchQueryDefinition
+from market_intelligence.research_queries import ResearchQueryCatalog, ResearchQueryDefinition
 from ui.market_intelligence_workspace import MarketIntelligenceWorkspace
 
 
 def test_research_query_workspace_empty_state_is_explicit(qtbot):
-    intelligence = MarketIntelligenceComposition()
+    intelligence = MarketIntelligenceComposition(research_query_catalog=ResearchQueryCatalog())
     workspace = MarketIntelligenceWorkspace(intelligence)
     qtbot.addWidget(workspace)
 
@@ -18,7 +18,7 @@ def test_research_query_workspace_empty_state_is_explicit(qtbot):
 
 
 def test_research_query_workspace_uses_catalog_order_and_normalized_values(qtbot):
-    intelligence = MarketIntelligenceComposition()
+    intelligence = MarketIntelligenceComposition(research_query_catalog=ResearchQueryCatalog())
     intelligence.research_query_catalog.register(
         ResearchQueryDefinition(
             query_id='beta',
@@ -51,6 +51,23 @@ def test_research_query_workspace_uses_catalog_order_and_normalized_values(qtbot
     assert workspace.query_table.item(0, 5).text() == '—'
     assert workspace.query_table.item(1, 0).text() == 'beta'
     assert '2 saved research query definition(s)' in workspace.query_status.text()
+
+
+def test_research_query_workspace_displays_offline_fixture_from_composition(qtbot):
+    workspace = MarketIntelligenceWorkspace(MarketIntelligenceComposition())
+    qtbot.addWidget(workspace)
+
+    assert workspace.query_table.rowCount() == 1
+    assert workspace.query_table.item(0, 0).text() == 'mega-evolution-etb-watch'
+    assert workspace.query_table.item(0, 1).text() == 'Mega Evolution ETB Watch'
+    assert workspace.query_table.item(0, 2).text() == 'SAMPLE-MEGA-ETB'
+    assert workspace.query_table.item(0, 3).text() == 'ebay, tcgplayer'
+    assert workspace.query_table.item(0, 4).text() == 'active_listing, daily_volume, market_price'
+    assert workspace.query_table.item(0, 5).text() == 'Offline fixture only; review evidence without execution.'
+    assert '1 saved research query definition(s)' in workspace.query_status.text()
+    assert 'in-memory only' in workspace.query_status.text()
+    assert 'not persisted' in workspace.query_status.text()
+    assert 'not executable' in workspace.query_status.text()
 
 
 def test_research_query_section_preserves_existing_market_intelligence_sections(qtbot):
