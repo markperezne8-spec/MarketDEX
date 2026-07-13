@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Protocol, runtime_checkable
+from typing import Any, Callable, ContextManager, Protocol, runtime_checkable
 
 
 INVENTORY_DETAIL_FOUND = 'found'
@@ -105,3 +105,48 @@ class InventoryDetailReadBoundary(Protocol):
         request: InventoryDetailReadRequest,
     ) -> InventoryDetailReadResult:
         """Return explicit detail evidence for one Inventory position."""
+
+
+class InventoryDetailReadAdapter:
+    """Injected, read-only Inventory detail adapter."""
+
+    def __init__(self, open_read_connection: Callable[[], ContextManager[Any]]) -> None:
+        self._open_read_connection = open_read_connection
+
+    def get_inventory_detail(
+        self,
+        request: InventoryDetailReadRequest,
+    ) -> InventoryDetailReadResult:
+        try:
+            with self._open_read_connection() as connection:
+                row = connection.execute(
+                    "SELECT a.asset_id, a.asset_name, a.state, i.quantity, "
+                    "COALESCE(b.purchase_date, '') AS purchase_date, "
+                    "COALESCE(b.storage_location, '') AS storage_location "
+                    "FROM assets a JOIN inventory_authority i ON i.asset_id = a.asset_id "
+                    "LEFT JOIN inventory_business_details b ON b.asset_id = a.asset_id "
+                    "WHERE a.asset_id = ?",
+                    (request.inventory_position_id,),
+                ).fetchone()
+            if row is None:
+                return InventoryDetailReadResult(
+                    INVENTORY_DETAIL_NOT_FOUND,
+                    reason='no Inventory detail evidence',
+                )
+            return InventoryDetailReadResult(
+                INVENTORY_DETAIL_FOUND,
+                InventoryDetailReadRecord(
+                    inventory_position_id=row['asset_id'],
+                    asset_name=row['asset_name'],
+                    current_quantity=int(row['quantity']),
+                    inventory_status=row['state'],
+                    purchase_date_raw=row['purchase_date'],
+                    storage_location=row['storage_location'],
+                ),
+                reason='current Inventory detail',
+            )
+        except Exception:
+            return InventoryDetailReadResult(
+                INVENTORY_DETAIL_UNAVAILABLE,
+                reason='Inventory read dependency unavailable',
+            )
