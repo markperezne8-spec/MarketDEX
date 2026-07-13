@@ -97,3 +97,13 @@ Use squash merge only after:
 - all required CI checks are green;
 - mergeability is confirmed;
 - the expected head SHA has not changed.
+
+
+## Future chat handover rule
+
+Every future MarketDEX chat must preserve this operating rule:
+
+- GitHub is the source of truth.
+- Codex must not be used unless Mark explicitly authorizes it in the current conversation.
+- The default handover state is **No Codex**.
+- Future chats must read this workflow contract and the required checkpoint documents before taking action.
