@@ -113,5 +113,18 @@ class ReportCatalog:
         return tuple(sorted(self._definitions))
 
 
+INVENTORY_AGE_PATTERNS_REPORT = ReportDefinition(
+    report_id='inventory-age-patterns',
+    name='Inventory Age Patterns',
+    business_question='What patterns does inventory age reveal?',
+    evidence_families=(CURRENT_STATE, EVENT_HISTORY),
+    source_domains=('inventory',),
+    description=(
+        'Workbook-backed definition for reviewing inventory-age patterns '
+        'without executing queries or defining thresholds.'
+    ),
+)
+
+
 def build_report_catalog() -> ReportCatalog:
-    return ReportCatalog()
+    return ReportCatalog((INVENTORY_AGE_PATTERNS_REPORT,))
