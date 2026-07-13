@@ -1,4 +1,4 @@
-# MarketDEX Foundation Checkpoint 068
+# MarketDEX Foundation Checkpoint 069
 
 **Status:** 🏁 Checkpoint Complete — Reports Foundation Progression
 **Canonical branch:** `main`
@@ -8,7 +8,7 @@
 
 MarketDEX remains an offline-first Windows desktop collectibles operating system. Pokémon TCG is the first optimized workflow. Continue the existing permanent codebase; do not restart it, create a competing shell, duplicate persistence authority, or treat chat history as product authority.
 
-The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, and catalog-routing, immutable-request, and request-service integration, catalog-approved routing, request-contract hardening, immutable request-envelope integration, and checkpoint synchronization slices. No Reports workspace, UI, export, persistence authority, cache, mutation, network behavior, or automation was introduced.
+The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, and catalog-routing, immutable-request, and request-service integration, catalog-approved routing, request-contract hardening, immutable request-envelope integration, composition-envelope verification, and checkpoint synchronization slices. No Reports workspace, UI, export, persistence authority, cache, mutation, network behavior, or automation was introduced.
 
 ## Permanent operating rules
 
@@ -48,6 +48,7 @@ The Reports foundation has advanced through controlled, read-only Inventory Age 
 | 701AJ | #314 | #315 | #499 | `5c20976d` | Added deterministic catalog-approved Reports query routing while preserving the composition boundary and explicit rejection. |
 | 701AL | #318 | #319 | #503 | `e34b3bcc` | Enforced the immutable Inventory Age Reports request contract at the routing boundary. |
 | 701AN | #322 | #323 | #507 | `68bd3be3` | Added the immutable `ReportQueryRequest` envelope and composed it through the Reports query service. |
+| 701AP | #326 | #327 | #511 | `b0e38cbc` | Verified application composition constructs and routes the immutable Reports query envelope. |
 
 All listed CI runs passed their complete required jobs, including Reports, Core Tests, Desktop Build, packaged runtime, installer build, and installed-runtime verification.
 
@@ -61,6 +62,7 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 - `ReportQueryService` is the deterministic in-memory routing boundary for catalog-approved report requests; it adds no provider, persistence, or UI authority.
 - `ReportQueryService` rejects non-`InventoryAgeReportQueryRequest` values before query invocation.
 - `ReportQueryRequest` is the immutable envelope joining report identity to the approved Inventory Age request.
+- Application composition coverage verifies normalized report identity and Inventory Age request values reach the Reports query service.
 - `InventoryAgeReportQueryRequest` is the immutable validated request value used by the query service and composition boundary.
 - Inventory detail and CAP-005B product-link adapters remain the only approved evidence paths.
 - Reports presentation, workspaces, and domain code do not open SQLite connections, construct database managers, query source tables directly, or repair evidence.
@@ -79,7 +81,7 @@ The next runtime build may extend the composed Inventory Age query path only thr
 ## Pull and visual status
 
 - Pull required now: **NO**
-- Pull scope: Builds **701AJ, 701AL, and 701AN**
+- Pull scope: Builds **701AJ, 701AL, 701AN, and 701AP**
 - Visual review required now: **NO**
 - ChatGPT Work required now: **NO**
 
@@ -92,6 +94,7 @@ The next runtime build may extend the composed Inventory Age query path only thr
 - Catalog-approved Reports routing: `[██████████] 100%` — deterministic routing boundary complete; presentation remains unauthorized.
 - Reports request contract enforcement: `[██████████] 100%` — immutable request type is enforced before query invocation.
 - Reports request-envelope integration: `[██████████] 100%` — report identity and approved Inventory Age request are composed immutably.
+- Composition-envelope verification: `[██████████] 100%` — normalized request routing is covered.
 - Reports workspace and visual presentation: `[░░░░░░░░░░] 0%` — not authorized.
 
 ## Next-chat handoff
@@ -126,6 +129,13 @@ Treat GitHub as the source of truth. Preserve the concise progress-bar workflow,
 
 - Build 701AN was merged through PR #323 after CI run #507 passed all required jobs.
 - Merge commit: `68bd3be3d99376d6005cdbe7ea02f19a3fb23ea9`.
+- No visible application change was introduced; visual review remains not required.
+- Next movement remains a separately scoped UI-free Reports integration slice after local synchronization.
+
+## Checkpoint 069 synchronization
+
+- Build 701AP was merged through PR #327 after CI run #511 passed all required jobs.
+- Merge commit: `b0e38cbcdcd26936645d51b6bad4b071c6390786`.
 - No visible application change was introduced; visual review remains not required.
 - Next movement remains a separately scoped UI-free Reports integration slice after local synchronization.
 
