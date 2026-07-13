@@ -3,6 +3,7 @@ from pathlib import Path
 
 from composition.feature_catalog import install_features
 from market_intelligence.composition import MarketIntelligenceComposition
+from reports.definitions import ReportCatalog, build_report_catalog
 from services.inventory_app_service import InventoryAppService
 from services.mission_control_service import MissionControlService
 from services.product_registry_lookup_service import ProductRegistryLookupService
@@ -34,6 +35,7 @@ class ApplicationComposition:
         self.collection_positions = CollectionPositionService(self.database_path)
         self.workspace_registry = WorkspaceRegistry()
         self.market_intelligence = MarketIntelligenceComposition()
+        self.report_catalog: ReportCatalog = build_report_catalog()
 
     def build_main_window(self) -> MainWindow:
         window = MainWindow(self.mission_control, self.inventory)
