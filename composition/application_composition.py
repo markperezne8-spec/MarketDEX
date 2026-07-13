@@ -63,6 +63,18 @@ class ApplicationComposition:
             as_of_date,
         )
 
+    def query_report(
+        self,
+        report_id: str,
+        inventory_position_id: str,
+        as_of_date: date,
+    ) -> InventoryAgeReportQueryResult:
+        """Route a catalog-approved report to its composition-owned query boundary."""
+        self.report_catalog.get(report_id)
+        if report_id.strip().lower() != 'inventory-age-patterns':
+            raise KeyError(f'unsupported executable report: {report_id.strip().lower()}')
+        return self.query_inventory_age(inventory_position_id, as_of_date)
+
     def build_main_window(self) -> MainWindow:
         window = MainWindow(self.mission_control, self.inventory)
         install_features(window)
