@@ -14,7 +14,7 @@ This document is the permanent operating contract for ChatGPT-led MarketDEX deve
 Before selecting a new milestone or runtime capability, review:
 
 - `Vision.md` for product purpose, comprehension, business-value, history, and offline-first guidance;
-- `Workbook_Blueprint.md` for workbook authority and proven business workflow guidance;
+- `WorkbookBlueprint.md` for workbook authority and proven business workflow guidance;
 - `docs/WORKFLOW.md` for the permanent delivery and communication contract.
 
 If a required guidance file cannot be located on current `main`, record that gap in the active checkpoint and resolve it before authorizing runtime implementation.
