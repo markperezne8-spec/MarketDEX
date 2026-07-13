@@ -113,6 +113,7 @@ jobs:
           tests/test_build701m_inventory_age_read_dependency_doc.py
           tests/test_build701n_inventory_age_input_provider.py
           tests/test_build701o_inventory_age_read_api_audit.py
+          tests/test_build701u_inventory_age_input_provider.py
       - name: Upload Reports test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -224,7 +225,8 @@ jobs:
           if-no-files-found: error
       - name: Install Inno Setup compiler
         shell: pwsh
-        run: choco install innosetup -y --no-progress
+        run: |
+          choco install innosetup -y --no-progress
       - name: Build MarketDEX installer
         shell: pwsh
         run: |
