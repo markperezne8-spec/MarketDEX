@@ -70,13 +70,13 @@ def test_report_catalog_is_deterministic_and_rejects_duplicates() -> None:
         catalog.get('missing')
 
 
-def test_application_composition_owns_one_empty_non_executable_catalog(tmp_path) -> None:
+def test_application_composition_owns_one_non_executable_catalog(tmp_path) -> None:
     first = ApplicationComposition(tmp_path / 'first.sqlite3')
     second = ApplicationComposition(tmp_path / 'second.sqlite3')
 
     assert isinstance(first.report_catalog, ReportCatalog)
-    assert first.report_catalog.report_ids == ()
-    assert second.report_catalog.report_ids == ()
+    assert first.report_catalog.report_ids == ('inventory-age-patterns',)
+    assert second.report_catalog.report_ids == ('inventory-age-patterns',)
     assert first.report_catalog is not second.report_catalog
     assert not hasattr(first.report_catalog, 'execute')
     assert not hasattr(first.report_catalog, 'save')
