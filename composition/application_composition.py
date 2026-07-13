@@ -4,7 +4,7 @@ from pathlib import Path
 
 from composition.feature_catalog import install_features
 from market_intelligence.composition import MarketIntelligenceComposition
-from reports.definitions import ReportCatalog, build_report_catalog
+from reports.definitions import ReportCatalog, ReportDefinition, build_report_catalog
 from reports.inventory_age_provider import ApplicationInventoryAgeInputProvider
 from reports.inventory_age_query_request import InventoryAgeReportQueryRequest
 from reports.inventory_age_query import (
@@ -60,6 +60,10 @@ class ApplicationComposition:
             self.report_catalog,
             self.inventory_age_report_query,
         )
+
+    def list_reports(self) -> tuple[ReportDefinition, ...]:
+        """Return the immutable, composition-owned report catalog view."""
+        return self.report_catalog.list_definitions()
 
     def query_inventory_age(
         self,
