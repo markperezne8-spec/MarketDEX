@@ -1,4 +1,4 @@
-# MarketDEX Foundation Checkpoint 064
+# MarketDEX Foundation Checkpoint 065
 
 **Status:** 🏁 Checkpoint Complete — Reports Foundation Progression
 **Canonical branch:** `main`
@@ -8,7 +8,7 @@
 
 MarketDEX remains an offline-first Windows desktop collectibles operating system. Pokémon TCG is the first optimized workflow. Continue the existing permanent codebase; do not restart it, create a competing shell, duplicate persistence authority, or treat chat history as product authority.
 
-The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, and catalog-routing slices. No Reports workspace, UI, export, persistence authority, cache, mutation, network behavior, or automation was introduced.
+The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, and catalog-routing, immutable-request, and request-service integration slices. No Reports workspace, UI, export, persistence authority, cache, mutation, network behavior, or automation was introduced.
 
 ## Permanent operating rules
 
@@ -42,6 +42,9 @@ The Reports foundation has advanced through controlled, read-only Inventory Age 
 | 701AA | #296 | #297 | #475 | `2669f81e` | Composed the query service over the existing application-owned input provider without startup invocation. |
 | 701AB | #298 | #299 | #479 | `7ad56e5a` | Exposed one read-only application query boundary with focused forwarding and startup-safety coverage. |
 | 701AD | #302 | #303 | #483 | `27d6825c` | Bound the catalog's Inventory Age definition to the composition query boundary with unknown-report rejection. |
+| 701AF | #306 | #307 | #487 | `b381d401` | Defined immutable validated Inventory Age query requests. |
+| 701AG | #308 | #309 | #489 | `4a2e5fee` | Added request-based query-service entrypoint preserving one provider call and outcomes. |
+| 701AH | #310 | #311 | #492 | `cd71ad4b` | Routed application composition through validated query requests. |
 
 All listed CI runs passed their complete required jobs, including Reports, Core Tests, Desktop Build, packaged runtime, installer build, and installed-runtime verification.
 
@@ -52,6 +55,7 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 - `ApplicationInventoryAgeInputProvider` and `InventoryAgeReportQueryService` are constructed through composition but are not invoked during startup or runtime verification.
 - `ApplicationComposition.query_inventory_age(...)` is the application-level forwarding boundary for Inventory Age query results.
 - `ApplicationComposition.query_report(...)` validates the catalog and routes only the supported `inventory-age-patterns` definition to that boundary.
+- `InventoryAgeReportQueryRequest` is the immutable validated request value used by the query service and composition boundary.
 - Inventory detail and CAP-005B product-link adapters remain the only approved evidence paths.
 - Reports presentation, workspaces, and domain code do not open SQLite connections, construct database managers, query source tables directly, or repair evidence.
 - The existing `build_inventory_age_row_from_input` bridge remains pure and may receive only verified found input evidence in a later query service.
@@ -69,7 +73,7 @@ The next runtime build may extend the composed Inventory Age query path only thr
 ## Pull and visual status
 
 - Pull required now: **YES**
-- Pull scope: Builds **701AD**
+- Pull scope: Builds **701AF, 701AG, and 701AH**
 - Visual review required now: **NO**
 - ChatGPT Work required now: **NO**
 
@@ -80,6 +84,20 @@ The next runtime build may extend the composed Inventory Age query path only thr
 - Inventory Age provider composition: `[██████████] 100%`
 - Inventory Age query-service implementation: `[██████████] 100%` — implementation, composition wiring, and application boundary complete.
 - Reports workspace and visual presentation: `[░░░░░░░░░░] 0%` — not authorized.
+
+## Next-chat handoff
+
+Read these repository authorities before taking action:
+
+1. `DEVELOPMENT_PLAYBOOK.md`
+2. `Jarvis Partnership Agreement.md`
+3. `Vision.md`
+4. `WorkbookBlueprint.md`
+5. `docs/WORKFLOW.md`
+6. `FoundationCheckpoint.md`
+7. `CheckpointManifest.md`
+
+Treat GitHub as the source of truth. Preserve the concise progress-bar workflow, explicit GitHub Desktop pull instructions, visual-check status, and CI → ready → squash-merge process. Do not use Codex unless Mark explicitly authorizes it. Current Reports work is UI-free; visible app changes require a separately scoped workspace build and visual review.
 
 ## Core instruction
 
