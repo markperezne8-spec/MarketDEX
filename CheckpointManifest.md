@@ -315,3 +315,16 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 **Purpose:** Preserve the complete compact historical index of verified MarketDEX checkpoints, handoffs, and repository synchronization milestones.
 
 **Safe to Replace Repository Copy**
+
+---
+
+## 🏁 Checkpoint 032 — Reports Catalog-to-Composition Milestone Complete (Builds 701AR–701AZ)
+- Build 701AR added the first user-visible Reports workspace and registered it in canonical navigation.
+- CI run #516 passed after correcting the pre-Reports workspace-order contract; PR #331 was squash-merged as `4c55094b6ab744fd7c666bfb32e0e9728025b700`.
+- Mark visually accepted Reports navigation and the approved `Inventory Age Patterns` catalog row; visual review is complete.
+- Builds 701AS–701AZ established composition-owned access to report definitions, evidence families, source domains, description, and validated catalog-only execution mode.
+- CI runs #518, #520, #522, #524, #526, #528, #530 passed; PRs #332–#339 were squash-merged, with final merge commit `397a39c84b75309bb2592276da6c5cf34ba69ded`.
+- Reports remains offline-first, deterministic, read-only, catalog-authoritative, and without live providers, persistence, export, scheduler, alert, automation, or unsupported report definitions.
+- Next milestone begins from synchronized `main`; any visible result presentation or execution behavior requires a separately scoped approved build and visual review when applicable.
+
+## 📁 Document Governance
