@@ -5,6 +5,7 @@ from datetime import date
 
 from reports.inventory_age import InventoryAgeReportRow
 from reports.inventory_age_bridge import build_inventory_age_row_from_input
+from reports.inventory_age_query_request import InventoryAgeReportQueryRequest
 from reports.inventory_age_provider import (
     INPUT_CONFLICTING,
     INPUT_FOUND,
@@ -45,6 +46,16 @@ class InventoryAgeReportQueryService:
 
     def __init__(self, input_provider: InventoryAgeInputProvider) -> None:
         self._input_provider = input_provider
+
+    def get_inventory_age_for_request(
+        self,
+        request: InventoryAgeReportQueryRequest,
+    ) -> InventoryAgeReportQueryResult:
+        """Query from one validated immutable request."""
+        return self.get_inventory_age_row(
+            request.inventory_position_id,
+            request.as_of_date,
+        )
 
     def get_inventory_age_row(
         self,
