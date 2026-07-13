@@ -207,6 +207,7 @@ class ReportsWorkspace(QWidget):
                 ('Storage location', row.storage_location or 'Not recorded'),
                 ('As-of date', row.as_of_date.isoformat()),
                 ('Evidence', f'{row.evidence_state} · {row.evidence_reason}'),
+                ('Source domain', row.source_domain),
                 ('Age (days)', row.age_days),
                 ('Source date', row.source_start_date.isoformat()),
             )
