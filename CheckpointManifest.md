@@ -287,6 +287,15 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - No Reports workspace, UI, presentation, chart, export, persistence, provider, network, scheduler, alert, or automation behavior was introduced.
 - Next movement remains a separately scoped UI-free Reports integration slice.
 
+---
+
+## 🏁 Checkpoint 030 — Reports Immutable Request Envelope (Build 701AN)
+- Build 701AN added immutable `ReportQueryRequest` composition of report identity and the approved Inventory Age request.
+- `ReportQueryService` routes the envelope while preserving catalog validation, explicit rejection, request enforcement, and one query invocation.
+- CI run #507 passed all required jobs; PR #323 was squash-merged as `68bd3be3d99376d6005cdbe7ea02f19a3fb23ea9`.
+- No Reports workspace, UI, presentation, chart, export, persistence, provider, network, scheduler, alert, or automation behavior was introduced.
+- Next movement remains a separately scoped UI-free Reports integration slice.
+
 ## 📁 Document Governance
 **Permanent Filename:** `CheckpointManifest.md`
 
