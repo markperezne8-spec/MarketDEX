@@ -69,6 +69,10 @@ class ApplicationComposition:
         """Resolve one immutable report definition through the composition boundary."""
         return self.report_catalog.get(report_id)
 
+    def report_evidence_families(self, report_id: str) -> tuple[str, ...]:
+        """Return canonical evidence families for one approved report."""
+        return self.get_report_definition(report_id).evidence_families
+
     def query_inventory_age(
         self,
         inventory_position_id: str,
