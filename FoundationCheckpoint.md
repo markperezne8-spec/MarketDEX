@@ -1,228 +1,83 @@
-# MarketDEX Foundation Checkpoint 061
+# MarketDEX Foundation Checkpoint 062
 
-**Status:** 🏁 Checkpoint Complete — RT-0.1 Sprint 001 Release Candidate
+**Status:** 🏁 Checkpoint Complete — Reports Foundation Progression
+**Canonical branch:** `main`
+**Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
 ## Mandatory resume summary
 
-MarketDEX is an offline-first, Windows-desktop collectibles business operating system. Pokémon TCG is the first optimized workflow. Continue the existing permanent codebase; do not restart it, create a competing shell, duplicate persistence authority, or treat chat memory as product authority.
+MarketDEX remains an offline-first Windows desktop collectibles operating system. Pokémon TCG is the first optimized workflow. Continue the existing permanent codebase; do not restart it, create a competing shell, duplicate persistence authority, or treat chat history as product authority.
 
-Completed Release Candidate integration:
+The Reports foundation has advanced through controlled, read-only Inventory Age preparation and composition slices. No Reports workspace, UI, export, persistence authority, cache, mutation, network behavior, automation, or live provider was introduced.
 
-- PR #164 merged to `main` at `e6a742b0732222a84986abd5032b792094f34401`.
-- PR #165 merged to `main` at `c535fb5ec85e697f094552712942fa36bba6a6dd`.
-- PR #166 merged to `main` at `fa627032cdab51927b8d257ac89c74578a859d26`.
-- Canonical branch: `main`.
+## Permanent operating rules
 
-## Product Owner operating preferences
+- GitHub is the source of truth.
+- Use issue → branch → draft PR → CI → ready → squash-merge.
+- Do not merge until the exact PR head has green CI and is mergeable.
+- Tell Mark to pull only after merge.
+- Require visual acceptance only for user-visible behavior.
+- Preserve one launcher, one composition root, one runtime database authority, and no duplicate domain authority.
+- Keep Reports offline-first, deterministic, read-only, and dependent on composition-owned approved query paths.
+- Do not use Codex unless Mark explicitly requests it.
 
-The permanent communication and delivery authority is:
+## Guidance reviewed
 
-- `docs/governance/AI_COLLABORATION_AND_DELIVERY_PROTOCOL.md`
+- `DEVELOPMENT_PLAYBOOK.md`
+- `Jarvis Partnership Agreement.md`
+- `Vision.md`
+- `WorkbookBlueprint.md`
+- `docs/WORKFLOW.md`
 
-Required behavior for future engineering sessions:
+## Completed Reports foundation sequence
 
-- show a progress bar in every meaningful milestone update
-- show one clear next step
-- include direct GitHub links when relevant
-- distinguish planned, in-progress, committed, validated, packaged, and released work
-- make routine reversible engineering decisions without unnecessary approval stops
-- reserve Product Owner approval for product direction, visual direction, strategic scope, and irreversible decisions
-- multitask on another safe approved track while GitHub Actions or another external dependency is pending
-- use milestone-based reviews instead of constant micro-reviews
-- explicitly say `READY FOR VISUAL INSPECTION — PULL NOW` or `SPRINT REVIEW READY — PULL NOW`
-- state exact branch, expected commit, launch method, review scope, and known limitations when a pull is required
-- update repository memory before declaring a milestone complete
+| Build | Issue | PR | CI | Merge commit | Locked result |
+|---|---:|---:|---:|---|---|
+| 701T | #282 | #283 | #452 | `352e0e8b` | Injected, read-only Inventory detail adapter with deterministic found/not-found/unavailable evidence. |
+| 701U | #284 | #285 | #462 | `0e9e8dcc` | Application-owned Inventory Age input provider composes approved Inventory and product-link evidence. |
+| 701V | #286 | #287 | #465 | `32d699b2` | Composition integration gate locked; no wiring before local synchronization. |
+| 701W | #288 | #289 | #467 | `6d0b6c87` | Canonical application composition constructs the provider using Inventory's existing read-connection authority. |
+| 701X | #290 | #291 | #469 | `7d2e94b2` | Future query-service contract locked: exactly one provider call and pure bridge only for verified found evidence. |
 
-When the Product Owner says `Next step`, inspect repository authority and CI, select the highest-value safe task within approved scope, proceed without unnecessary clarification, multitask when blocked, and report the next meaningful checkpoint.
+All listed CI runs passed their complete required jobs, including Reports, Core Tests, Desktop Build, packaged runtime, installer build, and installed-runtime verification.
 
-## Permanent product and architecture direction
+## Current architecture and authority
 
-- One launcher: `launcher.py`
-- One composition root: `composition/application_composition.py`
-- One canonical desktop window and shell path
-- One workspace registry and feature catalog
-- One SQLite persistence, schema, and migration authority
-- One semantic token and reusable component authority
-- Windows desktop first
-- Offline first
-- No mandatory subscription dependency
-- No prototype branch represented as the permanent product
-- No presentation migration may silently change business authority
-- No release without applicable source, executable, installer, installed-runtime, accessibility, visual, and checkpoint gates
+- `composition/application_composition.py` remains the only application composition root.
+- `InventoryAppService` remains the owner of the existing runtime `database.read_connection` authority used by Build 701W.
+- `ApplicationInventoryAgeInputProvider` is constructed through composition but is not invoked during startup or runtime verification.
+- Inventory detail and CAP-005B product-link adapters remain the only approved evidence paths.
+- Reports presentation, workspaces, and domain code do not open SQLite connections, construct database managers, query source tables directly, or repair evidence.
+- The existing `build_inventory_age_row_from_input` bridge remains pure and may receive only verified found input evidence in a later query service.
 
-## Visual and brand authority
+## Exact next gate
 
-Active Visual North Star:
+**Local synchronization required before the next runtime build.**
 
-- `docs/design/VISUAL_NORTH_STAR.md`
-- `assets/brand/visual_north_star/marketdex_visual_north_star_v1.png`
-- approved SHA-256: `1269e2af119c569cc5d4f76b82a6f92984a04f6f752119d8e1dcf417557909a5`
-- approved Git blob SHA: `27d4b34b24984678225ae38c7e77240a02d521b4`
+After Mark pulls current `main`, Build 701Z may implement the injected Inventory Age report query service and immutable result envelope.
 
-The approved PNG exists on `main`, is packaged by `MarketDEX.spec`, and is protected by the canonical brand asset packaging contract.
+That runtime slice must remain UI-free and must:
 
-The permanent electric dog Pokémon mascot remains protected and must not be silently removed, replaced, or substantially redesigned.
+1. call the injected provider exactly once;
+2. preserve found, not-found, unlinked, conflicting, and unavailable outcomes;
+3. invoke the pure row bridge only for verified found evidence;
+4. reuse existing composition-owned dependencies;
+5. add no database manager, schema initialization, direct Reports persistence access, write, event, audit, repair, migration, network, export, scheduler, alert, cloud sync, or automation behavior.
 
-## Completed repository-backed work in this sequence
-
-### Visual source and package authority
-
-- Canonical Visual North Star PNG synchronized on `main` and identity verified.
-- `MarketDEX.spec` on `main` updated to package the canonical Visual North Star and mascot.
-- Packaging contract test added on `main` to lock the approved asset identity and spec references.
-
-### Mission Control visual slice on PR #166
-
-- `ui/main_window.py` now applies the shared token theme.
-- The Mission Control title surface uses `MarketDEXWorkspaceHeader`.
-- The eight Mission Control KPI surfaces use `MarketDEXKpiCard`.
-- Existing snapshot keys, refresh behavior, Inventory services, and SQLite reads remain preserved.
-- A dedicated Mission Control CI gate was added and corrected to validate only the visual slice.
-- Latest Mission Control Visual Slice job passed.
-
-### Modern application shell on PR #166
-
-- Boundary contract added in `tests/test_modern_application_shell_migration.py`.
-- Canonical `WorkspaceHost` upgraded rather than introducing a second shell.
-- Persistent branded left navigation rail added.
-- Workspace content moved to a stacked workspace frame.
-- Inventory, Pricing, and Listing Workflow navigation remains identity-based.
-- Offline/SQLite status presentation and workspace status area added.
-- Existing feature installers and compatibility aliases remain supported.
-
-Latest shell implementation commit before this checkpoint:
-
-- `ae89f7201cb20351f7a31dfd3cfc5eaad4635c08`
-- message: `ui: modernize canonical workspace host shell`
-
-### Permanent collaboration continuity
-
-- `MARKETDEX_START_HERE.md` remains the canonical orientation file.
-- `docs/governance/AI_COLLABORATION_AND_DELIVERY_PROTOCOL.md` records the permanent communication, multitasking, review, Definition of Ready, Definition of Done, and resume protocol.
-
-## Latest verified CI state
-
-Sequential RC integration is active:
-
-- PR #164 merged to `main` at `e6a742b0732222a84986abd5032b792094f34401`.
-- PR #164 post-boundary workflow passed.
-- PR #165 was retargeted to `main`, repaired with the proven Listing Qt dependency and feature-catalog ordering contract, and passed fresh integrated CI.
-- PR #165 merged to `main` at `c535fb5ec85e697f094552712942fa36bba6a6dd`.
-- PR #166 final integrated workflow `29193312462` passed against current `main`, including Core, Inventory, Pricing, Listing, Mission Control, Desktop Build, executable packaging, packaged-runtime verification, installer build, and installed-runtime verification.
-- PR #166 merged to `main` at `fa627032cdab51927b8d257ac89c74578a859d26`.
-
-## Resolved blockers
-
-- Desktop Build contract drift: resolved.
-- Listing Linux Qt runtime dependency: resolved with explicit `libegl1` installation.
-- Sale-completion ordering contract: resolved through canonical `CORE_DESKTOP_FEATURES` dependency evidence.
-- Pricing legacy contrast: resolved and visually accepted.
-- Listing legacy panel styling: resolved and visually accepted.
-- Visual North Star source and package authority: present on `main`.
-
-## Local source launch and review
-
-Local repository path used by the Product Owner:
-
-- `C:\Projects\MarketDEX_OS`
-
-Required branch for current visual work:
-
-- `agent/market-intelligence-foundation`
-
-Source launch:
-
-```powershell
-cd C:\Projects\MarketDEX_OS
-python -m pip install -r requirements.txt
-python launcher.py
-```
-
-The Product Owner successfully installed Python and launched the source application.
-
-Source runtime database:
-
-- `C:\Projects\MarketDEX_OS\runtime\marketdex.sqlite3`
-
-Installed application target after a successful future installer build:
-
-- `%LOCALAPPDATA%\Programs\MarketDEX\MarketDEX.exe`
-
-An existing `dist\MarketDEX.exe`, when present locally, may be older than the active branch because the current Desktop Build gate has not produced a fresh artifact.
-
-## Current visual evidence
-
-The Product Owner supplied a source-build screenshot. It confirmed:
-
-- the application launches
-- SQLite-backed data loads
-- Inventory, Pricing, and Listing workflow structure is present
-- the engineering foundation is ahead of the final Visual North Star presentation
-
-The Product Owner approved the recommendation to modernize the canonical shell and continue with milestone-based visual transformation.
-
-## Sprint 1 scope
-
-Active Sprint 1 tracks:
-
-1. Modern Application Shell
-2. Mission Control visual modernization
-3. Engineering continuity and self-documenting repository
-4. Desktop Build contract recovery
-5. Listing blocker isolation and repair
-6. CI monitoring and immediate focused fixes
-
-## Definition of Ready
-
-A task may enter implementation only when it has:
-
-- product and Visual North Star alignment
-- clear scope and exclusions
-- architecture fit
-- acceptance criteria
-- validation strategy
-- rollback or safe-recovery approach
-- documentation impact identified
-- no unresolved Product Owner decision that would materially change implementation
-
-## Definition of Done
-
-A milestone is complete only when applicable items are true:
-
-- implementation is committed to the intended branch
-- focused tests pass
-- broader CI is inspected and accurately reported
-- no business-authority regression is introduced
-- checkpoint and relevant governance documents are updated
-- known blockers and remaining work are recorded
-- next approved task is selected
-- pull/review requirement is stated explicitly
-
-## Exact next approved task
-
-**Product Owner RC synchronization and final smoke check.**
-
-1. pull canonical `main`;
-2. verify commit `fa62703`;
-3. launch the source application;
-4. confirm Mission Control, Inventory, Pricing, and Listing navigation;
-5. record RT-0.1 RC operator acceptance.
-
-## Pull and review status
+## Pull and visual status
 
 - Pull required now: **YES**
-- Visual review required now: **YES — one final RC smoke check**
-- Review signal: `RT-0.1 RC READY — PULL NOW`
+- Pull scope: Builds **701W, 701X, and 701Y**
+- Visual review required now: **NO**
+- ChatGPT Work required now: **NO**
 
 ## Progress snapshot
 
-- Foundation and permanent direction: `[██████████] 100%`
-- Engineering continuity protocol: `[█████████░] 90%`
-- Mission Control first visual slice: `[██████████] 100%` focused validation
-- Modern application shell: `[██████████] 100%` visually accepted
-- Desktop Build pipeline: `[██████████] 100%` on latest verified integrated run
-- Windows EXE and installer: `[██████████] 100%` on latest verified integrated run
-- Sprint 1 integrated readiness: `[██████████] 100%` repository and CI verified; Product Owner RC smoke check pending
+- Permanent desktop/runtime authority: `[██████████] 100%`
+- Reports architecture and evidence boundaries: `[██████████] 100%`
+- Inventory Age provider composition: `[██████████] 100%`
+- Inventory Age query-service implementation: `[████░░░░░░] 40%` — runtime slice gated by local synchronization.
+- Reports workspace and visual presentation: `[░░░░░░░░░░] 0%` — not authorized.
 
 ## Core instruction
 

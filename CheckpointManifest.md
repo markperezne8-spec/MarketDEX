@@ -227,6 +227,17 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - `CheckpointManifest.md` remains the single checkpoint-history authority.
 - Future checkpoint continuity should update these two living documents instead of creating additional root-level checkpoint handoff files unless a packaged historical release specifically requires one.
 
+
+## 🏁 Checkpoint 024 — Reports Foundation Progression (Builds 701T–701X)
+- GitHub-first continuation and CI → ready → squash-merge discipline preserved.
+- Build 701T established injected, read-only Inventory detail evidence.
+- Build 701U composed approved Inventory and CAP-005B product-link evidence into the application-owned Inventory Age input provider.
+- Build 701V locked the composition integration boundary and local-synchronization gate.
+- Build 701W constructed the provider at the canonical application composition root by reusing Inventory's existing runtime read-connection authority; no provider invocation or UI exposure was added.
+- Build 701X locked the future composition-owned query-service contract: exactly one provider call, explicit outcome preservation, and pure bridge invocation only for verified found evidence.
+- Reports remains offline-first, deterministic, read-only, UI-free, export-free, persistence-free, and forbidden from direct source-domain SQLite access.
+- Next runtime gate: Mark pulls current `main`; then an injected query service and immutable result envelope may be implemented in a separately scoped UI-free build.
+
 ---
 
 ## 📁 Document Governance
