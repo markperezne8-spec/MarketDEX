@@ -9,6 +9,7 @@ EVENT_HISTORY = 'event_history'
 SNAPSHOTS = 'snapshots'
 DECISION_HISTORY = 'decision_history'
 OUTCOMES = 'outcomes'
+CATALOG_ONLY_EXECUTION_MODE = 'catalog-only'
 
 REPORT_EVIDENCE_FAMILIES = frozenset(
     {
@@ -49,6 +50,7 @@ class ReportDefinition:
     evidence_families: tuple[str, ...]
     source_domains: tuple[str, ...]
     description: str = ''
+    execution_mode: str = CATALOG_ONLY_EXECUTION_MODE
 
     def __post_init__(self) -> None:
         report_id = _required_text(self.report_id, 'report_id').lower()
@@ -72,12 +74,19 @@ class ReportDefinition:
         if not source_domains:
             raise ValueError('at least one source_domain is required')
 
+        execution_mode = _required_text(self.execution_mode, 'execution_mode').lower()
+        if execution_mode != CATALOG_ONLY_EXECUTION_MODE:
+            raise ValueError(
+                f'unsupported execution mode: {execution_mode}'
+            )
+
         object.__setattr__(self, 'report_id', report_id)
         object.__setattr__(self, 'name', name)
         object.__setattr__(self, 'business_question', business_question)
         object.__setattr__(self, 'evidence_families', evidence_families)
         object.__setattr__(self, 'source_domains', source_domains)
         object.__setattr__(self, 'description', self.description.strip())
+        object.__setattr__(self, 'execution_mode', execution_mode)
 
 
 class ReportCatalog:
