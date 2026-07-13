@@ -102,6 +102,8 @@ jobs:
           pytest -q --tb=short --junitxml=reports-results.xml
           tests/test_build701c_reports_definition_catalog.py
           tests/test_build701d_inventory_age_report_fixture.py
+          tests/test_build701e_inventory_age_projection_boundary_doc.py
+          tests/test_build701f_inventory_age_row_derivation.py
       - name: Upload Reports test results
         if: always()
         uses: actions/upload-artifact@v4
