@@ -19,7 +19,7 @@ def test_build701v_composition_gate_preserves_application_owned_read_path() -> N
 def test_build701v_composition_gate_rejects_reports_persistence_and_early_wiring() -> None:
     content = DOC_PATH.read_text(encoding='utf-8')
 
-    assert 'Build 701V adds no runtime wiring' in content
+    assert 'This build adds no runtime wiring' in content
     assert 'Mark has pulled current `main` locally' in content
     assert 'opening SQLite connections' in content
     assert 'constructing `DatabaseManager`, `InventoryAppService`, or `InventoryProductLinkService`' in content
