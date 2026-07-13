@@ -155,18 +155,23 @@ class ReportsWorkspace(QWidget):
             )
             return
 
+        report_name = definitions[row_index].name
         result = self.query_report(
             definitions[row_index].report_id,
             inventory_position_id,
             self.as_of_date_input.date().toPython(),
         )
-        self._render_result(result)
+        self._render_result(result, report_name)
 
-    def _render_result(self, result: InventoryAgeReportQueryResult) -> None:
+    def _render_result(
+        self,
+        result: InventoryAgeReportQueryResult,
+        report_name: str,
+    ) -> None:
         self.result_table.setRowCount(0)
         if not result.is_found or result.row is None:
             self.result_status_label.setText(
-                f'Inventory Age result: {result.outcome.upper()} · '
+                f'{report_name}: {result.outcome.upper()} · '
                 f'{result.reason or "No report row available"}'
             )
             self._set_result_rows(
@@ -179,7 +184,7 @@ class ReportsWorkspace(QWidget):
 
         row = result.row
         self.result_status_label.setText(
-            'Inventory Age result: FOUND · read-only evidence'
+            f'{report_name}: FOUND · read-only evidence'
         )
         self._set_result_rows(
             (
