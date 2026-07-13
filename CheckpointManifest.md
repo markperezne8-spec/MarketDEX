@@ -328,3 +328,12 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Next milestone begins from synchronized `main`; any visible result presentation or execution behavior requires a separately scoped approved build and visual review when applicable.
 
 ## 📁 Document Governance
+
+## 🏁 Checkpoint 033 — Reports Result Presentation Sequence (Builds 701BA–701BF)
+- Build 701BA added the first user-visible, read-only Inventory Age result surface through the existing composition-owned Reports query boundary.
+- Builds 701BB–701BD preserved selected report context, catalog-only/read-only status, and inventory position/as-of date for non-found outcomes.
+- Build 701BE exposed source authority for found results; Build 701BF exposed inventory source authority for all outcomes.
+- CI run #546 passed all required jobs; PR #346 was squash-merged as `b7e7efd021826698b88daad43ba0c9cad47261d0`.
+- Visual acceptance remains pending until the deliberate NOT_FOUND test confirms `Source domain = inventory`.
+- Reports remains offline-first, deterministic, read-only, composition-owned, and without live providers, persistence, export, scheduler, alert, or automation.
+- Build 701BG synchronizes this checkpoint authority without changing runtime or UI behavior.
