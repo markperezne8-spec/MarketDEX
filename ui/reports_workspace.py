@@ -190,6 +190,7 @@ class ReportsWorkspace(QWidget):
                         'As-of date',
                         as_of_date.isoformat() if as_of_date is not None else 'Not provided',
                     ),
+                    ('Source domain', 'inventory'),
                 )
             )
             return
