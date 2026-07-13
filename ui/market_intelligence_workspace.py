@@ -20,6 +20,7 @@ class MarketIntelligenceWorkspace(QWidget):
     """Read-only Market Intelligence command-center surface."""
 
     READINESS_HEADERS = ('Capability', 'Status', 'Boundary')
+    QUERY_HEADERS = ('Query ID', 'Name', 'Products', 'Marketplaces', 'Observations', 'Notes')
     EVIDENCE_HEADERS = ('Evidence', 'Value', 'Confidence', 'Sample', 'Observed')
     SIGNAL_HEADERS = ('Signal', 'Severity', 'Action', 'Evidence')
 
@@ -40,8 +41,15 @@ class MarketIntelligenceWorkspace(QWidget):
         self.status_label.setObjectName('marketIntelligenceStatusLabel')
 
         self.readiness_table = self._table(self.READINESS_HEADERS, 'marketIntelligenceReadinessTable')
+        self.query_table = self._table(self.QUERY_HEADERS, 'marketIntelligenceResearchQueryTable')
         self.evidence_table = self._table(self.EVIDENCE_HEADERS, 'marketIntelligenceEvidenceTable')
         self.signal_table = self._table(self.SIGNAL_HEADERS, 'marketIntelligenceSignalTable')
+
+        query_title = QLabel('Saved research queries · read-only')
+        query_title.setObjectName('marketIntelligenceResearchQueryTitle')
+        self.query_status = QLabel('Research query catalog not loaded.')
+        self.query_status.setWordWrap(True)
+        self.query_status.setObjectName('marketIntelligenceResearchQueryStatus')
 
         evidence_title = QLabel('Offline sample evidence · Mega Evolution ETB')
         evidence_title.setObjectName('marketIntelligenceEvidenceTitle')
@@ -65,6 +73,9 @@ class MarketIntelligenceWorkspace(QWidget):
         layout.addWidget(subtitle)
         layout.addWidget(self.status_label)
         layout.addWidget(self.readiness_table, 2)
+        layout.addWidget(query_title)
+        layout.addWidget(self.query_status)
+        layout.addWidget(self.query_table, 1)
         layout.addWidget(evidence_title)
         layout.addWidget(self.evidence_table, 2)
         layout.addWidget(signal_title)
@@ -100,6 +111,7 @@ class MarketIntelligenceWorkspace(QWidget):
 
     def refresh_results(self) -> None:
         self._set_rows(self.readiness_table, self.READINESS_HEADERS, self._readiness_rows())
+        self._refresh_query_rows()
         observations = self.intelligence.observation_gateway.list_observations(
             OFFLINE_SAMPLE_SOURCE_ID,
             OFFLINE_SAMPLE_PRODUCT_ID,
@@ -135,6 +147,29 @@ class MarketIntelligenceWorkspace(QWidget):
         self.status_label.setText(
             'Market Intelligence is mounted in read-only offline mode · fixture evidence only.'
         )
+
+    def _refresh_query_rows(self) -> None:
+        definitions = self.intelligence.research_query_catalog.list_definitions()
+        query_rows = tuple(
+            (
+                definition.query_id,
+                definition.name,
+                ', '.join(definition.product_ids) or '—',
+                ', '.join(definition.marketplace_ids) or 'All',
+                ', '.join(definition.observation_kinds) or 'All',
+                definition.notes or '—',
+            )
+            for definition in definitions
+        )
+        self._set_rows(self.query_table, self.QUERY_HEADERS, query_rows)
+        if definitions:
+            self.query_status.setText(
+                f'{len(definitions)} saved research query definition(s) · in-memory only · not persisted · not executable.'
+            )
+        else:
+            self.query_status.setText(
+                'No saved research queries registered · in-memory only · not persisted · not executable.'
+            )
 
     def _set_rows(
         self,
@@ -180,5 +215,10 @@ class MarketIntelligenceWorkspace(QWidget):
                 'Visualization Catalog',
                 f'{len(self.intelligence.visualization_catalog.definitions)} definition(s)',
                 'Catalog-backed read-only visualization; no persistent valuation.',
+            ),
+            (
+                'Research Query Catalog',
+                f'{len(self.intelligence.research_query_catalog.query_ids)} saved query definition(s)',
+                'Composition-owned in-memory definitions; non-persistent and non-executable.',
             ),
         )
