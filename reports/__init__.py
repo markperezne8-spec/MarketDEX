@@ -57,3 +57,19 @@ __all__ += (
     'parse_inventory_purchase_date',
     'adapt_inventory_detail_purchase_date',
 )
+
+from reports.inventory_age_input import (
+    PRODUCT_LINK_CONFLICTING,
+    PRODUCT_LINK_EVIDENCE_STATES,
+    PRODUCT_LINK_LINKED,
+    PRODUCT_LINK_UNLINKED,
+    InventoryAgeInputRecord,
+)
+
+__all__ += (
+    'PRODUCT_LINK_LINKED',
+    'PRODUCT_LINK_UNLINKED',
+    'PRODUCT_LINK_CONFLICTING',
+    'PRODUCT_LINK_EVIDENCE_STATES',
+    'InventoryAgeInputRecord',
+)
