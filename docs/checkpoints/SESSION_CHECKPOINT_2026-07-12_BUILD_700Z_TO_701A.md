@@ -52,9 +52,9 @@ The following principles materially govern future work:
 - MarketDEX informs decisions; Mark retains final judgment.
 - New capability must grow from real Pokémon TCG operating needs without weakening the unified collectibles architecture.
 
-### `Workbook_Blueprint.md`
+### `WorkbookBlueprint.md`
 
-This file is now part of the mandatory reference set requested by Mark. Its exact path was not discoverable through the GitHub connector during this checkpoint. Before Build 701 runtime implementation is selected, the repository path must be resolved and the file reviewed alongside `Vision.md` and `docs/WORKFLOW.md`.
+The governed repository file was resolved and reviewed during Build 701B. The user-supplied approved copy exactly matches current `main`. Its Analytics responsibility, historical-data distinctions, visual comprehension rules, source authority, and offline-first requirements now guide the Reports workstream.
 
 ## Architecture lessons preserved
 
@@ -72,4 +72,4 @@ This file is now part of the mandatory reference set requested by Mark. Its exac
 3. Merge only if green and mergeable.
 4. Pull through GitHub Desktop after merge.
 5. No visual check for Build 701A.
-6. Resolve and review the exact `Workbook_Blueprint.md` repository path before choosing Build 701B.
+6. Build 701B resolves and reviews `WorkbookBlueprint.md` before any Reports runtime implementation.
