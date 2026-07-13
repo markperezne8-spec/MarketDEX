@@ -97,7 +97,7 @@ class MarketIntelligenceWorkspace(QWidget):
         layout.addWidget(self.query_table, 1)
         layout.addWidget(preview_title)
         layout.addWidget(self.preview_status)
-        layout.addWidget(self.preview_table, 1)
+        layout.addWidget(self.preview_table, 2)
         layout.addWidget(evidence_title)
         layout.addWidget(self.evidence_table, 2)
         layout.addWidget(signal_title)
@@ -213,9 +213,10 @@ class MarketIntelligenceWorkspace(QWidget):
                 for row in preview_rows
             ),
         )
+        self._fit_table_to_rows(self.preview_table, visible_rows=max(3, len(preview_rows)))
         if preview_rows:
             self.preview_status.setText(
-                f'{len(preview_rows)} offline fixture preview row(s) · read-only · not persisted · not executable.'
+                f'{len(preview_rows)} offline fixture preview row(s) visible · read-only · not persisted · not executable.'
             )
         else:
             self.preview_status.setText(
@@ -234,6 +235,17 @@ class MarketIntelligenceWorkspace(QWidget):
                 item = QTableWidgetItem(str(value))
                 item.setFlags(item.flags() & ~Qt.ItemIsEditable)
                 table.setItem(row_index, column_index, item)
+        table.resizeRowsToContents()
+
+    def _fit_table_to_rows(self, table: QTableWidget, *, visible_rows: int) -> None:
+        row_count = max(1, int(visible_rows))
+        default_row_height = table.verticalHeader().defaultSectionSize()
+        row_heights = sum(
+            table.rowHeight(index) if index < table.rowCount() else default_row_height
+            for index in range(row_count)
+        )
+        chrome_height = table.horizontalHeader().height() + table.frameWidth() * 2 + 8
+        table.setMinimumHeight(row_heights + chrome_height)
 
     def _format_value(self, observation) -> str:
         if observation.kind is ObservationKind.MARKET_PRICE:

@@ -113,10 +113,28 @@ def test_market_intelligence_workspace_displays_offline_preview_rows(qtbot):
     assert workspace.preview_table.item(1, 2).text() == 'Mega Evolution ETB'
     assert workspace.preview_table.item(1, 4).text() == 'USD 89.99'
     assert workspace.preview_table.item(2, 2).text() == 'daily volume'
-    assert '3 offline fixture preview row(s)' in workspace.preview_status.text()
+    assert '3 offline fixture preview row(s) visible' in workspace.preview_status.text()
     assert 'read-only' in workspace.preview_status.text()
     assert 'not persisted' in workspace.preview_status.text()
     assert 'not executable' in workspace.preview_status.text()
+
+
+def test_market_intelligence_workspace_preview_fits_all_fixture_rows(qtbot):
+    workspace = MarketIntelligenceWorkspace(MarketIntelligenceComposition())
+    qtbot.addWidget(workspace)
+
+    expected_row_height = sum(
+        workspace.preview_table.rowHeight(index)
+        for index in range(workspace.preview_table.rowCount())
+    )
+    minimum_content_height = (
+        workspace.preview_table.horizontalHeader().height()
+        + expected_row_height
+        + workspace.preview_table.frameWidth() * 2
+    )
+
+    assert workspace.preview_table.rowCount() == 3
+    assert workspace.preview_table.minimumHeight() >= minimum_content_height
 
 
 def test_market_intelligence_workspace_preview_empty_state_is_explicit(qtbot):
