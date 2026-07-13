@@ -6,6 +6,7 @@ from composition.feature_catalog import install_features
 from market_intelligence.composition import MarketIntelligenceComposition
 from reports.definitions import ReportCatalog, build_report_catalog
 from reports.inventory_age_provider import ApplicationInventoryAgeInputProvider
+from reports.inventory_age_query_request import InventoryAgeReportQueryRequest
 from reports.inventory_age_query import (
     InventoryAgeReportQueryResult,
     InventoryAgeReportQueryService,
@@ -58,10 +59,8 @@ class ApplicationComposition:
         as_of_date: date,
     ) -> InventoryAgeReportQueryResult:
         """Query Inventory Age through the composition-owned report service."""
-        return self.inventory_age_report_query.get_inventory_age_row(
-            inventory_position_id,
-            as_of_date,
-        )
+        request = InventoryAgeReportQueryRequest(inventory_position_id, as_of_date)
+        return self.inventory_age_report_query.get_inventory_age_for_request(request)
 
     def query_report(
         self,
