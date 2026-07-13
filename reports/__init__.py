@@ -43,3 +43,17 @@ __all__ += (
     'derive_inventory_age_row',
     'sort_inventory_age_rows',
 )
+
+from reports.inventory_age_source import (
+    PURCHASE_DATE_FIELD,
+    InventoryAgeSourceEvidence,
+    adapt_inventory_detail_purchase_date,
+    parse_inventory_purchase_date,
+)
+
+__all__ += (
+    'PURCHASE_DATE_FIELD',
+    'InventoryAgeSourceEvidence',
+    'parse_inventory_purchase_date',
+    'adapt_inventory_detail_purchase_date',
+)
