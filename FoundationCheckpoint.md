@@ -54,7 +54,9 @@ The Reports foundation has advanced through controlled, read-only Inventory Age 
 | 701BC | #343 | #343 | #540 | `5a92d0f1` | Made catalog-only/read-only execution status explicit in results. |
 | 701BD | #344 | #344 | #542 | `db050228` | Preserved query context for non-found outcomes. |
 | 701BE | #345 | #345 | #544 | `cf3eb90c` | Exposed source authority in found Inventory Age results. |
-| 701BF | #346 | #346 | #546 | `b7e7efd0` | Exposed inventory source authority for all Reports outcomes; visual confirmation pending. |
+| 701BF | #346 | #346 | #546 | `b7e7efd0` | Exposed inventory source authority for all Reports outcomes; visual acceptance passed. |
+| 701BI | #349 | #349 | #553 | `a210be23` | Exposed explicit source-date authority for all Reports outcomes; visual acceptance passed. |
+| 701BJ | #350 | #350 | #554 | `0f2b726a` | Preserved the explicit no-Codex handover rule in the permanent workflow contract. |
 
 All listed CI runs passed their complete required jobs, including Reports, Core Tests, Desktop Build, packaged runtime, installer build, and installed-runtime verification.
 
@@ -177,6 +179,16 @@ Treat GitHub as the source of truth. Preserve the concise progress-bar workflow,
 ## Checkpoint 072 synchronization
 
 - Build 701BF visual acceptance was completed after pull and test-position review.
-- The deliberate `Test_Inventory` NOT_FOUND result displayed `Source domain = inventory` and preserved outcome, reason, inventory position, and as-of date.
-- Build 701BH records the completed visual gate without changing runtime or UI behavior.
+- Build 701BI visual acceptance confirmed `Source date = unavailable · no Inventory detail evidence` for the deliberate NOT_FOUND result, while preserving source domain, outcome, reason, inventory position, and as-of date.
+- Build 701BJ preserved the no-Codex handover rule in `docs/WORKFLOW.md`.
+- Build 701BK synchronizes this checkpoint authority without changing runtime or UI behavior.
 - The next Reports slice may proceed from synchronized `main`.
+
+
+## Checkpoint 073 synchronization
+
+- Build 701BI was merged through PR #349 after CI run #553 passed; merge commit `a210be2378eecb34e8cad6b11dd236c181ecbb4d`.
+- Build 701BI visual acceptance passed: the NOT_FOUND result displayed `Source domain = inventory` and `Source date = unavailable · no Inventory detail evidence`, while preserving required context.
+- Build 701BJ was merged through PR #350 after CI run #554 passed; merge commit `0f2b726ab64f5247b30776ba4969d609755814aa`.
+- The permanent workflow now states that Codex must not be used unless Mark explicitly authorizes it in the current conversation.
+- Build 701BK records the synchronized checkpoint without runtime or visual change.
