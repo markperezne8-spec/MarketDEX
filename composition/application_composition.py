@@ -75,7 +75,11 @@ class ApplicationComposition:
     ) -> InventoryAgeReportQueryResult:
         """Route a catalog-approved report through the Reports query service."""
         request = InventoryAgeReportQueryRequest(inventory_position_id, as_of_date)
-        return self.report_query.query_inventory_age_report(report_id, request)
+        return self.report_query.query_inventory_age_report(
+            report_id,
+            request,
+            query_inventory_age=self.query_inventory_age,
+        )
 
     def build_main_window(self) -> MainWindow:
         window = MainWindow(self.mission_control, self.inventory)
