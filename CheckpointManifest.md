@@ -277,6 +277,16 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - No Reports workspace, UI, presentation, chart, export, persistence, provider, network, scheduler, alert, or automation behavior was introduced.
 - Next movement remains a separately scoped UI-free Reports integration slice.
 
+---
+
+## 🏁 Checkpoint 029 — Reports Request Contract Hardening (Build 701AL)
+- Build 701AL enforced the immutable `InventoryAgeReportQueryRequest` type at the Reports routing boundary.
+- Non-contract requests are rejected before query invocation.
+- Catalog validation, explicit rejection, and one-query behavior remain preserved.
+- CI run #503 passed all required jobs; PR #319 was squash-merged as `e34b3bcc08cf4396a590461e97b5de3424065ef7`.
+- No Reports workspace, UI, presentation, chart, export, persistence, provider, network, scheduler, alert, or automation behavior was introduced.
+- Next movement remains a separately scoped UI-free Reports integration slice.
+
 ## 📁 Document Governance
 **Permanent Filename:** `CheckpointManifest.md`
 
