@@ -9,6 +9,7 @@ from reports.inventory_age_query import (
     InventoryAgeReportQueryService,
 )
 from reports.inventory_age_query_request import InventoryAgeReportQueryRequest
+from reports.report_query_request import ReportQueryRequest
 
 
 class ReportQueryService:
@@ -21,6 +22,21 @@ class ReportQueryService:
     ) -> None:
         self._catalog = catalog
         self._inventory_age_query = inventory_age_query
+
+    def query(
+        self,
+        request: ReportQueryRequest,
+        query_inventory_age: Callable[[str, date], InventoryAgeReportQueryResult]
+        | None = None,
+    ) -> InventoryAgeReportQueryResult:
+        """Execute one immutable report request envelope."""
+        if not isinstance(request, ReportQueryRequest):
+            raise TypeError('Reports query requires ReportQueryRequest')
+        return self.query_inventory_age_report(
+            request.report_id,
+            request.inventory_age_request,
+            query_inventory_age=query_inventory_age,
+        )
 
     def query_inventory_age_report(
         self,

@@ -11,6 +11,7 @@ from reports.inventory_age_query import (
     InventoryAgeReportQueryResult,
     InventoryAgeReportQueryService,
 )
+from reports.report_query_request import ReportQueryRequest
 from reports.report_query_service import ReportQueryService
 from services.collection_position_service import CollectionPositionService
 from services.inventory_app_service import InventoryAppService
@@ -74,9 +75,11 @@ class ApplicationComposition:
         as_of_date: date,
     ) -> InventoryAgeReportQueryResult:
         """Route a catalog-approved report through the Reports query service."""
-        request = InventoryAgeReportQueryRequest(inventory_position_id, as_of_date)
-        return self.report_query.query_inventory_age_report(
+        request = ReportQueryRequest(
             report_id,
+            InventoryAgeReportQueryRequest(inventory_position_id, as_of_date),
+        )
+        return self.report_query.query(
             request,
             query_inventory_age=self.query_inventory_age,
         )
