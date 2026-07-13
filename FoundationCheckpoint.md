@@ -142,3 +142,17 @@ Treat GitHub as the source of truth. Preserve the concise progress-bar workflow,
 ## Core instruction
 
 > Improve the existing MarketDEX foundation. Do not restart it, duplicate it, silently redefine it, or rely on chat-only memory.
+
+## Checkpoint 070 synchronization
+
+- Builds 701AR–701AZ completed the Reports catalog-to-composition milestone.
+- Build 701AR added the first visible Reports workspace; PR #331, CI run #516, merge commit `4c55094b6ab744fd7c666bfb32e0e9728025b700`.
+- Mark visually accepted Reports navigation and the approved `Inventory Age Patterns` catalog row; visual review is complete.
+- Builds 701AS–701AZ hardened the composition-owned Reports catalog, definition, evidence, source-domain, description, and catalog-only execution-mode contracts.
+- Final milestone merge: PR #339, CI run #532, merge commit `397a39c84b75309bb2592276da6c5cf34ba69ded`.
+- Reports remains offline-first, deterministic, read-only, catalog-authoritative, and without live providers, persistence, export, scheduler, alert, automation, or unsupported report definitions.
+- Next milestone begins from the synchronized `main` branch; any new visible result presentation or execution behavior requires a separately scoped approved build and visual review when applicable.
+
+## Core instruction
+
+> Improve the existing MarketDEX foundation. Do not restart it, duplicate it, silently redefine it, or rely on chat-only memory.
