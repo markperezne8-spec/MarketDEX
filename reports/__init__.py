@@ -85,6 +85,7 @@ from reports.inventory_age_provider import (
     INPUT_UNAVAILABLE,
     INPUT_UNLINKED,
     INVENTORY_AGE_INPUT_OUTCOMES,
+    ApplicationInventoryAgeInputProvider,
     InventoryAgeInputProvider,
     InventoryAgeInputProviderResult,
 )
@@ -96,6 +97,7 @@ __all__ += (
     'INPUT_CONFLICTING',
     'INPUT_UNAVAILABLE',
     'INVENTORY_AGE_INPUT_OUTCOMES',
+    'ApplicationInventoryAgeInputProvider',
     'InventoryAgeInputProvider',
     'InventoryAgeInputProviderResult',
 )
