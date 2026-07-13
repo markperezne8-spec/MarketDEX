@@ -101,3 +101,13 @@ __all__ += (
     'InventoryAgeInputProvider',
     'InventoryAgeInputProviderResult',
 )
+
+from reports.inventory_age_query import (
+    InventoryAgeReportQueryResult,
+    InventoryAgeReportQueryService,
+)
+
+__all__ += (
+    'InventoryAgeReportQueryResult',
+    'InventoryAgeReportQueryService',
+)
