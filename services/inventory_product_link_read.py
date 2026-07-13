@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Protocol, runtime_checkable
+from typing import Any, Callable, ContextManager, Protocol, runtime_checkable
 
 
 PRODUCT_LINK_FOUND = 'linked'
@@ -68,3 +68,51 @@ class InventoryProductLinkReadBoundary(Protocol):
         request: InventoryProductLinkReadRequest,
     ) -> InventoryProductLinkReadResult:
         """Return explicit asset-to-product evidence for one Inventory position."""
+
+
+class InventoryProductLinkReadAdapter:
+    """Injected, read-only CAP-005B lookup adapter."""
+
+    def __init__(self, open_read_connection: Callable[[], ContextManager[Any]]) -> None:
+        self._open_read_connection = open_read_connection
+
+    def get_product_link(
+        self,
+        request: InventoryProductLinkReadRequest,
+    ) -> InventoryProductLinkReadResult:
+        try:
+            with self._open_read_connection() as connection:
+                rows = connection.execute(
+                    'SELECT product_id, state FROM inventory_product_links WHERE asset_id = ?',
+                    (request.inventory_position_id,),
+                ).fetchall()
+        except Exception:
+            return InventoryProductLinkReadResult(
+                PRODUCT_LINK_UNAVAILABLE,
+                reason='CAP-005B read dependency unavailable',
+            )
+
+        if not rows:
+            return InventoryProductLinkReadResult(
+                PRODUCT_LINK_UNLINKED,
+                reason='no product-link evidence',
+            )
+        if len(rows) != 1:
+            return InventoryProductLinkReadResult(
+                PRODUCT_LINK_CONFLICTING,
+                reason='multiple product-link evidence rows',
+            )
+
+        row = rows[0]
+        product_id = str(row['product_id'] or '').strip()
+        state = str(row['state'] or '').strip().upper()
+        if state != 'LINKED' or not product_id:
+            return InventoryProductLinkReadResult(
+                PRODUCT_LINK_CONFLICTING,
+                reason='product-link evidence is not one verified link',
+            )
+        return InventoryProductLinkReadResult(
+            PRODUCT_LINK_FOUND,
+            product_id=product_id,
+            reason='one verified product link',
+        )
