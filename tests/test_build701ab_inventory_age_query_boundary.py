@@ -7,6 +7,7 @@ from reports.inventory_age_query import (
     INPUT_NOT_FOUND,
     InventoryAgeReportQueryResult,
 )
+from reports.inventory_age_query_request import InventoryAgeReportQueryRequest
 
 
 def test_build701ab_composition_forwards_inventory_age_query() -> None:
@@ -14,12 +15,12 @@ def test_build701ab_composition_forwards_inventory_age_query() -> None:
     calls = []
     expected = InventoryAgeReportQueryResult(INPUT_NOT_FOUND, reason='no approved evidence')
 
-    def fake_query(position_id: str, as_of: date) -> InventoryAgeReportQueryResult:
-        calls.append((position_id, as_of))
+    def fake_query(request: InventoryAgeReportQueryRequest) -> InventoryAgeReportQueryResult:
+        calls.append((request.inventory_position_id, request.as_of_date))
         return expected
 
     composition.inventory_age_report_query = SimpleNamespace(
-        get_inventory_age_row=fake_query
+        get_inventory_age_for_request=fake_query
     )
     requested_date = date(2026, 7, 13)
 
