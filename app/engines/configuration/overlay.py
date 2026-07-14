@@ -8,8 +8,9 @@ from .snapshot import ConfigurationSnapshot
 
 def _merge(base: dict[str, Any], overlay: Mapping[str, Any]) -> dict[str, Any]:
     for key, value in overlay.items():
-        if isinstance(value, Mapping) and isinstance(base.get(key), dict):
-            base[key] = _merge(base[key], value)
+        current = base.get(key)
+        if isinstance(value, Mapping) and isinstance(current, Mapping):
+            base[key] = _merge(dict(current), value)
         else:
             base[key] = deepcopy(value)
     return base
