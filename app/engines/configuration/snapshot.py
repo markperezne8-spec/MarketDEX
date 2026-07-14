@@ -37,3 +37,16 @@ def build_default_snapshot() -> ConfigurationSnapshot:
     """Build a fresh validated default snapshot without shared mutable state."""
 
     return ConfigurationSnapshot(deepcopy(DEFAULT_CONFIGURATION))
+
+
+def replace_configuration(
+    values: Mapping[str, Any],
+) -> ConfigurationSnapshot:
+    """Build a fresh immutable snapshot from a complete configuration mapping.
+
+    The input is detached at the snapshot boundary and is never mutated.
+    """
+
+    if not isinstance(values, Mapping):
+        raise TypeError('values must be a mapping')
+    return ConfigurationSnapshot(values)
