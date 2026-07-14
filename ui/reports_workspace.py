@@ -216,6 +216,7 @@ class ReportsWorkspace(QWidget):
                 ('Evidence reason', row.evidence_reason),
                 ('Source domain', row.source_domain),
                 ('Age (days)', row.age_days),
+                ('Age reason', row.evidence_reason),
                 ('Source date', row.source_start_date.isoformat()),
                 ('Source field', 'purchase_date'),
             )
