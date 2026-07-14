@@ -62,6 +62,7 @@ class ReportsWorkspace(QWidget):
             QHeaderView.ResizeToContents
         )
         self.report_table.horizontalHeader().setStretchLastSection(True)
+        self.report_table.setMaximumHeight(190)
 
         self.inventory_position_input = QLineEdit()
         self.inventory_position_input.setObjectName('reportsInventoryPositionInput')
@@ -95,6 +96,7 @@ class ReportsWorkspace(QWidget):
             0, QHeaderView.ResizeToContents
         )
         self.result_table.horizontalHeader().setStretchLastSection(True)
+        self.result_table.setMinimumHeight(360)
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(18, 18, 18, 18)
