@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 
 from .record import LogRecord, validate_log_record
+from .sanitizing import sanitize_details
 
 
 def format_log_record(record: LogRecord) -> str:
@@ -19,5 +20,5 @@ def format_log_record(record: LogRecord) -> str:
     if record.correlation_id is not None:
         payload['correlation_id'] = record.correlation_id
     if record.details:
-        payload['details'] = dict(record.details)
+        payload['details'] = sanitize_details(record.details)
     return json.dumps(payload, sort_keys=True, separators=(',', ':'))
