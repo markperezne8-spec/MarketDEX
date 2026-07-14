@@ -27,12 +27,22 @@ class LogRecord:
     def __post_init__(self) -> None:
         if not isinstance(self.level, LogLevel):
             raise TypeError('level must be a LogLevel')
-        if not self.timestamp or not self.component or not self.event or not self.message:
-            raise ValueError('timestamp, component, event, and message are required')
-        if self.correlation_id == '':
-            raise ValueError('correlation_id must be non-empty when provided')
+        required = {
+            'timestamp': self.timestamp,
+            'component': self.component,
+            'event': self.event,
+            'message': self.message,
+        }
+        if any(not isinstance(value, str) or not value.strip() for value in required.values()):
+            raise ValueError('timestamp, component, event, and message must be non-empty text')
+        if self.correlation_id is not None and (
+            not isinstance(self.correlation_id, str) or not self.correlation_id.strip()
+        ):
+            raise ValueError('correlation_id must be non-empty text when provided')
         if not isinstance(self.details, Mapping):
             raise TypeError('details must be a mapping')
+        if any(not isinstance(key, str) or not key.strip() for key in self.details):
+            raise ValueError('detail keys must be non-empty text')
         object.__setattr__(self, 'details', MappingProxyType(dict(self.details)))
 
 
