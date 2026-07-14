@@ -3,6 +3,7 @@ from collections import UserDict
 from app.engines.configuration.snapshot import (
     ConfigurationSnapshot,
     build_default_snapshot,
+    replace_configuration,
 )
 
 
@@ -54,3 +55,25 @@ def test_snapshot_freezes_nested_mapping_values() -> None:
         pass
     else:
         raise AssertionError('nested mapping was mutable')
+
+
+def test_replace_configuration_returns_fresh_snapshot_without_mutating_input() -> None:
+    source = dict(build_default_snapshot().values)
+    source['window'] = dict(source['window'])
+    source['window']['width'] = 1280
+
+    snapshot = replace_configuration(source)
+
+    assert isinstance(snapshot, ConfigurationSnapshot)
+    assert snapshot.get('window')['width'] == 1280
+    source['window']['width'] = 1024
+    assert snapshot.get('window')['width'] == 1280
+
+
+def test_replace_configuration_requires_mapping() -> None:
+    try:
+        replace_configuration([])
+    except TypeError as exc:
+        assert 'mapping' in str(exc)
+    else:
+        raise AssertionError('non-mapping replacement was accepted')
