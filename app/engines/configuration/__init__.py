@@ -1,2 +1,8 @@
 from .engine import ConfigurationEngine
-__all__=["ConfigurationEngine"]
+from .snapshot import ConfigurationSnapshot, build_default_snapshot
+
+__all__ = [
+    'ConfigurationEngine',
+    'ConfigurationSnapshot',
+    'build_default_snapshot',
+]
