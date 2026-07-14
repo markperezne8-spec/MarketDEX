@@ -1,3 +1,5 @@
+from collections import UserDict
+
 from app.engines.configuration.snapshot import (
     ConfigurationSnapshot,
     build_default_snapshot,
@@ -37,3 +39,18 @@ def test_snapshot_is_immutable() -> None:
         pass
     else:
         raise AssertionError('snapshot mapping was mutable')
+
+
+def test_snapshot_freezes_nested_mapping_values() -> None:
+    source = dict(build_default_snapshot().values)
+    source['window'] = UserDict(dict(source['window']))
+
+    snapshot = ConfigurationSnapshot(source)
+
+    assert type(snapshot.get('window')).__name__ == 'mappingproxy'
+    try:
+        snapshot.get('window')['width'] = 1280
+    except TypeError:
+        pass
+    else:
+        raise AssertionError('nested mapping was mutable')
