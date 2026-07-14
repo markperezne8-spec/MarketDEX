@@ -192,6 +192,8 @@ class ReportsWorkspace(QWidget):
                         'As-of date',
                         as_of_date.isoformat() if as_of_date is not None else 'Not provided',
                     ),
+                    ('Age (days)', 'unavailable'),
+                    ('Age reason', result.reason or 'No report row available'),
                     ('Source domain', 'inventory'),
                     ('Source date', 'unavailable · no Inventory detail evidence'),
                     ('Source field', 'purchase_date'),
