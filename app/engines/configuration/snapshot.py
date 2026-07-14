@@ -10,7 +10,7 @@ from .validation import validate_configuration
 
 
 def _freeze(value: Any) -> Any:
-    if isinstance(value, dict):
+    if isinstance(value, Mapping):
         return MappingProxyType({key: _freeze(item) for key, item in value.items()})
     if isinstance(value, list):
         return tuple(_freeze(item) for item in value)
