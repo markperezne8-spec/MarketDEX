@@ -1,5 +1,6 @@
 from .checks import HealthCheck, run_health_checks
 from .findings import HealthFinding, health_findings
+from .lines import health_report_lines
 from .report import health_report_payload
 from .result import HealthResult, HealthStatus, validate_health_result
 from .snapshot import health_summary_snapshot
@@ -16,5 +17,6 @@ __all__ = [
     'health_summary_snapshot',
     'health_findings',
     'health_report_payload',
+    'health_report_lines',
     'run_health_checks',
 ]
