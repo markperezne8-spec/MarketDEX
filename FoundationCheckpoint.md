@@ -57,6 +57,8 @@ The Reports foundation has advanced through controlled, read-only Inventory Age 
 | 701BF | #346 | #346 | #546 | `b7e7efd0` | Exposed inventory source authority for all Reports outcomes; visual acceptance passed. |
 | 701BI | #349 | #349 | #553 | `a210be23` | Exposed explicit source-date authority for all Reports outcomes; visual acceptance passed. |
 | 701BJ | #350 | #350 | #554 | `0f2b726a` | Preserved the explicit no-Codex handover rule in the permanent workflow contract. |
+| 701BP | #356 | #356 | #567 | `ed6f120f` | Exposed Inventory Age result semantics; visual acceptance completed. |
+| 701BQ | #357 | #357 | #569 | `a08937bf` | Corrected missing non-found age rows; visual acceptance completed. |
 
 All listed CI runs passed their complete required jobs, including Reports, Core Tests, Desktop Build, packaged runtime, installer build, and installed-runtime verification.
 
@@ -192,3 +194,11 @@ Treat GitHub as the source of truth. Preserve the concise progress-bar workflow,
 - Build 701BJ was merged through PR #350 after CI run #554 passed; merge commit `0f2b726ab64f5247b30776ba4969d609755814aa`.
 - The permanent workflow now states that Codex must not be used unless Mark explicitly authorizes it in the current conversation.
 - Build 701BK records the synchronized checkpoint without runtime or visual change.
+
+
+## Checkpoint 074 synchronization
+
+- Build 701BP was merged through PR #356 after CI run #567 passed; merge commit `ed6f120f4f5e252d84e7e0cc996cc45a6bf3b3e3`.
+- Build 701BQ corrected the missing NOT_FOUND age rows through PR #357 after CI run #569 passed; merge commit `a08937bf9f9bf1fa9fb9706ed685c4341b3bcbae`.
+- Visual acceptance passed with `Age (days) = unavailable` and `Age reason = no Inventory detail evidence`, alongside preserved source authority and query context.
+- Build 701BR synchronizes this checkpoint without runtime or visual change.

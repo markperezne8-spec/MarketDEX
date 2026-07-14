@@ -351,3 +351,10 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Build 701BI visual acceptance passed with `Source date = unavailable · no Inventory detail evidence` for the deliberate NOT_FOUND result.
 - Build 701BJ preserved the no-Codex handover rule in `docs/WORKFLOW.md`; CI run #554 passed and PR #350 was squash-merged as `0f2b726ab64f5247b30776ba4969d609755814aa`.
 - Build 701BK synchronizes permanent checkpoint authority without runtime or visual change.
+
+
+## 🏁 Checkpoint 036 — Inventory Age Semantics and Hotfix (Builds 701BP–701BQ)
+- Build 701BP exposed FOUND and non-found Inventory Age semantics; CI run #567 passed and PR #356 was squash-merged as `ed6f120f4f5e252d84e7e0cc996cc45a6bf3b3e3`.
+- Build 701BQ corrected the missing non-found age rows; CI run #569 passed and PR #357 was squash-merged as `a08937bf9f9bf1fa9fb9706ed685c4341b3bcbae`.
+- Visual acceptance passed with `Age (days) = unavailable` and `Age reason = no Inventory detail evidence`.
+- Build 701BR synchronizes checkpoint authority without runtime or visual change.
