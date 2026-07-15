@@ -18,6 +18,10 @@ from .runtime import (
     runtime_health_report_lines,
     runtime_health_summary,
 )
+from .root_lines import health_root_lines
+from .root_payload import health_root_payload
+from .root_registration import HealthRootRegistration
+from .root_registry import RegisteredHealthRoot, register_health_root
 from .snapshot import health_summary_snapshot
 from .summary import HealthSummary, summarize_health_results
 
@@ -50,5 +54,10 @@ __all__ = [
     'adapt_health_application_request',
     'health_application_payload',
     'health_application_lines',
+    'HealthRootRegistration',
+    'RegisteredHealthRoot',
+    'register_health_root',
+    'health_root_payload',
+    'health_root_lines',
     'run_health_checks',
 ]
