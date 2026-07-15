@@ -8,7 +8,12 @@ from .lines import health_report_lines
 from .provider import HealthReportProvider, build_health_report
 from .report import health_report_payload
 from .result import HealthResult, HealthStatus, validate_health_result
-from .runtime import HealthRuntimeComposition, build_runtime_health_report, runtime_health_report_lines
+from .runtime import (
+    HealthRuntimeComposition,
+    build_runtime_health_report,
+    runtime_health_report_lines,
+    runtime_health_summary,
+)
 from .snapshot import health_summary_snapshot
 from .summary import HealthSummary, summarize_health_results
 
@@ -34,6 +39,7 @@ __all__ = [
     'health_bundle_report_payload',
     'health_bundle_report_lines',
     'build_runtime_health_report',
+    'runtime_health_summary',
     'runtime_health_report_lines',
     'run_health_checks',
 ]
