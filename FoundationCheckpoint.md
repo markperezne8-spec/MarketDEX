@@ -235,3 +235,19 @@ Planning authority:
 - Any visible Health Monitor surface requires a separately scoped visible build and Mark visual acceptance before merge.
 - Continue issue → branch → draft PR → CI → ready → squash-merge.
 - Codex remains forbidden unless Mark explicitly authorizes it in the current chat.
+
+
+## Checkpoint 077 synchronization
+
+- M1.7 Health Monitor integration-readiness sequence completed through planning and Builds M1.7A–M1.7F.
+- M1.7 planning defined Health Monitor integration guardrails; PR #387, CI run #629, merge commit `b7c9cadc82853dc7e035e28335c7c9b21b5bfdd3`.
+- Build M1.7A introduced the immutable HealthReportProvider contract; PR #388, CI run #631, merge commit `cbe666cf5ab6f9d34edc53d2f838aa0ec5b37689`.
+- Build M1.7B introduced the immutable HealthProviderBundle contract; PR #389, CI run #633, merge commit `71589ed9591f47d48abb7868feabd337bd77b6c2`.
+- Build M1.7C introduced deterministic bundle-level Health summary; PR #390, CI run #635, merge commit `05d40c338316161c85f5917c7606fb5d8f6a70c9`.
+- Build M1.7D introduced deterministic bundle report payload assembly; PR #391, CI run #637, merge commit `186cbed68872c6b46f2f5864f10d051ad5762fc2`.
+- Build M1.7E introduced deterministic bundle report text lines; PR #392, CI run #639, merge commit `b92fcfa73dbacc3636ab04ccbd443ff7d6934263`.
+- Build M1.7F locked the expanded Health Monitor integration API contract; PR #393, CI run #641, merge commit `8089e21f98d1ea6b622c7a991e32d415cbc7d726`.
+- The M1.7 sequence remained non-visual and introduced no startup wiring, polling, persistence, UI, network, scheduler, automation, notifications, live checks, or business-state mutation.
+- Visual check was not required for M1.7 planning through M1.7F.
+- Specialist tooling was not used.
+- Next movement may proceed from synchronized `main` after Mark pulls when back at the PC.
