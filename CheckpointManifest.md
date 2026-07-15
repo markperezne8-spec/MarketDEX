@@ -383,3 +383,15 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Polling, persistence, scheduler behavior, network behavior, startup wiring, notifications, UI, and business-state mutation remain excluded from M1.7 by default.
 - Non-visual adapter and contract slices do not require visual review.
 - Any visible Health Monitor surface requires a separately scoped visible build and Mark visual acceptance before merge.
+
+
+## 🏁 Checkpoint 077 — Health Monitor Integration Readiness
+
+- M1.7 Health Monitor integration-readiness completed through planning and M1.7A–M1.7F.
+- Integration guardrails preserve the M1.6 public API surface and require deterministic, offline-first, side-effect-free future slices unless separately approved.
+- HealthReportProvider and HealthProviderBundle contracts are immutable and repository-preserved.
+- Bundle report assembly preserves provider order, JSON-safe report payloads, bundle-level summaries, and deterministic diagnostic text lines.
+- Expanded Health Monitor integration exports are locked by public API contract tests.
+- The sequence introduced no startup wiring, polling, persistence, UI, network, scheduler, automation, notifications, live checks, or business-state mutation.
+- Visual check was not required.
+- Specialist tooling was not used.
