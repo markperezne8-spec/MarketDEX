@@ -228,3 +228,35 @@ def test_ec008_records_active_gamified_visual_direction_and_foundation():
         'Exact resume point',
     ):
         assert required in text
+
+
+def test_m111_records_first_visible_health_status_surface_completion():
+    checkpoint = Path(
+        'docs/checkpoints/M1.11-first-visible-health-status-planning.md'
+    ).read_text(encoding='utf-8')
+    manifest = Path('CheckpointManifest.md').read_text(encoding='utf-8')
+
+    for required in (
+        'Completed through M1.11E',
+        'compact `System Health` card',
+        'directly below the Mission Control header and above the KPI cards',
+        'injected `HealthStatusViewModel`',
+        '`Unavailable`, `Health status unavailable`, and `No diagnostic details available.`',
+        '`Ready`, injected status text, and diagnostic lines in injected order',
+        '`Error-safe`, `Health status unavailable`, inline error text',
+        'did not authorize startup execution, automatic Health checks, polling',
+        'No additional visual check is required for M1.11E',
+    ):
+        assert required in checkpoint
+
+    for required in (
+        'Checkpoint 078 - First Visible Health Status Surface',
+        'M1.11 completed the first visible Health status surface',
+        'PR #434',
+        'PR #436',
+        'PR #438',
+        'PR #440',
+        'M1.11E synchronizes checkpoint and repository documentation',
+        'no startup execution, automatic Health checks, polling',
+    ):
+        assert required in manifest

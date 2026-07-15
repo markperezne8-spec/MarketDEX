@@ -405,3 +405,17 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Any side effect requires separate explicit approval.
 - Non-visual composition contract slices do not require visual review.
 - Any visible Health Monitor surface requires a separately scoped visible build and Mark visual acceptance before merge.
+
+
+## Checkpoint 078 - First Visible Health Status Surface
+
+- M1.11 completed the first visible Health status surface through planning and Builds M1.11A-M1.11E.
+- M1.11 planning defined the smallest safe visible surface: one compact read-only Health card on an existing safe application surface.
+- M1.11A added the immutable injected `HealthStatusViewModel`; PR #434, merge commit `f262b038b080de25b422fbe243483a0b1df66cb6`.
+- M1.11B added the compact `System Health` card to Mission Control directly below the header and above KPI cards; PR #436, merge commit `d7f951dbba48276790cb0e91596e538b2e440c07`.
+- M1.11C locked deterministic badge states: `Unavailable`, `Ready`, and `Error-safe`; PR #438, merge commit `7fc9ed5f17d866641a2d9c0aa6049dbc6b2c737e`.
+- M1.11D recorded accepted visual evidence, badge-state checklist, read-only/injected contract verification, and placement tests; PR #440, merge commit `9e2fd6f825d50e950719f0584a8e22e9fec62fed`.
+- M1.11E synchronizes checkpoint and repository documentation without changing production runtime or UI behavior.
+- Final approved behavior: compact `System Health` card, injected-only `HealthStatusViewModel`, read-only rendering, deterministic unavailable/available/error-safe states, inline error-safe text, no Health action controls, and no popup/dialog path.
+- The milestone introduced no startup execution, automatic Health checks, polling, live monitoring, scheduling, persistence, networking, notifications, alerts, recovery behavior, public API expansion, marketplace/inventory/portfolio changes, or business-state mutation.
+- Visual acceptance for the visible card is preserved through accepted M1.11B screenshot evidence and M1.11D badge-state verification; M1.11E itself requires no visual check.
