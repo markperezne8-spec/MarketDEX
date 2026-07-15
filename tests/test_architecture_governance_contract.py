@@ -324,3 +324,71 @@ def test_m112_plans_mission_control_utility_surface_without_runtime_scope():
         'M1.12E itself requires no visual check',
     ):
         assert required in manifest
+
+
+def test_m113_plans_mission_control_next_step_surface_without_runtime_scope():
+    checkpoint = Path(
+        'docs/checkpoints/M1.13-mission-control-next-step-surface-planning.md'
+    ).read_text(encoding='utf-8')
+    manifest = Path('CheckpointManifest.md').read_text(encoding='utf-8')
+
+    for required in (
+        'Planning checkpoint active',
+        'compact read-only `Next Steps` surface',
+        '`Action Readiness` contract',
+        'What is the next safe local step I can prepare for right now?',
+        'prepared/injected local-only evidence',
+        'next safe app action category',
+        'inventory readiness',
+        'authority/audit readiness',
+        'plain-language readiness note',
+        'immutable injected `NextStepReadinessViewModel`',
+        '`Ready` - prepared evidence supports a next safe local action category',
+        '`Unavailable` - no prepared evidence is available',
+        '`Partial` - some prepared evidence is present',
+        '`Error-safe` - injected display evidence cannot be rendered cleanly',
+        'Next safe action',
+        'Inventory readiness',
+        'Authority/audit readiness',
+        'Readiness note',
+        'M1.13A - Next Steps view model',
+        'M1.13B - First visible Next Steps placement',
+        'M1.13C - Deterministic display states',
+        'M1.13D - Visual and contract verification',
+        'M1.13E - Checkpoint and documentation sync',
+        'This planning build requires no visual check',
+        'No runtime behavior, UI implementation, action execution, automation',
+    ):
+        assert required in checkpoint
+
+    for forbidden_scope in (
+        'action buttons',
+        'task execution',
+        'automation',
+        'business mutation',
+        'polling',
+        'networking',
+        'startup blocking',
+        'startup execution',
+        'database migration',
+        'persistence changes',
+        'marketplace integration',
+        'alerts',
+        'notifications',
+        'dashboard redesign',
+        'public API expansion',
+    ):
+        assert forbidden_scope in checkpoint
+
+    for required in (
+        'M1.13 Planning - Mission Control Next Step Surface',
+        'one compact read-only `Next Steps` surface',
+        'prepared/injected local-only evidence',
+        'next safe app action category, inventory readiness, authority/audit readiness',
+        'The planned deterministic state model is `Ready`, `Unavailable`, `Partial`, and `Error-safe`',
+        'deterministic group order: Next safe action, Inventory readiness, Authority/audit readiness, Readiness note',
+        'M1.13A view model, M1.13B first visible placement, M1.13C deterministic display states',
+        'no UI implementation, action buttons, task execution, automation, polling',
+        'M1.13 planning itself requires no visual check',
+    ):
+        assert required in manifest

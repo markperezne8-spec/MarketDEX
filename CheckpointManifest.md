@@ -433,3 +433,16 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Final approved behavior: compact `Operational Status` strip, injected-only `OperationalStatusViewModel`, read-only rendering, deterministic available/unavailable/partial/error-safe states, deterministic group order, default missing-evidence unavailable badges/details, inline non-modal error-safe text, and no action controls.
 - The milestone introduced no startup execution, automatic Health checks, polling, background workers, persistence changes, database migration, networking, marketplace integration, live pricing, alerts, notifications, automated recovery, public API expansion, dashboard redesign, navigation redesign, or business-state mutation.
 - Visual acceptance for the visible operational status strip is preserved through accepted M1.12B and M1.12C screenshot evidence; M1.12E itself requires no visual check.
+
+
+## M1.13 Planning - Mission Control Next Step Surface
+
+- M1.13 opens the next visible Mission Control milestone after the completed M1.11 `System Health` card and M1.12 `Operational Status` strip.
+- M1.13 planning defines the smallest safe visible surface: one compact read-only `Next Steps` surface with an `Action Readiness` contract.
+- Planned placement is near the top of the existing Mission Control surface after the header, approved `System Health` card, and approved `Operational Status` strip, before the KPI cards unless implementation evidence proves a safer adjacent placement.
+- Future implementation may consume only prepared/injected local-only evidence through an immutable view model or already-approved application/service boundary.
+- Candidate display evidence is limited to next safe app action category, inventory readiness, authority/audit readiness, and a plain-language readiness note.
+- The planned deterministic state model is `Ready`, `Unavailable`, `Partial`, and `Error-safe`, with deterministic group order: Next safe action, Inventory readiness, Authority/audit readiness, Readiness note.
+- Planned mergeable sequence: M1.13A view model, M1.13B first visible placement, M1.13C deterministic display states, M1.13D visual and contract verification, and M1.13E checkpoint/documentation sync.
+- This planning checkpoint introduces no UI implementation, action buttons, task execution, automation, polling, networking, startup blocking, startup execution, background workers, Health checks, database migration, persistence changes, marketplace integration, live pricing, alerts, notifications, automated recovery, dashboard redesign, navigation redesign, dependency changes, public API expansion, or business-state mutation.
+- M1.13 planning itself requires no visual check; future visible M1.13 builds require visual review before acceptance.
