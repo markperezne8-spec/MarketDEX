@@ -6,7 +6,7 @@ from app.engines.health.bundle import create_health_provider_bundle
 from app.engines.health.provider import HealthReportProvider
 from app.engines.health.result import HealthResult
 from app.engines.health.runtime import HealthRuntimeComposition
-from app.engines.health.status import HealthStatus
+from app.engines.health.result import HealthStatus
 from app.engines.health.summary import summarize_health_results
 
 

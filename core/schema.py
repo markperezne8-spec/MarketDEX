@@ -45,6 +45,8 @@ CREATE TRIGGER IF NOT EXISTS replay_defense_history_no_update BEFORE UPDATE ON r
 CREATE TRIGGER IF NOT EXISTS replay_defense_history_no_delete BEFORE DELETE ON replay_defense_history BEGIN SELECT RAISE(ABORT,'replay_defense_history is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS audit_events_no_update BEFORE UPDATE ON audit_events BEGIN SELECT RAISE(ABORT,'audit_events is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS audit_events_no_delete BEFORE DELETE ON audit_events BEGIN SELECT RAISE(ABORT,'audit_events is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS audit_history_no_update BEFORE UPDATE ON audit_history BEGIN SELECT RAISE(ABORT,'audit_history is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS audit_history_no_delete BEFORE DELETE ON audit_history BEGIN SELECT RAISE(ABORT,'audit_history is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS product_registration_history_no_update BEFORE UPDATE ON product_registration_history BEGIN SELECT RAISE(ABORT,'product registration history is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS product_registration_history_no_delete BEFORE DELETE ON product_registration_history BEGIN SELECT RAISE(ABORT,'product registration history is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS product_alias_history_no_update BEFORE UPDATE ON product_alias_history BEGIN SELECT RAISE(ABORT,'product alias history is append-only'); END;

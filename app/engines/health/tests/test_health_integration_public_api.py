@@ -9,6 +9,7 @@ EXPECTED_HEALTH_EXPORTS = [
     'HealthFinding',
     'HealthReportProvider',
     'HealthProviderBundle',
+    'HealthRuntimeComposition',
     'validate_health_result',
     'summarize_health_results',
     'health_summary_snapshot',
@@ -21,6 +22,9 @@ EXPECTED_HEALTH_EXPORTS = [
     'health_bundle_summary',
     'health_bundle_report_payload',
     'health_bundle_report_lines',
+    'build_runtime_health_report',
+    'runtime_health_summary',
+    'runtime_health_report_lines',
     'run_health_checks',
 ]
 

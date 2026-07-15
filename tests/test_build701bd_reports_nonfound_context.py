@@ -22,8 +22,10 @@ def test_build701bd_nonfound_result_preserves_query_context() -> None:
         date(2026, 7, 13),
     )
 
-    assert workspace.result_table.item(2, 0).text() == 'Inventory position'
-    assert workspace.result_table.item(2, 1).text() == 'test-position'
-    assert workspace.result_table.item(3, 0).text() == 'As-of date'
-    assert workspace.result_table.item(3, 1).text() == '2026-07-13'
+    values = {
+        workspace.result_table.item(row, 0).text(): workspace.result_table.item(row, 1).text()
+        for row in range(workspace.result_table.rowCount())
+    }
+    assert values['Inventory position'] == 'test-position'
+    assert values['As-of date'] == '2026-07-13'
     workspace.close()
