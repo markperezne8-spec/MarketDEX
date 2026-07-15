@@ -1,3 +1,4 @@
+from .application_lines import health_application_lines
 from .bundle import HealthProviderBundle, build_health_reports, create_health_provider_bundle
 from .bundle_lines import health_bundle_report_lines
 from .bundle_report import health_bundle_report_payload
@@ -41,5 +42,6 @@ __all__ = [
     'build_runtime_health_report',
     'runtime_health_summary',
     'runtime_health_report_lines',
+    'health_application_lines',
     'run_health_checks',
 ]
