@@ -260,3 +260,53 @@ def test_m111_records_first_visible_health_status_surface_completion():
         'no startup execution, automatic Health checks, polling',
     ):
         assert required in manifest
+
+
+def test_m112_plans_mission_control_utility_surface_without_runtime_scope():
+    checkpoint = Path(
+        'docs/checkpoints/M1.12-mission-control-utility-surface-planning.md'
+    ).read_text(encoding='utf-8')
+    manifest = Path('CheckpointManifest.md').read_text(encoding='utf-8')
+
+    for required in (
+        'Planning active',
+        'compact Mission Control readiness / operational status strip',
+        'existing offline/local data only',
+        'local authority readiness',
+        'offline-first readiness',
+        'inventory readiness',
+        'audit/authority evidence',
+        'Future implementation builds may consume only existing offline/local application evidence',
+        'M1.12A - Operational status strip view model',
+        'M1.12B - First visible strip placement',
+        'M1.12C - Deterministic display states',
+        'M1.12D - Visual and contract verification',
+        'M1.12E - Checkpoint and documentation sync',
+        'This planning build requires no visual check',
+        'No runtime behavior, UI implementation, persistence, networking, polling',
+    ):
+        assert required in checkpoint
+
+    for forbidden_scope in (
+        'polling',
+        'networking',
+        'startup blocking',
+        'database migration',
+        'persistence changes',
+        'marketplace integration',
+        'alerts',
+        'notifications',
+        'dashboard redesign',
+        'business-state mutation',
+    ):
+        assert forbidden_scope in checkpoint
+
+    for required in (
+        'M1.12 Planning - Mission Control Utility Surface',
+        'compact Mission Control readiness / operational status strip',
+        'local authority readiness, offline-first readiness, inventory readiness, and audit/authority evidence',
+        'existing offline/local data only',
+        'M1.12A view model, M1.12B visible strip placement, M1.12C deterministic display states, M1.12D visual/contract verification, and M1.12E checkpoint/documentation sync',
+        'Visual check is not required for this planning checkpoint',
+    ):
+        assert required in manifest

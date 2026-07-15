@@ -419,3 +419,14 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Final approved behavior: compact `System Health` card, injected-only `HealthStatusViewModel`, read-only rendering, deterministic unavailable/available/error-safe states, inline error-safe text, no Health action controls, and no popup/dialog path.
 - The milestone introduced no startup execution, automatic Health checks, polling, live monitoring, scheduling, persistence, networking, notifications, alerts, recovery behavior, public API expansion, marketplace/inventory/portfolio changes, or business-state mutation.
 - Visual acceptance for the visible card is preserved through accepted M1.11B screenshot evidence and M1.11D badge-state verification; M1.11E itself requires no visual check.
+
+
+## M1.12 Planning - Mission Control Utility Surface
+
+- M1.12 opens as the next visible Mission Control utility milestone after the completed M1.11 first visible Health status surface.
+- The planned smallest safe surface is one compact Mission Control readiness / operational status strip near the top of the existing Mission Control surface.
+- The strip should summarize local authority readiness, offline-first readiness, inventory readiness, and audit/authority evidence using existing offline/local data only.
+- Future implementation must use injected read-only view models or already-approved application/service boundaries and preserve deterministic, offline-first, side-effect-free presentation.
+- M1.12 planning does not authorize UI implementation, polling, networking, startup blocking, startup execution, database migration, persistence changes, marketplace integration, alerts, notifications, automated recovery, dashboard redesign, navigation redesign, dependency changes, live pricing, background workers, or business-state mutation.
+- The planned mergeable sequence is M1.12A view model, M1.12B visible strip placement, M1.12C deterministic display states, M1.12D visual/contract verification, and M1.12E checkpoint/documentation sync.
+- Visual check is not required for this planning checkpoint. Future visible M1.12 implementation builds require visual review before acceptance.
