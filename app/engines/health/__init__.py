@@ -1,4 +1,7 @@
+from .application_adapter import HealthApplicationBoundary, adapt_health_application_request
 from .application_lines import health_application_lines
+from .application_payload import health_application_payload
+from .application_request import HealthApplicationRequest
 from .bundle import HealthProviderBundle, build_health_reports, create_health_provider_bundle
 from .bundle_lines import health_bundle_report_lines
 from .bundle_report import health_bundle_report_payload
@@ -27,6 +30,8 @@ __all__ = [
     'HealthReportProvider',
     'HealthProviderBundle',
     'HealthRuntimeComposition',
+    'HealthApplicationRequest',
+    'HealthApplicationBoundary',
     'validate_health_result',
     'summarize_health_results',
     'health_summary_snapshot',
@@ -42,6 +47,8 @@ __all__ = [
     'build_runtime_health_report',
     'runtime_health_summary',
     'runtime_health_report_lines',
+    'adapt_health_application_request',
+    'health_application_payload',
     'health_application_lines',
     'run_health_checks',
 ]
