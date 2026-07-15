@@ -269,7 +269,7 @@ def test_m112_plans_mission_control_utility_surface_without_runtime_scope():
     manifest = Path('CheckpointManifest.md').read_text(encoding='utf-8')
 
     for required in (
-        'Planning active',
+        'Checkpoint complete through M1.12E',
         'compact Mission Control readiness / operational status strip',
         'existing offline/local data only',
         'local authority readiness',
@@ -283,6 +283,15 @@ def test_m112_plans_mission_control_utility_surface_without_runtime_scope():
         'M1.12D - Visual and contract verification',
         'M1.12E - Checkpoint and documentation sync',
         'This planning build requires no visual check',
+        'Accepted M1.12 visible evidence',
+        'M1.12B screenshot evidence is accepted',
+        'M1.12C screenshot evidence is accepted',
+        'M1.12D verification checklist',
+        'M1.12E completion record',
+        'Mission Control header, `System Health`, `Operational Status`, KPI cards',
+        'Default missing evidence renders `Unavailable` group badges and `Evidence unavailable.` details',
+        'Error-safe evidence renders inline and non-modal',
+        'M1.12E changes documentation/checkpoint authority only',
         'No runtime behavior, UI implementation, persistence, networking, polling',
     ):
         assert required in checkpoint
@@ -302,11 +311,16 @@ def test_m112_plans_mission_control_utility_surface_without_runtime_scope():
         assert forbidden_scope in checkpoint
 
     for required in (
-        'M1.12 Planning - Mission Control Utility Surface',
-        'compact Mission Control readiness / operational status strip',
-        'local authority readiness, offline-first readiness, inventory readiness, and audit/authority evidence',
-        'existing offline/local data only',
-        'M1.12A view model, M1.12B visible strip placement, M1.12C deterministic display states, M1.12D visual/contract verification, and M1.12E checkpoint/documentation sync',
-        'Visual check is not required for this planning checkpoint',
+        'Checkpoint 079 - Mission Control Operational Status Surface',
+        'M1.12 completed the visible Mission Control operational status strip',
+        'M1.12A added the immutable injected `OperationalStatusViewModel`',
+        'M1.12B added the compact read-only `Operational Status` strip',
+        'M1.12C locked deterministic available, unavailable, partial, and error-safe rendering',
+        'M1.12D recorded accepted M1.12B and M1.12C screenshot evidence',
+        'M1.12E synchronizes checkpoint and repository documentation',
+        'Final approved behavior: compact `Operational Status` strip',
+        'default missing-evidence unavailable badges/details',
+        'inline non-modal error-safe text',
+        'M1.12E itself requires no visual check',
     ):
         assert required in manifest
