@@ -202,3 +202,20 @@ Treat GitHub as the source of truth. Preserve the concise progress-bar workflow,
 - Build 701BQ corrected the missing NOT_FOUND age rows through PR #357 after CI run #569 passed; merge commit `a08937bf9f9bf1fa9fb9706ed685c4341b3bcbae`.
 - Visual acceptance passed with `Age (days) = unavailable` and `Age reason = no Inventory detail evidence`, alongside preserved source authority and query context.
 - Build 701BR synchronizes this checkpoint without runtime or visual change.
+
+
+## Checkpoint 076 synchronization
+
+- M1.6 Health Monitor foundation sequence completed through Builds M1.6A–M1.6H.
+- Build M1.6A introduced the immutable HealthResult contract; PR #378, CI run #611, merge commit `571f77c88275bcb4eb8bc47cf8ff77db3dd7e20e`.
+- Build M1.6B introduced deterministic HealthSummary aggregation; PR #379, CI run #613, merge commit `b316604d219e8e6cf80a94e113ef380c374587bb`.
+- Build M1.6C introduced deterministic HealthCheck execution; PR #380, CI run #615, merge commit `0cc8e19e855d00a8eb8a97c71ed3985c28bfb31f`.
+- Build M1.6D introduced deterministic HealthSummary snapshots; PR #381, CI run #617, merge commit `1fadbb9049b8cdb29baeb7331c78686cc3e8c902`.
+- Build M1.6E introduced deterministic HealthFinding extraction; PR #382, CI run #619, merge commit `cdd4e93c70246ed0e06d19287137912367fe2563`.
+- Build M1.6F introduced deterministic Health report payload assembly; PR #383, CI run #621, merge commit `dca99af548164920841f778b2e0d6f19a8277b7c`.
+- Build M1.6G introduced deterministic Health report text lines for logs and diagnostics; PR #384, CI run #623, merge commit `1f8b3d83f45c68129b219a3f9c0568e8a751994d`.
+- Build M1.6H locked the public Health Monitor API contract; PR #385, CI run #625, merge commit `2ac2c6392102f07667e146e46a592b131e8dcdd5`.
+- Health Monitor remains offline-first, deterministic, non-visual, and free of polling, persistence, network, scheduler, automation, notification, startup side effects, and business-state mutation.
+- Visual check was not required for M1.6A–M1.6H.
+- Codex was not used.
+- Next movement may proceed from synchronized `main` after Mark pulls when back at the PC.
