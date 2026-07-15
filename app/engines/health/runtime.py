@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from .bundle import HealthProviderBundle
+from .bundle_lines import health_bundle_report_lines
 from .bundle_report import health_bundle_report_payload
 
 
@@ -27,3 +28,13 @@ def build_runtime_health_report(composition: HealthRuntimeComposition) -> dict[s
         'runtime': composition.runtime_name,
         'health': health_bundle_report_payload(composition.provider_bundle),
     }
+
+
+def runtime_health_report_lines(composition: HealthRuntimeComposition) -> tuple[str, ...]:
+    if not isinstance(composition, HealthRuntimeComposition):
+        raise TypeError('composition must be a HealthRuntimeComposition')
+
+    return (
+        f'runtime={composition.runtime_name}',
+        *health_bundle_report_lines(composition.provider_bundle),
+    )
