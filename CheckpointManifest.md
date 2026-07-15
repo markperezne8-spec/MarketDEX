@@ -395,3 +395,13 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - The sequence introduced no startup wiring, polling, persistence, UI, network, scheduler, automation, notifications, live checks, or business-state mutation.
 - Visual check was not required.
 - Specialist tooling was not used.
+
+
+## 🧭 M1.8 Planning — Health Monitor Runtime Composition Boundary
+
+- M1.8 opened as a guarded runtime-composition boundary after the completed M1.7 Health Monitor integration-readiness sequence.
+- Future M1.8 slices may compose approved M1.6 and M1.7 Health Monitor contracts into deterministic application-boundary helpers.
+- Startup wiring, live checks, polling, persistence, network behavior, scheduler behavior, automation, notifications, UI, and business-state mutation remain excluded by default.
+- Any side effect requires separate explicit approval.
+- Non-visual composition contract slices do not require visual review.
+- Any visible Health Monitor surface requires a separately scoped visible build and Mark visual acceptance before merge.
