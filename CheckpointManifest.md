@@ -358,3 +358,18 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Build 701BQ corrected the missing non-found age rows; CI run #569 passed and PR #357 was squash-merged as `a08937bf9f9bf1fa9fb9706ed685c4341b3bcbae`.
 - Visual acceptance passed with `Age (days) = unavailable` and `Age reason = no Inventory detail evidence`.
 - Build 701BR synchronizes checkpoint authority without runtime or visual change.
+
+
+## 🏁 Checkpoint 076 — Health Monitor Foundation Sequence
+
+- M1.6 Health Monitor foundation completed through M1.6A–M1.6H.
+- Immutable health result, summary, check, finding, snapshot, report payload, report lines, and public API contracts are repository-preserved.
+- Overall health status aggregation is deterministic and explicit.
+- Health check execution preserves order and validates returned result identity.
+- Health snapshots and report payloads are JSON-safe and detached from source details.
+- Health findings preserve actionable non-PASS results in deterministic severity/name order.
+- Health report lines provide deterministic diagnostics/log text without introducing logging side effects.
+- Public Health Monitor exports are locked by contract tests.
+- The entire sequence remained non-visual and introduced no polling, persistence, network, scheduler, automation, notification, startup side effects, or business-state mutation.
+- Visual check was not required.
+- Codex was not used.
