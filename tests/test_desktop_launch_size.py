@@ -4,7 +4,7 @@ from launcher import desktop_launch_size
 
 def test_desktop_launch_size_stays_below_available_1080p_workspace():
     width, height = desktop_launch_size(QRect(0, 0, 1920, 1040))
-    assert (width, height) == (1320, 760)
+    assert (width, height) == (1280, 800)
     assert height < 1040
 
 

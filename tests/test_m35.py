@@ -1,13 +1,29 @@
-import tempfile,sqlite3,sys
+import sqlite3
+import sys
+import tempfile
+from contextlib import closing
 from pathlib import Path
+
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from services.inventory_product_link_service import InventoryProductLinkService,REQ
-with tempfile.TemporaryDirectory() as td:
- p=Path(td)/'db.sqlite3'; s=InventoryProductLinkService(p); r=s.run_acceptance(); assert r['passed']==12, r; lid=r['lid']; pid=s.ensure_acceptance_authority(); assert s.link('AST-M35-CHARIZARD-001',pid,REQ)==lid
- with sqlite3.connect(p) as c:
-  assert c.execute('select count(*) from inventory_product_links where asset_id=?',('AST-M35-CHARIZARD-001',)).fetchone()[0]==1
-  assert c.execute('select count(*) from inventory_history where event_id=(select created_event_id from inventory_product_links where inventory_product_link_id=?)',(lid,)).fetchone()[0]==0
-  try:c.execute('delete from inventory_product_link_history'); raise AssertionError('delete allowed')
-  except sqlite3.DatabaseError:pass
- s2=InventoryProductLinkService(p); rr=s2.verify(); assert rr['passed']==12 and rr['lid']==lid
-print('M35 TESTS: 12 / 12 PASS'); print('REPLAY AFTER RESTART: PASS'); print('ZERO SECOND LINKAGE: PASS'); print('ZERO INVENTORY/FINANCIAL/MARKETPLACE/PRODUCT MUTATION FROM LINKAGE: PASS')
+
+
+def test_m35_acceptance_contract() -> None:
+    with tempfile.TemporaryDirectory() as td:
+        database_path = Path(td) / 'db.sqlite3'
+        service = InventoryProductLinkService(database_path)
+        result = service.run_acceptance()
+        assert result['passed'] == 12, result
+        link_id = result['lid']
+        product_id = service.ensure_acceptance_authority()
+        assert service.link('AST-M35-CHARIZARD-001', product_id, REQ) == link_id
+        with closing(sqlite3.connect(database_path)) as connection:
+            assert connection.execute('select count(*) from inventory_product_links where asset_id=?', ('AST-M35-CHARIZARD-001',)).fetchone()[0] == 1
+            assert connection.execute('select count(*) from inventory_history where event_id=(select created_event_id from inventory_product_links where inventory_product_link_id=?)', (link_id,)).fetchone()[0] == 0
+            try:
+                connection.execute('delete from inventory_product_link_history')
+                raise AssertionError('delete allowed')
+            except sqlite3.DatabaseError:
+                pass
+        verification = InventoryProductLinkService(database_path).verify()
+        assert verification['passed'] == 12 and verification['lid'] == link_id

@@ -12,13 +12,20 @@ class AuthorityTests(unittest.TestCase):
         with self.db.transaction() as c: self.repo.append(c, EventIdentity.create('ACQUISITION','REQ-1',{'q':1}))
         with self.assertRaises(ReplayRejected):
             with self.db.transaction() as c: self.repo.append(c, EventIdentity.create('ACQUISITION','REQ-1',{'q':1}))
-        with self.db.connect() as c: self.assertEqual(self.repo.count(c),1)
+        with self.db.read_connection() as c:
+            self.assertEqual(c.execute('SELECT COUNT(*) FROM event_identity').fetchone()[0], 1)
     def test_event_immutable(self):
         with self.db.transaction() as c: self.repo.append(c, EventIdentity.create('MOVEMENT','REQ-2',{}))
         with self.assertRaises(sqlite3.IntegrityError):
             with self.db.transaction() as c: c.execute("UPDATE event_identity SET event_type='X'")
     def test_audit_append_only(self):
+        from repositories.asset_repository import AssetRepository
         from services.asset_service import AssetService
-        AssetService(self.db,self.repo)._commit('ACQUISITION','REQ-3',{'q':1},'foundation_probe')
+        AssetService(self.db, self.repo, AssetRepository()).create_asset(
+            request_id='REQ-3',
+            asset_id='ASSET-3',
+            asset_name='Foundation probe',
+            asset_type='TEST',
+        )
         with self.assertRaises(sqlite3.IntegrityError):
             with self.db.transaction() as c: c.execute('DELETE FROM audit_history')

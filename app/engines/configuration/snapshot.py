@@ -17,6 +17,14 @@ def _freeze(value: Any) -> Any:
     return value
 
 
+def _thaw(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {key: _thaw(item) for key, item in value.items()}
+    if isinstance(value, tuple):
+        return [_thaw(item) for item in value]
+    return deepcopy(value)
+
+
 @dataclass(frozen=True, slots=True)
 class ConfigurationSnapshot:
     """Immutable, in-memory configuration value with no persistence authority."""
@@ -24,7 +32,7 @@ class ConfigurationSnapshot:
     values: Mapping[str, Any]
 
     def __post_init__(self) -> None:
-        source = deepcopy(dict(self.values))
+        source = _thaw(self.values)
         if not validate_configuration(source):
             raise ValueError('configuration snapshot is invalid')
         object.__setattr__(self, 'values', _freeze(source))

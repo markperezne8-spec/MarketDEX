@@ -150,7 +150,10 @@ class MarketIntelligenceWorkspace(QWidget):
             for observation in observations
         )
         self._set_rows(self.evidence_table, self.EVIDENCE_HEADERS, evidence_rows)
-        signals = self.intelligence.attention_signal_service.derive_signals(observations)
+        signals = self.intelligence.attention_signal_service.derive_signals(
+            observations,
+            now=max(observation.observed_at for observation in observations),
+        )
         signal_rows = tuple(
             (
                 signal.title,

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from copy import deepcopy
 from typing import Any, Mapping
 
+from .materialize import _materialize
 from .snapshot import ConfigurationSnapshot
 
 
@@ -12,7 +12,7 @@ def _merge(base: dict[str, Any], overlay: Mapping[str, Any]) -> dict[str, Any]:
         if isinstance(value, Mapping) and isinstance(current, Mapping):
             base[key] = _merge(dict(current), value)
         else:
-            base[key] = deepcopy(value)
+            base[key] = _materialize(value)
     return base
 
 
@@ -26,4 +26,4 @@ def overlay_configuration(
         raise TypeError('base must be a ConfigurationSnapshot')
     if not isinstance(overlay, Mapping):
         raise TypeError('overlay must be a mapping')
-    return ConfigurationSnapshot(_merge(deepcopy(dict(base.values)), overlay))
+    return ConfigurationSnapshot(_merge(_materialize(base.values), overlay))

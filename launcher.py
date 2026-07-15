@@ -42,6 +42,13 @@ def build_main_window(database_path: Path) -> MainWindow:
     return build_application(database_path).build_main_window()
 
 
+def desktop_launch_size(available_geometry) -> tuple[int, int]:
+    return (
+        min(1280, available_geometry.width()),
+        min(800, available_geometry.height()),
+    )
+
+
 def initialize_runtime() -> Path:
     database_path = runtime_database_path()
     migrate_legacy_database_if_needed(database_path, source_root())
@@ -63,10 +70,7 @@ def main(argv=None) -> int:
     screen = app.primaryScreen()
     if screen is not None:
         available_geometry = screen.availableGeometry()
-        window.resize(
-            min(1280, available_geometry.width()),
-            min(800, available_geometry.height()),
-        )
+        window.resize(*desktop_launch_size(available_geometry))
     window.show()
     return app.exec()
 
