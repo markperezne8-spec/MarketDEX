@@ -6,6 +6,7 @@ from typing import Any
 from .bundle import HealthProviderBundle
 from .bundle_lines import health_bundle_report_lines
 from .bundle_report import health_bundle_report_payload
+from .bundle_summary import health_bundle_summary
 
 
 @dataclass(frozen=True, slots=True)
@@ -27,6 +28,16 @@ def build_runtime_health_report(composition: HealthRuntimeComposition) -> dict[s
     return {
         'runtime': composition.runtime_name,
         'health': health_bundle_report_payload(composition.provider_bundle),
+    }
+
+
+def runtime_health_summary(composition: HealthRuntimeComposition) -> dict[str, Any]:
+    if not isinstance(composition, HealthRuntimeComposition):
+        raise TypeError('composition must be a HealthRuntimeComposition')
+
+    return {
+        'runtime': composition.runtime_name,
+        'health': health_bundle_summary(composition.provider_bundle),
     }
 
 
