@@ -251,3 +251,19 @@ Planning authority:
 - Visual check was not required for M1.7 planning through M1.7F.
 - Specialist tooling was not used.
 - Next movement may proceed from synchronized `main` after Mark pulls when back at the PC.
+
+
+## M1.8 planning — Health Monitor runtime composition boundary
+
+M1.8 begins as a guarded Health Monitor runtime-composition boundary after the M1.7 integration-readiness sequence.
+
+Planning authority:
+
+- M1.8 work may compose existing Health Monitor contracts into deterministic application-boundary helpers.
+- M1.8 slices must use the approved M1.6 and M1.7 Health Monitor contracts only.
+- M1.8 does not authorize startup wiring, live checks, polling, persistence, network behavior, scheduler behavior, automation, notifications, UI, or business-state mutation by default.
+- Any side effect requires a separately approved issue that names the side effect explicitly.
+- Non-visual composition contract slices do not require visual review.
+- Any visible Health Monitor surface requires a separately scoped visible build and Mark visual acceptance before merge.
+- Continue issue → branch → draft PR → CI → ready → squash-merge.
+- Specialist tooling remains unused unless Mark explicitly authorizes it in the current chat.
