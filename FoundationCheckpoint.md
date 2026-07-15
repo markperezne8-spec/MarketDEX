@@ -219,3 +219,19 @@ Treat GitHub as the source of truth. Preserve the concise progress-bar workflow,
 - Visual check was not required for M1.6A–M1.6H.
 - Codex was not used.
 - Next movement may proceed from synchronized `main` after Mark pulls when back at the PC.
+
+
+## M1.7 planning — Health Monitor integration readiness
+
+M1.7 begins as a guarded Health Monitor integration-readiness milestone after the M1.6 foundation sequence.
+
+Planning authority:
+
+- M1.6 public exports are the approved Health Monitor API surface for future slices.
+- Future M1.7 work may compose Health Monitor outputs with existing application boundaries only through explicit, deterministic, offline-first adapters.
+- Any runtime integration must preserve side-effect-free behavior unless a later approved issue explicitly authorizes a side effect.
+- Polling, persistence, scheduler behavior, network behavior, startup wiring, notifications, UI, and business-state mutation remain out of scope for M1.7 until separately approved.
+- Non-visual contract and adapter slices do not require visual review.
+- Any visible Health Monitor surface requires a separately scoped visible build and Mark visual acceptance before merge.
+- Continue issue → branch → draft PR → CI → ready → squash-merge.
+- Codex remains forbidden unless Mark explicitly authorizes it in the current chat.
