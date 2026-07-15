@@ -7,6 +7,7 @@ from app.engines.mission_control.operational_status import (
 )
 from ui.main_window import MainWindow
 from ui.operational_status_strip import OperationalStatusStrip
+from ui.design_system.widgets import StatusTone
 
 
 def _application():
@@ -81,8 +82,18 @@ def test_operational_status_strip_renders_injected_view_model_in_order():
 
     assert strip.title_label.text() == 'Operational Status'
     assert strip.state_badge.text() == 'Ready'
+    assert strip.state_badge.property('tone') == StatusTone.POSITIVE.value
     assert strip.headline_label.text() == 'Operational status ready'
     assert strip.view_model is model
+    assert [badge.text() for badge in strip.group_state_badges] == [
+        'Available',
+        'Available',
+        'Available',
+        'Available',
+    ]
+    assert [
+        badge.property('tone') for badge in strip.group_state_badges
+    ] == [StatusTone.POSITIVE.value] * 4
     assert [label.text() for label in strip.group_labels] == [
         'Local authority',
         'Local runtime authority is present.',
@@ -100,7 +111,17 @@ def test_operational_status_strip_renders_default_unavailable_state():
     strip = OperationalStatusStrip()
 
     assert strip.state_badge.text() == 'Unavailable'
+    assert strip.state_badge.property('tone') == StatusTone.WARNING.value
     assert strip.headline_label.text() == 'Operational status unavailable'
+    assert [badge.text() for badge in strip.group_state_badges] == [
+        'Unavailable',
+        'Unavailable',
+        'Unavailable',
+        'Unavailable',
+    ]
+    assert [
+        badge.property('tone') for badge in strip.group_state_badges
+    ] == [StatusTone.WARNING.value] * 4
     assert [label.text() for label in strip.group_labels] == [
         'Local authority',
         'Evidence unavailable.',
@@ -111,6 +132,81 @@ def test_operational_status_strip_renders_default_unavailable_state():
         'Audit/authority evidence',
         'Evidence unavailable.',
     ]
+
+
+def test_operational_status_strip_renders_partial_state_without_inventing_evidence():
+    _application()
+    model = build_operational_status_view_model(
+        evidence=(
+            operational_status_evidence(
+                'local_authority',
+                state='available',
+                detail='Local runtime authority is present.',
+            ),
+            operational_status_evidence(
+                'inventory',
+                state='partial',
+                detail='Inventory summary is present; audit detail is unavailable.',
+            ),
+        )
+    )
+    strip = OperationalStatusStrip(model)
+
+    assert strip.state_badge.text() == 'Partial'
+    assert strip.state_badge.property('tone') == StatusTone.WARNING.value
+    assert strip.headline_label.text() == 'Operational status partially available'
+    assert [badge.text() for badge in strip.group_state_badges] == [
+        'Available',
+        'Unavailable',
+        'Partial',
+        'Unavailable',
+    ]
+    assert [
+        badge.property('tone') for badge in strip.group_state_badges
+    ] == [
+        StatusTone.POSITIVE.value,
+        StatusTone.WARNING.value,
+        StatusTone.WARNING.value,
+        StatusTone.WARNING.value,
+    ]
+    assert [label.text() for label in strip.group_labels] == [
+        'Local authority',
+        'Local runtime authority is present.',
+        'Offline-first',
+        'Evidence unavailable.',
+        'Inventory readiness',
+        'Inventory summary is present; audit detail is unavailable.',
+        'Audit/authority evidence',
+        'Evidence unavailable.',
+    ]
+
+
+def test_operational_status_strip_renders_error_safely_inline():
+    _application()
+    model = build_operational_status_view_model(
+        evidence=(
+            operational_status_evidence(
+                'local_authority',
+                state='available',
+                detail='Local runtime authority is present.',
+            ),
+        ),
+        error_text='Prepared operational evidence could not be read.',
+    )
+    strip = OperationalStatusStrip(model)
+
+    assert strip.state_badge.text() == 'Error-safe'
+    assert strip.state_badge.property('tone') == StatusTone.NEGATIVE.value
+    assert strip.headline_label.text() == 'Operational status unavailable'
+    assert strip.error_label.text() == 'Prepared operational evidence could not be read.'
+    assert not strip.error_label.isHidden()
+    assert [badge.text() for badge in strip.group_state_badges] == [
+        'Available',
+        'Unavailable',
+        'Unavailable',
+        'Unavailable',
+    ]
+    assert 'Prepared operational evidence could not be read.' in strip.error_label.text()
 
 
 def test_operational_status_strip_has_no_action_controls():
