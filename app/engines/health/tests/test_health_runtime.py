@@ -7,6 +7,7 @@ from app.engines.health import (
     HealthStatus,
     build_runtime_health_report,
     create_health_provider_bundle,
+    runtime_health_report_lines,
     summarize_health_results,
 )
 
@@ -43,6 +44,18 @@ def test_build_runtime_health_report_includes_runtime_and_health_payload() -> No
     assert [entry['provider'] for entry in report['health']['reports']] == ['application', 'database']
 
 
+def test_runtime_health_report_lines_include_runtime_and_preserve_provider_order() -> None:
+    composition = HealthRuntimeComposition('MarketDEX', _bundle())
+
+    assert runtime_health_report_lines(composition) == (
+        'runtime=MarketDEX',
+        'overall=WARN',
+        'providers=2',
+        'provider=application:PASS:findings=0',
+        'provider=database:WARN:findings=1',
+    )
+
+
 def test_health_runtime_composition_rejects_blank_runtime_name() -> None:
     with pytest.raises(ValueError):
         HealthRuntimeComposition('', _bundle())
@@ -56,3 +69,8 @@ def test_health_runtime_composition_rejects_invalid_bundle() -> None:
 def test_build_runtime_health_report_rejects_invalid_composition() -> None:
     with pytest.raises(TypeError):
         build_runtime_health_report(object())
+
+
+def test_runtime_health_report_lines_rejects_invalid_composition() -> None:
+    with pytest.raises(TypeError):
+        runtime_health_report_lines(object())
