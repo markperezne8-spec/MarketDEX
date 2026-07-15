@@ -1,4 +1,5 @@
 from .bundle import HealthProviderBundle, build_health_reports, create_health_provider_bundle
+from .bundle_report import health_bundle_report_payload
 from .bundle_summary import health_bundle_summary
 from .checks import HealthCheck, run_health_checks
 from .findings import HealthFinding, health_findings
@@ -27,5 +28,6 @@ __all__ = [
     'create_health_provider_bundle',
     'build_health_reports',
     'health_bundle_summary',
+    'health_bundle_report_payload',
     'run_health_checks',
 ]
