@@ -373,3 +373,13 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - The entire sequence remained non-visual and introduced no polling, persistence, network, scheduler, automation, notification, startup side effects, or business-state mutation.
 - Visual check was not required.
 - Codex was not used.
+
+
+## 🧭 M1.7 Planning — Health Monitor Integration Readiness
+
+- M1.7 opened as a guarded integration-readiness milestone after the completed M1.6 Health Monitor foundation.
+- M1.6 Health Monitor exports are the only approved public API surface for the next sequence.
+- Future integration must remain deterministic, offline-first, and side-effect-free unless separately authorized.
+- Polling, persistence, scheduler behavior, network behavior, startup wiring, notifications, UI, and business-state mutation remain excluded from M1.7 by default.
+- Non-visual adapter and contract slices do not require visual review.
+- Any visible Health Monitor surface requires a separately scoped visible build and Mark visual acceptance before merge.
