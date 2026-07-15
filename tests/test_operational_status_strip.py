@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PySide6.QtWidgets import QApplication, QPushButton
 
 from app.engines.health.status_view_model import build_health_status_view_model
@@ -8,6 +10,10 @@ from app.engines.mission_control.operational_status import (
 from ui.main_window import MainWindow
 from ui.operational_status_strip import OperationalStatusStrip
 from ui.design_system.widgets import StatusTone
+
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+OPERATIONAL_STATUS_STRIP = REPOSITORY_ROOT / 'ui' / 'operational_status_strip.py'
+MAIN_WINDOW = REPOSITORY_ROOT / 'ui' / 'main_window.py'
 
 
 def _application():
@@ -215,6 +221,64 @@ def test_operational_status_strip_has_no_action_controls():
 
     assert strip.findChildren(QPushButton) == []
     assert strip.header_actions.count() == 0
+
+
+def test_operational_status_strip_uses_injected_model_without_fallback_builder(monkeypatch):
+    _application()
+    model = _ready_operational_model()
+
+    def _blocked_default_builder():
+        raise AssertionError('injected view model should not use the fallback builder')
+
+    monkeypatch.setattr(
+        'ui.operational_status_strip.build_operational_status_view_model',
+        _blocked_default_builder,
+    )
+
+    strip = OperationalStatusStrip(model)
+
+    assert strip.view_model is model
+    assert strip.state_badge.text() == 'Ready'
+
+
+def test_operational_status_strip_contract_has_no_runtime_side_effect_paths():
+    source = OPERATIONAL_STATUS_STRIP.read_text(encoding='utf-8')
+
+    prohibited_tokens = (
+        'QMessageBox',
+        'QDialog',
+        'QTimer',
+        'socket',
+        'requests',
+        'urllib',
+        'sqlite3',
+        'open(',
+        'Path(',
+        'threading',
+        'schedule',
+        'poll',
+        'database',
+        'persist',
+        'save',
+        'mutation',
+        'import_inventory',
+        'export_inventory',
+        'add_asset',
+        'adjust_asset',
+        'archive_asset',
+        'restore_asset',
+    )
+
+    for token in prohibited_tokens:
+        assert token not in source
+
+
+def test_mission_control_wires_operational_strip_only_from_prepared_view_model():
+    source = MAIN_WINDOW.read_text(encoding='utf-8')
+
+    assert 'OperationalStatusStrip(self._operational_status_view_model)' in source
+    assert 'build_operational_status_view_model' not in source
+    assert 'OperationalStatusViewModel | None = None' in source
 
 
 def test_mission_control_places_operational_strip_after_health_card_and_above_kpis():
