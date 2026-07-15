@@ -12,6 +12,20 @@ from ui.design_system.widgets import (
     StatusTone,
 )
 
+OPERATIONAL_STATUS_STATE_LABELS = {
+    'available': ('Ready', StatusTone.POSITIVE),
+    'unavailable': ('Unavailable', StatusTone.WARNING),
+    'partial': ('Partial', StatusTone.WARNING),
+    'error': ('Error-safe', StatusTone.NEGATIVE),
+}
+
+OPERATIONAL_STATUS_GROUP_STATE_LABELS = {
+    'available': ('Available', StatusTone.POSITIVE),
+    'unavailable': ('Unavailable', StatusTone.WARNING),
+    'partial': ('Partial', StatusTone.WARNING),
+    'error': ('Error-safe', StatusTone.NEGATIVE),
+}
+
 
 class OperationalStatusStrip(MarketDEXDashboardPanel):
     """Compact read-only Mission Control operational readiness strip."""
@@ -27,13 +41,9 @@ class OperationalStatusStrip(MarketDEXDashboardPanel):
             parent,
         )
         self.view_model = view_model or build_operational_status_view_model()
-        state_labels = {
-            'available': ('Ready', StatusTone.POSITIVE),
-            'unavailable': ('Unavailable', StatusTone.WARNING),
-            'partial': ('Partial', StatusTone.WARNING),
-            'error': ('Error-safe', StatusTone.NEGATIVE),
-        }
-        state_label, state_tone = state_labels[self.view_model.state]
+        state_label, state_tone = OPERATIONAL_STATUS_STATE_LABELS[
+            self.view_model.state
+        ]
         self.state_badge = MarketDEXStatusBadge(
             state_label,
             state_tone,
@@ -52,18 +62,29 @@ class OperationalStatusStrip(MarketDEXDashboardPanel):
         self.group_layout.setContentsMargins(0, 0, 0, 0)
         self.group_layout.setSpacing(8)
         self.group_labels: list[QLabel] = []
+        self.group_state_badges: list[MarketDEXStatusBadge] = []
         for group in self.view_model.groups:
             group_widget = QWidget(self.group_row)
             group_layout = QVBoxLayout(group_widget)
             group_layout.setContentsMargins(0, 0, 0, 0)
             group_layout.setSpacing(2)
+            group_state_label, group_state_tone = OPERATIONAL_STATUS_GROUP_STATE_LABELS[
+                group.state
+            ]
+            group_state_badge = MarketDEXStatusBadge(
+                group_state_label,
+                group_state_tone,
+                group_widget,
+            )
             label = QLabel(group.label, group_widget)
             label.setObjectName('operationalStatusGroupLabel')
             detail = QLabel(group.detail, group_widget)
             detail.setObjectName('operationalStatusGroupDetail')
             detail.setWordWrap(True)
+            group_layout.addWidget(group_state_badge)
             group_layout.addWidget(label)
             group_layout.addWidget(detail)
+            self.group_state_badges.append(group_state_badge)
             self.group_labels.append(label)
             self.group_labels.append(detail)
             self.group_layout.addWidget(group_widget)
@@ -73,7 +94,8 @@ class OperationalStatusStrip(MarketDEXDashboardPanel):
         self.add_content_widget(self.error_label)
         self.add_content_widget(self.group_row)
         group_summary = '. '.join(
-            f'{group.label}: {group.detail}' for group in self.view_model.groups
+            f'{group.label}: {group.state}. {group.detail}'
+            for group in self.view_model.groups
         )
         self.setAccessibleName(
             f'Operational Status. {self.view_model.headline}. {group_summary}'
