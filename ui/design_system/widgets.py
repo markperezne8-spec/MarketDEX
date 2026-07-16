@@ -194,8 +194,9 @@ class MarketDEXDashboardPanel(QFrame):
         self,
         title: str,
         description: str = "",
-        tone: NorthStarPanelTone = NorthStarPanelTone.COMMAND,
         parent: QWidget | None = None,
+        *,
+        tone: NorthStarPanelTone = NorthStarPanelTone.COMMAND,
     ) -> None:
         super().__init__(parent)
         self.setObjectName("marketdexDashboardPanel")
