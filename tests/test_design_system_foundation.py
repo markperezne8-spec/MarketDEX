@@ -4,6 +4,7 @@ from ui.design_system.component_contracts import ComponentState, build_component
 from ui.design_system.tokens import (
     ColorRole,
     Density,
+    NorthStarPanelTone,
     SpacingRole,
     TypographyRole,
     build_visual_north_star_tokens,
@@ -39,12 +40,27 @@ def test_visual_north_star_tokens_are_complete_semantic_and_valid():
     assert set(tokens.typography) == set(TypographyRole)
     assert set(tokens.spacing) == set(SpacingRole)
     assert set(tokens.densities) == set(Density)
+    assert set(tokens.north_star_panel_tones) == set(NorthStarPanelTone)
     assert tokens.color(ColorRole.APP_BACKGROUND).startswith('#')
     assert tokens.color(ColorRole.FOCUS_RING) != tokens.color(ColorRole.APP_BACKGROUND)
     assert tokens.densities[Density.LARGE_TEXT].control_height > (
         tokens.densities[Density.STANDARD].control_height
     )
     tokens.validate()
+
+
+def test_visual_north_star_panel_tones_map_to_existing_color_roles():
+    tokens = build_visual_north_star_tokens()
+
+    assert tokens.north_star_panel_tones[NorthStarPanelTone.OPPORTUNITY] == (
+        ColorRole.OPPORTUNITY
+    )
+    assert tokens.north_star_panel_tones[NorthStarPanelTone.RISK] == (
+        ColorRole.NEGATIVE
+    )
+    assert tokens.north_star_panel_tones[NorthStarPanelTone.SCOREBOARD] == (
+        ColorRole.PRIMARY_ACTION
+    )
 
 
 def test_component_catalog_has_unique_ids_and_required_foundation_components():
