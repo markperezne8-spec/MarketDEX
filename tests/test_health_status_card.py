@@ -102,10 +102,11 @@ def test_mission_control_places_health_card_below_header_and_above_kpis():
 
     layout = window.inventory_panel.layout()
     assert layout.itemAt(0).widget() is window.mission_control_header
-    assert layout.itemAt(1).widget() is window.health_status_card
-    assert layout.itemAt(2).widget() is window.operational_status_strip
-    assert layout.itemAt(3).widget() is window.next_steps_panel
-    assert layout.itemAt(4).layout() is not None
+    assert layout.itemAt(1).widget() is window.header_status_band
+    assert layout.itemAt(2).widget() is window.health_status_card
+    assert layout.itemAt(3).widget() is window.operational_status_strip
+    assert layout.itemAt(4).widget() is window.next_steps_panel
+    assert layout.itemAt(5).layout() is not None
     assert window.health_status_card.view_model is model
     assert window.health_status_card.state_badge.text() == 'Ready'
 

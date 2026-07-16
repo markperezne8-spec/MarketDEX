@@ -4,10 +4,12 @@ from services.inventory_csv_import_service import InventoryCsvImportService
 from ui.design_system.qt_theme import build_marketdex_qss
 from ui.design_system.tokens import build_visual_north_star_tokens
 from ui.design_system.widgets import MarketDEXKpiCard,MarketDEXWorkspaceHeader
+from ui.header_status_band import HeaderStatusBand
 from ui.health_status_card import HealthStatusCard
 from ui.next_steps_panel import NextStepsPanel
 from ui.operational_status_strip import OperationalStatusStrip
 from app.engines.health.status_view_model import HealthStatusViewModel
+from app.engines.mission_control.header_status import HeaderStatusViewModel
 from app.engines.mission_control.next_steps import NextStepReadinessViewModel
 from app.engines.mission_control.operational_status import OperationalStatusViewModel
 
@@ -28,12 +30,13 @@ class BulkAdjustDialog(QDialog):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self,service,inventory_service,health_status_view_model: HealthStatusViewModel | None = None,operational_status_view_model: OperationalStatusViewModel | None = None,next_steps_view_model: NextStepReadinessViewModel | None = None):
+    def __init__(self,service,inventory_service,health_status_view_model: HealthStatusViewModel | None = None,operational_status_view_model: OperationalStatusViewModel | None = None,next_steps_view_model: NextStepReadinessViewModel | None = None,header_status_view_model: HeaderStatusViewModel | None = None):
         super().__init__(); self.service=service; self.inventory_service=inventory_service; self.inventory_import_service=InventoryCsvImportService(inventory_service); self.inventory_rows=[]; self.inventory_view='ACTIVE'; self.setWindowTitle('MarketDEX OS — Mission Control'); self.resize(1280,800)
         self.setStyleSheet(build_marketdex_qss(build_visual_north_star_tokens()))
         self._health_status_view_model=health_status_view_model
         self._operational_status_view_model=operational_status_view_model
         self._next_steps_view_model=next_steps_view_model
+        self._header_status_view_model=header_status_view_model
         root=QWidget(); root.setObjectName('marketdexAppRoot'); outer=QHBoxLayout(root); panel=QWidget(); panel.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Preferred); self.inventory_panel=panel; layout=QVBoxLayout(panel); outer.addWidget(panel,1)
         self.mission_control_header=MarketDEXWorkspaceHeader('MarketDEX OS','MISSION CONTROL — LIVE SQLITE BUSINESS SNAPSHOT'); layout.addWidget(self.mission_control_header)
         self.values={}; grid=QGridLayout(); cards=(('📦 Inventory Units','inventory_units'),('🗂️ Inventory Assets','inventory_asset_count'),('💰 Inventory Cost','inventory_cost_minor'),('🧾 Completed Sales','completed_sales'),('📈 Revenue','revenue_minor'),('💵 Profit','profit_minor'),('🛡️ Verified Audits','verified_audits'),('⚙️ Authority Events','authority_events'))
@@ -77,15 +80,18 @@ class MainWindow(QMainWindow):
         except Exception as exc:QMessageBox.critical(self,'Export Failed',str(exc))
 
     def refresh(self):
+        if not hasattr(self, 'header_status_band'):
+            self.header_status_band=HeaderStatusBand(self._header_status_view_model)
+            self.inventory_panel.layout().insertWidget(1, self.header_status_band)
         if not hasattr(self, 'health_status_card'):
             self.health_status_card=HealthStatusCard(self._health_status_view_model)
-            self.inventory_panel.layout().insertWidget(1, self.health_status_card)
+            self.inventory_panel.layout().insertWidget(2, self.health_status_card)
         if not hasattr(self, 'operational_status_strip'):
             self.operational_status_strip=OperationalStatusStrip(self._operational_status_view_model)
-            self.inventory_panel.layout().insertWidget(2, self.operational_status_strip)
+            self.inventory_panel.layout().insertWidget(3, self.operational_status_strip)
         if not hasattr(self, 'next_steps_panel'):
             self.next_steps_panel=NextStepsPanel(self._next_steps_view_model)
-            self.inventory_panel.layout().insertWidget(3, self.next_steps_panel)
+            self.inventory_panel.layout().insertWidget(4, self.next_steps_panel)
         snapshot=self.service.snapshot()
         for key in ('inventory_units','inventory_asset_count','completed_sales','verified_audits','authority_events'): self.values[key].setText(f'{snapshot[key]:,}')
         for key in ('inventory_cost_minor','revenue_minor','profit_minor'): self.values[key].setText(self._money(snapshot[key]))
