@@ -218,6 +218,15 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - `DEVELOPMENT_PLAYBOOK.md` revised so routine design-locked Calc work may be implemented by Jarvis when safe; Codex is selective rather than mandatory.
 - Direct GitHub text maintenance locked when safe repository tools support the exact operation.
 - Remote-versus-local GitHub workflow clarified: direct GitHub changes require Mark to Pull origin to update the physical repository folder.
+
+## 🏁 M1.14 Planning — Mission Control Visual North Star Alignment
+- Mission Control Visual North Star alignment planning established.
+- `MarketDEX_Mission_Control_Visual_North_Star.png` preserved as the visual source of truth for the home-page direction.
+- North Star alignment split into staged, independently mergeable builds instead of one broad redesign.
+- Visual-only shells must remain read-only and honestly label unavailable evidence until contracts exist.
+- Real values for Today's Top 3, Capital Health, Opportunity + Risk, Business Scoreboard, Inventory Command Center, Visual Intelligence, alerts, data freshness, workbook health, and footer status require dedicated contracts before implementation.
+- Explicit non-goals preserved: no fake live data, marketplace integrations, networking, polling, alerts, notifications, automation, persistence, database migration, dependency changes, or business mutation.
+- Visible implementation builds require screenshot acceptance against the Visual North Star image.
 - Current continuity reconciled to repository-preserved Build 038 and Build 039 discovery.
 
 ## 🧹 Repository Sweep R005 — Checkpoint Consolidation
