@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from PySide6.QtWidgets import QApplication
+
 from ui.design_system.qt_theme import build_marketdex_qss
 from ui.design_system.tokens import (
     ColorRole,
@@ -13,6 +15,10 @@ from ui.design_system.widgets import (
     MarketDEXStatusBadge,
     MarketDEXWorkspaceHeader,
 )
+
+
+def _application():
+    return QApplication.instance() or QApplication([])
 
 
 def test_qt_theme_is_generated_from_semantic_tokens():
@@ -45,6 +51,7 @@ def test_qt_theme_is_generated_from_semantic_tokens():
 
 
 def test_dashboard_panel_exposes_read_only_north_star_tone_property():
+    _application()
     panel = MarketDEXDashboardPanel(
         'Opportunity + Risk',
         'Read-only shell',
@@ -88,3 +95,4 @@ def test_theme_adapter_remains_business_and_database_independent():
     assert 'sqlite3' not in source
     assert 'services.' not in source
     assert 'repositories.' not in source
+
