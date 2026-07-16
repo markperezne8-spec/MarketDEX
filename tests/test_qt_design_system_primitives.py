@@ -55,6 +55,7 @@ def test_dashboard_panel_exposes_read_only_north_star_tone_property():
     panel = MarketDEXDashboardPanel(
         'Opportunity + Risk',
         'Read-only shell',
+        None,
         tone=NorthStarPanelTone.OPPORTUNITY,
     )
 
@@ -95,4 +96,3 @@ def test_theme_adapter_remains_business_and_database_independent():
     assert 'sqlite3' not in source
     assert 'services.' not in source
     assert 'repositories.' not in source
-
