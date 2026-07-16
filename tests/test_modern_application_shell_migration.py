@@ -65,6 +65,29 @@ def test_north_star_navigation_treatment_is_visual_only():
         assert prohibited not in source
 
 
+def test_north_star_dashboard_grid_shell_is_visual_only():
+    source = MAIN_WINDOW.read_text(encoding="utf-8")
+
+    assert "m1.14e-north-star-dashboard-grid-shell" in source
+    assert "dashboard-grid-shell" in source
+    assert "future-contract-placeholder" in source
+    assert "Evidence unavailable. Future contract required." in source
+    assert "MarketDEXDashboardPanel" in source
+    for prohibited in (
+        "QTimer",
+        "socket",
+        "requests",
+        "urllib",
+        "threading",
+        "schedule",
+        "poll",
+        "marketplace",
+        "pricing provider",
+        "notification",
+    ):
+        assert prohibited not in source
+
+
 def test_shell_migration_preserves_existing_business_surfaces():
     source = MAIN_WINDOW.read_text(encoding="utf-8")
 
