@@ -28,6 +28,14 @@ def test_workspace_host_mounts_registry_order_and_activates_by_identity():
         'Inventory',
         'Pricing',
     ]
+    assert host.navigation_titles == ('Inventory', 'Pricing')
+    assert [button.text() for button in host.navigation_buttons] == [
+        'Inventory',
+        'Pricing',
+    ]
+    assert [
+        button.property('workspaceId') for button in host.navigation_buttons
+    ] == ['inventory', 'pricing']
     host.activate('pricing')
     assert host.currentWidget() is host.workspace_widget('pricing')
     assert host.currentIndex() == host.workspace_indexes['pricing']
@@ -72,9 +80,60 @@ def test_workspace_host_exposes_navigation_rail_shell_contract():
     assert host.status_bar.objectName() == 'marketdexStatusBar'
     assert isinstance(host.workspace_stack, QStackedWidget)
     assert host.workspace_stack.objectName() == 'marketdexWorkspaceStack'
+    assert host.navigation_badge.objectName() == 'marketdexNavigationBadge'
+    assert host.navigation_badge.text() == 'COMMAND RAIL'
+    assert host.navigation_rail.accessibleName() == (
+        'MarketDEX command navigation rail'
+    )
+    assert host.navigation_visual_contract == 'm1.14d-north-star-left-navigation'
     assert host.documentMode() is True
     assert host.isMovable() is False
     assert host.tabsClosable() is False
     assert host.tabBar().expanding() is False
-    assert '#38bdf8' in host.styleSheet()
+    assert '#2579D8' in host.styleSheet()
+    assert '#FFD12E' in host.styleSheet()
+    host.close()
+
+
+def test_workspace_host_north_star_navigation_visuals_preserve_routes():
+    app = QApplication.instance() or QApplication([])
+    registry = WorkspaceRegistry()
+    registry.register(WorkspaceDefinition('inventory', 'Inventory', _widget, order=10))
+    registry.register(WorkspaceDefinition('pricing', 'Pricing', _widget, order=20))
+    registry.register(
+        WorkspaceDefinition(
+            'listing-workflow',
+            'Listing Workflow',
+            _widget,
+            order=30,
+        )
+    )
+    host = WorkspaceHost(registry)
+
+    host.mount_registered_workspaces()
+
+    assert host.workspace_ids == ('inventory', 'pricing', 'listing-workflow')
+    assert host.navigation_titles == (
+        'Inventory',
+        'Pricing',
+        'Listing Workflow',
+    )
+    assert [button.text() for button in host.navigation_buttons] == [
+        'Inventory',
+        'Pricing',
+        'Listing Workflow',
+    ]
+    assert [
+        button.property('northStarRole') for button in host.navigation_buttons
+    ] == ['workspace-navigation'] * 3
+    assert [
+        button.property('workspaceId') for button in host.navigation_buttons
+    ] == ['inventory', 'pricing', 'listing-workflow']
+    assert [button.accessibleName() for button in host.navigation_buttons] == [
+        'Open Inventory workspace',
+        'Open Pricing workspace',
+        'Open Listing Workflow workspace',
+    ]
+    assert all(button.isCheckable() for button in host.navigation_buttons)
+    assert not any('new-workspace' in button.text() for button in host.navigation_buttons)
     host.close()
