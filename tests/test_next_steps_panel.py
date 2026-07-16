@@ -324,10 +324,11 @@ def test_mission_control_places_next_steps_after_operational_strip_and_above_kpi
 
     layout = window.inventory_panel.layout()
     assert layout.itemAt(0).widget() is window.mission_control_header
-    assert layout.itemAt(1).widget() is window.health_status_card
-    assert layout.itemAt(2).widget() is window.operational_status_strip
-    assert layout.itemAt(3).widget() is window.next_steps_panel
-    assert layout.itemAt(4).layout() is not None
+    assert layout.itemAt(1).widget() is window.header_status_band
+    assert layout.itemAt(2).widget() is window.health_status_card
+    assert layout.itemAt(3).widget() is window.operational_status_strip
+    assert layout.itemAt(4).widget() is window.next_steps_panel
+    assert layout.itemAt(5).layout() is not None
     assert window.health_status_card.view_model is health_model
     assert window.operational_status_strip.view_model is operational_model
     assert window.next_steps_panel.view_model is next_steps_model
