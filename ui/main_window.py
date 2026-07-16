@@ -2,8 +2,8 @@ from uuid import uuid4
 from PySide6.QtWidgets import QMainWindow,QWidget,QVBoxLayout,QLabel,QPushButton,QGridLayout,QGroupBox,QHBoxLayout,QTableWidget,QTableWidgetItem,QDialog,QFormLayout,QLineEdit,QComboBox,QSpinBox,QDoubleSpinBox,QDialogButtonBox,QMessageBox,QFileDialog,QAbstractItemView,QSizePolicy
 from services.inventory_csv_import_service import InventoryCsvImportService
 from ui.design_system.qt_theme import build_marketdex_qss
-from ui.design_system.tokens import build_visual_north_star_tokens
-from ui.design_system.widgets import MarketDEXKpiCard,MarketDEXWorkspaceHeader
+from ui.design_system.tokens import NorthStarPanelTone, build_visual_north_star_tokens
+from ui.design_system.widgets import MarketDEXDashboardPanel,MarketDEXKpiCard,MarketDEXStatusBadge,MarketDEXWorkspaceHeader,StatusTone
 from ui.header_status_band import HeaderStatusBand
 from ui.health_status_card import HealthStatusCard
 from ui.next_steps_panel import NextStepsPanel
@@ -39,9 +39,7 @@ class MainWindow(QMainWindow):
         self._header_status_view_model=header_status_view_model
         root=QWidget(); root.setObjectName('marketdexAppRoot'); outer=QHBoxLayout(root); panel=QWidget(); panel.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Preferred); self.inventory_panel=panel; layout=QVBoxLayout(panel); outer.addWidget(panel,1)
         self.mission_control_header=MarketDEXWorkspaceHeader('MarketDEX OS','MISSION CONTROL — LIVE SQLITE BUSINESS SNAPSHOT'); layout.addWidget(self.mission_control_header)
-        self.values={}; grid=QGridLayout(); cards=(('📦 Inventory Units','inventory_units'),('🗂️ Inventory Assets','inventory_asset_count'),('💰 Inventory Cost','inventory_cost_minor'),('🧾 Completed Sales','completed_sales'),('📈 Revenue','revenue_minor'),('💵 Profit','profit_minor'),('🛡️ Verified Audits','verified_audits'),('⚙️ Authority Events','authority_events'))
-        for index,(label,key) in enumerate(cards): card=MarketDEXKpiCard(label,'--'); self.values[key]=card.value_widget; grid.addWidget(card,index//2,index%2)
-        layout.addLayout(grid); inventory_header=QHBoxLayout(); self.inventory_header=inventory_header; inventory_header.addWidget(QLabel('📦 INVENTORY')); inventory_header.addStretch(1)
+        self.values={}; self.dashboard_grid_shell=self._build_dashboard_grid_shell(); layout.addWidget(self.dashboard_grid_shell); inventory_header=QHBoxLayout(); self.inventory_header=inventory_header; inventory_header.addWidget(QLabel('📦 INVENTORY')); inventory_header.addStretch(1)
         import_button=QPushButton('Import CSV'); import_button.clicked.connect(self.import_inventory); inventory_header.addWidget(import_button); export_button=QPushButton('Export CSV'); export_button.clicked.connect(self.export_inventory); inventory_header.addWidget(export_button); self.view_button=QPushButton('View Archived'); self.view_button.clicked.connect(self.toggle_inventory_view); inventory_header.addWidget(self.view_button); self.adjust_button=QPushButton('Adjust Selected'); self.adjust_button.setEnabled(False); self.adjust_button.clicked.connect(self.adjust_selected); inventory_header.addWidget(self.adjust_button); self.bulk_adjust_button=QPushButton('Bulk Adjust'); self.bulk_adjust_button.setEnabled(False); self.bulk_adjust_button.clicked.connect(self.bulk_adjust_selected); inventory_header.addWidget(self.bulk_adjust_button); self.archive_button=QPushButton('Archive Selected'); self.archive_button.setEnabled(False); self.archive_button.clicked.connect(self.archive_selected); inventory_header.addWidget(self.archive_button); self.restore_button=QPushButton('Restore Selected'); self.restore_button.setEnabled(False); self.restore_button.clicked.connect(self.restore_selected); inventory_header.addWidget(self.restore_button); add_button=QPushButton('+ Add Asset'); add_button.clicked.connect(self.add_asset); inventory_header.addWidget(add_button); layout.addLayout(inventory_header)
         filter_bar=QHBoxLayout(); self.inventory_search=QLineEdit(); self.inventory_search.setPlaceholderText('Search inventory by asset name...'); self.inventory_search.textChanged.connect(self.refresh_inventory); filter_bar.addWidget(self.inventory_search); self.inventory_type_filter=QComboBox(); self.inventory_type_filter.addItems(['ALL','SINGLE','SEALED','SLAB','ACCESSORY']); self.inventory_type_filter.currentTextChanged.connect(self.refresh_inventory); filter_bar.addWidget(self.inventory_type_filter); layout.addLayout(filter_bar)
         sort_bar=QHBoxLayout(); sort_bar.addWidget(QLabel('Sort by')); self.inventory_sort=QComboBox(); self.inventory_sort.addItems(['NAME','TYPE','QUANTITY','TOTAL COST']); self.inventory_sort.currentTextChanged.connect(self.refresh_inventory); sort_bar.addWidget(self.inventory_sort); self.inventory_sort_order=QComboBox(); self.inventory_sort_order.addItems(['ASC','DESC']); self.inventory_sort_order.currentTextChanged.connect(self.refresh_inventory); sort_bar.addWidget(self.inventory_sort_order); sort_bar.addStretch(1); layout.addLayout(sort_bar)
@@ -54,6 +52,37 @@ class MainWindow(QMainWindow):
 
     @staticmethod
     def _detail_value(value): return str(value).strip() if str(value or '').strip() else '—'
+
+    @property
+    def dashboard_grid_visual_contract(self): return 'm1.14e-north-star-dashboard-grid-shell'
+
+    def _build_dashboard_grid_shell(self):
+        shell=MarketDEXDashboardPanel('Dashboard Grid','Read-only command-center snapshot',tone=NorthStarPanelTone.COMMAND)
+        shell.setObjectName('marketdexDashboardPanel')
+        shell.setProperty('dashboardRole','dashboard-grid-shell')
+        shell.setProperty('visualContract',self.dashboard_grid_visual_contract)
+        shell.setAccessibleName('Mission Control dashboard grid shell. Read-only command-center snapshot.')
+        badge=MarketDEXStatusBadge('Read-only',StatusTone.INFORMATION,shell); shell.add_header_action(badge)
+        grid=QGridLayout(); grid.setContentsMargins(0,0,0,0); grid.setHorizontalSpacing(10); grid.setVerticalSpacing(10); self.dashboard_grid=grid
+        cards=(('📦 Inventory Units','inventory_units'),('🗂️ Inventory Assets','inventory_asset_count'),('💰 Inventory Cost','inventory_cost_minor'),('🧾 Completed Sales','completed_sales'),('📈 Revenue','revenue_minor'),('💵 Profit','profit_minor'),('🛡️ Verified Audits','verified_audits'),('⚙️ Authority Events','authority_events'))
+        for index,(label,key) in enumerate(cards):
+            card=MarketDEXKpiCard(label,'--'); card.setProperty('dashboardRole','existing-kpi'); self.values[key]=card.value_widget; grid.addWidget(card,index//2,index%2)
+        for offset,(title,tone) in enumerate((('Inventory Command Center',StatusTone.WARNING),('Capital Health',StatusTone.WARNING),('Opportunity + Risk',StatusTone.WARNING),('Visual Intelligence',StatusTone.WARNING))):
+            grid.addWidget(self._build_unavailable_dashboard_tile(title,tone),4+offset//2,offset%2)
+        shell.content_layout.addLayout(grid)
+        return shell
+
+    def _build_unavailable_dashboard_tile(self,title,tone):
+        tile=MarketDEXDashboardPanel(title,'Future contract area',tone=NorthStarPanelTone.SCOREBOARD)
+        tile.setObjectName('marketdexDashboardPanel')
+        tile.setProperty('dashboardRole','future-contract-placeholder')
+        badge=MarketDEXStatusBadge('Unavailable',tone,tile); tile.add_header_action(badge)
+        detail=QLabel('Evidence unavailable. Future contract required.',tile)
+        detail.setObjectName('marketdexPanelDescription')
+        detail.setWordWrap(True)
+        tile.add_content_widget(detail)
+        tile.setAccessibleName(f'{title}. Unavailable. Evidence unavailable. Future contract required.')
+        return tile
 
     def refresh_inventory(self):
         listing=self.inventory_service.list_archived_inventory if self.inventory_view=='ARCHIVED' else self.inventory_service.list_inventory; self.inventory_rows=listing(search_text=self.inventory_search.text(),asset_type=self.inventory_type_filter.currentText(),sort_key=self.inventory_sort.currentText(),sort_order=self.inventory_sort_order.currentText()); self.inventory_table.setRowCount(len(self.inventory_rows)); summary=self.inventory_service.summarize_inventory(self.inventory_rows); self.inventory_summary['asset_count'].setText(f"{summary['asset_count']:,}"); self.inventory_summary['total_units'].setText(f"{summary['total_units']:,}"); self.inventory_summary['total_cost_minor'].setText(self._money(summary['total_cost_minor']))
