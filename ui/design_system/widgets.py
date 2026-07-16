@@ -14,6 +14,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from ui.design_system.tokens import NorthStarPanelTone
+
 
 class StatusTone(str, Enum):
     INFORMATION = "information"
@@ -193,9 +195,12 @@ class MarketDEXDashboardPanel(QFrame):
         title: str,
         description: str = "",
         parent: QWidget | None = None,
+        *,
+        tone: NorthStarPanelTone = NorthStarPanelTone.COMMAND,
     ) -> None:
         super().__init__(parent)
         self.setObjectName("marketdexDashboardPanel")
+        self.setProperty("northStarTone", tone.value)
         self.setAccessibleName(f"Panel: {title}")
 
         root = QVBoxLayout(self)
@@ -241,6 +246,10 @@ class MarketDEXDashboardPanel(QFrame):
     def set_description(self, description: str) -> None:
         self.description_label.setText(description)
         self.description_label.setVisible(bool(description.strip()))
+
+    def set_tone(self, tone: NorthStarPanelTone) -> None:
+        self.setProperty("northStarTone", tone.value)
+        _refresh_style(self)
 
 
 class MarketDEXStatePanel(QFrame):

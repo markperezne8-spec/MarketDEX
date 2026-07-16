@@ -1,6 +1,10 @@
 from __future__ import annotations
 
-from ui.design_system.tokens import ColorRole, MarketDEXDesignTokens
+from ui.design_system.tokens import (
+    ColorRole,
+    MarketDEXDesignTokens,
+    NorthStarPanelTone,
+)
 
 
 def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
@@ -45,6 +49,36 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
     QFrame#marketdexKpiCard:hover,
     QFrame#marketdexDashboardPanel:hover {{
         border-color: {color(ColorRole.BORDER_STRONG)};
+    }}
+
+    QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.COMMAND.value}"] {{
+        background: {color(tokens.north_star_panel_tones[NorthStarPanelTone.COMMAND])};
+        border-color: {color(ColorRole.BORDER_STRONG)};
+    }}
+
+    QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.SCOREBOARD.value}"] {{
+        background: {color(ColorRole.SURFACE_PRIMARY)};
+        border-color: {color(tokens.north_star_panel_tones[NorthStarPanelTone.SCOREBOARD])};
+    }}
+
+    QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.OPPORTUNITY.value}"] {{
+        background: {color(ColorRole.SURFACE_PRIMARY)};
+        border-color: {color(tokens.north_star_panel_tones[NorthStarPanelTone.OPPORTUNITY])};
+    }}
+
+    QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.RISK.value}"] {{
+        background: {color(ColorRole.SURFACE_PRIMARY)};
+        border-color: {color(tokens.north_star_panel_tones[NorthStarPanelTone.RISK])};
+    }}
+
+    QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.INVENTORY.value}"] {{
+        background: {color(tokens.north_star_panel_tones[NorthStarPanelTone.INVENTORY])};
+        border-color: {color(ColorRole.BORDER_STRONG)};
+    }}
+
+    QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.INTELLIGENCE.value}"] {{
+        background: {color(ColorRole.SURFACE_PRIMARY)};
+        border-color: {color(tokens.north_star_panel_tones[NorthStarPanelTone.INTELLIGENCE])};
     }}
 
     QLabel#marketdexWorkspaceTitle {{

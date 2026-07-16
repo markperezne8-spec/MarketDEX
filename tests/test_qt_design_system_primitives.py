@@ -1,7 +1,13 @@
 from pathlib import Path
 
+from PySide6.QtWidgets import QApplication
+
 from ui.design_system.qt_theme import build_marketdex_qss
-from ui.design_system.tokens import ColorRole, build_visual_north_star_tokens
+from ui.design_system.tokens import (
+    ColorRole,
+    NorthStarPanelTone,
+    build_visual_north_star_tokens,
+)
 from ui.design_system.widgets import (
     MarketDEXDashboardPanel,
     MarketDEXKpiCard,
@@ -9,6 +15,10 @@ from ui.design_system.widgets import (
     MarketDEXStatusBadge,
     MarketDEXWorkspaceHeader,
 )
+
+
+def _application():
+    return QApplication.instance() or QApplication([])
 
 
 def test_qt_theme_is_generated_from_semantic_tokens():
@@ -20,6 +30,8 @@ def test_qt_theme_is_generated_from_semantic_tokens():
         'QFrame#marketdexDashboardPanel',
         'QFrame#marketdexKpiCard',
         'QLabel#marketdexStatusBadge',
+        f'QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.OPPORTUNITY.value}"]',
+        f'QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.RISK.value}"]',
         'QPushButton#marketdexPrimaryButton',
         'QTableView, QTableWidget',
     ):
@@ -36,6 +48,23 @@ def test_qt_theme_is_generated_from_semantic_tokens():
         ColorRole.FOCUS_RING,
     ):
         assert tokens.color(role) in qss
+
+
+def test_dashboard_panel_exposes_read_only_north_star_tone_property():
+    _application()
+    panel = MarketDEXDashboardPanel(
+        'Opportunity + Risk',
+        'Read-only shell',
+        None,
+        tone=NorthStarPanelTone.OPPORTUNITY,
+    )
+
+    assert panel.property('northStarTone') == NorthStarPanelTone.OPPORTUNITY.value
+    assert panel.header_actions.count() == 0
+
+    panel.set_tone(NorthStarPanelTone.RISK)
+
+    assert panel.property('northStarTone') == NorthStarPanelTone.RISK.value
 
 
 def test_first_qt_component_types_are_available_without_business_dependencies():
