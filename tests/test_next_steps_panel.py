@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from PySide6.QtWidgets import QApplication, QPushButton
+from PySide6.QtWidgets import QApplication, QPushButton, QWidget
 
 from app.engines.health.status_view_model import build_health_status_view_model
 from app.engines.mission_control.next_steps import (
@@ -328,7 +328,10 @@ def test_mission_control_places_next_steps_after_operational_strip_and_above_kpi
     assert layout.itemAt(2).widget() is window.health_status_card
     assert layout.itemAt(3).widget() is window.operational_status_strip
     assert layout.itemAt(4).widget() is window.next_steps_panel
-    assert layout.itemAt(5).layout() is not None
+    assert layout.itemAt(5).widget() is window.dashboard_grid_shell
+    assert window.dashboard_grid_shell.property('visualContract') == (
+        'm1.14e-north-star-dashboard-grid-shell'
+    )
     assert window.health_status_card.view_model is health_model
     assert window.operational_status_strip.view_model is operational_model
     assert window.next_steps_panel.view_model is next_steps_model
@@ -337,3 +340,46 @@ def test_mission_control_places_next_steps_after_operational_strip_and_above_kpi
     window.refresh()
     assert window.next_steps_panel is first_panel
     assert mission.snapshot_calls == 2
+
+
+def test_mission_control_dashboard_grid_shell_preserves_existing_kpis_and_placeholders():
+    _application()
+    window = MainWindow(
+        _MissionControlService(),
+        _InventoryService(),
+        next_steps_view_model=_ready_next_steps_model(),
+    )
+
+    assert window.dashboard_grid_visual_contract == (
+        'm1.14e-north-star-dashboard-grid-shell'
+    )
+    assert window.dashboard_grid_shell.property('dashboardRole') == 'dashboard-grid-shell'
+    assert window.dashboard_grid_shell.header_actions.count() == 1
+    assert window.dashboard_grid_shell.header_actions.itemAt(0).widget().text() == 'Read-only'
+    assert set(window.values) == {
+        'inventory_units',
+        'inventory_asset_count',
+        'inventory_cost_minor',
+        'completed_sales',
+        'revenue_minor',
+        'profit_minor',
+        'verified_audits',
+        'authority_events',
+    }
+
+    placeholders = [
+        panel for panel in window.dashboard_grid_shell.findChildren(QWidget)
+        if panel.property('dashboardRole') == 'future-contract-placeholder'
+    ]
+    assert len(placeholders) == 4
+    assert [panel.title_label.text() for panel in placeholders] == [
+        'Inventory Command Center',
+        'Capital Health',
+        'Opportunity + Risk',
+        'Visual Intelligence',
+    ]
+    assert all(
+        'Evidence unavailable. Future contract required.'
+        in panel.accessibleName()
+        for panel in placeholders
+    )
