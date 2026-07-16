@@ -37,6 +37,34 @@ def test_shell_exposes_persistent_workspace_navigation():
     assert "Mission Control" in mission_control
 
 
+def test_north_star_navigation_treatment_is_visual_only():
+    source = WORKSPACE_HOST.read_text(encoding="utf-8")
+
+    assert "m1.14d-north-star-left-navigation" in source
+    assert "build_visual_north_star_tokens" in source
+    assert "workspace-navigation" in source
+    for prohibited in (
+        "QTimer",
+        "socket",
+        "requests",
+        "urllib",
+        "sqlite3",
+        "open(",
+        "poll",
+        "database",
+        "persist",
+        "save",
+        "mutation",
+        "import_inventory",
+        "export_inventory",
+        "add_asset",
+        "adjust_asset",
+        "archive_asset",
+        "restore_asset",
+    ):
+        assert prohibited not in source
+
+
 def test_shell_migration_preserves_existing_business_surfaces():
     source = MAIN_WINDOW.read_text(encoding="utf-8")
 

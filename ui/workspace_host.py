@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from ui.design_system.tokens import ColorRole, build_visual_north_star_tokens
 from ui.workspace_registry import WorkspaceRegistry
 
 
@@ -55,24 +56,33 @@ class WorkspaceHost(QWidget):
 
         self.navigation_rail = QFrame(self)
         self.navigation_rail.setObjectName('marketdexNavigationRail')
-        self.navigation_rail.setFixedWidth(220)
+        self.navigation_rail.setAccessibleName('MarketDEX command navigation rail')
+        self.navigation_rail.setFixedWidth(248)
         navigation_layout = QVBoxLayout(self.navigation_rail)
-        navigation_layout.setContentsMargins(16, 20, 16, 16)
-        navigation_layout.setSpacing(8)
+        navigation_layout.setContentsMargins(18, 22, 18, 16)
+        navigation_layout.setSpacing(9)
 
         brand = QLabel('MarketDEX OS', self.navigation_rail)
         brand.setObjectName('marketdexShellBrand')
+        brand.setAccessibleName('MarketDEX OS brand')
         brand.setWordWrap(True)
         navigation_layout.addWidget(brand)
 
         mode = QLabel('BUSINESS OPERATING SYSTEM', self.navigation_rail)
         mode.setObjectName('marketdexShellMode')
+        mode.setAccessibleName('Business operating system mode')
         mode.setWordWrap(True)
         navigation_layout.addWidget(mode)
 
+        self.navigation_badge = QLabel('COMMAND RAIL', self.navigation_rail)
+        self.navigation_badge.setObjectName('marketdexNavigationBadge')
+        self.navigation_badge.setAccessibleName('North Star command rail visual marker')
+        navigation_layout.addWidget(self.navigation_badge)
+
         section = QLabel('WORKSPACES', self.navigation_rail)
         section.setObjectName('marketdexNavigationSection')
-        navigation_layout.addSpacing(16)
+        section.setAccessibleName('Workspace navigation section')
+        navigation_layout.addSpacing(10)
         navigation_layout.addWidget(section)
 
         self.navigation_items = QVBoxLayout()
@@ -82,6 +92,7 @@ class WorkspaceHost(QWidget):
 
         self.navigation_status = QLabel('● LOCAL AUTHORITY\nSQLite • Offline First', self.navigation_rail)
         self.navigation_status.setObjectName('marketdexNavigationStatus')
+        self.navigation_status.setAccessibleName('Local authority status: SQLite offline first')
         self.navigation_status.setWordWrap(True)
         navigation_layout.addWidget(self.navigation_status)
 
@@ -118,85 +129,19 @@ class WorkspaceHost(QWidget):
         shell_layout.addWidget(self.workspace_frame, 1)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        self.setStyleSheet(
-            """
-            QWidget#marketdexApplicationShell {
-                background: #0b1220;
-            }
-            QFrame#marketdexNavigationRail {
-                background: #101a2d;
-                border-right: 1px solid #263650;
-            }
-            QLabel#marketdexShellBrand {
-                color: #f8fafc;
-                font-size: 24px;
-                font-weight: 800;
-            }
-            QLabel#marketdexShellMode,
-            QLabel#marketdexNavigationSection {
-                color: #7dd3fc;
-                font-size: 10px;
-                font-weight: 800;
-                letter-spacing: 1px;
-            }
-            QPushButton#marketdexNavigationItem {
-                background: transparent;
-                border: 1px solid transparent;
-                border-radius: 8px;
-                color: #cbd5e1;
-                font-size: 13px;
-                font-weight: 650;
-                min-height: 38px;
-                padding: 0 12px;
-                text-align: left;
-            }
-            QPushButton#marketdexNavigationItem:hover {
-                background: #17233a;
-                color: #ffffff;
-            }
-            QPushButton#marketdexNavigationItem:checked {
-                background: #193b63;
-                border-color: #38bdf8;
-                color: #ffffff;
-            }
-            QLabel#marketdexNavigationStatus {
-                background: #0d1728;
-                border: 1px solid #263650;
-                border-radius: 8px;
-                color: #86efac;
-                font-size: 11px;
-                padding: 10px;
-            }
-            QFrame#marketdexWorkspaceFrame {
-                background: #111827;
-            }
-            QLabel#marketdexWorkspaceContext {
-                color: #94a3b8;
-                font-size: 11px;
-                font-weight: 800;
-                letter-spacing: 1px;
-            }
-            QStackedWidget#marketdexWorkspaceStack {
-                background: #111827;
-                border: 1px solid #263650;
-                border-radius: 10px;
-            }
-            QFrame#marketdexStatusBar {
-                background: #0d1728;
-                border: 1px solid #263650;
-                border-radius: 7px;
-            }
-            QLabel#marketdexStatusMessage {
-                color: #cbd5e1;
-                font-size: 11px;
-            }
-            QLabel#marketdexStatusMode {
-                color: #7dd3fc;
-                font-size: 10px;
-                font-weight: 800;
-            }
-            """
-        )
+        self.setStyleSheet(_build_workspace_host_qss())
+
+    @property
+    def navigation_buttons(self) -> tuple[QPushButton, ...]:
+        return tuple(self._navigation_buttons)
+
+    @property
+    def navigation_titles(self) -> tuple[str, ...]:
+        return tuple(self._workspace_titles)
+
+    @property
+    def navigation_visual_contract(self) -> str:
+        return 'm1.14d-north-star-left-navigation'
 
     @property
     def registry(self) -> WorkspaceRegistry:
@@ -224,17 +169,25 @@ class WorkspaceHost(QWidget):
             resolved_pages.append((workspace.workspace_id, workspace.title, page))
 
         for workspace_id, title, page in resolved_pages:
-            self._workspace_indexes[workspace_id] = self.addTab(page, title)
+            self._workspace_indexes[workspace_id] = self.addTab(
+                page,
+                title,
+                workspace_id,
+            )
 
         self._mounted = True
         if self.count():
             self.setCurrentIndex(0)
 
-    def addTab(self, page: QWidget, title: str) -> int:
+    def addTab(self, page: QWidget, title: str, workspace_id: str | None = None) -> int:
         index = self.workspace_stack.addWidget(page)
         self._workspace_titles.append(title)
         button = QPushButton(title, self.navigation_rail)
         button.setObjectName('marketdexNavigationItem')
+        button.setProperty('northStarRole', 'workspace-navigation')
+        if workspace_id is not None:
+            button.setProperty('workspaceId', workspace_id)
+        button.setAccessibleName(f'Open {title} workspace')
         button.setCheckable(True)
         button.clicked.connect(lambda _checked=False, target=index: self.setCurrentIndex(target))
         self.navigation_items.addWidget(button)
@@ -304,3 +257,102 @@ class WorkspaceHost(QWidget):
 
     def tabBar(self) -> _NavigationRailContract:
         return self._tab_bar_contract
+
+
+def _build_workspace_host_qss() -> str:
+    tokens = build_visual_north_star_tokens()
+    color = tokens.color
+    radius = tokens.corner_radii
+    border = tokens.border_widths
+    return f"""
+            QWidget#marketdexApplicationShell {{
+                background: {color(ColorRole.APP_BACKGROUND)};
+            }}
+            QFrame#marketdexNavigationRail {{
+                background: {color(ColorRole.SHELL_BACKGROUND)};
+                border-right: {border['selected']}px solid {color(ColorRole.BORDER_STRONG)};
+            }}
+            QLabel#marketdexShellBrand {{
+                color: {color(ColorRole.TEXT_PRIMARY)};
+                font-size: 24px;
+                font-weight: 800;
+            }}
+            QLabel#marketdexShellMode,
+            QLabel#marketdexNavigationSection {{
+                color: {color(ColorRole.INFORMATION)};
+                font-size: 10px;
+                font-weight: 800;
+                letter-spacing: 1px;
+            }}
+            QLabel#marketdexNavigationBadge {{
+                background: {color(ColorRole.SURFACE_INTERACTIVE)};
+                border: {border['standard']}px solid {color(ColorRole.BORDER_STRONG)};
+                border-radius: {radius['pill']}px;
+                color: {color(ColorRole.INFORMATION)};
+                font-size: 10px;
+                font-weight: 800;
+                padding: 5px 10px;
+            }}
+            QPushButton#marketdexNavigationItem {{
+                background: {color(ColorRole.SURFACE_PRIMARY)};
+                border: {border['standard']}px solid {color(ColorRole.BORDER_SUBTLE)};
+                border-left: {border['selected']}px solid transparent;
+                border-radius: {radius['panel']}px;
+                color: {color(ColorRole.TEXT_SECONDARY)};
+                font-size: 13px;
+                font-weight: 650;
+                min-height: 40px;
+                padding: 0 13px;
+                text-align: left;
+            }}
+            QPushButton#marketdexNavigationItem:hover {{
+                background: {color(ColorRole.SURFACE_INTERACTIVE)};
+                border-color: {color(ColorRole.BORDER_STRONG)};
+                color: {color(ColorRole.TEXT_PRIMARY)};
+            }}
+            QPushButton#marketdexNavigationItem:checked {{
+                background: {color(ColorRole.SURFACE_INTERACTIVE)};
+                border-color: {color(ColorRole.BORDER_STRONG)};
+                border-left-color: {color(ColorRole.OPPORTUNITY)};
+                color: {color(ColorRole.TEXT_PRIMARY)};
+            }}
+            QPushButton#marketdexNavigationItem:focus {{
+                border-color: {color(ColorRole.FOCUS_RING)};
+            }}
+            QLabel#marketdexNavigationStatus {{
+                background: {color(ColorRole.SURFACE_PRIMARY)};
+                border: {border['standard']}px solid {color(ColorRole.POSITIVE)};
+                border-radius: {radius['panel']}px;
+                color: {color(ColorRole.POSITIVE)};
+                font-size: 11px;
+                padding: 10px;
+            }}
+            QFrame#marketdexWorkspaceFrame {{
+                background: {color(ColorRole.APP_BACKGROUND)};
+            }}
+            QLabel#marketdexWorkspaceContext {{
+                color: {color(ColorRole.TEXT_MUTED)};
+                font-size: 11px;
+                font-weight: 800;
+                letter-spacing: 1px;
+            }}
+            QStackedWidget#marketdexWorkspaceStack {{
+                background: {color(ColorRole.APP_BACKGROUND)};
+                border: {border['standard']}px solid {color(ColorRole.BORDER_SUBTLE)};
+                border-radius: {radius['prominent']}px;
+            }}
+            QFrame#marketdexStatusBar {{
+                background: {color(ColorRole.SURFACE_PRIMARY)};
+                border: {border['standard']}px solid {color(ColorRole.BORDER_SUBTLE)};
+                border-radius: {radius['panel']}px;
+            }}
+            QLabel#marketdexStatusMessage {{
+                color: {color(ColorRole.TEXT_SECONDARY)};
+                font-size: 11px;
+            }}
+            QLabel#marketdexStatusMode {{
+                color: {color(ColorRole.INFORMATION)};
+                font-size: 10px;
+                font-weight: 800;
+            }}
+            """
