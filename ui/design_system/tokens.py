@@ -68,6 +68,15 @@ class Density(str, Enum):
     LARGE_TEXT = "large-text"
 
 
+class NorthStarPanelTone(str, Enum):
+    COMMAND = "command"
+    SCOREBOARD = "scoreboard"
+    OPPORTUNITY = "opportunity"
+    RISK = "risk"
+    INVENTORY = "inventory"
+    INTELLIGENCE = "intelligence"
+
+
 @dataclass(frozen=True)
 class TypographyToken:
     point_size: float
@@ -99,6 +108,7 @@ class MarketDEXDesignTokens:
     elevation: Mapping[str, int]
     motion_ms: Mapping[str, int]
     icon_sizes: Mapping[str, int]
+    north_star_panel_tones: Mapping[NorthStarPanelTone, ColorRole]
 
     def color(self, role: ColorRole) -> str:
         return self.colors[role]
@@ -108,6 +118,9 @@ class MarketDEXDesignTokens:
         missing_typography = set(TypographyRole) - set(self.typography)
         missing_spacing = set(SpacingRole) - set(self.spacing)
         missing_densities = set(Density) - set(self.densities)
+        missing_panel_tones = set(NorthStarPanelTone) - set(
+            self.north_star_panel_tones
+        )
 
         if missing_colors:
             raise ValueError(f"Missing color roles: {sorted(role.value for role in missing_colors)}")
@@ -123,6 +136,11 @@ class MarketDEXDesignTokens:
         if missing_densities:
             raise ValueError(
                 f"Missing densities: {sorted(role.value for role in missing_densities)}"
+            )
+        if missing_panel_tones:
+            raise ValueError(
+                "Missing North Star panel tones: "
+                f"{sorted(role.value for role in missing_panel_tones)}"
             )
 
         for role, value in self.colors.items():
@@ -140,6 +158,14 @@ class MarketDEXDesignTokens:
         for name, value in self.motion_ms.items():
             if value < 0:
                 raise ValueError(f"Negative motion duration {name}: {value}")
+
+        for tone, role in self.north_star_panel_tones.items():
+            if not isinstance(tone, NorthStarPanelTone):
+                raise ValueError(f"Invalid North Star panel tone: {tone}")
+            if not isinstance(role, ColorRole):
+                raise ValueError(
+                    f"Invalid color role for North Star panel tone {tone}: {role}"
+                )
 
 
 def _is_hex_color(value: str) -> bool:
@@ -275,6 +301,16 @@ def build_visual_north_star_tokens() -> MarketDEXDesignTokens:
                 "navigation": 20,
                 "prominent": 28,
                 "empty-state": 48,
+            }
+        ),
+        north_star_panel_tones=_frozen(
+            {
+                NorthStarPanelTone.COMMAND: ColorRole.SURFACE_PRIMARY,
+                NorthStarPanelTone.SCOREBOARD: ColorRole.PRIMARY_ACTION,
+                NorthStarPanelTone.OPPORTUNITY: ColorRole.OPPORTUNITY,
+                NorthStarPanelTone.RISK: ColorRole.NEGATIVE,
+                NorthStarPanelTone.INVENTORY: ColorRole.SURFACE_INTERACTIVE,
+                NorthStarPanelTone.INTELLIGENCE: ColorRole.COLLECTION,
             }
         ),
     )
