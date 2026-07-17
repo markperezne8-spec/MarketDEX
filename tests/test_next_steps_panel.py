@@ -330,7 +330,8 @@ def test_mission_control_places_next_steps_after_operational_strip_and_above_kpi
     assert layout.itemAt(4).widget() is window.next_steps_panel
     assert layout.itemAt(5).widget() is window.todays_top3_panel
     assert layout.itemAt(6).widget() is window.capital_health_panel
-    assert layout.itemAt(7).widget() is window.dashboard_grid_shell
+    assert layout.itemAt(7).widget() is window.opportunity_risk_panel
+    assert layout.itemAt(8).widget() is window.dashboard_grid_shell
     assert window.dashboard_grid_shell.property('visualContract') == (
         'm1.14e-north-star-dashboard-grid-shell'
     )
@@ -380,11 +381,7 @@ def test_mission_control_dashboard_grid_shell_preserves_existing_kpis_and_placeh
         panel for panel in window.dashboard_grid_shell.findChildren(QWidget)
         if panel.property('dashboardRole') == 'future-contract-placeholder'
     ]
-    assert len(placeholders) == 3
-    assert [panel.title_label.text() for panel in placeholders] == [
-        'Capital Health',
-        'Opportunity + Risk',
-    ]
+    assert placeholders == []
     assert all(
         'Evidence unavailable. Future contract required.'
         in panel.accessibleName()

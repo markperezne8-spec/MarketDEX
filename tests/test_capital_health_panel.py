@@ -535,7 +535,8 @@ def test_mission_control_places_capital_health_after_top3_before_dashboard_grid(
     assert layout.itemAt(4).widget() is window.next_steps_panel
     assert layout.itemAt(5).widget() is window.todays_top3_panel
     assert layout.itemAt(6).widget() is window.capital_health_panel
-    assert layout.itemAt(7).widget() is window.dashboard_grid_shell
+    assert layout.itemAt(7).widget() is window.opportunity_risk_panel
+    assert layout.itemAt(8).widget() is window.dashboard_grid_shell
     assert window.capital_health_panel.view_model is capital_health_model
 
     old_panel = window.capital_health_panel
@@ -556,4 +557,4 @@ def test_dashboard_grid_no_longer_contains_capital_health_placeholder():
     ]
 
     assert 'Capital Health' not in placeholder_titles
-    assert 'Opportunity + Risk' in placeholder_titles
+    assert 'Opportunity + Risk' not in placeholder_titles

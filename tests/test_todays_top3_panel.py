@@ -461,7 +461,8 @@ def test_mission_control_places_todays_top3_after_next_steps_before_dashboard_gr
     assert layout.itemAt(4).widget() is window.next_steps_panel
     assert layout.itemAt(5).widget() is window.todays_top3_panel
     assert layout.itemAt(6).widget() is window.capital_health_panel
-    assert layout.itemAt(7).widget() is window.dashboard_grid_shell
+    assert layout.itemAt(7).widget() is window.opportunity_risk_panel
+    assert layout.itemAt(8).widget() is window.dashboard_grid_shell
     assert window.todays_top3_panel.view_model is todays_top3_model
 
     first_panel = window.todays_top3_panel
