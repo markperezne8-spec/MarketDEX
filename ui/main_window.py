@@ -93,11 +93,11 @@ class MainWindow(QMainWindow):
         self.inventory_command_values={}
         for index,(label,key) in enumerate((('Units','inventory_units'),('Assets','inventory_asset_count'),('Cost','inventory_cost_minor'))):
             card=MarketDEXKpiCard(label,'--',panel); card.setProperty('dashboardRole','inventory-command-summary'); self.inventory_command_values[key]=card.value_widget; summary_grid.addWidget(card,0,index)
-        placeholder_row=QHBoxLayout(); placeholder_row.setSpacing(10)
-        for title in ('Listing readiness','Inventory age','Storage review','Audit coverage'):
-            placeholder_row.addWidget(self._build_inventory_command_placeholder(title))
+        placeholder_grid=QGridLayout(); placeholder_grid.setContentsMargins(0,0,0,0); placeholder_grid.setHorizontalSpacing(10); placeholder_grid.setVerticalSpacing(8); self.inventory_command_placeholder_grid=placeholder_grid
+        for index,title in enumerate(('Listing readiness','Inventory age','Storage review','Audit coverage')):
+            placeholder_grid.addWidget(self._build_inventory_command_placeholder(title),index//2,index%2)
         panel.content_layout.addLayout(summary_grid)
-        panel.content_layout.addLayout(placeholder_row)
+        panel.content_layout.addLayout(placeholder_grid)
         return panel
 
     def _build_inventory_command_placeholder(self,title):

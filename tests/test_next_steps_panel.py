@@ -418,6 +418,11 @@ def test_inventory_command_center_shell_uses_existing_local_inventory_summary_on
     assert window.inventory_command_values['inventory_units'].text() == '0'
     assert window.inventory_command_values['inventory_asset_count'].text() == '0'
     assert window.inventory_command_values['inventory_cost_minor'].text() == '$0.00'
+    assert window.inventory_command_placeholder_grid.itemAtPosition(0, 0) is not None
+    assert window.inventory_command_placeholder_grid.itemAtPosition(0, 1) is not None
+    assert window.inventory_command_placeholder_grid.itemAtPosition(1, 0) is not None
+    assert window.inventory_command_placeholder_grid.itemAtPosition(1, 1) is not None
+    assert window.inventory_command_placeholder_grid.itemAtPosition(0, 2) is None
 
     placeholders = [
         panel for panel in window.inventory_command_center.findChildren(QWidget)
