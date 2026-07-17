@@ -289,3 +289,19 @@ Planning authority:
 ## Current next gate
 
 The next build may proceed from synchronized `main` after Mark pulls. Future visible work must continue using the GitHub-first issue -> branch -> draft PR -> CI -> ready -> squash-merge process and requires screenshot acceptance. Future real values for remaining North Star regions require dedicated immutable view-model or service contracts before display.
+
+## M1.15 planning - Mission Control Today's Top 3 attention contract
+
+M1.15 begins as the next guarded Mission Control North Star milestone after M1.14 visual acceptance.
+
+Planning authority:
+
+- The target surface is a future read-only `Today's Top 3` / attention-priority region.
+- The future surface should answer: `What deserves attention first today?`
+- Real priority items require an immutable view-model or service contract before display.
+- Future evidence must be prepared/injected and local-only; missing evidence must render `Unavailable` or `Partial`.
+- Planned states are `Ready`, `Unavailable`, `Partial`, and `Error-safe`.
+- `Today's Top 3` must complement, not duplicate, the existing `Next Steps` surface.
+- Future visible builds require screenshot acceptance.
+- Planning introduces no runtime code, UI implementation, ranking engine, fake live values, task execution, action buttons, automation, polling, background workers, networking, marketplace/live pricing, persistence changes, database migration, alerts, notifications, route rewrites, new workspaces, dependency changes, or business-state mutation.
+- Continue issue -> branch -> draft PR -> CI -> ready -> squash-merge.
