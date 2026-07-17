@@ -367,3 +367,21 @@ Planning authority:
 - Planned states are `Ready`, `Unavailable`, `Partial`, and `Error-safe`.
 - Planning introduces no runtime code, UI implementation, capital calculation, financial-provider integration, fake cash values, fake capital values, fake growth/trend/recycling values, task execution, action buttons, automation, polling, background workers, networking, marketplace/live pricing, persistence changes, database migration, alerts, notifications, route rewrites, new workspaces, dependency changes, or business-state mutation.
 - Continue issue -> branch -> draft PR -> CI -> ready -> squash-merge.
+
+## M1.16D verification - Capital Health visual and contract acceptance
+
+M1.16D records accepted visual and contract evidence for the Mission Control `Capital Health` surface.
+
+Verified result:
+
+- M1.16A PR #500 added the immutable non-visual Capital Health view-model contract.
+- M1.16B PR #502 added the first visible read-only `Capital Health` shell.
+- M1.16C PR #504 hardened deterministic display states, labels, tones, group ordering, and inline error-safe rendering; CI run #760 passed before merge.
+- Mark supplied accepted screenshot evidence after the M1.16B run.
+- The accepted placement is after `Today's Top 3` and before `Dashboard Grid`.
+- The default missing-evidence state remains honest `Unavailable` output.
+- Availability, Recycling, Commitment, and Growth render as deterministic read-only groups.
+- Available Cash remains visibly distinct from Available for Redeployment.
+- M1.16D introduces no runtime or UI behavior change and requires no additional visual check.
+
+M1.16 remains protected from action controls, task execution, popup or dialog behavior from the Capital Health surface, formula invention, fake cash values, fake capital values, fake growth/trend/recycling/commitment values, financial-provider integration, marketplace or live-pricing integration, polling, background workers, networking, persistence changes, database migration, alerts, notifications, automation, route rewrites, new workspaces, dependency changes, or business-state mutation.

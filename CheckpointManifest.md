@@ -523,3 +523,15 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Planned future sequence: M1.16A view-model contract, M1.16B visible shell, M1.16C deterministic display states, M1.16D visual/contract verification, and M1.16E checkpoint sync.
 - This planning checkpoint introduces no runtime code, UI implementation, capital calculation, financial-provider integration, fake cash values, fake capital values, fake growth/trend/recycling values, task execution, action buttons, automation, polling, background workers, networking, marketplace/live pricing, persistence changes, database migration, alerts, notifications, route rewrites, new workspaces, dependency changes, or business-state mutation.
 - M1.16 planning itself requires no visual check; future visible M1.16 builds require screenshot acceptance.
+
+## M1.16D - Capital Health Visual and Contract Verification
+
+- M1.16D records accepted visual and contract evidence for the Mission Control `Capital Health` surface.
+- M1.16A PR #500 added the immutable non-visual Capital Health view-model contract; M1.16B PR #502 added the visible read-only shell; M1.16C PR #504 hardened deterministic display state.
+- M1.16C passed CI run #760 before merge.
+- Mark supplied accepted screenshot evidence after M1.16B.
+- Verified placement is after `Today's Top 3` and before `Dashboard Grid`.
+- Verified default state is honest `Unavailable` output with deterministic Availability, Recycling, Commitment, and Growth groups.
+- Verified Availability keeps Available Cash distinct from Available for Redeployment.
+- M1.16D introduces no runtime change, UI change, action controls, task execution, popup behavior, formula invention, fake capital values, financial-provider integration, polling, networking, persistence, alerts, notifications, automation, dependency change, or business mutation.
+- M1.16D itself requires no new visual check because it records visual acceptance already supplied by Mark.
