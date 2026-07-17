@@ -474,3 +474,15 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Remaining North Star areas such as Today's Top 3, Capital Health, Opportunity + Risk, expanded Business Scoreboard, listing readiness, inventory age, storage review, audit coverage, charts, alerts, heat maps, and market attention trend remain contract-first.
 - The sequence introduced no fake live values, marketplace integrations, pricing providers, networking, polling, background workers, alerts, notifications, automation, task execution, mutation controls, persistence changes, database migration, dependency changes, route rewrites, new workspaces, or business-state mutation.
 - M1.14H records acceptance and checkpoint continuity without changing runtime or UI behavior.
+
+
+## M1.15 Planning - Mission Control Today's Top 3 Attention Contract
+
+- M1.15 opens the next contract-first Mission Control North Star milestone after M1.14 visual acceptance.
+- The target future surface is a compact read-only `Today's Top 3` / attention-priority region that eventually answers: `What deserves attention first today?`
+- Real priority items require a dedicated immutable view-model or service contract before display.
+- Future evidence must be prepared/injected and local-only; missing evidence must render `Unavailable` or `Partial`.
+- Planned states are `Ready`, `Unavailable`, `Partial`, and `Error-safe`.
+- Planned future sequence: M1.15A view-model contract, M1.15B visible shell, M1.15C deterministic display states, M1.15D visual/contract verification, and M1.15E checkpoint sync.
+- This planning checkpoint introduces no runtime code, UI implementation, ranking engine, fake live values, task execution, action buttons, automation, polling, background workers, networking, marketplace/live pricing, persistence changes, database migration, alerts, notifications, route rewrites, new workspaces, dependency changes, or business-state mutation.
+- M1.15 planning itself requires no visual check; future visible M1.15 builds require screenshot acceptance.
