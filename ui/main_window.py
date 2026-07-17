@@ -59,6 +59,9 @@ class MainWindow(QMainWindow):
     @property
     def inventory_command_center_visual_contract(self): return 'm1.14f-inventory-command-center-shell'
 
+    @property
+    def visual_intelligence_visual_contract(self): return 'm1.14g-visual-intelligence-shell'
+
     def _build_dashboard_grid_shell(self):
         shell=MarketDEXDashboardPanel('Dashboard Grid','Read-only command-center snapshot',tone=NorthStarPanelTone.COMMAND)
         shell.setObjectName('marketdexDashboardPanel')
@@ -72,8 +75,10 @@ class MainWindow(QMainWindow):
             card=MarketDEXKpiCard(label,'--'); card.setProperty('dashboardRole','existing-kpi'); self.values[key]=card.value_widget; grid.addWidget(card,index//2,index%2)
         self.inventory_command_center=self._build_inventory_command_center()
         grid.addWidget(self.inventory_command_center,4,0,1,2)
-        for offset,(title,tone) in enumerate((('Capital Health',StatusTone.WARNING),('Opportunity + Risk',StatusTone.WARNING),('Visual Intelligence',StatusTone.WARNING))):
+        for offset,(title,tone) in enumerate((('Capital Health',StatusTone.WARNING),('Opportunity + Risk',StatusTone.WARNING))):
             grid.addWidget(self._build_unavailable_dashboard_tile(title,tone),5+offset//2,offset%2)
+        self.visual_intelligence_shell=self._build_visual_intelligence_shell()
+        grid.addWidget(self.visual_intelligence_shell,6,0,1,2)
         shell.content_layout.addLayout(grid)
         return shell
 
@@ -105,6 +110,31 @@ class MainWindow(QMainWindow):
         detail.setWordWrap(True)
         tile.add_content_widget(detail)
         tile.setAccessibleName(f'{title}. Unavailable. Evidence unavailable. Future inventory contract required.')
+        return tile
+
+    def _build_visual_intelligence_shell(self):
+        panel=MarketDEXDashboardPanel('Visual Intelligence','Read-only visual intelligence and alert-region shell',tone=NorthStarPanelTone.INTELLIGENCE)
+        panel.setObjectName('marketdexDashboardPanel')
+        panel.setProperty('dashboardRole','visual-intelligence-shell')
+        panel.setProperty('visualContract',self.visual_intelligence_visual_contract)
+        panel.setAccessibleName('Visual Intelligence. Read-only visual intelligence and alert-region shell.')
+        panel.add_header_action(MarketDEXStatusBadge('Unavailable',StatusTone.WARNING,panel))
+        grid=QGridLayout(); grid.setContentsMargins(0,0,0,0); grid.setHorizontalSpacing(10); grid.setVerticalSpacing(8)
+        for index,title in enumerate(('Performance charts','Inventory alerts','Attention heat map','Market attention trend')):
+            grid.addWidget(self._build_visual_intelligence_placeholder(title),index//2,index%2)
+        panel.content_layout.addLayout(grid)
+        return panel
+
+    def _build_visual_intelligence_placeholder(self,title):
+        tile=MarketDEXDashboardPanel(title,'Future visual intelligence contract',tone=NorthStarPanelTone.SCOREBOARD)
+        tile.setObjectName('marketdexDashboardPanel')
+        tile.setProperty('dashboardRole','visual-intelligence-placeholder')
+        tile.add_header_action(MarketDEXStatusBadge('Unavailable',StatusTone.WARNING,tile))
+        detail=QLabel('Evidence unavailable. Future visual intelligence contract required.',tile)
+        detail.setObjectName('marketdexPanelDescription')
+        detail.setWordWrap(True)
+        tile.add_content_widget(detail)
+        tile.setAccessibleName(f'{title}. Unavailable. Evidence unavailable. Future visual intelligence contract required.')
         return tile
 
     def _build_unavailable_dashboard_tile(self,title,tone):
