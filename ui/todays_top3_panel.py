@@ -37,6 +37,9 @@ class TodaysTop3Panel(MarketDEXDashboardPanel):
             tone=NorthStarPanelTone.COMMAND,
         )
         self.view_model = view_model or build_todays_top3_view_model()
+        self.setProperty('dashboardRole', 'todays-top3-shell')
+        self.setProperty('visualContract', 'm1.15c-todays-top3-display-states')
+        self.setProperty('attentionState', self.view_model.state)
         state_label, state_tone = TODAYS_TOP3_STATE_LABELS[self.view_model.state]
         self.state_badge = MarketDEXStatusBadge(
             state_label,
@@ -66,6 +69,11 @@ class TodaysTop3Panel(MarketDEXDashboardPanel):
             )
             item_widget.setProperty('dashboardRole', 'todays-top3-priority-card')
             item_widget.setProperty('priorityRank', item.rank)
+            item_widget.setProperty('attentionState', item.state)
+            item_widget.setProperty(
+                'visualContract',
+                'm1.15c-todays-top3-priority-card-state',
+            )
             item_state_label, item_state_tone = TODAYS_TOP3_STATE_LABELS[item.state]
             item_state_badge = MarketDEXStatusBadge(
                 item_state_label,
