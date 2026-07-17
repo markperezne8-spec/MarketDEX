@@ -367,13 +367,19 @@ def test_mission_control_dashboard_grid_shell_preserves_existing_kpis_and_placeh
         'authority_events',
     }
 
+    assert window.inventory_command_center.property('dashboardRole') == (
+        'inventory-command-center-shell'
+    )
+    assert window.inventory_command_center.property('visualContract') == (
+        'm1.14f-inventory-command-center-shell'
+    )
+
     placeholders = [
         panel for panel in window.dashboard_grid_shell.findChildren(QWidget)
         if panel.property('dashboardRole') == 'future-contract-placeholder'
     ]
-    assert len(placeholders) == 4
+    assert len(placeholders) == 3
     assert [panel.title_label.text() for panel in placeholders] == [
-        'Inventory Command Center',
         'Capital Health',
         'Opportunity + Risk',
         'Visual Intelligence',
@@ -383,3 +389,44 @@ def test_mission_control_dashboard_grid_shell_preserves_existing_kpis_and_placeh
         in panel.accessibleName()
         for panel in placeholders
     )
+
+
+def test_inventory_command_center_shell_uses_existing_local_inventory_summary_only():
+    _application()
+    window = MainWindow(
+        _MissionControlService(),
+        _InventoryService(),
+        next_steps_view_model=_ready_next_steps_model(),
+    )
+
+    assert window.inventory_command_center_visual_contract == (
+        'm1.14f-inventory-command-center-shell'
+    )
+    assert window.inventory_command_center.header_actions.itemAt(0).widget().text() == (
+        'Local summary'
+    )
+    assert set(window.inventory_command_values) == {
+        'inventory_units',
+        'inventory_asset_count',
+        'inventory_cost_minor',
+    }
+    assert window.inventory_command_values['inventory_units'].text() == '0'
+    assert window.inventory_command_values['inventory_asset_count'].text() == '0'
+    assert window.inventory_command_values['inventory_cost_minor'].text() == '$0.00'
+
+    placeholders = [
+        panel for panel in window.inventory_command_center.findChildren(QWidget)
+        if panel.property('dashboardRole') == 'inventory-command-placeholder'
+    ]
+    assert [panel.title_label.text() for panel in placeholders] == [
+        'Listing readiness',
+        'Inventory age',
+        'Storage review',
+        'Audit coverage',
+    ]
+    assert all(
+        'Evidence unavailable. Future inventory contract required.'
+        in panel.accessibleName()
+        for panel in placeholders
+    )
+    assert window.inventory_command_center.findChildren(QPushButton) == []

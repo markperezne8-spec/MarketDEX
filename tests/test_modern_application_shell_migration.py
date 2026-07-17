@@ -88,6 +88,30 @@ def test_north_star_dashboard_grid_shell_is_visual_only():
         assert prohibited not in source
 
 
+def test_inventory_command_center_shell_is_visual_only():
+    source = MAIN_WINDOW.read_text(encoding="utf-8")
+
+    assert "m1.14f-inventory-command-center-shell" in source
+    assert "inventory-command-center-shell" in source
+    assert "inventory-command-summary" in source
+    assert "inventory-command-placeholder" in source
+    assert "Future inventory contract required." in source
+    assert "self.inventory_command_values" in source
+    for prohibited in (
+        "QTimer",
+        "socket",
+        "requests",
+        "urllib",
+        "threading",
+        "schedule",
+        "poll",
+        "marketplace",
+        "pricing provider",
+        "notification",
+    ):
+        assert prohibited not in source
+
+
 def test_shell_migration_preserves_existing_business_surfaces():
     source = MAIN_WINDOW.read_text(encoding="utf-8")
 
