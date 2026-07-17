@@ -6,10 +6,12 @@ from ui.design_system.tokens import NorthStarPanelTone, build_visual_north_star_
 from ui.design_system.widgets import MarketDEXDashboardPanel,MarketDEXKpiCard,MarketDEXStatusBadge,MarketDEXWorkspaceHeader,StatusTone
 from ui.header_status_band import HeaderStatusBand
 from ui.health_status_card import HealthStatusCard
+from ui.capital_health_panel import CapitalHealthPanel
 from ui.next_steps_panel import NextStepsPanel
 from ui.operational_status_strip import OperationalStatusStrip
 from ui.todays_top3_panel import TodaysTop3Panel
 from app.engines.health.status_view_model import HealthStatusViewModel
+from app.engines.mission_control.capital_health import CapitalHealthViewModel
 from app.engines.mission_control.header_status import HeaderStatusViewModel
 from app.engines.mission_control.next_steps import NextStepReadinessViewModel
 from app.engines.mission_control.operational_status import OperationalStatusViewModel
@@ -32,7 +34,7 @@ class BulkAdjustDialog(QDialog):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self,service,inventory_service,health_status_view_model: HealthStatusViewModel | None = None,operational_status_view_model: OperationalStatusViewModel | None = None,next_steps_view_model: NextStepReadinessViewModel | None = None,header_status_view_model: HeaderStatusViewModel | None = None,todays_top3_view_model: TodaysTop3ViewModel | None = None):
+    def __init__(self,service,inventory_service,health_status_view_model: HealthStatusViewModel | None = None,operational_status_view_model: OperationalStatusViewModel | None = None,next_steps_view_model: NextStepReadinessViewModel | None = None,header_status_view_model: HeaderStatusViewModel | None = None,todays_top3_view_model: TodaysTop3ViewModel | None = None,capital_health_view_model: CapitalHealthViewModel | None = None):
         super().__init__(); self.service=service; self.inventory_service=inventory_service; self.inventory_import_service=InventoryCsvImportService(inventory_service); self.inventory_rows=[]; self.inventory_view='ACTIVE'; self.setWindowTitle('MarketDEX OS — Mission Control'); self.resize(1280,800)
         self.setStyleSheet(build_marketdex_qss(build_visual_north_star_tokens()))
         self._health_status_view_model=health_status_view_model
@@ -40,6 +42,7 @@ class MainWindow(QMainWindow):
         self._next_steps_view_model=next_steps_view_model
         self._header_status_view_model=header_status_view_model
         self._todays_top3_view_model=todays_top3_view_model
+        self._capital_health_view_model=capital_health_view_model
         root=QWidget(); root.setObjectName('marketdexAppRoot'); outer=QHBoxLayout(root); panel=QWidget(); panel.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Preferred); self.inventory_panel=panel; layout=QVBoxLayout(panel); outer.addWidget(panel,1)
         self.mission_control_header=MarketDEXWorkspaceHeader('MarketDEX OS','MISSION CONTROL — LIVE SQLITE BUSINESS SNAPSHOT'); layout.addWidget(self.mission_control_header)
         self.values={}; self.dashboard_grid_shell=self._build_dashboard_grid_shell(); layout.addWidget(self.dashboard_grid_shell); inventory_header=QHBoxLayout(); self.inventory_header=inventory_header; inventory_header.addWidget(QLabel('📦 INVENTORY')); inventory_header.addStretch(1)
@@ -78,7 +81,7 @@ class MainWindow(QMainWindow):
             card=MarketDEXKpiCard(label,'--'); card.setProperty('dashboardRole','existing-kpi'); self.values[key]=card.value_widget; grid.addWidget(card,index//2,index%2)
         self.inventory_command_center=self._build_inventory_command_center()
         grid.addWidget(self.inventory_command_center,4,0,1,2)
-        for offset,(title,tone) in enumerate((('Capital Health',StatusTone.WARNING),('Opportunity + Risk',StatusTone.WARNING))):
+        for offset,(title,tone) in enumerate((('Opportunity + Risk',StatusTone.WARNING),)):
             grid.addWidget(self._build_unavailable_dashboard_tile(title,tone),5+offset//2,offset%2)
         self.visual_intelligence_shell=self._build_visual_intelligence_shell()
         grid.addWidget(self.visual_intelligence_shell,6,0,1,2)
@@ -192,6 +195,9 @@ class MainWindow(QMainWindow):
         if not hasattr(self, 'todays_top3_panel'):
             self.todays_top3_panel=TodaysTop3Panel(self._todays_top3_view_model)
             self.inventory_panel.layout().insertWidget(5, self.todays_top3_panel)
+        if not hasattr(self, 'capital_health_panel'):
+            self.capital_health_panel=CapitalHealthPanel(self._capital_health_view_model)
+            self.inventory_panel.layout().insertWidget(6, self.capital_health_panel)
         snapshot=self.service.snapshot()
         for key in ('inventory_units','inventory_asset_count','completed_sales','verified_audits','authority_events'): self.values[key].setText(f'{snapshot[key]:,}')
         for key in ('inventory_cost_minor','revenue_minor','profit_minor'): self.values[key].setText(self._money(snapshot[key]))
