@@ -328,7 +328,8 @@ def test_mission_control_places_next_steps_after_operational_strip_and_above_kpi
     assert layout.itemAt(2).widget() is window.health_status_card
     assert layout.itemAt(3).widget() is window.operational_status_strip
     assert layout.itemAt(4).widget() is window.next_steps_panel
-    assert layout.itemAt(5).widget() is window.dashboard_grid_shell
+    assert layout.itemAt(5).widget() is window.todays_top3_panel
+    assert layout.itemAt(6).widget() is window.dashboard_grid_shell
     assert window.dashboard_grid_shell.property('visualContract') == (
         'm1.14e-north-star-dashboard-grid-shell'
     )
