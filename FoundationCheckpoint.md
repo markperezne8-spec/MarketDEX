@@ -267,3 +267,25 @@ Planning authority:
 - Any visible Health Monitor surface requires a separately scoped visible build and Mark visual acceptance before merge.
 - Continue issue → branch → draft PR → CI → ready → squash-merge.
 - Specialist tooling remains unused unless Mark explicitly authorizes it in the current chat.
+
+
+## Checkpoint 080 synchronization — M1.14 Visual North Star alignment
+
+- M1.14 Mission Control Visual North Star alignment completed through planning and Builds M1.14A-M1.14H.
+- Planning PR #463 preserved the staged visual-only boundary; M1.14A PR #465 added the Visual North Star layout map.
+- M1.14B PR #467 added North Star design tokens and panel variants.
+- M1.14C PRs #469/#470 added the read-only `Command Status` header/status band shell.
+- M1.14D PR #472 added the North Star left navigation visual treatment while preserving existing workspace routes.
+- M1.14E PR #474 added the read-only `Dashboard Grid` shell below `Next Steps`.
+- M1.14F PR #476 added the read-only `Inventory Command Center` shell using existing local Units, Assets, and Cost evidence only.
+- M1.14G PR #478 added the read-only `Visual Intelligence` shell with unavailable chart, alert, heat map, and trend regions.
+- PR #480 fixed the M1.14 dashboard right-edge clipping by wrapping Inventory Command Center future-contract cards.
+- PR #482 fixed launch behavior so MarketDEX opens maximized.
+- Visual acceptance passed for the left rail, Command Status, Dashboard Grid, Inventory Command Center, Visual Intelligence shell, resize behavior, and launch-maximized behavior.
+- M1.14 introduced no fake live values, marketplace providers, networking, polling, background workers, alerts, notifications, automation, task execution, mutation controls, persistence changes, database migration, dependency changes, route rewrites, new workspaces, or business-state mutation.
+- Remaining North Star business-intelligence areas require future contracts before real values appear.
+- M1.14H records this acceptance and introduces no runtime or UI behavior change.
+
+## Current next gate
+
+The next build may proceed from synchronized `main` after Mark pulls. Future visible work must continue using the GitHub-first issue -> branch -> draft PR -> CI -> ready -> squash-merge process and requires screenshot acceptance. Future real values for remaining North Star regions require dedicated immutable view-model or service contracts before display.
