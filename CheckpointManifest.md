@@ -455,3 +455,22 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Planned mergeable sequence: M1.13A view model, M1.13B first visible placement, M1.13C deterministic display states, M1.13D visual and contract verification, and M1.13E checkpoint/documentation sync.
 - This planning checkpoint introduces no UI implementation, action buttons, task execution, automation, polling, networking, startup blocking, startup execution, background workers, Health checks, database migration, persistence changes, marketplace integration, live pricing, alerts, notifications, automated recovery, dashboard redesign, navigation redesign, dependency changes, public API expansion, or business-state mutation.
 - M1.13 planning itself requires no visual check; future visible M1.13 builds require visual review before acceptance.
+
+
+## Checkpoint 080 - M1.14 Mission Control Visual North Star Alignment
+
+- M1.14 completed the staged Mission Control Visual North Star alignment sequence through planning and Builds M1.14A-M1.14H.
+- Planning PR #463 preserved the visual-only boundary, contract-first data requirements, explicit non-goals, and screenshot acceptance criteria.
+- M1.14A PR #465 added the Visual North Star layout map and protected the source-of-truth image path.
+- M1.14B PR #467 added North Star design tokens and panel variants.
+- M1.14C PRs #469/#470 added the read-only `Command Status` header/status band shell.
+- M1.14D PR #472 added the North Star left navigation treatment without changing routes or adding workspaces.
+- M1.14E PR #474 added the read-only `Dashboard Grid` shell.
+- M1.14F PR #476 added the read-only `Inventory Command Center` shell using existing local inventory Units, Assets, and Cost evidence.
+- M1.14G PR #478 added the read-only `Visual Intelligence` shell with unavailable chart, alert, heat-map, and trend zones.
+- PR #480 fixed right-edge dashboard clipping by wrapping Inventory Command Center future-contract cards.
+- PR #482 made the launcher open MarketDEX maximized.
+- Visual acceptance passed for the M1.14 visible sequence, resize behavior, and launch-maximized behavior.
+- Remaining North Star areas such as Today's Top 3, Capital Health, Opportunity + Risk, expanded Business Scoreboard, listing readiness, inventory age, storage review, audit coverage, charts, alerts, heat maps, and market attention trend remain contract-first.
+- The sequence introduced no fake live values, marketplace integrations, pricing providers, networking, polling, background workers, alerts, notifications, automation, task execution, mutation controls, persistence changes, database migration, dependency changes, route rewrites, new workspaces, or business-state mutation.
+- M1.14H records acceptance and checkpoint continuity without changing runtime or UI behavior.
