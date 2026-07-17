@@ -507,3 +507,19 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Visual acceptance is complete through accepted M1.15B and M1.15C screenshot evidence recorded by M1.15D.
 - M1.15E introduces no runtime behavior, UI change, view-model change, test change, action buttons, task execution, ranking-engine behavior beyond deterministic display ordering, fake live values, marketplace integration, polling, networking, persistence, alerts, notifications, automation, route rewrites, new workspaces, dependency changes, or business mutation.
 - Future real `Today's Top 3` values require a separately approved local evidence contract; future North Star areas remain contract-first and independently scoped.
+
+## M1.16 Planning - Mission Control Capital Health Contract
+
+- M1.16 opens the next contract-first Mission Control North Star milestone after M1.15 completion.
+- The target future surface is a compact read-only `Capital Health` region that eventually answers: `Is business capital available, recycling, committed, and growing?`
+- Capital Health must preserve the approved dimensions: Availability, Recycling, Commitment, and Growth.
+- Available Cash remains distinct from Available for Redeployment.
+- Capital Health should explain dimensions instead of using one opaque Capital Health Score.
+- Capital Growth measures business-cycle growth, not external cash injection.
+- Capital Recycling Rate remains protected and unresolved at the exact formula level.
+- Real values require a dedicated immutable view-model or service contract before display.
+- Future evidence must be prepared/injected and local-only; missing evidence must render `Unavailable` or `Partial`.
+- Planned states are `Ready`, `Unavailable`, `Partial`, and `Error-safe`.
+- Planned future sequence: M1.16A view-model contract, M1.16B visible shell, M1.16C deterministic display states, M1.16D visual/contract verification, and M1.16E checkpoint sync.
+- This planning checkpoint introduces no runtime code, UI implementation, capital calculation, financial-provider integration, fake cash values, fake capital values, fake growth/trend/recycling values, task execution, action buttons, automation, polling, background workers, networking, marketplace/live pricing, persistence changes, database migration, alerts, notifications, route rewrites, new workspaces, dependency changes, or business-state mutation.
+- M1.16 planning itself requires no visual check; future visible M1.16 builds require screenshot acceptance.

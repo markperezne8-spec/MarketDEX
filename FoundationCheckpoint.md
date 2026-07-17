@@ -348,3 +348,22 @@ Current next gate:
 - The next build may proceed from synchronized `main` after Mark pulls.
 - Future real `Today's Top 3` values require a separately approved local evidence contract and focused implementation slice.
 - Future North Star areas remain contract-first and must be scoped independently.
+
+## M1.16 planning - Mission Control Capital Health contract
+
+M1.16 begins as the next guarded Mission Control North Star milestone after the completed M1.15 `Today's Top 3` sequence.
+
+Planning authority:
+
+- The target surface is a future read-only `Capital Health` region.
+- The future surface should answer: `Is business capital available, recycling, committed, and growing?`
+- Capital Health must preserve the approved dimensions: Availability, Recycling, Commitment, and Growth.
+- Available Cash remains distinct from Available for Redeployment.
+- Capital Health should explain dimensions, not collapse them into one opaque score.
+- Capital Growth measures business-cycle growth, not external cash injection.
+- Capital Recycling Rate remains protected and unresolved at the exact formula level.
+- Real values require an immutable view-model or service contract before display.
+- Future evidence must be prepared/injected and local-only; missing evidence must render `Unavailable` or `Partial`.
+- Planned states are `Ready`, `Unavailable`, `Partial`, and `Error-safe`.
+- Planning introduces no runtime code, UI implementation, capital calculation, financial-provider integration, fake cash values, fake capital values, fake growth/trend/recycling values, task execution, action buttons, automation, polling, background workers, networking, marketplace/live pricing, persistence changes, database migration, alerts, notifications, route rewrites, new workspaces, dependency changes, or business-state mutation.
+- Continue issue -> branch -> draft PR -> CI -> ready -> squash-merge.
