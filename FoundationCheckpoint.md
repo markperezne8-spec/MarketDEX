@@ -305,3 +305,20 @@ Planning authority:
 - Future visible builds require screenshot acceptance.
 - Planning introduces no runtime code, UI implementation, ranking engine, fake live values, task execution, action buttons, automation, polling, background workers, networking, marketplace/live pricing, persistence changes, database migration, alerts, notifications, route rewrites, new workspaces, dependency changes, or business-state mutation.
 - Continue issue -> branch -> draft PR -> CI -> ready -> squash-merge.
+
+## M1.15D verification - Today's Top 3 visual and contract acceptance
+
+M1.15D records accepted visual and contract evidence for the `Today's Top 3` attention-priority surface.
+
+Verified result:
+
+- M1.15A PR #488 added the immutable non-visual attention-priority view-model contract.
+- M1.15B PR #490 added the first visible read-only `Today's Top 3` shell.
+- M1.15C PR #492 hardened deterministic display and contract state; CI run #29562275992 passed before merge.
+- Mark supplied accepted screenshots after the M1.15B and M1.15C runs.
+- The accepted placement is after `Next Steps` and before `Dashboard Grid`.
+- The default missing-evidence state remains honest `Unavailable` output.
+- The three priority cards render as deterministic `#1`, `#2`, and `#3` read-only unavailable cards.
+- M1.15D introduces no runtime or UI behavior change and requires no additional visual check.
+
+M1.15 remains protected from action buttons, task execution, ranking-engine behavior beyond deterministic display ordering, fake live values, marketplace or live-pricing integration, polling, background workers, networking, persistence changes, database migration, alerts, notifications, automation, route rewrites, new workspaces, dependency changes, or business-state mutation.

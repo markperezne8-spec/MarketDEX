@@ -486,3 +486,14 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Planned future sequence: M1.15A view-model contract, M1.15B visible shell, M1.15C deterministic display states, M1.15D visual/contract verification, and M1.15E checkpoint sync.
 - This planning checkpoint introduces no runtime code, UI implementation, ranking engine, fake live values, task execution, action buttons, automation, polling, background workers, networking, marketplace/live pricing, persistence changes, database migration, alerts, notifications, route rewrites, new workspaces, dependency changes, or business-state mutation.
 - M1.15 planning itself requires no visual check; future visible M1.15 builds require screenshot acceptance.
+
+## M1.15D - Today's Top 3 Visual and Contract Verification
+
+- M1.15D records accepted visual and contract evidence for the Mission Control `Today's Top 3` attention-priority surface.
+- M1.15A PR #488 added the immutable non-visual view-model contract; M1.15B PR #490 added the visible read-only shell; M1.15C PR #492 hardened deterministic display state.
+- M1.15C passed CI run #29562275992 before merge.
+- Mark supplied accepted screenshots after M1.15B and M1.15C.
+- Verified placement is after `Next Steps` and before `Dashboard Grid`.
+- Verified default state is honest `Unavailable` output with deterministic `#1`, `#2`, and `#3` read-only unavailable cards.
+- M1.15D introduces no runtime change, UI change, action buttons, task execution, ranking-engine behavior beyond deterministic display ordering, fake live values, marketplace integration, polling, networking, persistence, alerts, notifications, automation, dependency change, or business mutation.
+- M1.15D itself requires no new visual check because it records visual acceptance already supplied by Mark.
