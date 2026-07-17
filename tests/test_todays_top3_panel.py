@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from PySide6.QtWidgets import QApplication, QPushButton
+from PySide6.QtWidgets import QApplication, QPushButton, QWidget
 
 from app.engines.health.status_view_model import build_health_status_view_model
 from app.engines.mission_control.next_steps import (
@@ -159,6 +159,9 @@ def test_todays_top3_panel_renders_injected_view_model_in_order():
     assert panel.title_label.text() == "Today's Top 3"
     assert panel.description_label.text() == 'Read-only attention priorities'
     assert panel.property('northStarTone') == NorthStarPanelTone.COMMAND.value
+    assert panel.property('dashboardRole') == 'todays-top3-shell'
+    assert panel.property('visualContract') == 'm1.15c-todays-top3-display-states'
+    assert panel.property('attentionState') == 'ready'
     assert panel.state_badge.text() == 'Ready'
     assert panel.state_badge.property('tone') == StatusTone.POSITIVE.value
     assert panel.headline_label.text() == "Today's Top 3 ready"
@@ -168,6 +171,9 @@ def test_todays_top3_panel_renders_injected_view_model_in_order():
         'Ready',
         'Ready',
     ]
+    assert [
+        badge.property('tone') for badge in panel.item_state_badges
+    ] == [StatusTone.POSITIVE.value] * 3
     assert [label.text() for label in panel.item_labels] == [
         '#1 Review listing readiness',
         'Listing',
@@ -193,12 +199,16 @@ def test_todays_top3_panel_renders_default_unavailable_state():
 
     assert panel.state_badge.text() == 'Unavailable'
     assert panel.state_badge.property('tone') == StatusTone.WARNING.value
+    assert panel.property('attentionState') == 'unavailable'
     assert panel.headline_label.text() == "Today's Top 3 unavailable"
     assert [badge.text() for badge in panel.item_state_badges] == [
         'Unavailable',
         'Unavailable',
         'Unavailable',
     ]
+    assert [
+        badge.property('tone') for badge in panel.item_state_badges
+    ] == [StatusTone.WARNING.value] * 3
     assert [label.text() for label in panel.item_labels] == [
         '#1 Priority 1 unavailable',
         'Unassigned',
@@ -246,11 +256,17 @@ def test_todays_top3_panel_renders_partial_state_without_inventing_evidence():
 
     assert panel.state_badge.text() == 'Partial'
     assert panel.state_badge.property('tone') == StatusTone.WARNING.value
+    assert panel.property('attentionState') == 'partial'
     assert panel.headline_label.text() == "Today's Top 3 partially available"
     assert [badge.text() for badge in panel.item_state_badges] == [
         'Ready',
         'Partial',
         'Unavailable',
+    ]
+    assert [badge.property('tone') for badge in panel.item_state_badges] == [
+        StatusTone.POSITIVE.value,
+        StatusTone.WARNING.value,
+        StatusTone.WARNING.value,
     ]
 
 
@@ -274,6 +290,7 @@ def test_todays_top3_panel_renders_error_safely_inline():
 
     assert panel.state_badge.text() == 'Error-safe'
     assert panel.state_badge.property('tone') == StatusTone.NEGATIVE.value
+    assert panel.property('attentionState') == 'error'
     assert panel.headline_label.text() == "Today's Top 3 unavailable"
     assert panel.error_label.text() == (
         "Prepared Today's Top 3 evidence could not be read."
@@ -283,6 +300,72 @@ def test_todays_top3_panel_renders_error_safely_inline():
         'Ready',
         'Unavailable',
         'Unavailable',
+    ]
+    assert [badge.property('tone') for badge in panel.item_state_badges] == [
+        StatusTone.POSITIVE.value,
+        StatusTone.WARNING.value,
+        StatusTone.WARNING.value,
+    ]
+
+
+def test_todays_top3_priority_cards_preserve_state_contract_properties():
+    _application()
+    model = build_todays_top3_view_model(
+        evidence=(
+            todays_top3_evidence(
+                1,
+                state='ready',
+                title='Review listing readiness',
+                reason='Listing readiness evidence is prepared locally.',
+                evidence_summary='Inventory listing blockers are available.',
+                affected_area='Listing',
+                next_safe_preparation='Prepare local listing review.',
+            ),
+            todays_top3_evidence(
+                2,
+                state='partial',
+                title='Review inventory age',
+                reason='Some inventory age evidence is missing.',
+                evidence_summary='Inventory age rows are partially available.',
+                affected_area='Inventory',
+                next_safe_preparation='Prepare inventory age review.',
+            ),
+            todays_top3_evidence(
+                3,
+                state='error',
+                title='Review audit coverage',
+                reason='Audit evidence could not be assembled safely.',
+                evidence_summary='Authority evidence is unavailable.',
+                affected_area='Authority',
+                next_safe_preparation='Pause until audit evidence is available.',
+            ),
+        )
+    )
+    panel = TodaysTop3Panel(model)
+
+    cards = [
+        card for card in panel.findChildren(QWidget)
+        if card.property('dashboardRole') == 'todays-top3-priority-card'
+    ]
+
+    assert [card.property('priorityRank') for card in cards] == [1, 2, 3]
+    assert [card.property('attentionState') for card in cards] == [
+        'ready',
+        'partial',
+        'error',
+    ]
+    assert [
+        card.property('visualContract') for card in cards
+    ] == ['m1.15c-todays-top3-priority-card-state'] * 3
+    assert [badge.text() for badge in panel.item_state_badges] == [
+        'Ready',
+        'Partial',
+        'Error-safe',
+    ]
+    assert [badge.property('tone') for badge in panel.item_state_badges] == [
+        StatusTone.POSITIVE.value,
+        StatusTone.WARNING.value,
+        StatusTone.NEGATIVE.value,
     ]
 
 
