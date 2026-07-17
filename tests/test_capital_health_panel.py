@@ -1,9 +1,11 @@
 from pathlib import Path
 
+import pytest
 from PySide6.QtWidgets import QApplication, QPushButton, QWidget
 
 from app.engines.health.status_view_model import build_health_status_view_model
 from app.engines.mission_control.capital_health import (
+    CAPITAL_HEALTH_GROUP_ORDER,
     build_capital_health_view_model,
     capital_health_group_evidence,
     capital_health_metric,
@@ -21,6 +23,9 @@ from app.engines.mission_control.todays_top3 import (
     todays_top3_evidence,
 )
 from ui.capital_health_panel import CapitalHealthPanel
+from ui.capital_health_panel import CAPITAL_HEALTH_GROUP_VISUAL_CONTRACT
+from ui.capital_health_panel import CAPITAL_HEALTH_VISUAL_CONTRACT
+from ui.capital_health_panel import capital_health_state_badge_contract
 from ui.design_system.tokens import NorthStarPanelTone
 from ui.design_system.widgets import StatusTone
 from ui.main_window import MainWindow
@@ -226,10 +231,15 @@ def test_capital_health_panel_renders_injected_view_model_in_order():
     assert panel.description_label.text() == 'Read-only capital condition'
     assert panel.property('northStarTone') == NorthStarPanelTone.SCOREBOARD.value
     assert panel.property('dashboardRole') == 'capital-health-shell'
-    assert panel.property('visualContract') == 'm1.16b-capital-health-shell'
+    assert panel.property('visualContract') == CAPITAL_HEALTH_VISUAL_CONTRACT
     assert panel.property('capitalHealthState') == 'ready'
+    assert panel.property('capitalHealthGroupOrder') == ','.join(
+        CAPITAL_HEALTH_GROUP_ORDER
+    )
     assert panel.state_badge.text() == 'Ready'
     assert panel.state_badge.property('tone') == StatusTone.POSITIVE.value
+    assert panel.state_badge.property('capitalHealthState') == 'ready'
+    assert panel.state_badge.property('capitalHealthDisplayLabel') == 'Ready'
     assert panel.headline_label.text() == 'Capital Health ready'
     assert panel.view_model is model
     assert [badge.text() for badge in panel.group_state_badges] == [
@@ -262,6 +272,8 @@ def test_capital_health_panel_renders_default_unavailable_state():
 
     assert panel.state_badge.text() == 'Unavailable'
     assert panel.state_badge.property('tone') == StatusTone.WARNING.value
+    assert panel.state_badge.property('capitalHealthState') == 'unavailable'
+    assert panel.state_badge.property('capitalHealthDisplayLabel') == 'Unavailable'
     assert panel.property('capitalHealthState') == 'unavailable'
     assert panel.headline_label.text() == 'Capital Health unavailable'
     assert [badge.text() for badge in panel.group_state_badges] == [
@@ -312,6 +324,8 @@ def test_capital_health_panel_renders_error_safely_inline():
 
     assert panel.state_badge.text() == 'Error-safe'
     assert panel.state_badge.property('tone') == StatusTone.NEGATIVE.value
+    assert panel.state_badge.property('capitalHealthState') == 'error'
+    assert panel.state_badge.property('capitalHealthDisplayLabel') == 'Error-safe'
     assert panel.property('capitalHealthState') == 'error'
     assert panel.headline_label.text() == 'Capital Health unavailable'
     assert panel.error_label.text() == 'Prepared Capital Health evidence could not be read.'
@@ -385,13 +399,46 @@ def test_capital_health_group_cards_preserve_state_contract_properties():
     ]
     assert [
         card.property('visualContract') for card in cards
-    ] == ['m1.16b-capital-health-group-card'] * 4
+    ] == [CAPITAL_HEALTH_GROUP_VISUAL_CONTRACT] * 4
     assert [badge.text() for badge in panel.group_state_badges] == [
         'Ready',
         'Partial',
         'Error-safe',
         'Unavailable',
     ]
+    assert [badge.property('capitalHealthState') for badge in panel.group_state_badges] == [
+        'ready',
+        'partial',
+        'error',
+        'unavailable',
+    ]
+    assert [
+        badge.property('capitalHealthDisplayLabel')
+        for badge in panel.group_state_badges
+    ] == [
+        'Ready',
+        'Partial',
+        'Error-safe',
+        'Unavailable',
+    ]
+
+
+@pytest.mark.parametrize(
+    ('state', 'label', 'tone'),
+    [
+        ('ready', 'Ready', StatusTone.POSITIVE),
+        ('unavailable', 'Unavailable', StatusTone.WARNING),
+        ('partial', 'Partial', StatusTone.WARNING),
+        ('error', 'Error-safe', StatusTone.NEGATIVE),
+    ],
+)
+def test_capital_health_state_badge_contract_is_locked(state, label, tone):
+    assert capital_health_state_badge_contract(state) == (label, tone)
+
+
+def test_capital_health_state_badge_contract_rejects_unknown_state():
+    with pytest.raises(ValueError):
+        capital_health_state_badge_contract('live')
 
 
 def test_capital_health_panel_has_no_action_controls():
