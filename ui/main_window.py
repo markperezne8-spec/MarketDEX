@@ -56,6 +56,9 @@ class MainWindow(QMainWindow):
     @property
     def dashboard_grid_visual_contract(self): return 'm1.14e-north-star-dashboard-grid-shell'
 
+    @property
+    def inventory_command_center_visual_contract(self): return 'm1.14f-inventory-command-center-shell'
+
     def _build_dashboard_grid_shell(self):
         shell=MarketDEXDashboardPanel('Dashboard Grid','Read-only command-center snapshot',tone=NorthStarPanelTone.COMMAND)
         shell.setObjectName('marketdexDashboardPanel')
@@ -67,10 +70,42 @@ class MainWindow(QMainWindow):
         cards=(('📦 Inventory Units','inventory_units'),('🗂️ Inventory Assets','inventory_asset_count'),('💰 Inventory Cost','inventory_cost_minor'),('🧾 Completed Sales','completed_sales'),('📈 Revenue','revenue_minor'),('💵 Profit','profit_minor'),('🛡️ Verified Audits','verified_audits'),('⚙️ Authority Events','authority_events'))
         for index,(label,key) in enumerate(cards):
             card=MarketDEXKpiCard(label,'--'); card.setProperty('dashboardRole','existing-kpi'); self.values[key]=card.value_widget; grid.addWidget(card,index//2,index%2)
-        for offset,(title,tone) in enumerate((('Inventory Command Center',StatusTone.WARNING),('Capital Health',StatusTone.WARNING),('Opportunity + Risk',StatusTone.WARNING),('Visual Intelligence',StatusTone.WARNING))):
-            grid.addWidget(self._build_unavailable_dashboard_tile(title,tone),4+offset//2,offset%2)
+        self.inventory_command_center=self._build_inventory_command_center()
+        grid.addWidget(self.inventory_command_center,4,0,1,2)
+        for offset,(title,tone) in enumerate((('Capital Health',StatusTone.WARNING),('Opportunity + Risk',StatusTone.WARNING),('Visual Intelligence',StatusTone.WARNING))):
+            grid.addWidget(self._build_unavailable_dashboard_tile(title,tone),5+offset//2,offset%2)
         shell.content_layout.addLayout(grid)
         return shell
+
+    def _build_inventory_command_center(self):
+        panel=MarketDEXDashboardPanel('Inventory Command Center','Read-only local inventory command snapshot',tone=NorthStarPanelTone.INVENTORY)
+        panel.setObjectName('marketdexDashboardPanel')
+        panel.setProperty('dashboardRole','inventory-command-center-shell')
+        panel.setProperty('visualContract',self.inventory_command_center_visual_contract)
+        panel.setAccessibleName('Inventory Command Center. Read-only local inventory command snapshot.')
+        panel.add_header_action(MarketDEXStatusBadge('Local summary',StatusTone.POSITIVE,panel))
+        summary_grid=QGridLayout(); summary_grid.setContentsMargins(0,0,0,0); summary_grid.setHorizontalSpacing(10); summary_grid.setVerticalSpacing(8)
+        self.inventory_command_values={}
+        for index,(label,key) in enumerate((('Units','inventory_units'),('Assets','inventory_asset_count'),('Cost','inventory_cost_minor'))):
+            card=MarketDEXKpiCard(label,'--',panel); card.setProperty('dashboardRole','inventory-command-summary'); self.inventory_command_values[key]=card.value_widget; summary_grid.addWidget(card,0,index)
+        placeholder_row=QHBoxLayout(); placeholder_row.setSpacing(10)
+        for title in ('Listing readiness','Inventory age','Storage review','Audit coverage'):
+            placeholder_row.addWidget(self._build_inventory_command_placeholder(title))
+        panel.content_layout.addLayout(summary_grid)
+        panel.content_layout.addLayout(placeholder_row)
+        return panel
+
+    def _build_inventory_command_placeholder(self,title):
+        tile=MarketDEXDashboardPanel(title,'Future inventory contract',tone=NorthStarPanelTone.SCOREBOARD)
+        tile.setObjectName('marketdexDashboardPanel')
+        tile.setProperty('dashboardRole','inventory-command-placeholder')
+        tile.add_header_action(MarketDEXStatusBadge('Unavailable',StatusTone.WARNING,tile))
+        detail=QLabel('Evidence unavailable. Future inventory contract required.',tile)
+        detail.setObjectName('marketdexPanelDescription')
+        detail.setWordWrap(True)
+        tile.add_content_widget(detail)
+        tile.setAccessibleName(f'{title}. Unavailable. Evidence unavailable. Future inventory contract required.')
+        return tile
 
     def _build_unavailable_dashboard_tile(self,title,tone):
         tile=MarketDEXDashboardPanel(title,'Future contract area',tone=NorthStarPanelTone.SCOREBOARD)
@@ -124,6 +159,8 @@ class MainWindow(QMainWindow):
         snapshot=self.service.snapshot()
         for key in ('inventory_units','inventory_asset_count','completed_sales','verified_audits','authority_events'): self.values[key].setText(f'{snapshot[key]:,}')
         for key in ('inventory_cost_minor','revenue_minor','profit_minor'): self.values[key].setText(self._money(snapshot[key]))
+        for key in ('inventory_units','inventory_asset_count'): self.inventory_command_values[key].setText(f'{snapshot[key]:,}')
+        self.inventory_command_values['inventory_cost_minor'].setText(self._money(snapshot['inventory_cost_minor']))
         self.refresh_inventory(); self.footer.setText(f"LIVE DATABASE: {snapshot['database_path']} — refreshed from protected SQLite authority.")
 
     def selected_asset_ids(self): return [self.inventory_rows[index.row()]['asset_id'] for index in self.inventory_table.selectionModel().selectedRows() if 0<=index.row()<len(self.inventory_rows)]
