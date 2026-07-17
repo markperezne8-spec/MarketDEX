@@ -322,3 +322,29 @@ Verified result:
 - M1.15D introduces no runtime or UI behavior change and requires no additional visual check.
 
 M1.15 remains protected from action buttons, task execution, ranking-engine behavior beyond deterministic display ordering, fake live values, marketplace or live-pricing integration, polling, background workers, networking, persistence changes, database migration, alerts, notifications, automation, route rewrites, new workspaces, dependency changes, or business-state mutation.
+
+## M1.15E synchronization - Today's Top 3 sequence complete
+
+M1.15E synchronizes repository authority after the completed `Today's Top 3` attention-priority sequence.
+
+Completed sequence:
+
+- M1.15 planning PR #486 locked the contract-first milestone.
+- M1.15A PR #488 added the immutable non-visual view-model contract.
+- M1.15B PR #490 added the visible read-only shell.
+- M1.15C PR #492 hardened deterministic display states.
+- M1.15D PR #494 recorded visual and contract verification; merge commit `dee1e248f37eb06b4f2557351f08c60df54f168b`.
+
+Final accepted behavior:
+
+- `Today's Top 3` appears after `Next Steps` and before `Dashboard Grid`.
+- Default missing evidence renders honest `Unavailable` output.
+- Priority slots `#1`, `#2`, and `#3` are deterministic, read-only, and unavailable by default.
+- Visual acceptance is complete through accepted M1.15B and M1.15C screenshot evidence recorded by M1.15D.
+- M1.15E introduces no runtime behavior, UI change, view-model change, test change, persistence change, dependency change, route change, workspace change, or business-data mutation.
+
+Current next gate:
+
+- The next build may proceed from synchronized `main` after Mark pulls.
+- Future real `Today's Top 3` values require a separately approved local evidence contract and focused implementation slice.
+- Future North Star areas remain contract-first and must be scoped independently.

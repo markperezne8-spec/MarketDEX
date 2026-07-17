@@ -497,3 +497,13 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Verified default state is honest `Unavailable` output with deterministic `#1`, `#2`, and `#3` read-only unavailable cards.
 - M1.15D introduces no runtime change, UI change, action buttons, task execution, ranking-engine behavior beyond deterministic display ordering, fake live values, marketplace integration, polling, networking, persistence, alerts, notifications, automation, dependency change, or business mutation.
 - M1.15D itself requires no new visual check because it records visual acceptance already supplied by Mark.
+
+## M1.15E - Today's Top 3 Checkpoint Sync
+
+- M1.15E synchronizes repository authority after the completed `Today's Top 3` attention-priority sequence.
+- Completed sequence: planning PR #486, M1.15A PR #488, M1.15B PR #490, M1.15C PR #492, and M1.15D PR #494.
+- M1.15D was squash-merged as `dee1e248f37eb06b4f2557351f08c60df54f168b` after CI run #29569247077 passed 9/9 jobs.
+- Final accepted behavior: `Today's Top 3` appears after `Next Steps` and before `Dashboard Grid`, renders honest `Unavailable` output for missing evidence, and shows deterministic read-only `#1`, `#2`, and `#3` priority slots.
+- Visual acceptance is complete through accepted M1.15B and M1.15C screenshot evidence recorded by M1.15D.
+- M1.15E introduces no runtime behavior, UI change, view-model change, test change, action buttons, task execution, ranking-engine behavior beyond deterministic display ordering, fake live values, marketplace integration, polling, networking, persistence, alerts, notifications, automation, route rewrites, new workspaces, dependency changes, or business mutation.
+- Future real `Today's Top 3` values require a separately approved local evidence contract; future North Star areas remain contract-first and independently scoped.
