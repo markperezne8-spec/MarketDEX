@@ -112,6 +112,32 @@ def test_inventory_command_center_shell_is_visual_only():
         assert prohibited not in source
 
 
+def test_visual_intelligence_shell_is_visual_only():
+    source = MAIN_WINDOW.read_text(encoding="utf-8")
+
+    assert "m1.14g-visual-intelligence-shell" in source
+    assert "visual-intelligence-shell" in source
+    assert "visual-intelligence-placeholder" in source
+    assert "Future visual intelligence contract required." in source
+    assert "Performance charts" in source
+    assert "Inventory alerts" in source
+    assert "Attention heat map" in source
+    assert "Market attention trend" in source
+    for prohibited in (
+        "QTimer",
+        "socket",
+        "requests",
+        "urllib",
+        "threading",
+        "schedule",
+        "poll",
+        "marketplace",
+        "pricing provider",
+        "notification",
+    ):
+        assert prohibited not in source
+
+
 def test_shell_migration_preserves_existing_business_surfaces():
     source = MAIN_WINDOW.read_text(encoding="utf-8")
 
