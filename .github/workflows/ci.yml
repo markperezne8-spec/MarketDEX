@@ -190,6 +190,7 @@ jobs:
           tests/test_mission_control_design_system_migration.py
           tests/test_design_system_foundation.py
           tests/test_qt_design_system_primitives.py
+          app/engines/mission_control/tests/test_capital_health.py
       - name: Compile Mission Control presentation layer
         run: python -m py_compile ui/main_window.py ui/design_system/tokens.py ui/design_system/qt_theme.py ui/design_system/widgets.py
 
