@@ -382,12 +382,17 @@ def test_mission_control_dashboard_grid_shell_preserves_existing_kpis_and_placeh
     assert [panel.title_label.text() for panel in placeholders] == [
         'Capital Health',
         'Opportunity + Risk',
-        'Visual Intelligence',
     ]
     assert all(
         'Evidence unavailable. Future contract required.'
         in panel.accessibleName()
         for panel in placeholders
+    )
+    assert window.visual_intelligence_shell.property('dashboardRole') == (
+        'visual-intelligence-shell'
+    )
+    assert window.visual_intelligence_shell.property('visualContract') == (
+        'm1.14g-visual-intelligence-shell'
     )
 
 
@@ -430,3 +435,35 @@ def test_inventory_command_center_shell_uses_existing_local_inventory_summary_on
         for panel in placeholders
     )
     assert window.inventory_command_center.findChildren(QPushButton) == []
+
+
+def test_visual_intelligence_shell_is_read_only_and_honest_about_future_evidence():
+    _application()
+    window = MainWindow(
+        _MissionControlService(),
+        _InventoryService(),
+        next_steps_view_model=_ready_next_steps_model(),
+    )
+
+    assert window.visual_intelligence_visual_contract == (
+        'm1.14g-visual-intelligence-shell'
+    )
+    assert window.visual_intelligence_shell.header_actions.itemAt(0).widget().text() == (
+        'Unavailable'
+    )
+    placeholders = [
+        panel for panel in window.visual_intelligence_shell.findChildren(QWidget)
+        if panel.property('dashboardRole') == 'visual-intelligence-placeholder'
+    ]
+    assert [panel.title_label.text() for panel in placeholders] == [
+        'Performance charts',
+        'Inventory alerts',
+        'Attention heat map',
+        'Market attention trend',
+    ]
+    assert all(
+        'Evidence unavailable. Future visual intelligence contract required.'
+        in panel.accessibleName()
+        for panel in placeholders
+    )
+    assert window.visual_intelligence_shell.findChildren(QPushButton) == []
