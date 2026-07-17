@@ -71,7 +71,7 @@ def main(argv=None) -> int:
     if screen is not None:
         available_geometry = screen.availableGeometry()
         window.resize(*desktop_launch_size(available_geometry))
-    window.show()
+    window.showMaximized()
     return app.exec()
 
 
