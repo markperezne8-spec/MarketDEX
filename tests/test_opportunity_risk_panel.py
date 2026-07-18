@@ -230,10 +230,16 @@ def _ready_capital_health_model():
     )
 
 
-def _opportunity_risk_item(kind: str, display_order: int, candidate_key: str):
+def _opportunity_risk_item(
+    kind: str,
+    display_order: int,
+    candidate_key: str,
+    *,
+    state: str = 'ready',
+):
     return opportunity_risk_evidence(
         kind,
-        state='ready',
+        state=state,
         display_order=display_order,
         candidate_key=candidate_key,
         label=f'{kind} {display_order}',
@@ -292,6 +298,14 @@ def test_opportunity_risk_panel_renders_injected_view_model_in_order():
         OPPORTUNITY_RISK_ITEM_VISUAL_CONTRACT,
         OPPORTUNITY_RISK_ITEM_VISUAL_CONTRACT,
     ]
+    assert [label.property('opportunityRiskDisplayLabel') for label in panel.item_labels] == [
+        'Ready',
+        'Ready',
+    ]
+    assert [label.property('opportunityRiskStateTone') for label in panel.item_labels] == [
+        StatusTone.POSITIVE.value,
+        StatusTone.POSITIVE.value,
+    ]
     assert [label.property('opportunityRiskCandidateKey') for label in panel.item_labels] == [
         'opportunity-a',
         'risk-a',
@@ -323,8 +337,16 @@ def test_opportunity_risk_panel_renders_default_unavailable_state():
         'Local evidence unavailable',
     ]
     assert [label.text() for label in panel.item_labels] == [
-        'No prepared local Opportunities items.',
-        'No prepared local Risks items.',
+        'Unavailable - No prepared local Opportunities items.',
+        'Unavailable - No prepared local Risks items.',
+    ]
+    assert [label.property('opportunityRiskDisplayLabel') for label in panel.item_labels] == [
+        'Unavailable',
+        'Unavailable',
+    ]
+    assert [label.property('opportunityRiskStateTone') for label in panel.item_labels] == [
+        StatusTone.WARNING.value,
+        StatusTone.WARNING.value,
     ]
 
 
@@ -391,6 +413,73 @@ def test_opportunity_risk_group_cards_preserve_state_contract_properties():
         'Ready',
         'Partial',
     ]
+
+
+def test_opportunity_risk_items_preserve_each_display_state_contract():
+    _application()
+    model = build_opportunity_risk_view_model(
+        evidence=(
+            _opportunity_risk_item(
+                'opportunity',
+                1,
+                'opportunity-ready',
+                state='ready',
+            ),
+            _opportunity_risk_item(
+                'opportunity',
+                2,
+                'opportunity-partial',
+                state='partial',
+            ),
+            _opportunity_risk_item(
+                'risk',
+                1,
+                'risk-unavailable',
+                state='unavailable',
+            ),
+            _opportunity_risk_item(
+                'risk',
+                2,
+                'risk-error',
+                state='error',
+            ),
+        )
+    )
+    panel = OpportunityRiskPanel(model)
+
+    assert [label.property('opportunityRiskCandidateKey') for label in panel.item_labels] == [
+        'opportunity-ready',
+        'opportunity-partial',
+        'risk-unavailable',
+        'risk-error',
+    ]
+    assert [label.property('opportunityRiskState') for label in panel.item_labels] == [
+        'ready',
+        'partial',
+        'unavailable',
+        'error',
+    ]
+    assert [label.property('opportunityRiskDisplayLabel') for label in panel.item_labels] == [
+        'Ready',
+        'Partial',
+        'Unavailable',
+        'Error-safe',
+    ]
+    assert [label.property('opportunityRiskStateTone') for label in panel.item_labels] == [
+        StatusTone.POSITIVE.value,
+        StatusTone.WARNING.value,
+        StatusTone.WARNING.value,
+        StatusTone.NEGATIVE.value,
+    ]
+    assert [label.text().split(' - ', 1)[0] for label in panel.item_labels] == [
+        'Ready',
+        'Partial',
+        'Unavailable',
+        'Error-safe',
+    ]
+    assert [
+        label.property('visualContract') for label in panel.item_labels
+    ] == [OPPORTUNITY_RISK_ITEM_VISUAL_CONTRACT] * 4
 
 
 @pytest.mark.parametrize(
