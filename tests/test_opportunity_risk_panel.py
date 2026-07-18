@@ -5,7 +5,6 @@ from PySide6.QtWidgets import QApplication, QPushButton, QWidget
 
 from app.engines.health.status_view_model import build_health_status_view_model
 from app.engines.mission_control.capital_health import (
-    CAPITAL_HEALTH_GROUP_ORDER,
     build_capital_health_view_model,
     capital_health_group_evidence,
     capital_health_metric,
@@ -18,20 +17,29 @@ from app.engines.mission_control.operational_status import (
     build_operational_status_view_model,
     operational_status_evidence,
 )
+from app.engines.mission_control.opportunity_risk import (
+    OPPORTUNITY_RISK_KIND_ORDER,
+    build_opportunity_risk_view_model,
+    opportunity_risk_evidence,
+)
 from app.engines.mission_control.todays_top3 import (
     build_todays_top3_view_model,
     todays_top3_evidence,
 )
-from ui.capital_health_panel import CapitalHealthPanel
-from ui.capital_health_panel import CAPITAL_HEALTH_GROUP_VISUAL_CONTRACT
-from ui.capital_health_panel import CAPITAL_HEALTH_VISUAL_CONTRACT
-from ui.capital_health_panel import capital_health_state_badge_contract
 from ui.design_system.tokens import NorthStarPanelTone
 from ui.design_system.widgets import StatusTone
 from ui.main_window import MainWindow
+from ui.opportunity_risk_panel import (
+    OPPORTUNITY_RISK_GROUP_VISUAL_CONTRACT,
+    OPPORTUNITY_RISK_ITEM_VISUAL_CONTRACT,
+    OPPORTUNITY_RISK_VISUAL_CONTRACT,
+    OpportunityRiskPanel,
+    opportunity_risk_state_badge_contract,
+)
+
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-CAPITAL_HEALTH_PANEL = REPOSITORY_ROOT / 'ui' / 'capital_health_panel.py'
+OPPORTUNITY_RISK_PANEL = REPOSITORY_ROOT / 'ui' / 'opportunity_risk_panel.py'
 MAIN_WINDOW = REPOSITORY_ROOT / 'ui' / 'main_window.py'
 
 
@@ -161,10 +169,10 @@ def _ready_todays_top3_model():
     )
 
 
-def _metric(label: str, value_label: str, state: str = 'ready'):
+def _capital_metric(label: str, value_label: str):
     return capital_health_metric(
         label,
-        state=state,
+        state='ready',
         value_label=value_label,
         evidence_summary=f'{label} prepared local evidence.',
     )
@@ -181,8 +189,8 @@ def _ready_capital_health_model():
                 period_label='Today',
                 explanation='Available Cash and Available for Redeployment stay separate.',
                 metrics=(
-                    _metric('Available Cash', '$10 prepared value'),
-                    _metric('Available for Redeployment', '$4 prepared value'),
+                    _capital_metric('Available Cash', '$10 prepared value'),
+                    _capital_metric('Available for Redeployment', '$4 prepared value'),
                 ),
             ),
             capital_health_group_evidence(
@@ -193,7 +201,7 @@ def _ready_capital_health_model():
                 period_label='90 days',
                 explanation='Formula authority is prepared locally.',
                 metrics=(
-                    _metric('Capital Recycling Rate', 'Prepared rate'),
+                    _capital_metric('Capital Recycling Rate', 'Prepared rate'),
                 ),
             ),
             capital_health_group_evidence(
@@ -204,7 +212,7 @@ def _ready_capital_health_model():
                 period_label='90 days',
                 explanation='Committed capital is read-only.',
                 metrics=(
-                    _metric('Committed Capital', '$6 prepared value'),
+                    _capital_metric('Committed Capital', '$6 prepared value'),
                 ),
             ),
             capital_health_group_evidence(
@@ -215,211 +223,173 @@ def _ready_capital_health_model():
                 period_label='90 days',
                 explanation='Growth excludes external cash injection.',
                 metrics=(
-                    _metric('Business-cycle Capital Growth', 'Prepared growth'),
+                    _capital_metric('Business-cycle Capital Growth', 'Prepared growth'),
                 ),
             ),
         )
     )
 
 
-def test_capital_health_panel_renders_injected_view_model_in_order():
-    _application()
-    model = _ready_capital_health_model()
-    panel = CapitalHealthPanel(model)
+def _opportunity_risk_item(kind: str, display_order: int, candidate_key: str):
+    return opportunity_risk_evidence(
+        kind,
+        state='ready',
+        display_order=display_order,
+        candidate_key=candidate_key,
+        label=f'{kind} {display_order}',
+        why_it_matters=f'{kind} {display_order} may change if Mark waits.',
+        direction_label=f'{kind} condition',
+        evidence_summary=f'{kind} {display_order} prepared local evidence.',
+        source_authority='Prepared local evidence',
+        freshness_label='As of prepared local snapshot',
+    )
 
-    assert panel.title_label.text() == 'Capital Health'
-    assert panel.description_label.text() == 'Read-only capital condition'
+
+def _ready_opportunity_risk_model():
+    return build_opportunity_risk_view_model(
+        evidence=(
+            _opportunity_risk_item('opportunity', 1, 'opportunity-a'),
+            _opportunity_risk_item('risk', 1, 'risk-a'),
+        )
+    )
+
+
+def test_opportunity_risk_panel_renders_injected_view_model_in_order():
+    _application()
+    model = _ready_opportunity_risk_model()
+    panel = OpportunityRiskPanel(model)
+
+    assert panel.title_label.text() == 'Opportunity + Risk'
+    assert panel.description_label.text() == 'Read-only situational awareness'
     assert panel.property('northStarTone') == NorthStarPanelTone.SCOREBOARD.value
-    assert panel.property('dashboardRole') == 'capital-health-shell'
-    assert panel.property('visualContract') == CAPITAL_HEALTH_VISUAL_CONTRACT
-    assert panel.property('capitalHealthState') == 'ready'
-    assert panel.property('capitalHealthGroupOrder') == ','.join(
-        CAPITAL_HEALTH_GROUP_ORDER
+    assert panel.property('dashboardRole') == 'opportunity-risk-shell'
+    assert panel.property('visualContract') == OPPORTUNITY_RISK_VISUAL_CONTRACT
+    assert panel.property('opportunityRiskState') == 'ready'
+    assert panel.property('opportunityRiskGroupOrder') == ','.join(
+        OPPORTUNITY_RISK_KIND_ORDER
     )
     assert panel.state_badge.text() == 'Ready'
     assert panel.state_badge.property('tone') == StatusTone.POSITIVE.value
-    assert panel.state_badge.property('capitalHealthState') == 'ready'
-    assert panel.state_badge.property('capitalHealthDisplayLabel') == 'Ready'
-    assert panel.headline_label.text() == 'Capital Health ready'
+    assert panel.state_badge.property('opportunityRiskState') == 'ready'
+    assert panel.state_badge.property('opportunityRiskDisplayLabel') == 'Ready'
+    assert panel.headline_label.text() == 'Opportunity + Risk ready'
     assert panel.view_model is model
     assert [badge.text() for badge in panel.group_state_badges] == [
         'Ready',
         'Ready',
-        'Ready',
-        'Ready',
     ]
-    assert [label.text() for label in panel.metric_labels] == [
-        'Available Cash: $10 prepared value — Available Cash prepared local evidence.',
-        (
-            'Available for Redeployment: $4 prepared value — '
-            'Available for Redeployment prepared local evidence.'
-        ),
-        (
-            'Capital Recycling Rate: Prepared rate — '
-            'Capital Recycling Rate prepared local evidence.'
-        ),
-        'Committed Capital: $6 prepared value — Committed Capital prepared local evidence.',
-        (
-            'Business-cycle Capital Growth: Prepared growth — '
-            'Business-cycle Capital Growth prepared local evidence.'
-        ),
+    assert [label.text() for label in panel.group_labels] == [
+        'Opportunities',
+        'Prepared local freshness',
+        'Opportunities prepared local evidence.',
+        'Prepared local evidence',
+        'Risks',
+        'Prepared local freshness',
+        'Risks prepared local evidence.',
+        'Prepared local evidence',
+    ]
+    assert [label.property('visualContract') for label in panel.item_labels] == [
+        OPPORTUNITY_RISK_ITEM_VISUAL_CONTRACT,
+        OPPORTUNITY_RISK_ITEM_VISUAL_CONTRACT,
+    ]
+    assert [label.property('opportunityRiskCandidateKey') for label in panel.item_labels] == [
+        'opportunity-a',
+        'risk-a',
     ]
 
 
-def test_capital_health_panel_renders_default_unavailable_state():
+def test_opportunity_risk_panel_renders_default_unavailable_state():
     _application()
-    panel = CapitalHealthPanel()
+    panel = OpportunityRiskPanel()
 
     assert panel.state_badge.text() == 'Unavailable'
     assert panel.state_badge.property('tone') == StatusTone.WARNING.value
-    assert panel.state_badge.property('capitalHealthState') == 'unavailable'
-    assert panel.state_badge.property('capitalHealthDisplayLabel') == 'Unavailable'
-    assert panel.property('capitalHealthState') == 'unavailable'
-    assert panel.headline_label.text() == 'Capital Health unavailable'
+    assert panel.state_badge.property('opportunityRiskState') == 'unavailable'
+    assert panel.state_badge.property('opportunityRiskDisplayLabel') == 'Unavailable'
+    assert panel.property('opportunityRiskState') == 'unavailable'
+    assert panel.headline_label.text() == 'Opportunity + Risk unavailable'
     assert [badge.text() for badge in panel.group_state_badges] == [
         'Unavailable',
         'Unavailable',
-        'Unavailable',
-        'Unavailable',
     ]
-    assert [label.text() for label in panel.group_labels][:5] == [
-        'Availability',
-        'Period unavailable',
-        'Available Cash and Available for Redeployment evidence unavailable.',
+    assert [label.text() for label in panel.group_labels] == [
+        'Opportunities',
+        'Freshness unavailable',
+        'Prepared local Opportunity evidence unavailable.',
         'Local evidence unavailable',
-        (
-            'Available Cash remains distinct from Available for Redeployment; '
-            'neither value is inferred without prepared local evidence.'
-        ),
+        'Risks',
+        'Freshness unavailable',
+        'Prepared local Risk evidence unavailable.',
+        'Local evidence unavailable',
     ]
-    assert [label.text() for label in panel.metric_labels] == [
-        'Available Cash: Unavailable — Evidence unavailable.',
-        'Available for Redeployment: Unavailable — Evidence unavailable.',
-        'Capital Recycling Rate: Unavailable — Evidence unavailable.',
-        'Committed Capital: Unavailable — Evidence unavailable.',
-        'Business-cycle Capital Growth: Unavailable — Evidence unavailable.',
+    assert [label.text() for label in panel.item_labels] == [
+        'No prepared local Opportunities items.',
+        'No prepared local Risks items.',
     ]
 
 
-def test_capital_health_panel_renders_error_safely_inline():
+def test_opportunity_risk_panel_renders_error_safely_inline():
     _application()
-    model = build_capital_health_view_model(
+    model = build_opportunity_risk_view_model(
         evidence=(
-            capital_health_group_evidence(
-                'availability',
-                state='ready',
-                evidence_summary='Availability evidence is prepared locally.',
-                source_authority='Prepared local capital evidence',
-                period_label='Today',
-                explanation='Available Cash and Available for Redeployment stay separate.',
-                metrics=(
-                    _metric('Available Cash', '$10 prepared value'),
-                    _metric('Available for Redeployment', '$4 prepared value'),
-                ),
-            ),
+            _opportunity_risk_item('opportunity', 1, 'opportunity-a'),
+            _opportunity_risk_item('risk', 1, 'risk-a'),
         ),
-        error_text='Prepared Capital Health evidence could not be read.',
+        error_text='Prepared Opportunity + Risk evidence could not be read.',
     )
-    panel = CapitalHealthPanel(model)
+    panel = OpportunityRiskPanel(model)
 
     assert panel.state_badge.text() == 'Error-safe'
     assert panel.state_badge.property('tone') == StatusTone.NEGATIVE.value
-    assert panel.state_badge.property('capitalHealthState') == 'error'
-    assert panel.state_badge.property('capitalHealthDisplayLabel') == 'Error-safe'
-    assert panel.property('capitalHealthState') == 'error'
-    assert panel.headline_label.text() == 'Capital Health unavailable'
-    assert panel.error_label.text() == 'Prepared Capital Health evidence could not be read.'
+    assert panel.state_badge.property('opportunityRiskState') == 'error'
+    assert panel.state_badge.property('opportunityRiskDisplayLabel') == 'Error-safe'
+    assert panel.property('opportunityRiskState') == 'error'
+    assert panel.headline_label.text() == 'Opportunity + Risk unavailable'
+    assert panel.error_label.text() == 'Prepared Opportunity + Risk evidence could not be read.'
     assert not panel.error_label.isHidden()
-    assert [badge.text() for badge in panel.group_state_badges] == [
-        'Ready',
-        'Unavailable',
-        'Unavailable',
-        'Unavailable',
-    ]
 
 
-def test_capital_health_group_cards_preserve_state_contract_properties():
+def test_opportunity_risk_group_cards_preserve_state_contract_properties():
     _application()
-    model = build_capital_health_view_model(
+    model = build_opportunity_risk_view_model(
         evidence=(
-            capital_health_group_evidence(
-                'availability',
-                state='ready',
-                evidence_summary='Availability evidence is prepared locally.',
-                source_authority='Prepared local capital evidence',
-                period_label='Today',
-                explanation='Available Cash and Available for Redeployment stay separate.',
-                metrics=(
-                    _metric('Available Cash', '$10 prepared value'),
-                    _metric('Available for Redeployment', '$4 prepared value'),
-                ),
-            ),
-            capital_health_group_evidence(
-                'recycling',
+            _opportunity_risk_item('opportunity', 1, 'opportunity-a'),
+            opportunity_risk_evidence(
+                'risk',
                 state='partial',
-                evidence_summary='Recycling evidence is partially prepared.',
-                source_authority='Prepared local capital evidence',
-                period_label='90 days',
-                explanation='Formula authority is partially prepared.',
-                metrics=(
-                    _metric('Capital Recycling Rate', 'Partial', 'partial'),
-                ),
-            ),
-            capital_health_group_evidence(
-                'commitment',
-                state='error',
-                evidence_summary='Commitment evidence could not be assembled safely.',
-                source_authority='Prepared local capital evidence',
-                period_label='90 days',
-                explanation='Committed capital is unavailable.',
-                metrics=(
-                    _metric('Committed Capital', 'Unavailable', 'error'),
-                ),
+                display_order=1,
+                candidate_key='risk-a',
+                label='risk 1',
+                why_it_matters='risk 1 may change if Mark waits.',
+                direction_label='risk condition',
+                evidence_summary='risk 1 prepared local evidence.',
+                source_authority='Prepared local evidence',
+                freshness_label='As of prepared local snapshot',
             ),
         )
     )
-    panel = CapitalHealthPanel(model)
+    panel = OpportunityRiskPanel(model)
 
     cards = [
         card for card in panel.findChildren(QWidget)
-        if card.property('dashboardRole') == 'capital-health-group-card'
+        if card.property('dashboardRole') == 'opportunity-risk-group-card'
     ]
 
-    assert [card.property('capitalHealthGroup') for card in cards] == [
-        'availability',
-        'recycling',
-        'commitment',
-        'growth',
+    assert [card.property('opportunityRiskKind') for card in cards] == [
+        'opportunity',
+        'risk',
     ]
-    assert [card.property('capitalHealthState') for card in cards] == [
+    assert [card.property('opportunityRiskState') for card in cards] == [
         'ready',
         'partial',
-        'error',
-        'unavailable',
     ]
-    assert [
-        card.property('visualContract') for card in cards
-    ] == [CAPITAL_HEALTH_GROUP_VISUAL_CONTRACT] * 4
+    assert [card.property('visualContract') for card in cards] == [
+        OPPORTUNITY_RISK_GROUP_VISUAL_CONTRACT,
+        OPPORTUNITY_RISK_GROUP_VISUAL_CONTRACT,
+    ]
     assert [badge.text() for badge in panel.group_state_badges] == [
         'Ready',
         'Partial',
-        'Error-safe',
-        'Unavailable',
-    ]
-    assert [badge.property('capitalHealthState') for badge in panel.group_state_badges] == [
-        'ready',
-        'partial',
-        'error',
-        'unavailable',
-    ]
-    assert [
-        badge.property('capitalHealthDisplayLabel')
-        for badge in panel.group_state_badges
-    ] == [
-        'Ready',
-        'Partial',
-        'Error-safe',
-        'Unavailable',
     ]
 
 
@@ -432,42 +402,42 @@ def test_capital_health_group_cards_preserve_state_contract_properties():
         ('error', 'Error-safe', StatusTone.NEGATIVE),
     ],
 )
-def test_capital_health_state_badge_contract_is_locked(state, label, tone):
-    assert capital_health_state_badge_contract(state) == (label, tone)
+def test_opportunity_risk_state_badge_contract_is_locked(state, label, tone):
+    assert opportunity_risk_state_badge_contract(state) == (label, tone)
 
 
-def test_capital_health_state_badge_contract_rejects_unknown_state():
+def test_opportunity_risk_state_badge_contract_rejects_unknown_state():
     with pytest.raises(ValueError):
-        capital_health_state_badge_contract('live')
+        opportunity_risk_state_badge_contract('live')
 
 
-def test_capital_health_panel_has_no_action_controls():
+def test_opportunity_risk_panel_has_no_action_controls():
     _application()
-    panel = CapitalHealthPanel(_ready_capital_health_model())
+    panel = OpportunityRiskPanel(_ready_opportunity_risk_model())
 
     assert panel.findChildren(QPushButton) == []
 
 
-def test_capital_health_panel_uses_injected_model_without_fallback_builder(monkeypatch):
+def test_opportunity_risk_panel_uses_injected_model_without_fallback_builder(monkeypatch):
     _application()
-    model = _ready_capital_health_model()
+    model = _ready_opportunity_risk_model()
 
     def _blocked_default_builder():
         raise AssertionError('injected view model should not use the fallback builder')
 
     monkeypatch.setattr(
-        'ui.capital_health_panel.build_capital_health_view_model',
+        'ui.opportunity_risk_panel.build_opportunity_risk_view_model',
         _blocked_default_builder,
     )
 
-    panel = CapitalHealthPanel(model)
+    panel = OpportunityRiskPanel(model)
 
     assert panel.view_model is model
     assert panel.state_badge.text() == 'Ready'
 
 
-def test_capital_health_panel_contract_has_no_runtime_side_effect_paths():
-    source = CAPITAL_HEALTH_PANEL.read_text(encoding='utf-8')
+def test_opportunity_risk_panel_contract_has_no_runtime_side_effect_paths():
+    source = OPPORTUNITY_RISK_PANEL.read_text(encoding='utf-8')
 
     prohibited_tokens = (
         'QMessageBox',
@@ -498,33 +468,31 @@ def test_capital_health_panel_contract_has_no_runtime_side_effect_paths():
         assert token not in source
 
 
-def test_mission_control_wires_capital_health_only_from_prepared_view_model():
+def test_mission_control_wires_opportunity_risk_only_from_prepared_view_model():
     source = MAIN_WINDOW.read_text(encoding='utf-8')
 
-    assert 'CapitalHealthPanel(self._capital_health_view_model)' in source
-    assert 'build_capital_health_view_model' not in source
-    assert 'CapitalHealthViewModel | None = None' in source
+    assert 'OpportunityRiskPanel(self._opportunity_risk_view_model)' in source
+    assert 'build_opportunity_risk_view_model' not in source
+    assert 'OpportunityRiskViewModel | None = None' in source
 
 
-def test_mission_control_places_capital_health_after_top3_before_dashboard_grid():
+def test_mission_control_places_opportunity_risk_after_capital_health_before_dashboard_grid():
     _application()
     health_model = build_health_status_view_model(
         status_text='Health ready',
         diagnostic_lines=('runtime=MarketDEX', 'overall=PASS'),
     )
-    operational_model = _ready_operational_model()
-    next_steps_model = _ready_next_steps_model()
-    todays_top3_model = _ready_todays_top3_model()
-    capital_health_model = _ready_capital_health_model()
     mission = _MissionControlService()
+    opportunity_risk_model = _ready_opportunity_risk_model()
     window = MainWindow(
         mission,
         _InventoryService(),
         health_model,
-        operational_model,
-        next_steps_model,
-        todays_top3_view_model=todays_top3_model,
-        capital_health_view_model=capital_health_model,
+        _ready_operational_model(),
+        _ready_next_steps_model(),
+        todays_top3_view_model=_ready_todays_top3_model(),
+        capital_health_view_model=_ready_capital_health_model(),
+        opportunity_risk_view_model=opportunity_risk_model,
     )
 
     layout = window.inventory_panel.layout()
@@ -537,15 +505,15 @@ def test_mission_control_places_capital_health_after_top3_before_dashboard_grid(
     assert layout.itemAt(6).widget() is window.capital_health_panel
     assert layout.itemAt(7).widget() is window.opportunity_risk_panel
     assert layout.itemAt(8).widget() is window.dashboard_grid_shell
-    assert window.capital_health_panel.view_model is capital_health_model
+    assert window.opportunity_risk_panel.view_model is opportunity_risk_model
 
-    old_panel = window.capital_health_panel
+    old_panel = window.opportunity_risk_panel
     window.refresh()
-    assert window.capital_health_panel is old_panel
+    assert window.opportunity_risk_panel is old_panel
     assert mission.snapshot_calls == 2
 
 
-def test_dashboard_grid_no_longer_contains_capital_health_placeholder():
+def test_dashboard_grid_no_longer_contains_opportunity_risk_placeholder():
     _application()
     window = MainWindow(_MissionControlService(), _InventoryService())
 
@@ -556,5 +524,4 @@ def test_dashboard_grid_no_longer_contains_capital_health_placeholder():
         and hasattr(panel, 'title_label')
     ]
 
-    assert 'Capital Health' not in placeholder_titles
     assert 'Opportunity + Risk' not in placeholder_titles
