@@ -191,9 +191,12 @@ jobs:
           tests/test_design_system_foundation.py
           tests/test_qt_design_system_primitives.py
           app/engines/mission_control/tests/test_capital_health.py
+          app/engines/mission_control/tests/test_business_scoreboard.py
           tests/test_capital_health_panel.py
+          tests/test_opportunity_risk_panel.py
+          tests/test_business_scoreboard_panel.py
       - name: Compile Mission Control presentation layer
-        run: python -m py_compile ui/main_window.py ui/capital_health_panel.py ui/design_system/tokens.py ui/design_system/qt_theme.py ui/design_system/widgets.py
+        run: python -m py_compile ui/main_window.py ui/capital_health_panel.py ui/opportunity_risk_panel.py ui/business_scoreboard_panel.py ui/design_system/tokens.py ui/design_system/qt_theme.py ui/design_system/widgets.py
 
   desktop-build:
     name: Desktop Build

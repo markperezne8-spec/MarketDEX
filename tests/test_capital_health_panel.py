@@ -536,7 +536,8 @@ def test_mission_control_places_capital_health_after_top3_before_dashboard_grid(
     assert layout.itemAt(5).widget() is window.todays_top3_panel
     assert layout.itemAt(6).widget() is window.capital_health_panel
     assert layout.itemAt(7).widget() is window.opportunity_risk_panel
-    assert layout.itemAt(8).widget() is window.dashboard_grid_shell
+    assert layout.itemAt(8).widget() is window.business_scoreboard_panel
+    assert layout.itemAt(9).widget() is window.dashboard_grid_shell
     assert window.capital_health_panel.view_model is capital_health_model
 
     old_panel = window.capital_health_panel
