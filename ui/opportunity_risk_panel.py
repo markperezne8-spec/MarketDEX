@@ -16,9 +16,13 @@ from ui.design_system.widgets import (
 )
 
 
-OPPORTUNITY_RISK_VISUAL_CONTRACT = 'm1.17b-opportunity-risk-shell'
-OPPORTUNITY_RISK_GROUP_VISUAL_CONTRACT = 'm1.17b-opportunity-risk-group-shell'
-OPPORTUNITY_RISK_ITEM_VISUAL_CONTRACT = 'm1.17b-opportunity-risk-item-shell'
+OPPORTUNITY_RISK_VISUAL_CONTRACT = 'm1.17c-opportunity-risk-display-states'
+OPPORTUNITY_RISK_GROUP_VISUAL_CONTRACT = (
+    'm1.17c-opportunity-risk-group-display-states'
+)
+OPPORTUNITY_RISK_ITEM_VISUAL_CONTRACT = (
+    'm1.17c-opportunity-risk-item-display-states'
+)
 
 OPPORTUNITY_RISK_STATE_LABELS: dict[OpportunityRiskState, tuple[str, StatusTone]] = {
     'ready': ('Ready', StatusTone.POSITIVE),
@@ -129,9 +133,12 @@ class OpportunityRiskPanel(MarketDEXDashboardPanel):
 
             if group.items:
                 for item in group.items:
+                    item_state_label, item_state_tone = (
+                        opportunity_risk_state_badge_contract(item.state)
+                    )
                     item_label = QLabel(
                         (
-                            f'{item.label}: {item.direction_label}. '
+                            f'{item_state_label} - {item.label}: {item.direction_label}. '
                             f'Why It Matters: {item.why_it_matters} '
                             f'Evidence: {item.evidence_summary} '
                             f'Source: {item.source_authority}. '
@@ -143,6 +150,14 @@ class OpportunityRiskPanel(MarketDEXDashboardPanel):
                     item_label.setWordWrap(True)
                     item_label.setProperty('opportunityRiskKind', item.kind)
                     item_label.setProperty('opportunityRiskState', item.state)
+                    item_label.setProperty(
+                        'opportunityRiskDisplayLabel',
+                        item_state_label,
+                    )
+                    item_label.setProperty(
+                        'opportunityRiskStateTone',
+                        item_state_tone.value,
+                    )
                     item_label.setProperty('opportunityRiskCandidateKey', item.candidate_key)
                     item_label.setProperty(
                         'visualContract',
@@ -151,14 +166,29 @@ class OpportunityRiskPanel(MarketDEXDashboardPanel):
                     item_layout.addWidget(item_label)
                     self.item_labels.append(item_label)
             else:
+                empty_state_label, empty_state_tone = (
+                    opportunity_risk_state_badge_contract(group.state)
+                )
                 empty_label = QLabel(
-                    f'No prepared local {group.title} items.',
+                    f'{empty_state_label} - No prepared local {group.title} items.',
                     items,
                 )
                 empty_label.setObjectName('opportunityRiskEmptyGroup')
                 empty_label.setWordWrap(True)
                 empty_label.setProperty('opportunityRiskKind', group.kind)
                 empty_label.setProperty('opportunityRiskState', group.state)
+                empty_label.setProperty(
+                    'opportunityRiskDisplayLabel',
+                    empty_state_label,
+                )
+                empty_label.setProperty(
+                    'opportunityRiskStateTone',
+                    empty_state_tone.value,
+                )
+                empty_label.setProperty(
+                    'visualContract',
+                    OPPORTUNITY_RISK_ITEM_VISUAL_CONTRACT,
+                )
                 item_layout.addWidget(empty_label)
                 self.item_labels.append(empty_label)
 
