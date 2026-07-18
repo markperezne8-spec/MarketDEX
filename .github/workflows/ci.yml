@@ -228,7 +228,7 @@ jobs:
       - name: Upload MarketDEX Windows build
         uses: actions/upload-artifact@v4
         with:
-          name: MarketDEX-windows
+          name: MarketDEX-Windows
           path: dist/MarketDEX.exe
           if-no-files-found: error
       - name: Install Inno Setup compiler
