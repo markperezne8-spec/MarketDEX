@@ -170,6 +170,126 @@ def test_error_safe_state_preserves_injected_groups_inline():
     assert model.groups[1].state == 'unavailable'
 
 
+@pytest.mark.parametrize(
+    (
+        'model',
+        'expected_state',
+        'expected_headline',
+        'expected_error_text',
+        'expected_group_states',
+    ),
+    [
+        (
+            build_business_scoreboard_view_model(
+                evidence=(
+                    _group('money'),
+                    _group('throughput'),
+                )
+            ),
+            'ready',
+            'Business Scoreboard ready',
+            None,
+            ('ready', 'ready'),
+        ),
+        (
+            build_business_scoreboard_view_model(),
+            'unavailable',
+            'Business Scoreboard unavailable',
+            None,
+            ('unavailable', 'unavailable'),
+        ),
+        (
+            build_business_scoreboard_view_model(
+                evidence=(
+                    _group('money'),
+                )
+            ),
+            'partial',
+            'Business Scoreboard partially available',
+            None,
+            ('ready', 'unavailable'),
+        ),
+        (
+            build_business_scoreboard_view_model(
+                evidence=(
+                    _group('money', 'not_applicable'),
+                    _group('throughput', 'not_applicable'),
+                )
+            ),
+            'not_applicable',
+            'Business Scoreboard not applicable',
+            None,
+            ('not_applicable', 'not_applicable'),
+        ),
+        (
+            build_business_scoreboard_view_model(
+                evidence=(
+                    _group('money'),
+                ),
+                error_text='Prepared Business Scoreboard evidence could not be read.',
+            ),
+            'error',
+            'Business Scoreboard unavailable',
+            'Prepared Business Scoreboard evidence could not be read.',
+            ('ready', 'unavailable'),
+        ),
+    ],
+)
+def test_business_scoreboard_display_state_matrix_is_locked(
+    model,
+    expected_state,
+    expected_headline,
+    expected_error_text,
+    expected_group_states,
+):
+    assert model.state == expected_state
+    assert model.headline == expected_headline
+    assert model.error_text == expected_error_text
+    assert tuple(group.group for group in model.groups) == BUSINESS_SCOREBOARD_GROUP_ORDER
+    assert tuple(group.state for group in model.groups) == expected_group_states
+
+
+def test_business_scoreboard_metric_state_order_is_locked():
+    metric_states = ('ready', 'partial', 'unavailable', 'not_applicable', 'error')
+    money = business_scoreboard_group_evidence(
+        'money',
+        state='partial',
+        evidence_summary='money prepared local evidence.',
+        source_authority='Prepared local evidence',
+        period_label='90 DAYS',
+        metrics=tuple(
+            _metric(f'money metric {state}', state=state)
+            for state in metric_states
+        ),
+    )
+
+    model = build_business_scoreboard_view_model(
+        evidence=(
+            money,
+            _group('throughput'),
+        )
+    )
+
+    assert model.state == 'partial'
+    assert tuple(metric.state for metric in model.groups[0].metrics) == metric_states
+    assert [metric.label for metric in model.groups[0].metrics] == [
+        'money metric ready',
+        'money metric partial',
+        'money metric unavailable',
+        'money metric not_applicable',
+        'money metric error',
+    ]
+    assert all(metric.period_label == '90 DAYS' for metric in model.groups[0].metrics)
+    assert all(
+        metric.source_authority == 'Prepared local evidence'
+        for metric in model.groups[0].metrics
+    )
+    assert all(
+        metric.calculation_authority.endswith('prepared calculation authority.')
+        for metric in model.groups[0].metrics
+    )
+
+
 def test_business_scoreboard_contract_is_immutable():
     model = build_business_scoreboard_view_model(
         evidence=(
