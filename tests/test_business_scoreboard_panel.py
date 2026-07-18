@@ -4,6 +4,12 @@ import pytest
 from PySide6.QtWidgets import QApplication, QPushButton, QWidget
 
 from app.engines.health.status_view_model import build_health_status_view_model
+from app.engines.mission_control.business_scoreboard import (
+    BUSINESS_SCOREBOARD_GROUP_ORDER,
+    build_business_scoreboard_view_model,
+    business_scoreboard_group_evidence,
+    business_scoreboard_metric,
+)
 from app.engines.mission_control.capital_health import (
     build_capital_health_view_model,
     capital_health_group_evidence,
@@ -18,7 +24,6 @@ from app.engines.mission_control.operational_status import (
     operational_status_evidence,
 )
 from app.engines.mission_control.opportunity_risk import (
-    OPPORTUNITY_RISK_KIND_ORDER,
     build_opportunity_risk_view_model,
     opportunity_risk_evidence,
 )
@@ -26,20 +31,20 @@ from app.engines.mission_control.todays_top3 import (
     build_todays_top3_view_model,
     todays_top3_evidence,
 )
+from ui.business_scoreboard_panel import (
+    BUSINESS_SCOREBOARD_GROUP_VISUAL_CONTRACT,
+    BUSINESS_SCOREBOARD_METRIC_VISUAL_CONTRACT,
+    BUSINESS_SCOREBOARD_VISUAL_CONTRACT,
+    BusinessScoreboardPanel,
+    business_scoreboard_state_badge_contract,
+)
 from ui.design_system.tokens import NorthStarPanelTone
 from ui.design_system.widgets import StatusTone
 from ui.main_window import MainWindow
-from ui.opportunity_risk_panel import (
-    OPPORTUNITY_RISK_GROUP_VISUAL_CONTRACT,
-    OPPORTUNITY_RISK_ITEM_VISUAL_CONTRACT,
-    OPPORTUNITY_RISK_VISUAL_CONTRACT,
-    OpportunityRiskPanel,
-    opportunity_risk_state_badge_contract,
-)
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
-OPPORTUNITY_RISK_PANEL = REPOSITORY_ROOT / 'ui' / 'opportunity_risk_panel.py'
+BUSINESS_SCOREBOARD_PANEL = REPOSITORY_ROOT / 'ui' / 'business_scoreboard_panel.py'
 MAIN_WINDOW = REPOSITORY_ROOT / 'ui' / 'main_window.py'
 
 
@@ -230,20 +235,14 @@ def _ready_capital_health_model():
     )
 
 
-def _opportunity_risk_item(
-    kind: str,
-    display_order: int,
-    candidate_key: str,
-    *,
-    state: str = 'ready',
-):
+def _opportunity_risk_item(kind: str, display_order: int, candidate_key: str):
     return opportunity_risk_evidence(
         kind,
-        state=state,
+        state='ready',
         display_order=display_order,
         candidate_key=candidate_key,
         label=f'{kind} {display_order}',
-        why_it_matters=f'{kind} {display_order} may change if Mark waits.',
+        why_it_matters=f'{kind} {display_order} may change the next safe step.',
         direction_label=f'{kind} condition',
         evidence_summary=f'{kind} {display_order} prepared local evidence.',
         source_authority='Prepared local evidence',
@@ -260,226 +259,251 @@ def _ready_opportunity_risk_model():
     )
 
 
-def test_opportunity_risk_panel_renders_injected_view_model_in_order():
-    _application()
-    model = _ready_opportunity_risk_model()
-    panel = OpportunityRiskPanel(model)
+def _metric(label: str, value_label: str, state='ready'):
+    return business_scoreboard_metric(
+        label,
+        state=state,
+        value_label=value_label,
+        period_label='30 DAYS',
+        evidence_summary=f'{label} prepared local evidence.',
+        source_authority='Prepared local scoreboard evidence',
+        calculation_authority='Prepared local calculation authority',
+    )
 
-    assert panel.title_label.text() == 'Opportunity + Risk'
-    assert panel.description_label.text() == 'Read-only situational awareness'
+
+def _ready_business_scoreboard_model():
+    return build_business_scoreboard_view_model(
+        selected_period_label='30 DAYS',
+        evidence=(
+            business_scoreboard_group_evidence(
+                'money',
+                state='ready',
+                evidence_summary='Money evidence is prepared locally.',
+                source_authority='Prepared local scoreboard evidence',
+                period_label='30 DAYS',
+                metrics=(
+                    _metric('Seller Net Proceeds', '$50 prepared value'),
+                    _metric('Net Business Gain', '$12 prepared value'),
+                ),
+            ),
+            business_scoreboard_group_evidence(
+                'throughput',
+                state='ready',
+                evidence_summary='Throughput evidence is prepared locally.',
+                source_authority='Prepared local scoreboard evidence',
+                period_label='30 DAYS',
+                metrics=(
+                    _metric('Orders Completed', '4 prepared orders'),
+                    _metric('Items Sold', '6 prepared items'),
+                ),
+            ),
+        ),
+    )
+
+
+def test_business_scoreboard_panel_renders_injected_view_model_in_order():
+    _application()
+    model = _ready_business_scoreboard_model()
+    panel = BusinessScoreboardPanel(model)
+
+    assert panel.title_label.text() == 'Business Scoreboard'
+    assert panel.description_label.text() == 'Read-only period performance'
     assert panel.property('northStarTone') == NorthStarPanelTone.SCOREBOARD.value
-    assert panel.property('dashboardRole') == 'opportunity-risk-shell'
-    assert panel.property('visualContract') == OPPORTUNITY_RISK_VISUAL_CONTRACT
-    assert panel.property('opportunityRiskState') == 'ready'
-    assert panel.property('opportunityRiskGroupOrder') == ','.join(
-        OPPORTUNITY_RISK_KIND_ORDER
+    assert panel.property('dashboardRole') == 'business-scoreboard-shell'
+    assert panel.property('visualContract') == BUSINESS_SCOREBOARD_VISUAL_CONTRACT
+    assert panel.property('businessScoreboardState') == 'ready'
+    assert panel.property('businessScoreboardGroupOrder') == ','.join(
+        BUSINESS_SCOREBOARD_GROUP_ORDER
     )
     assert panel.state_badge.text() == 'Ready'
     assert panel.state_badge.property('tone') == StatusTone.POSITIVE.value
-    assert panel.state_badge.property('opportunityRiskState') == 'ready'
-    assert panel.state_badge.property('opportunityRiskDisplayLabel') == 'Ready'
-    assert panel.headline_label.text() == 'Opportunity + Risk ready'
+    assert panel.state_badge.property('businessScoreboardState') == 'ready'
+    assert panel.state_badge.property('businessScoreboardDisplayLabel') == 'Ready'
+    assert panel.period_label.text() == 'Selected period: 30 DAYS'
+    assert panel.headline_label.text() == 'Business Scoreboard ready'
     assert panel.view_model is model
     assert [badge.text() for badge in panel.group_state_badges] == [
         'Ready',
         'Ready',
     ]
     assert [label.text() for label in panel.group_labels] == [
-        'Opportunities',
-        'Prepared local freshness',
-        'Opportunities prepared local evidence.',
-        'Prepared local evidence',
-        'Risks',
-        'Prepared local freshness',
-        'Risks prepared local evidence.',
-        'Prepared local evidence',
+        'Money',
+        '30 DAYS',
+        'Money evidence is prepared locally.',
+        'Prepared local scoreboard evidence',
+        'Throughput',
+        '30 DAYS',
+        'Throughput evidence is prepared locally.',
+        'Prepared local scoreboard evidence',
     ]
-    assert [label.property('visualContract') for label in panel.item_labels] == [
-        OPPORTUNITY_RISK_ITEM_VISUAL_CONTRACT,
-        OPPORTUNITY_RISK_ITEM_VISUAL_CONTRACT,
+    assert [label.property('visualContract') for label in panel.metric_labels] == [
+        BUSINESS_SCOREBOARD_METRIC_VISUAL_CONTRACT,
+        BUSINESS_SCOREBOARD_METRIC_VISUAL_CONTRACT,
+        BUSINESS_SCOREBOARD_METRIC_VISUAL_CONTRACT,
+        BUSINESS_SCOREBOARD_METRIC_VISUAL_CONTRACT,
     ]
-    assert [label.property('opportunityRiskDisplayLabel') for label in panel.item_labels] == [
+    assert [label.property('businessScoreboardDisplayLabel') for label in panel.metric_labels] == [
+        'Ready',
+        'Ready',
         'Ready',
         'Ready',
     ]
-    assert [label.property('opportunityRiskStateTone') for label in panel.item_labels] == [
-        StatusTone.POSITIVE.value,
-        StatusTone.POSITIVE.value,
-    ]
-    assert [label.property('opportunityRiskCandidateKey') for label in panel.item_labels] == [
-        'opportunity-a',
-        'risk-a',
-    ]
 
 
-def test_opportunity_risk_panel_renders_default_unavailable_state():
+def test_business_scoreboard_panel_renders_default_unavailable_state():
     _application()
-    panel = OpportunityRiskPanel()
+    panel = BusinessScoreboardPanel()
 
     assert panel.state_badge.text() == 'Unavailable'
     assert panel.state_badge.property('tone') == StatusTone.WARNING.value
-    assert panel.state_badge.property('opportunityRiskState') == 'unavailable'
-    assert panel.state_badge.property('opportunityRiskDisplayLabel') == 'Unavailable'
-    assert panel.property('opportunityRiskState') == 'unavailable'
-    assert panel.headline_label.text() == 'Opportunity + Risk unavailable'
+    assert panel.state_badge.property('businessScoreboardState') == 'unavailable'
+    assert panel.state_badge.property('businessScoreboardDisplayLabel') == 'Unavailable'
+    assert panel.property('businessScoreboardState') == 'unavailable'
+    assert panel.period_label.text() == 'Selected period: 90 DAYS'
+    assert panel.headline_label.text() == 'Business Scoreboard unavailable'
     assert [badge.text() for badge in panel.group_state_badges] == [
         'Unavailable',
         'Unavailable',
     ]
     assert [label.text() for label in panel.group_labels] == [
-        'Opportunities',
-        'Freshness unavailable',
-        'Prepared local Opportunity evidence unavailable.',
+        'Money',
+        '90 DAYS',
+        'Prepared local Money outcome evidence unavailable.',
         'Local evidence unavailable',
-        'Risks',
-        'Freshness unavailable',
-        'Prepared local Risk evidence unavailable.',
+        'Throughput',
+        '90 DAYS',
+        'Prepared local Throughput outcome evidence unavailable.',
         'Local evidence unavailable',
     ]
-    assert [label.text() for label in panel.item_labels] == [
-        'Unavailable - No prepared local Opportunities items.',
-        'Unavailable - No prepared local Risks items.',
-    ]
-    assert [label.property('opportunityRiskDisplayLabel') for label in panel.item_labels] == [
-        'Unavailable',
-        'Unavailable',
-    ]
-    assert [label.property('opportunityRiskStateTone') for label in panel.item_labels] == [
-        StatusTone.WARNING.value,
-        StatusTone.WARNING.value,
-    ]
-
-
-def test_opportunity_risk_panel_renders_error_safely_inline():
-    _application()
-    model = build_opportunity_risk_view_model(
-        evidence=(
-            _opportunity_risk_item('opportunity', 1, 'opportunity-a'),
-            _opportunity_risk_item('risk', 1, 'risk-a'),
+    assert [label.text() for label in panel.metric_labels] == [
+        (
+            'Unavailable - Seller Net Proceeds: Unavailable. 90 DAYS. '
+            'Evidence: Evidence unavailable. Source: Local evidence unavailable. '
+            'Calculation: Calculation authority unavailable.'
         ),
-        error_text='Prepared Opportunity + Risk evidence could not be read.',
+        (
+            'Unavailable - Net Business Gain: Unavailable. 90 DAYS. '
+            'Evidence: Evidence unavailable. Source: Local evidence unavailable. '
+            'Calculation: Calculation authority unavailable.'
+        ),
+        (
+            'Unavailable - Capital Recycled This Period: Unavailable. 90 DAYS. '
+            'Evidence: Evidence unavailable. Source: Local evidence unavailable. '
+            'Calculation: Calculation authority unavailable.'
+        ),
+        (
+            'Unavailable - Orders Completed: Unavailable. 90 DAYS. '
+            'Evidence: Evidence unavailable. Source: Local evidence unavailable. '
+            'Calculation: Calculation authority unavailable.'
+        ),
+        (
+            'Unavailable - Items Sold: Unavailable. 90 DAYS. '
+            'Evidence: Evidence unavailable. Source: Local evidence unavailable. '
+            'Calculation: Calculation authority unavailable.'
+        ),
+        (
+            'Unavailable - Median Days to Sell: Unavailable. 90 DAYS. '
+            'Evidence: Evidence unavailable. Source: Local evidence unavailable. '
+            'Calculation: Calculation authority unavailable.'
+        ),
+    ]
+
+
+def test_business_scoreboard_panel_renders_error_safely_inline():
+    _application()
+    model = build_business_scoreboard_view_model(
+        selected_period_label='30 DAYS',
+        evidence=(
+            business_scoreboard_group_evidence(
+                'money',
+                state='ready',
+                evidence_summary='Money evidence is prepared locally.',
+                source_authority='Prepared local scoreboard evidence',
+                period_label='30 DAYS',
+                metrics=(
+                    _metric('Seller Net Proceeds', '$50 prepared value'),
+                ),
+            ),
+        ),
+        error_text='Prepared Business Scoreboard evidence could not be read.',
     )
-    panel = OpportunityRiskPanel(model)
+    panel = BusinessScoreboardPanel(model)
 
     assert panel.state_badge.text() == 'Error-safe'
     assert panel.state_badge.property('tone') == StatusTone.NEGATIVE.value
-    assert panel.state_badge.property('opportunityRiskState') == 'error'
-    assert panel.state_badge.property('opportunityRiskDisplayLabel') == 'Error-safe'
-    assert panel.property('opportunityRiskState') == 'error'
-    assert panel.headline_label.text() == 'Opportunity + Risk unavailable'
-    assert panel.error_label.text() == 'Prepared Opportunity + Risk evidence could not be read.'
+    assert panel.state_badge.property('businessScoreboardState') == 'error'
+    assert panel.state_badge.property('businessScoreboardDisplayLabel') == 'Error-safe'
+    assert panel.property('businessScoreboardState') == 'error'
+    assert panel.headline_label.text() == 'Business Scoreboard unavailable'
+    assert panel.error_label.text() == 'Prepared Business Scoreboard evidence could not be read.'
     assert not panel.error_label.isHidden()
+    assert [badge.text() for badge in panel.group_state_badges] == [
+        'Ready',
+        'Unavailable',
+    ]
 
 
-def test_opportunity_risk_group_cards_preserve_state_contract_properties():
+def test_business_scoreboard_group_cards_preserve_state_contract_properties():
     _application()
-    model = build_opportunity_risk_view_model(
+    model = build_business_scoreboard_view_model(
+        selected_period_label='30 DAYS',
         evidence=(
-            _opportunity_risk_item('opportunity', 1, 'opportunity-a'),
-            opportunity_risk_evidence(
-                'risk',
+            business_scoreboard_group_evidence(
+                'money',
                 state='partial',
-                display_order=1,
-                candidate_key='risk-a',
-                label='risk 1',
-                why_it_matters='risk 1 may change if Mark waits.',
-                direction_label='risk condition',
-                evidence_summary='risk 1 prepared local evidence.',
-                source_authority='Prepared local evidence',
-                freshness_label='As of prepared local snapshot',
+                evidence_summary='Money evidence is partially prepared.',
+                source_authority='Prepared local scoreboard evidence',
+                period_label='30 DAYS',
+                metrics=(
+                    _metric('Seller Net Proceeds', 'Partial', 'partial'),
+                ),
             ),
-        )
+            business_scoreboard_group_evidence(
+                'throughput',
+                state='not_applicable',
+                evidence_summary='Throughput evidence is not applicable.',
+                source_authority='Prepared local scoreboard evidence',
+                period_label='30 DAYS',
+                metrics=(
+                    _metric('Orders Completed', 'Not applicable', 'not_applicable'),
+                ),
+            ),
+        ),
     )
-    panel = OpportunityRiskPanel(model)
+    panel = BusinessScoreboardPanel(model)
 
     cards = [
         card for card in panel.findChildren(QWidget)
-        if card.property('dashboardRole') == 'opportunity-risk-group-card'
+        if card.property('dashboardRole') == 'business-scoreboard-group-card'
     ]
 
-    assert [card.property('opportunityRiskKind') for card in cards] == [
-        'opportunity',
-        'risk',
+    assert [card.property('businessScoreboardGroup') for card in cards] == [
+        'money',
+        'throughput',
     ]
-    assert [card.property('opportunityRiskState') for card in cards] == [
-        'ready',
+    assert [card.property('businessScoreboardState') for card in cards] == [
         'partial',
+        'not_applicable',
     ]
     assert [card.property('visualContract') for card in cards] == [
-        OPPORTUNITY_RISK_GROUP_VISUAL_CONTRACT,
-        OPPORTUNITY_RISK_GROUP_VISUAL_CONTRACT,
+        BUSINESS_SCOREBOARD_GROUP_VISUAL_CONTRACT,
+        BUSINESS_SCOREBOARD_GROUP_VISUAL_CONTRACT,
     ]
     assert [badge.text() for badge in panel.group_state_badges] == [
-        'Ready',
         'Partial',
+        'Not applicable',
     ]
-
-
-def test_opportunity_risk_items_preserve_each_display_state_contract():
-    _application()
-    model = build_opportunity_risk_view_model(
-        evidence=(
-            _opportunity_risk_item(
-                'opportunity',
-                1,
-                'opportunity-ready',
-                state='ready',
-            ),
-            _opportunity_risk_item(
-                'opportunity',
-                2,
-                'opportunity-partial',
-                state='partial',
-            ),
-            _opportunity_risk_item(
-                'risk',
-                1,
-                'risk-unavailable',
-                state='unavailable',
-            ),
-            _opportunity_risk_item(
-                'risk',
-                2,
-                'risk-error',
-                state='error',
-            ),
-        )
-    )
-    panel = OpportunityRiskPanel(model)
-
-    assert [label.property('opportunityRiskCandidateKey') for label in panel.item_labels] == [
-        'opportunity-ready',
-        'opportunity-partial',
-        'risk-unavailable',
-        'risk-error',
-    ]
-    assert [label.property('opportunityRiskState') for label in panel.item_labels] == [
-        'ready',
+    assert [label.property('businessScoreboardState') for label in panel.metric_labels] == [
         'partial',
-        'unavailable',
-        'error',
-    ]
-    assert [label.property('opportunityRiskDisplayLabel') for label in panel.item_labels] == [
-        'Ready',
-        'Partial',
-        'Unavailable',
-        'Error-safe',
-    ]
-    assert [label.property('opportunityRiskStateTone') for label in panel.item_labels] == [
-        StatusTone.POSITIVE.value,
-        StatusTone.WARNING.value,
-        StatusTone.WARNING.value,
-        StatusTone.NEGATIVE.value,
-    ]
-    assert [label.text().split(' - ', 1)[0] for label in panel.item_labels] == [
-        'Ready',
-        'Partial',
-        'Unavailable',
-        'Error-safe',
+        'not_applicable',
     ]
     assert [
-        label.property('visualContract') for label in panel.item_labels
-    ] == [OPPORTUNITY_RISK_ITEM_VISUAL_CONTRACT] * 4
+        label.property('businessScoreboardStateTone')
+        for label in panel.metric_labels
+    ] == [
+        StatusTone.WARNING.value,
+        StatusTone.INFORMATION.value,
+    ]
 
 
 @pytest.mark.parametrize(
@@ -488,45 +512,46 @@ def test_opportunity_risk_items_preserve_each_display_state_contract():
         ('ready', 'Ready', StatusTone.POSITIVE),
         ('unavailable', 'Unavailable', StatusTone.WARNING),
         ('partial', 'Partial', StatusTone.WARNING),
+        ('not_applicable', 'Not applicable', StatusTone.INFORMATION),
         ('error', 'Error-safe', StatusTone.NEGATIVE),
     ],
 )
-def test_opportunity_risk_state_badge_contract_is_locked(state, label, tone):
-    assert opportunity_risk_state_badge_contract(state) == (label, tone)
+def test_business_scoreboard_state_badge_contract_is_locked(state, label, tone):
+    assert business_scoreboard_state_badge_contract(state) == (label, tone)
 
 
-def test_opportunity_risk_state_badge_contract_rejects_unknown_state():
+def test_business_scoreboard_state_badge_contract_rejects_unknown_state():
     with pytest.raises(ValueError):
-        opportunity_risk_state_badge_contract('live')
+        business_scoreboard_state_badge_contract('live')
 
 
-def test_opportunity_risk_panel_has_no_action_controls():
+def test_business_scoreboard_panel_has_no_action_controls():
     _application()
-    panel = OpportunityRiskPanel(_ready_opportunity_risk_model())
+    panel = BusinessScoreboardPanel(_ready_business_scoreboard_model())
 
     assert panel.findChildren(QPushButton) == []
 
 
-def test_opportunity_risk_panel_uses_injected_model_without_fallback_builder(monkeypatch):
+def test_business_scoreboard_panel_uses_injected_model_without_fallback_builder(monkeypatch):
     _application()
-    model = _ready_opportunity_risk_model()
+    model = _ready_business_scoreboard_model()
 
     def _blocked_default_builder():
         raise AssertionError('injected view model should not use the fallback builder')
 
     monkeypatch.setattr(
-        'ui.opportunity_risk_panel.build_opportunity_risk_view_model',
+        'ui.business_scoreboard_panel.build_business_scoreboard_view_model',
         _blocked_default_builder,
     )
 
-    panel = OpportunityRiskPanel(model)
+    panel = BusinessScoreboardPanel(model)
 
     assert panel.view_model is model
     assert panel.state_badge.text() == 'Ready'
 
 
-def test_opportunity_risk_panel_contract_has_no_runtime_side_effect_paths():
-    source = OPPORTUNITY_RISK_PANEL.read_text(encoding='utf-8')
+def test_business_scoreboard_panel_contract_has_no_runtime_side_effect_paths():
+    source = BUSINESS_SCOREBOARD_PANEL.read_text(encoding='utf-8')
 
     prohibited_tokens = (
         'QMessageBox',
@@ -557,31 +582,31 @@ def test_opportunity_risk_panel_contract_has_no_runtime_side_effect_paths():
         assert token not in source
 
 
-def test_mission_control_wires_opportunity_risk_only_from_prepared_view_model():
+def test_mission_control_wires_business_scoreboard_only_from_prepared_view_model():
     source = MAIN_WINDOW.read_text(encoding='utf-8')
 
-    assert 'OpportunityRiskPanel(self._opportunity_risk_view_model)' in source
-    assert 'build_opportunity_risk_view_model' not in source
-    assert 'OpportunityRiskViewModel | None = None' in source
+    assert 'BusinessScoreboardPanel(self._business_scoreboard_view_model)' in source
+    assert 'build_business_scoreboard_view_model' not in source
+    assert 'BusinessScoreboardViewModel | None = None' in source
 
 
-def test_mission_control_places_opportunity_risk_after_capital_health_before_dashboard_grid():
+def test_mission_control_places_business_scoreboard_after_opportunity_risk_before_dashboard_grid():
     _application()
-    health_model = build_health_status_view_model(
-        status_text='Health ready',
-        diagnostic_lines=('runtime=MarketDEX', 'overall=PASS'),
-    )
     mission = _MissionControlService()
-    opportunity_risk_model = _ready_opportunity_risk_model()
+    business_scoreboard_model = _ready_business_scoreboard_model()
     window = MainWindow(
         mission,
         _InventoryService(),
-        health_model,
+        build_health_status_view_model(
+            status_text='Health ready',
+            diagnostic_lines=('runtime=MarketDEX', 'overall=PASS'),
+        ),
         _ready_operational_model(),
         _ready_next_steps_model(),
         todays_top3_view_model=_ready_todays_top3_model(),
         capital_health_view_model=_ready_capital_health_model(),
-        opportunity_risk_view_model=opportunity_risk_model,
+        opportunity_risk_view_model=_ready_opportunity_risk_model(),
+        business_scoreboard_view_model=business_scoreboard_model,
     )
 
     layout = window.inventory_panel.layout()
@@ -595,15 +620,15 @@ def test_mission_control_places_opportunity_risk_after_capital_health_before_das
     assert layout.itemAt(7).widget() is window.opportunity_risk_panel
     assert layout.itemAt(8).widget() is window.business_scoreboard_panel
     assert layout.itemAt(9).widget() is window.dashboard_grid_shell
-    assert window.opportunity_risk_panel.view_model is opportunity_risk_model
+    assert window.business_scoreboard_panel.view_model is business_scoreboard_model
 
-    old_panel = window.opportunity_risk_panel
+    old_panel = window.business_scoreboard_panel
     window.refresh()
-    assert window.opportunity_risk_panel is old_panel
+    assert window.business_scoreboard_panel is old_panel
     assert mission.snapshot_calls == 2
 
 
-def test_dashboard_grid_no_longer_contains_opportunity_risk_placeholder():
+def test_dashboard_grid_no_longer_contains_business_scoreboard_placeholder():
     _application()
     window = MainWindow(_MissionControlService(), _InventoryService())
 
@@ -614,4 +639,4 @@ def test_dashboard_grid_no_longer_contains_opportunity_risk_placeholder():
         and hasattr(panel, 'title_label')
     ]
 
-    assert 'Opportunity + Risk' not in placeholder_titles
+    assert 'Business Scoreboard' not in placeholder_titles
