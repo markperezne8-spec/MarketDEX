@@ -9,7 +9,8 @@ from ui.health_status_card import HealthStatusCard
 from ui.business_scoreboard_panel import BusinessScoreboardPanel
 from ui.capital_health_panel import CapitalHealthPanel
 from ui.next_steps_panel import NextStepsPanel
-from ui.opportunity_risk_panel import OpportunityRiskPanel\nfrom ui.visual_intelligence_panel import VisualIntelligencePanel
+from ui.opportunity_risk_panel import OpportunityRiskPanel
+from ui.visual_intelligence_panel import VisualIntelligencePanel
 from ui.operational_status_strip import OperationalStatusStrip
 from ui.todays_top3_panel import TodaysTop3Panel
 from app.engines.health.status_view_model import HealthStatusViewModel
@@ -17,7 +18,8 @@ from app.engines.mission_control.capital_health import CapitalHealthViewModel
 from app.engines.mission_control.business_scoreboard import BusinessScoreboardViewModel
 from app.engines.mission_control.header_status import HeaderStatusViewModel
 from app.engines.mission_control.next_steps import NextStepReadinessViewModel
-from app.engines.mission_control.opportunity_risk import OpportunityRiskViewModel\nfrom app.engines.mission_control.visual_intelligence import VisualIntelligenceViewModel
+from app.engines.mission_control.opportunity_risk import OpportunityRiskViewModel
+from app.engines.mission_control.visual_intelligence import VisualIntelligenceViewModel
 from app.engines.mission_control.operational_status import OperationalStatusViewModel
 from app.engines.mission_control.todays_top3 import TodaysTop3ViewModel
 
