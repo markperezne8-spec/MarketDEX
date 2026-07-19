@@ -385,3 +385,14 @@ Verified result:
 - M1.16D introduces no runtime or UI behavior change and requires no additional visual check.
 
 M1.16 remains protected from action controls, task execution, popup or dialog behavior from the Capital Health surface, formula invention, fake cash values, fake capital values, fake growth/trend/recycling/commitment values, financial-provider integration, marketplace or live-pricing integration, polling, background workers, networking, persistence changes, database migration, alerts, notifications, automation, route rewrites, new workspaces, dependency changes, or business-state mutation.
+
+
+## M1.20A checkpoint synchronization
+
+- M1.20A was merged through PR #542 after CI run #806 passed all 9 required jobs.
+- PR head: `d1deb12fe6937f831c3ce4ae475a4ae518f13dd2`; merge SHA: `771c4fbe51e0d73a426faa034356ae6137cbc9bc`.
+- The immutable Data Freshness contract and focused tests are present on `main`.
+- The merged correction restores clean syntax in `ui/main_window.py`.
+- Direct post-merge source verification confirmed all three intended paths on `main`.
+- Visual review was not required for M1.20A.
+- Next separately scoped build: M1.20B decision and possible visible read-only shell.
