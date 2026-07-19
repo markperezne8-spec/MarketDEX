@@ -50,7 +50,8 @@ class MainWindow(QMainWindow):
         self._todays_top3_view_model=todays_top3_view_model
         self._capital_health_view_model=capital_health_view_model
         self._opportunity_risk_view_model=opportunity_risk_view_model
-        self._business_scoreboard_view_model=business_scoreboard_view_model\n        self._visual_intelligence_view_model=visual_intelligence_view_model
+        self._business_scoreboard_view_model=business_scoreboard_view_model
+        self._visual_intelligence_view_model=visual_intelligence_view_model
         root=QWidget(); root.setObjectName('marketdexAppRoot'); outer=QHBoxLayout(root); panel=QWidget(); panel.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Preferred); self.inventory_panel=panel; layout=QVBoxLayout(panel); outer.addWidget(panel,1)
         self.mission_control_header=MarketDEXWorkspaceHeader('MarketDEX OS','MISSION CONTROL — LIVE SQLITE BUSINESS SNAPSHOT'); layout.addWidget(self.mission_control_header)
         self.values={}; self.dashboard_grid_shell=self._build_dashboard_grid_shell(); layout.addWidget(self.dashboard_grid_shell); inventory_header=QHBoxLayout(); self.inventory_header=inventory_header; inventory_header.addWidget(QLabel('📦 INVENTORY')); inventory_header.addStretch(1)
