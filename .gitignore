@@ -26,6 +26,10 @@ runtime/
 .coverage
 htmlcov/
 
+# Local Codex scratch workspaces
+.codex-audit-pytest*/
+.codex-pytest-tmp*/
+
 # Local packaging output
 build/
 dist/
