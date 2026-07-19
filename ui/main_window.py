@@ -125,7 +125,10 @@ class MainWindow(QMainWindow):
         tile.setAccessibleName(f'{title}. Unavailable. Evidence unavailable. Future inventory contract required.')
         return tile
 
-    def _build_visual_intelligence_shell(self):\n        return VisualIntelligencePanel(view_model=self._visual_intelligence_view_model)\n\n    def _build_unavailable_dashboard_tile(self,title,tone):
+    def _build_visual_intelligence_shell(self):
+        return VisualIntelligencePanel(view_model=self._visual_intelligence_view_model)
+
+    def _build_unavailable_dashboard_tile(self,title,tone):
         tile=MarketDEXDashboardPanel(title,'Future contract area',tone=NorthStarPanelTone.SCOREBOARD)
         tile.setObjectName('marketdexDashboardPanel')
         tile.setProperty('dashboardRole','future-contract-placeholder')
