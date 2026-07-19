@@ -9,7 +9,7 @@ from ui.health_status_card import HealthStatusCard
 from ui.business_scoreboard_panel import BusinessScoreboardPanel
 from ui.capital_health_panel import CapitalHealthPanel
 from ui.next_steps_panel import NextStepsPanel
-from ui.opportunity_risk_panel import OpportunityRiskPanel
+from ui.opportunity_risk_panel import OpportunityRiskPanel\nfrom ui.visual_intelligence_panel import VisualIntelligencePanel
 from ui.operational_status_strip import OperationalStatusStrip
 from ui.todays_top3_panel import TodaysTop3Panel
 from app.engines.health.status_view_model import HealthStatusViewModel
@@ -17,7 +17,7 @@ from app.engines.mission_control.capital_health import CapitalHealthViewModel
 from app.engines.mission_control.business_scoreboard import BusinessScoreboardViewModel
 from app.engines.mission_control.header_status import HeaderStatusViewModel
 from app.engines.mission_control.next_steps import NextStepReadinessViewModel
-from app.engines.mission_control.opportunity_risk import OpportunityRiskViewModel
+from app.engines.mission_control.opportunity_risk import OpportunityRiskViewModel\nfrom app.engines.mission_control.visual_intelligence import VisualIntelligenceViewModel
 from app.engines.mission_control.operational_status import OperationalStatusViewModel
 from app.engines.mission_control.todays_top3 import TodaysTop3ViewModel
 
@@ -38,7 +38,7 @@ class BulkAdjustDialog(QDialog):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self,service,inventory_service,health_status_view_model: HealthStatusViewModel | None = None,operational_status_view_model: OperationalStatusViewModel | None = None,next_steps_view_model: NextStepReadinessViewModel | None = None,header_status_view_model: HeaderStatusViewModel | None = None,todays_top3_view_model: TodaysTop3ViewModel | None = None,capital_health_view_model: CapitalHealthViewModel | None = None,opportunity_risk_view_model: OpportunityRiskViewModel | None = None,business_scoreboard_view_model: BusinessScoreboardViewModel | None = None):
+    def __init__(self,service,inventory_service,health_status_view_model: HealthStatusViewModel | None = None,operational_status_view_model: OperationalStatusViewModel | None = None,next_steps_view_model: NextStepReadinessViewModel | None = None,header_status_view_model: HeaderStatusViewModel | None = None,todays_top3_view_model: TodaysTop3ViewModel | None = None,capital_health_view_model: CapitalHealthViewModel | None = None,opportunity_risk_view_model: OpportunityRiskViewModel | None = None,business_scoreboard_view_model: BusinessScoreboardViewModel | None = None,visual_intelligence_view_model: VisualIntelligenceViewModel | None = None):
         super().__init__(); self.service=service; self.inventory_service=inventory_service; self.inventory_import_service=InventoryCsvImportService(inventory_service); self.inventory_rows=[]; self.inventory_view='ACTIVE'; self.setWindowTitle('MarketDEX OS — Mission Control'); self.resize(1280,800)
         self.setStyleSheet(build_marketdex_qss(build_visual_north_star_tokens()))
         self._health_status_view_model=health_status_view_model
@@ -48,7 +48,7 @@ class MainWindow(QMainWindow):
         self._todays_top3_view_model=todays_top3_view_model
         self._capital_health_view_model=capital_health_view_model
         self._opportunity_risk_view_model=opportunity_risk_view_model
-        self._business_scoreboard_view_model=business_scoreboard_view_model
+        self._business_scoreboard_view_model=business_scoreboard_view_model\n        self._visual_intelligence_view_model=visual_intelligence_view_model
         root=QWidget(); root.setObjectName('marketdexAppRoot'); outer=QHBoxLayout(root); panel=QWidget(); panel.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Preferred); self.inventory_panel=panel; layout=QVBoxLayout(panel); outer.addWidget(panel,1)
         self.mission_control_header=MarketDEXWorkspaceHeader('MarketDEX OS','MISSION CONTROL — LIVE SQLITE BUSINESS SNAPSHOT'); layout.addWidget(self.mission_control_header)
         self.values={}; self.dashboard_grid_shell=self._build_dashboard_grid_shell(); layout.addWidget(self.dashboard_grid_shell); inventory_header=QHBoxLayout(); self.inventory_header=inventory_header; inventory_header.addWidget(QLabel('📦 INVENTORY')); inventory_header.addStretch(1)
@@ -122,32 +122,7 @@ class MainWindow(QMainWindow):
         tile.setAccessibleName(f'{title}. Unavailable. Evidence unavailable. Future inventory contract required.')
         return tile
 
-    def _build_visual_intelligence_shell(self):
-        panel=MarketDEXDashboardPanel('Visual Intelligence','Read-only visual intelligence and alert-region shell',tone=NorthStarPanelTone.INTELLIGENCE)
-        panel.setObjectName('marketdexDashboardPanel')
-        panel.setProperty('dashboardRole','visual-intelligence-shell')
-        panel.setProperty('visualContract',self.visual_intelligence_visual_contract)
-        panel.setAccessibleName('Visual Intelligence. Read-only visual intelligence and alert-region shell.')
-        panel.add_header_action(MarketDEXStatusBadge('Unavailable',StatusTone.WARNING,panel))
-        grid=QGridLayout(); grid.setContentsMargins(0,0,0,0); grid.setHorizontalSpacing(10); grid.setVerticalSpacing(8)
-        for index,title in enumerate(('Performance charts','Inventory alerts','Attention heat map','Market attention trend')):
-            grid.addWidget(self._build_visual_intelligence_placeholder(title),index//2,index%2)
-        panel.content_layout.addLayout(grid)
-        return panel
-
-    def _build_visual_intelligence_placeholder(self,title):
-        tile=MarketDEXDashboardPanel(title,'Future visual intelligence contract',tone=NorthStarPanelTone.SCOREBOARD)
-        tile.setObjectName('marketdexDashboardPanel')
-        tile.setProperty('dashboardRole','visual-intelligence-placeholder')
-        tile.add_header_action(MarketDEXStatusBadge('Unavailable',StatusTone.WARNING,tile))
-        detail=QLabel('Evidence unavailable. Future visual intelligence contract required.',tile)
-        detail.setObjectName('marketdexPanelDescription')
-        detail.setWordWrap(True)
-        tile.add_content_widget(detail)
-        tile.setAccessibleName(f'{title}. Unavailable. Evidence unavailable. Future visual intelligence contract required.')
-        return tile
-
-    def _build_unavailable_dashboard_tile(self,title,tone):
+    def _build_visual_intelligence_shell(self):\n        return VisualIntelligencePanel(view_model=self._visual_intelligence_view_model)\n\n    def _build_unavailable_dashboard_tile(self,title,tone):
         tile=MarketDEXDashboardPanel(title,'Future contract area',tone=NorthStarPanelTone.SCOREBOARD)
         tile.setObjectName('marketdexDashboardPanel')
         tile.setProperty('dashboardRole','future-contract-placeholder')
