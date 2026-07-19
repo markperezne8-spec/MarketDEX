@@ -25,6 +25,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: requirements.txt
       - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
       - run: pytest -q --tb=short --junitxml=core-results.xml tests/test_runtime_database_authority.py tests/test_cap005a_product_registry_authority.py tests/test_cap005b_inventory_product_link_authority.py tests/test_build701p_inventory_product_link_read_boundary.py tests/test_build701q_inventory_product_link_read_request.py tests/test_build701r_inventory_product_link_read_adapter.py tests/test_build701s_inventory_detail_read_boundary.py tests/test_build701t_inventory_detail_read_adapter.py tests/test_cap005c_product_registry_lookup.py tests/test_cap008a_settlement_evidence_parent.py tests/test_cap008b_settlement_evidence_linkage.py tests/test_cap008d_settlement_verification_authority.py tests/test_cap008e_linkage_contradiction_guidance.py tests/test_cap009a_settlement_allocation_evidence.py tests/test_cap009b_allocation_group_cross_check.py tests/test_cap009c_sale_settlement_attribution_readiness.py tests/test_cap009d_allocation_group_lifecycle.py tests/test_build504_stale_cross_check_authority.py tests/test_build504_stale_cross_check_lock_authority.py tests/test_cap010a_allocation_revision_supersession.py tests/test_cap011a_allocation_evidence_lock.py tests/test_m39a_standalone_settlement.py app/engines/health/tests/test_health_application_adapter.py app/engines/health/tests/test_health_application_adapter_contract.py app/engines/health/tests/test_health_application_payload.py
@@ -44,6 +45,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: requirements.txt
       - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
       - name: Run Collection gate
@@ -69,6 +71,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: requirements.txt
       - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
       - name: Run Market Intelligence gate
@@ -95,6 +98,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: requirements.txt
       - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
       - name: Run Reports gate
@@ -136,6 +140,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: requirements.txt
       - run: pip install -q -r requirements.txt pytest
       - run: pytest -q --tb=short tests/test_inventory_app_integration.py tests/test_inventory_metadata_defaults.py tests/test_inventory_sort_integration.py
 
@@ -148,6 +153,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: requirements.txt
       - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
       - run: pytest -q --tb=short tests/test_inventory_profit_feature.py tests/test_inventory_price_guidance_feature.py tests/test_inventory_business_scenarios.py
@@ -161,6 +167,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: requirements.txt
       - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
       - name: Run Listing gate
@@ -182,6 +189,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: requirements.txt
       - run: sudo apt-get update && sudo apt-get install -y libegl1
       - run: pip install -q -r requirements.txt pytest
       - name: Validate Mission Control design-system migration
@@ -207,6 +215,9 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: |
+            requirements-build.txt
+            requirements.txt
       - run: pip install -q -r requirements-build.txt pytest
       - name: Run Desktop contract gate
         run: pytest -q --tb=short --junitxml=desktop-results.xml tests/test_architecture_governance_contract.py tests/test_market_intelligence_foundation.py tests/test_application_composition.py tests/test_build701w_inventory_age_composition.py tests/test_build701aa_inventory_age_query_composition.py tests/test_build701ab_inventory_age_query_boundary.py tests/test_build701ad_catalog_report_query.py tests/test_build701ah_composition_query_request.py tests/test_feature_catalog.py tests/test_workspace_navigation_contract.py tests/test_workspace_host.py tests/test_shell_workspace_catalog.py tests/test_cap005c_product_registry_workspace.py tests/test_cap005c_product_registry_navigation.py tests/test_maximized_desktop_launch_contract.py tests/test_packaged_launcher_contract.py tests/test_application_shell_contract.py tests/test_installer_contract.py tests/test_wheel_safe_value_controls.py tests/test_shell_workspace_foundation.py tests/test_canonical_runtime_authority.py
