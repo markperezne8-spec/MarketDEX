@@ -7,7 +7,7 @@
 
 ## Baseline
 
-Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary.
+Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary. This reconciliation is current through PR #554 and the merged Build 701 Reports sequence.
 
 ## Permanent Runtime Authority
 
@@ -25,15 +25,19 @@ Immutable and append-only triggers protect event identity, inventory history, pu
 
 ## Verified CI Topology
 
-The permanent CI topology contains five gates:
+The permanent CI topology contains nine required gates:
 
+- Core Tests
+- Collection
+- Market Intelligence
+- Reports
 - Inventory
 - Pricing
 - Listing
+- Mission Control Visual Slice
 - Desktop Build
-- Core Tests
 
-Desktop Build compiles root `launcher.py` and runs workspace navigation and maximized-launch contracts. Core Tests verify runtime database authority and directly gate CAP-008 settlement evidence/linkage/verification authority, CAP-009 settlement allocation authority, CAP-010 revisions, CAP-011 locks, and M39A settlement regression behavior.
+Desktop Build compiles and packages the permanent root runtime, verifies composition and workspace contracts, builds the installer, and verifies the installed runtime. Core Tests protect runtime database authority and authority-heavy settlement contracts. The dedicated Reports gate directly exercises the Build 701 definition, Inventory Age projection/provider/query/request chain, source-authority boundaries, and read-only report contracts.
 
 ## Capability Evidence Summary
 
@@ -55,21 +59,33 @@ The delivered contract is intentionally limited to canonical Product Registry id
 
 `docs/Architecture/CAP-006B_COLLECTION_WRITE_AUTHORITY_GATE.md` records the controlling authority boundary. CAP-006 remains `Partial`; no Collection persistence, CRUD, lifecycle command, automatic Inventory conversion, or speculative business vocabulary is authorized.
 
+### Delivered Reports read-only slice
+
+Build 701 introduced the canonical CAP-012 Reports foundation through `reports/definitions.py`, Inventory Age source/provider/query/request contracts, `reports/report_query_service.py`, root application composition, workspace registration, and `ui/reports_workspace.py`.
+
+The delivered contract contains one approved report: `inventory-age-patterns`. It is catalog-only, offline, deterministic, composition-owned, and read-only. Result presentation preserves outcome, reason, inventory position, as-of date, source domain, source date, source field, evidence state, and explicit unavailable/non-found semantics without creating duplicate persistence or business authority.
+
+The dedicated Reports CI gate and Desktop Build composition tests protect the current extension point. CAP-012 is `Partial`, not `Missing` and not `Complete`; additional report definitions, cross-domain reconciliation, charts, exports, providers, persistence, and expanded analytics require separately approved workbook-backed boundaries.
+
 ### Existing work that must be extended, not rebuilt
 
 Mission Control/dashboard code exists in multiple repository surfaces, including root services and `app/` UI/service components. Product Registry service logic and product-aware lifecycle logic exist. Marketplace allocation and publication lifecycle infrastructure also exist.
 
-The read-only Collection Position service and workspace are now permanent extension points. A later Collection build must extend those surfaces through the existing application composition, runtime database, Product Registry references, Inventory authority separation, and audit architecture rather than introducing parallel replacements.
+The read-only Collection Position service/workspace and the composition-owned Reports catalog/query/workspace are permanent extension points. Later builds must extend those surfaces through the existing application composition, runtime database, source-domain authority separation, and audit architecture rather than introducing parallel replacements.
 
 ### Remaining repository-backed capability gaps
 
-The Capability Matrix identifies Collection as Partial and Reports as Missing. Collection Position remains incomplete as an ownership model until its workbook-backed position grain, field vocabulary, evidence ownership, transition rules, and archive semantics are accepted. Reports must continue to wait for that ownership model; no capability may be selected from roadmap memory alone.
+The Capability Matrix identifies Collection and Reports as `Partial`. Collection Position remains incomplete as an ownership model until its workbook-backed position grain, field vocabulary, evidence ownership, transition rules, and archive semantics are accepted.
+
+Reports has one verified Inventory Age report but no authorization to infer the next report from roadmap memory. The next Reports slice must begin with one approved workbook-backed business question, explicit source-domain authority, deterministic query/read-model contracts, and scoped verification. No chart, export, provider, persistence, cross-domain total, or automation follows by assumption.
 
 ## Reconciliation Result
 
-CAP-008 / Builds 481-497 parity is `Complete` after PR #148, CAP-005 Product Registry is `Complete` after PR #171, and CAP-006 has a provisional read-only slice after PR #175.
+CAP-008 / Builds 481-497 parity is `Complete` after PR #148, CAP-005 Product Registry is `Complete` after PR #171, and CAP-006 has a provisional read-only slice after PR #175 with its mutation boundary locked by PR #178.
 
-CAP-006B establishes the next controlled boundary: preserve the existing query-only projection, classify CAP-006 as `Partial`, and block Collection-owned persistence or mutation until the authority gate is satisfied. The next implementation build must be separately approved and must not derive authority from placeholder UI, roadmap language, or this planning record alone.
+CAP-012 is reconciled from `Missing` to `Partial` based on the merged Build 701 sequence through PR #359: immutable definitions, composition-owned query execution, canonical workspace presentation, provenance-visible Inventory Age results, dedicated Reports CI, and accepted visual evidence are present on `main`.
+
+The next implementation build must be separately approved and must not derive authority from placeholder UI, roadmap language, stale capability classification, or this reconciliation record alone.
 
 ## Known Reconciliation Debt
 
