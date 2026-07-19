@@ -2,6 +2,7 @@ from reports.definitions import (
     CURRENT_STATE,
     EVENT_HISTORY,
     INVENTORY_AGE_PATTERNS_REPORT,
+    INVENTORY_TURNOVER_REPORT,
     build_report_catalog,
 )
 
@@ -17,11 +18,14 @@ def test_inventory_age_fixture_matches_workbook_backed_definition() -> None:
     assert 'without executing queries or defining thresholds' in definition.description
 
 
-def test_default_catalog_contains_exactly_one_deterministic_fixture() -> None:
+def test_default_catalog_contains_deterministic_report_fixtures() -> None:
     catalog = build_report_catalog()
 
-    assert catalog.report_ids == ('inventory-age-patterns',)
-    assert catalog.list_definitions() == (INVENTORY_AGE_PATTERNS_REPORT,)
+    assert catalog.report_ids == ('inventory-age-patterns', 'inventory-turnover')
+    assert catalog.list_definitions() == (
+        INVENTORY_AGE_PATTERNS_REPORT,
+        INVENTORY_TURNOVER_REPORT,
+    )
     assert catalog.get('INVENTORY-AGE-PATTERNS') is INVENTORY_AGE_PATTERNS_REPORT
 
 
