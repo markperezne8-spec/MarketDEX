@@ -396,3 +396,17 @@ M1.16 remains protected from action controls, task execution, popup or dialog be
 - Direct post-merge source verification confirmed all three intended paths on `main`.
 - Visual review was not required for M1.20A.
 - Next separately scoped build: M1.20B decision and possible visible read-only shell.
+
+
+## Repository hygiene and CI guard synchronization
+
+- PR #546 locked the canonical runtime authority guard after CI run #811 passed all 9 required jobs; merge commit `ccf7fc48d45b74cacc8093c6bf5f6d1a12b878b8`.
+- PR #548 added explicit `.gitignore` protection for local Codex/Pytest scratch folders after CI run #813 passed all 9 required jobs; merge commit `90bd416228e35991b9a019ed62dfdcb00f9a042f`.
+- PR #550 stabilized Python dependency cache keys after CI run #815 passed all 9 required jobs; merge commit `601f61556be927c64fd08a6c214da90b48971e30`.
+- PR #552 added the CI workflow gate inventory guard after CI run #817 passed all 9 required jobs; merge commit `1d837b6355b232770d27c12d7cbf3dc1024f14b3`.
+- The canonical root runtime remains protected: `launcher.py`, root `composition/`, root `ui/`, and root `services/`.
+- Legacy `app/` runtime trees remain explicitly noncanonical and must not be deleted by assumption.
+- CI acceleration is now guarded against silently removing required job ids, cache dependency paths, Desktop contract gate, packaged runtime verification, installer build, installed runtime verification, or installer artifact upload.
+- Visual review was not required for this repository-hygiene and CI-governance sequence.
+- Pull required locally: **YES when Mark is back at the PC**: GitHub Desktop -> `main` -> Fetch origin -> Pull origin.
+- Next movement may proceed from synchronized GitHub `main`; local runtime or visual checks should wait until Mark pulls.
