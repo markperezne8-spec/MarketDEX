@@ -243,14 +243,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: MarketDEX-Windows-Build
-          path: dist/MarketDEX/**
+          path: dist/MarketDEX.exe
           if-no-files-found: error
       - name: Install Inno Setup compiler
         shell: pwsh
         run: choco install innosetup --yes --no-progress
       - name: Build MarketDEX installer
         shell: pwsh
-        run: iscc installer/MarketDEX.iss
+        run: iscc installer\MarketDEX.iss
       - name: Verify installed MarketDEX runtime
         shell: pwsh
         run: |
