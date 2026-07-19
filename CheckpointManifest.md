@@ -544,3 +544,15 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Added immutable Data Freshness evidence and view-model contracts with deterministic ordering and explicit display states.
 - Added focused contract tests and corrected the Visual Intelligence shell syntax defect.
 - Visual review was not required for this contract synchronization.
+
+
+## Repository Hygiene R006 - Canonical Runtime and CI Guard Synchronization
+
+- PR #546 added a canonical runtime authority guard, protecting root `launcher.py`, root `composition/`, root `ui/`, and packaging entrypoint usage while preserving the legacy `app/` tree as explicitly noncanonical.
+- PR #548 added `.gitignore` rules for local Codex/Pytest scratch folders: `.codex-audit-pytest*/` and `.codex-pytest-tmp*/`.
+- PR #550 added explicit Python `cache-dependency-path` values for runtime/test jobs and Desktop Build dependency caching.
+- PR #552 added `tests/test_ci_workflow_contract.py` and runs it in Desktop Build to protect required CI job ids, cache paths, packaged runtime verification, installer build, installed runtime verification, and installer artifact upload.
+- CI runs #811, #813, #815, and #817 passed all 9 required jobs before merge.
+- Final sequence merge commit: `1d837b6355b232770d27c12d7cbf3dc1024f14b3`.
+- No runtime behavior, UI behavior, dependency, business logic, persistence, networking, provider, alert, notification, automation, or business-state mutation was introduced.
+- Visual check was not required.
