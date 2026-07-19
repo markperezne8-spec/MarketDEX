@@ -4,8 +4,10 @@ import pytest
 
 from composition.application_composition import ApplicationComposition
 from reports.definitions import (
+    CATALOG_ONLY_EXECUTION_MODE,
     CURRENT_STATE,
     EVENT_HISTORY,
+    INVENTORY_TURNOVER_REPORT,
     OUTCOMES,
     ReportCatalog,
     ReportDefinition,
@@ -70,13 +72,39 @@ def test_report_catalog_is_deterministic_and_rejects_duplicates() -> None:
         catalog.get('missing')
 
 
+def test_inventory_turnover_definition_is_catalog_only_and_authority_bound() -> None:
+    assert INVENTORY_TURNOVER_REPORT.report_id == 'inventory-turnover'
+    assert INVENTORY_TURNOVER_REPORT.name == 'Inventory Turnover'
+    assert (
+        INVENTORY_TURNOVER_REPORT.business_question
+        == 'How quickly does business inventory turn over?'
+    )
+    assert INVENTORY_TURNOVER_REPORT.evidence_families == (
+        CURRENT_STATE,
+        EVENT_HISTORY,
+        OUTCOMES,
+    )
+    assert INVENTORY_TURNOVER_REPORT.source_domains == (
+        'audit',
+        'inventory',
+        'listing',
+    )
+    assert INVENTORY_TURNOVER_REPORT.execution_mode == CATALOG_ONLY_EXECUTION_MODE
+
+
 def test_application_composition_owns_one_non_executable_catalog(tmp_path) -> None:
     first = ApplicationComposition(tmp_path / 'first.sqlite3')
     second = ApplicationComposition(tmp_path / 'second.sqlite3')
 
+    expected_ids = ('inventory-age-patterns', 'inventory-turnover')
     assert isinstance(first.report_catalog, ReportCatalog)
-    assert first.report_catalog.report_ids == ('inventory-age-patterns',)
-    assert second.report_catalog.report_ids == ('inventory-age-patterns',)
+    assert first.report_catalog.report_ids == expected_ids
+    assert second.report_catalog.report_ids == expected_ids
+    assert [item.report_id for item in first.report_catalog.list_definitions()] == [
+        'inventory-age-patterns',
+        'inventory-turnover',
+    ]
+    assert first.report_catalog.get('inventory-turnover') is INVENTORY_TURNOVER_REPORT
     assert first.report_catalog is not second.report_catalog
     assert not hasattr(first.report_catalog, 'execute')
     assert not hasattr(first.report_catalog, 'save')
