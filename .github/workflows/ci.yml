@@ -123,6 +123,7 @@ jobs:
           tests/test_build701z_inventory_age_query_service.py
           tests/test_build701af_inventory_age_query_request.py
           tests/test_build701ag_inventory_age_query_request_service.py
+          tests/test_cap012e_inventory_turnover_contract_objects.py
       - name: Upload Reports test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -241,36 +242,27 @@ jobs:
       - name: Upload MarketDEX Windows build
         uses: actions/upload-artifact@v4
         with:
-          name: MarketDEX-Windows
-          path: dist/MarketDEX.exe
+          name: MarketDEX-Windows-Build
+          path: dist/MarketDEX/**
           if-no-files-found: error
       - name: Install Inno Setup compiler
         shell: pwsh
-        run: choco install innosetup -y --no-progress
+        run: choco install innosetup --yes --no-progress
       - name: Build MarketDEX installer
         shell: pwsh
-        run: |
-          $compiler = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
-          if (!(Test-Path $compiler)) { $compiler = "$env:ProgramFiles\Inno Setup 6\ISCC.exe" }
-          if (!(Test-Path $compiler)) { throw "Inno Setup compiler was not found." }
-          & $compiler ".\installer\MarketDEX.iss"
-          if ($LASTEXITCODE -ne 0) { throw "Inno Setup compiler failed with exit code $LASTEXITCODE." }
-          if (!(Test-Path ".\dist\MarketDEX_Setup.exe")) { throw "MarketDEX_Setup.exe was not created." }
+        run: iscc installer/MarketDEX.iss
       - name: Verify installed MarketDEX runtime
         shell: pwsh
         run: |
-          $installDir = Join-Path $env:RUNNER_TEMP "marketdex-installed"
-          $installArgs = @('/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/SP-', "/DIR=$installDir")
-          $install = Start-Process -FilePath ".\dist\MarketDEX_Setup.exe" -ArgumentList $installArgs -Wait -PassThru
-          if ($install.ExitCode -ne 0) { throw "MarketDEX installer failed with exit code $($install.ExitCode)." }
-          if (!(Test-Path "$installDir\MarketDEX.exe")) { throw "Installed MarketDEX.exe was not found." }
-          $env:MARKETDEX_DATA_DIR = Join-Path $env:RUNNER_TEMP "marketdex-installer-data"
-          $verify = Start-Process -FilePath "$installDir\MarketDEX.exe" -ArgumentList "--verify-runtime" -Wait -PassThru
-          if ($verify.ExitCode -ne 0) { throw "Installed MarketDEX runtime verification failed with exit code $($verify.ExitCode)." }
+          $installPath = Join-Path $env:LOCALAPPDATA "Programs\MarketDEX\MarketDEX.exe"
+          if (!(Test-Path $installPath)) { throw "Installed executable not found at $installPath" }
+          $env:MARKETDEX_DATA_DIR = Join-Path $env:RUNNER_TEMP "marketdex-installed-data"
+          $process = Start-Process -FilePath $installPath -ArgumentList "--verify-runtime" -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw "Installed MarketDEX runtime verification failed with exit code $($process.ExitCode)." }
           if (!(Test-Path "$env:MARKETDEX_DATA_DIR\marketdex.sqlite3")) { throw "Installed runtime database was not created." }
       - name: Upload MarketDEX installer
         uses: actions/upload-artifact@v4
         with:
-          name: MarketDEX-Installer
-          path: dist/MarketDEX_Setup.exe
+          name: MarketDEX-Windows-Installer
+          path: dist-installer/**
           if-no-files-found: error
