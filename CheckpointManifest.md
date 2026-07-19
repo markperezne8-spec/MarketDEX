@@ -535,3 +535,12 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Verified Availability keeps Available Cash distinct from Available for Redeployment.
 - M1.16D introduces no runtime change, UI change, action controls, task execution, popup behavior, formula invention, fake capital values, financial-provider integration, polling, networking, persistence, alerts, notifications, automation, dependency change, or business mutation.
 - M1.16D itself requires no new visual check because it records visual acceptance already supplied by Mark.
+
+
+## M1.20A - Data Freshness Contract Synchronization
+
+- M1.20A was merged through PR #542 after CI run #806 passed all 9 required jobs.
+- PR head: `d1deb12fe6937f831c3ce4ae475a4ae518f13dd2`; merge SHA: `771c4fbe51e0d73a426faa034356ae6137cbc9bc`.
+- Added immutable Data Freshness evidence and view-model contracts with deterministic ordering and explicit display states.
+- Added focused contract tests and corrected the Visual Intelligence shell syntax defect.
+- Visual review was not required for this contract synchronization.
