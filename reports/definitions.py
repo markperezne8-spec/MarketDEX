@@ -134,6 +134,23 @@ INVENTORY_AGE_PATTERNS_REPORT = ReportDefinition(
     ),
 )
 
+INVENTORY_TURNOVER_REPORT = ReportDefinition(
+    report_id='inventory-turnover',
+    name='Inventory Turnover',
+    business_question='How quickly does business inventory turn over?',
+    evidence_families=(CURRENT_STATE, EVENT_HISTORY, OUTCOMES),
+    source_domains=('audit', 'inventory', 'listing'),
+    description=(
+        'Catalog-only definition for the inventory-turnover-units-v1 '
+        'contract without query execution or formula computation.'
+    ),
+)
+
 
 def build_report_catalog() -> ReportCatalog:
-    return ReportCatalog((INVENTORY_AGE_PATTERNS_REPORT,))
+    return ReportCatalog(
+        (
+            INVENTORY_AGE_PATTERNS_REPORT,
+            INVENTORY_TURNOVER_REPORT,
+        )
+    )
