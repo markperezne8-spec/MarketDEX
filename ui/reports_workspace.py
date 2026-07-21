@@ -77,6 +77,7 @@ class ReportsWorkspace(QWidget):
 
         self.turnover_panel = QGroupBox('Inventory Turnover')
         self.turnover_panel.setObjectName('reportsInventoryTurnoverPanel')
+        self.turnover_panel.setMinimumHeight(250)
 
         self.turnover_status_label = QLabel(
             'Read-only visual preview · deterministic CAP-012H result shape · no live execution.'
@@ -85,6 +86,7 @@ class ReportsWorkspace(QWidget):
         self.turnover_status_label.setWordWrap(True)
 
         self.turnover_metric_labels: dict[str, QLabel] = {}
+        self.turnover_metric_cards: dict[str, QFrame] = {}
         metrics_layout = QGridLayout()
         metrics_layout.setContentsMargins(0, 0, 0, 0)
         metrics_layout.setHorizontalSpacing(10)
@@ -93,19 +95,23 @@ class ReportsWorkspace(QWidget):
             card = QFrame()
             card.setObjectName(f'{object_name}Card')
             card.setFrameShape(QFrame.StyledPanel)
+            card.setMinimumHeight(72)
             card_layout = QVBoxLayout(card)
             card_layout.setContentsMargins(12, 9, 12, 9)
             card_layout.setSpacing(2)
 
             caption_label = QLabel(caption.upper())
             caption_label.setObjectName(f'{object_name}Caption')
+            caption_label.setMinimumHeight(18)
             value_label = QLabel(value)
             value_label.setObjectName(object_name)
             value_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+            value_label.setMinimumHeight(26)
 
             card_layout.addWidget(caption_label)
             card_layout.addWidget(value_label)
             metrics_layout.addWidget(card, index // 3, index % 3)
+            self.turnover_metric_cards[object_name] = card
             self.turnover_metric_labels[object_name] = value_label
 
         self.turnover_period_label = QLabel('PERIOD  ·  2026-01-01 → 2026-02-01  ·  CLOSED')
@@ -163,7 +169,7 @@ class ReportsWorkspace(QWidget):
             0, QHeaderView.ResizeToContents
         )
         self.result_table.horizontalHeader().setStretchLastSection(True)
-        self.result_table.setMinimumHeight(260)
+        self.result_table.setMinimumHeight(180)
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(18, 18, 18, 18)
