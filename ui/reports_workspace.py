@@ -8,6 +8,8 @@ from PySide6.QtWidgets import (
     QAbstractItemView,
     QDateEdit,
     QFormLayout,
+    QFrame,
+    QGridLayout,
     QGroupBox,
     QHeaderView,
     QLabel,
@@ -27,20 +29,13 @@ class ReportsWorkspace(QWidget):
     """Read-only Reports catalog and result surface."""
 
     HEADERS = ('Report', 'Business Question', 'Evidence', 'Status')
-    TURNOVER_PREVIEW_ROWS = (
-        ('Report', 'Inventory Turnover'),
-        ('Formula', 'inventory-turnover-units-v1'),
-        ('Period', 'Closed-period preview · 2026-01-01 to 2026-02-01'),
-        ('Opening eligible units', '10'),
-        ('Closing eligible units', '6'),
-        ('Completed-sale units', '4'),
-        ('Average eligible units', '8'),
-        ('Turnover ratio', '0.5'),
-        ('Turnover percentage', '50.0%'),
-        ('Evidence state', 'available · deterministic read-only sample'),
-        ('Unavailable state', 'visible · no turnover values exposed'),
-        ('Conflict state', 'visible · contradictory evidence blocks numeric output'),
-        ('Mutation authority', 'none · read-only presentation'),
+    TURNOVER_METRICS = (
+        ('Turnover', '50.0%', 'reportsTurnoverPercentage'),
+        ('Ratio', '0.5×', 'reportsTurnoverRatio'),
+        ('Opening units', '10', 'reportsTurnoverOpeningUnits'),
+        ('Closing units', '6', 'reportsTurnoverClosingUnits'),
+        ('Completed sales', '4', 'reportsTurnoverCompletedSales'),
+        ('Average units', '8', 'reportsTurnoverAverageUnits'),
     )
 
     def __init__(
@@ -89,27 +84,58 @@ class ReportsWorkspace(QWidget):
         self.turnover_status_label.setObjectName('reportsInventoryTurnoverStatus')
         self.turnover_status_label.setWordWrap(True)
 
-        self.turnover_table = QTableWidget(0, 2)
-        self.turnover_table.setObjectName('reportsInventoryTurnoverTable')
-        self.turnover_table.setHorizontalHeaderLabels(('Inventory Turnover Field', 'Value'))
-        self.turnover_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.turnover_table.horizontalHeader().setSectionResizeMode(
-            0, QHeaderView.ResizeToContents
+        self.turnover_metric_labels: dict[str, QLabel] = {}
+        metrics_layout = QGridLayout()
+        metrics_layout.setContentsMargins(0, 0, 0, 0)
+        metrics_layout.setHorizontalSpacing(10)
+        metrics_layout.setVerticalSpacing(10)
+        for index, (caption, value, object_name) in enumerate(self.TURNOVER_METRICS):
+            card = QFrame()
+            card.setObjectName(f'{object_name}Card')
+            card.setFrameShape(QFrame.StyledPanel)
+            card_layout = QVBoxLayout(card)
+            card_layout.setContentsMargins(12, 9, 12, 9)
+            card_layout.setSpacing(2)
+
+            caption_label = QLabel(caption.upper())
+            caption_label.setObjectName(f'{object_name}Caption')
+            value_label = QLabel(value)
+            value_label.setObjectName(object_name)
+            value_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+
+            card_layout.addWidget(caption_label)
+            card_layout.addWidget(value_label)
+            metrics_layout.addWidget(card, index // 3, index % 3)
+            self.turnover_metric_labels[object_name] = value_label
+
+        self.turnover_period_label = QLabel('PERIOD  ·  2026-01-01 → 2026-02-01  ·  CLOSED')
+        self.turnover_period_label.setObjectName('reportsTurnoverPeriod')
+        self.turnover_formula_label = QLabel('FORMULA  ·  inventory-turnover-units-v1')
+        self.turnover_formula_label.setObjectName('reportsTurnoverFormula')
+        self.turnover_evidence_label = QLabel(
+            'EVIDENCE AVAILABLE  ·  deterministic read-only sample  ·  no mutation authority'
         )
-        self.turnover_table.horizontalHeader().setStretchLastSection(True)
-        self.turnover_table.setMaximumHeight(330)
+        self.turnover_evidence_label.setObjectName('reportsTurnoverEvidence')
+        self.turnover_evidence_label.setWordWrap(True)
+        self.turnover_guardrail_label = QLabel(
+            'Unavailable evidence exposes no turnover values. Conflicting evidence blocks numeric output.'
+        )
+        self.turnover_guardrail_label.setObjectName('reportsTurnoverGuardrails')
+        self.turnover_guardrail_label.setWordWrap(True)
 
         turnover_layout = QVBoxLayout(self.turnover_panel)
         turnover_layout.setContentsMargins(12, 12, 12, 12)
         turnover_layout.setSpacing(8)
         turnover_layout.addWidget(self.turnover_status_label)
-        turnover_layout.addWidget(self.turnover_table)
+        turnover_layout.addLayout(metrics_layout)
+        turnover_layout.addWidget(self.turnover_period_label)
+        turnover_layout.addWidget(self.turnover_formula_label)
+        turnover_layout.addWidget(self.turnover_evidence_label)
+        turnover_layout.addWidget(self.turnover_guardrail_label)
 
         self.inventory_position_input = QLineEdit()
         self.inventory_position_input.setObjectName('reportsInventoryPositionInput')
-        self.inventory_position_input.setPlaceholderText(
-            'Inventory position ID'
-        )
+        self.inventory_position_input.setPlaceholderText('Inventory position ID')
 
         self.as_of_date_input = QDateEdit(QDate.currentDate())
         self.as_of_date_input.setObjectName('reportsAsOfDateInput')
@@ -137,7 +163,7 @@ class ReportsWorkspace(QWidget):
             0, QHeaderView.ResizeToContents
         )
         self.result_table.horizontalHeader().setStretchLastSection(True)
-        self.result_table.setMinimumHeight(300)
+        self.result_table.setMinimumHeight(260)
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(18, 18, 18, 18)
@@ -174,7 +200,6 @@ class ReportsWorkspace(QWidget):
             f'{len(definitions)} approved report definition(s) · catalog only · '
             'query execution remains composition-owned.'
         )
-        self._render_turnover_preview()
         self.result_status_label.setText(
             'Enter an inventory position and select an as-of date to review a read-only result.'
         )
@@ -274,15 +299,6 @@ class ReportsWorkspace(QWidget):
                 ('Source field', 'purchase_date'),
             )
         )
-
-    def _render_turnover_preview(self) -> None:
-        self.turnover_table.setRowCount(len(self.TURNOVER_PREVIEW_ROWS))
-        for row_index, (field, value) in enumerate(self.TURNOVER_PREVIEW_ROWS):
-            for column_index, item_value in enumerate((field, value)):
-                item = QTableWidgetItem(str(item_value))
-                item.setFlags(item.flags() & ~Qt.ItemIsEditable)
-                self.turnover_table.setItem(row_index, column_index, item)
-        self.turnover_table.resizeRowsToContents()
 
     def _set_result_rows(self, values: tuple[tuple[str, object], ...]) -> None:
         self.result_table.setRowCount(len(values))
