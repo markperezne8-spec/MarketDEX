@@ -152,10 +152,14 @@ def test_application_composition_mounts_reports_workspace(tmp_path) -> None:
 
     window.workspace_host.activate(REPORTS_WORKSPACE_ID)
 
-    assert window.workspace_host.currentWidget() is window.reports_workspace
-    assert window.workspace_host.currentWidget().turnover_panel.title() == 'Inventory Turnover'
-    assert window.workspace_host.currentWidget().turnover_presentation is composition.inventory_turnover_presentation
-    assert window.workspace_host.currentWidget().turnover_metric_labels['reportsTurnoverPercentage'].text() == '50.0%'
+    reports_workspace = window.workspace_host.currentWidget()
+    assert reports_workspace is window.reports_workspace
+    assert reports_workspace.turnover_panel.title() == 'Inventory Turnover'
+    assert reports_workspace.turnover_presentation is composition.inventory_turnover_presentation
+    assert (
+        reports_workspace.turnover_metric_labels['reportsTurnoverPercentage'].text()
+        == composition.inventory_turnover_presentation.turnover_percentage
+    )
     assert window.workspace_host.workspace_context.text() == 'REPORTS'
     assert window.workspace_host.status_message.text() == 'Reports workspace active'
     window.close()
