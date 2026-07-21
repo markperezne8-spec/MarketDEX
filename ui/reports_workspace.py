@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
     QLabel,
     QLineEdit,
     QPushButton,
+    QScrollArea,
     QTableWidget,
     QTableWidgetItem,
     QVBoxLayout,
@@ -68,16 +69,15 @@ class ReportsWorkspace(QWidget):
         self.report_table.setHorizontalHeaderLabels(self.HEADERS)
         self.report_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.report_table.setSelectionBehavior(QTableWidget.SelectRows)
-        self.report_table.setSelectionMode(QAbstractItemView.SingleSelection)
-        self.report_table.horizontalHeader().setSectionResizeMode(
-            QHeaderView.ResizeToContents
-        )
+        self.report_table.setSelectionMode(QTableWidget.SingleSelection)
+        self.report_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.report_table.horizontalHeader().setStretchLastSection(True)
-        self.report_table.setMaximumHeight(190)
+        self.report_table.setMinimumHeight(120)
+        self.report_table.setMaximumHeight(150)
 
         self.turnover_panel = QGroupBox('Inventory Turnover')
         self.turnover_panel.setObjectName('reportsInventoryTurnoverPanel')
-        self.turnover_panel.setMinimumHeight(250)
+        self.turnover_panel.setMinimumHeight(350)
 
         self.turnover_status_label = QLabel(
             'Read-only visual preview · deterministic CAP-012H result shape · no live execution.'
@@ -95,7 +95,7 @@ class ReportsWorkspace(QWidget):
             card = QFrame()
             card.setObjectName(f'{object_name}Card')
             card.setFrameShape(QFrame.StyledPanel)
-            card.setMinimumHeight(72)
+            card.setMinimumHeight(76)
             card_layout = QVBoxLayout(card)
             card_layout.setContentsMargins(12, 9, 12, 9)
             card_layout.setSpacing(2)
@@ -152,7 +152,11 @@ class ReportsWorkspace(QWidget):
         self.review_button.setObjectName('reportsReviewResultButton')
         self.review_button.clicked.connect(self.review_selected_report)
 
-        query_form = QFormLayout()
+        self.query_form_widget = QWidget()
+        self.query_form_widget.setObjectName('reportsInventoryAgeQueryForm')
+        query_form = QFormLayout(self.query_form_widget)
+        query_form.setContentsMargins(0, 0, 0, 0)
+        query_form.setVerticalSpacing(10)
         query_form.addRow('Inventory position', self.inventory_position_input)
         query_form.addRow('As-of date', self.as_of_date_input)
         query_form.addRow('', self.review_button)
@@ -165,23 +169,33 @@ class ReportsWorkspace(QWidget):
         self.result_table.setObjectName('reportsResultTable')
         self.result_table.setHorizontalHeaderLabels(('Field', 'Value'))
         self.result_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.result_table.horizontalHeader().setSectionResizeMode(
-            0, QHeaderView.ResizeToContents
-        )
+        self.result_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self.result_table.horizontalHeader().setStretchLastSection(True)
         self.result_table.setMinimumHeight(180)
 
+        self.scroll_content = QWidget()
+        self.scroll_content.setObjectName('reportsScrollContent')
+        content_layout = QVBoxLayout(self.scroll_content)
+        content_layout.setContentsMargins(18, 18, 18, 18)
+        content_layout.setSpacing(10)
+        content_layout.addWidget(title)
+        content_layout.addWidget(subtitle)
+        content_layout.addWidget(self.status_label)
+        content_layout.addWidget(self.report_table)
+        content_layout.addWidget(self.turnover_panel)
+        content_layout.addWidget(self.query_form_widget)
+        content_layout.addWidget(self.result_status_label)
+        content_layout.addWidget(self.result_table)
+
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setObjectName('reportsScrollArea')
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scroll_area.setWidget(self.scroll_content)
+
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(18, 18, 18, 18)
-        layout.setSpacing(10)
-        layout.addWidget(title)
-        layout.addWidget(subtitle)
-        layout.addWidget(self.status_label)
-        layout.addWidget(self.report_table, 1)
-        layout.addWidget(self.turnover_panel)
-        layout.addLayout(query_form)
-        layout.addWidget(self.result_status_label)
-        layout.addWidget(self.result_table)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.addWidget(self.scroll_area)
 
         self.refresh()
 
@@ -270,10 +284,7 @@ class ReportsWorkspace(QWidget):
                     ('Evidence state', 'unavailable'),
                     ('Evidence reason', result.reason or 'No report row available'),
                     ('Inventory position', inventory_position_id or 'Not provided'),
-                    (
-                        'As-of date',
-                        as_of_date.isoformat() if as_of_date is not None else 'Not provided',
-                    ),
+                    ('As-of date', as_of_date.isoformat() if as_of_date else 'Not provided'),
                     ('Age (days)', 'unavailable'),
                     ('Age reason', result.reason or 'No report row available'),
                     ('Source domain', 'inventory'),
