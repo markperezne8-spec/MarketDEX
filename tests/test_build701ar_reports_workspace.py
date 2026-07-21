@@ -6,7 +6,10 @@ from PySide6.QtWidgets import QApplication, QAbstractItemView, QPushButton
 
 from composition.application_composition import ApplicationComposition
 from reports.definitions import build_report_catalog
-from reports.inventory_turnover_presentation import InventoryTurnoverPresentation
+from reports.inventory_turnover_presentation import (
+    InventoryTurnoverPresentation,
+    present_inventory_turnover,
+)
 from ui.reports_workspace import ReportsWorkspace
 from ui.shell_workspace_catalog import REPORTS_WORKSPACE_ID
 
@@ -134,6 +137,14 @@ def test_application_composition_mounts_reports_workspace(tmp_path) -> None:
     app = QApplication.instance() or QApplication([])
     composition = ApplicationComposition(tmp_path / 'marketdex.sqlite3')
 
+    assert composition.inventory_turnover_presentation == present_inventory_turnover(
+        composition.inventory_turnover_preview_result
+    )
+    assert composition.inventory_turnover_preview_result.provenance == (
+        'composition:deterministic-preview',
+    )
+    assert composition.inventory_turnover_preview_result.turnover_percentage == 50
+
     window = composition.build_main_window()
 
     assert isinstance(window.reports_workspace, ReportsWorkspace)
@@ -141,10 +152,14 @@ def test_application_composition_mounts_reports_workspace(tmp_path) -> None:
 
     window.workspace_host.activate(REPORTS_WORKSPACE_ID)
 
-    assert window.workspace_host.currentWidget() is window.reports_workspace
-    assert window.workspace_host.currentWidget().turnover_panel.title() == 'Inventory Turnover'
-    assert window.workspace_host.currentWidget().turnover_presentation is composition.inventory_turnover_presentation
-    assert window.workspace_host.currentWidget().turnover_metric_labels['reportsTurnoverPercentage'].text() == '50.0%'
+    reports_workspace = window.workspace_host.currentWidget()
+    assert reports_workspace is window.reports_workspace
+    assert reports_workspace.turnover_panel.title() == 'Inventory Turnover'
+    assert reports_workspace.turnover_presentation is composition.inventory_turnover_presentation
+    assert (
+        reports_workspace.turnover_metric_labels['reportsTurnoverPercentage'].text()
+        == composition.inventory_turnover_presentation.turnover_percentage
+    )
     assert window.workspace_host.workspace_context.text() == 'REPORTS'
     assert window.workspace_host.status_message.text() == 'Reports workspace active'
     window.close()

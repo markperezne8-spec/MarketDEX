@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
+from decimal import Decimal
 from pathlib import Path
 
 from composition.feature_catalog import install_features
@@ -11,7 +12,11 @@ from reports.inventory_age_query import (
     InventoryAgeReportQueryResult,
     InventoryAgeReportQueryService,
 )
-from reports.inventory_turnover_presentation import InventoryTurnoverPresentation
+from reports.inventory_turnover_contract import (
+    InventoryTurnoverReportRequest,
+    InventoryTurnoverReportResult,
+)
+from reports.inventory_turnover_presentation import present_inventory_turnover
 from reports.report_query_request import ReportQueryRequest
 from reports.report_query_service import ReportQueryService
 from services.collection_position_service import CollectionPositionService
@@ -61,19 +66,28 @@ class ApplicationComposition:
             self.report_catalog,
             self.inventory_age_report_query,
         )
-        self.inventory_turnover_presentation = InventoryTurnoverPresentation(
+        self.inventory_turnover_preview_result = InventoryTurnoverReportResult(
+            request=InventoryTurnoverReportRequest(
+                period_start=date(2026, 1, 1),
+                period_end=date(2026, 2, 1),
+                as_of=date(2026, 2, 1),
+                source_coverage_required=('closed_period',),
+            ),
             outcome='valid',
-            status='VALID',
             reason='Deterministic read-only sample',
-            period='2026-01-01 → 2026-02-01',
-            formula='inventory-turnover-units-v1',
-            evidence='available · closed_period',
-            opening_units='10',
-            closing_units='6',
-            average_units='8',
-            completed_sale_units='4',
-            turnover_ratio='0.5×',
-            turnover_percentage='50.0%',
+            source_domains=('inventory', 'listing', 'audit'),
+            source_coverage=('closed_period',),
+            evidence_state='available',
+            provenance=('composition:deterministic-preview',),
+            opening_eligible_inventory_units=10,
+            closing_eligible_inventory_units=6,
+            average_eligible_inventory_units=Decimal('8'),
+            completed_sale_units=4,
+            turnover_ratio=Decimal('0.5'),
+            turnover_percentage=Decimal('50'),
+        )
+        self.inventory_turnover_presentation = present_inventory_turnover(
+            self.inventory_turnover_preview_result
         )
 
     def list_reports(self) -> tuple[ReportDefinition, ...]:
