@@ -24,6 +24,24 @@ from PySide6.QtWidgets import (
 
 from reports.definitions import ReportCatalog
 from reports.inventory_age_query import InventoryAgeReportQueryResult
+from reports.inventory_turnover_presentation import InventoryTurnoverPresentation
+
+
+def _unavailable_turnover_presentation() -> InventoryTurnoverPresentation:
+    return InventoryTurnoverPresentation(
+        outcome='unavailable',
+        status='UNAVAILABLE',
+        reason='Presentation snapshot not provided',
+        period='Unavailable',
+        formula='Unavailable',
+        evidence='unavailable',
+        opening_units='Unavailable',
+        closing_units='Unavailable',
+        average_units='Unavailable',
+        completed_sale_units='Unavailable',
+        turnover_ratio='Unavailable',
+        turnover_percentage='Unavailable',
+    )
 
 
 class ReportsWorkspace(QWidget):
@@ -31,12 +49,12 @@ class ReportsWorkspace(QWidget):
 
     HEADERS = ('Report', 'Business Question', 'Evidence', 'Status')
     TURNOVER_METRICS = (
-        ('Turnover', '50.0%', 'reportsTurnoverPercentage'),
-        ('Ratio', '0.5×', 'reportsTurnoverRatio'),
-        ('Opening units', '10', 'reportsTurnoverOpeningUnits'),
-        ('Closing units', '6', 'reportsTurnoverClosingUnits'),
-        ('Completed sales', '4', 'reportsTurnoverCompletedSales'),
-        ('Average units', '8', 'reportsTurnoverAverageUnits'),
+        ('Turnover', 'turnover_percentage', 'reportsTurnoverPercentage'),
+        ('Ratio', 'turnover_ratio', 'reportsTurnoverRatio'),
+        ('Opening units', 'opening_units', 'reportsTurnoverOpeningUnits'),
+        ('Closing units', 'closing_units', 'reportsTurnoverClosingUnits'),
+        ('Completed sales', 'completed_sale_units', 'reportsTurnoverCompletedSales'),
+        ('Average units', 'average_units', 'reportsTurnoverAverageUnits'),
     )
 
     def __init__(
@@ -45,10 +63,15 @@ class ReportsWorkspace(QWidget):
         query_report: Callable[[str, str, date], InventoryAgeReportQueryResult]
         | None = None,
         parent=None,
+        *,
+        turnover_presentation: InventoryTurnoverPresentation | None = None,
     ):
         super().__init__(parent)
         self.catalog = catalog
         self.query_report = query_report
+        self.turnover_presentation = (
+            turnover_presentation or _unavailable_turnover_presentation()
+        )
         self.setObjectName('reportsWorkspace')
 
         title = QLabel('Reports')
@@ -80,7 +103,9 @@ class ReportsWorkspace(QWidget):
         self.turnover_panel.setMinimumHeight(350)
 
         self.turnover_status_label = QLabel(
-            'Read-only visual preview · deterministic CAP-012H result shape · no live execution.'
+            'Read-only visual preview · '
+            f'{self.turnover_presentation.status} · '
+            f'{self.turnover_presentation.reason}'
         )
         self.turnover_status_label.setObjectName('reportsInventoryTurnoverStatus')
         self.turnover_status_label.setWordWrap(True)
@@ -91,7 +116,7 @@ class ReportsWorkspace(QWidget):
         metrics_layout.setContentsMargins(0, 0, 0, 0)
         metrics_layout.setHorizontalSpacing(10)
         metrics_layout.setVerticalSpacing(10)
-        for index, (caption, value, object_name) in enumerate(self.TURNOVER_METRICS):
+        for index, (caption, field_name, object_name) in enumerate(self.TURNOVER_METRICS):
             card = QFrame()
             card.setObjectName(f'{object_name}Card')
             card.setFrameShape(QFrame.StyledPanel)
@@ -103,7 +128,7 @@ class ReportsWorkspace(QWidget):
             caption_label = QLabel(caption.upper())
             caption_label.setObjectName(f'{object_name}Caption')
             caption_label.setMinimumHeight(18)
-            value_label = QLabel(value)
+            value_label = QLabel(str(getattr(self.turnover_presentation, field_name)))
             value_label.setObjectName(object_name)
             value_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
             value_label.setMinimumHeight(26)
@@ -114,12 +139,17 @@ class ReportsWorkspace(QWidget):
             self.turnover_metric_cards[object_name] = card
             self.turnover_metric_labels[object_name] = value_label
 
-        self.turnover_period_label = QLabel('PERIOD  ·  2026-01-01 → 2026-02-01  ·  CLOSED')
+        self.turnover_period_label = QLabel(
+            f'PERIOD  ·  {self.turnover_presentation.period}  ·  '
+            f'{self.turnover_presentation.status}'
+        )
         self.turnover_period_label.setObjectName('reportsTurnoverPeriod')
-        self.turnover_formula_label = QLabel('FORMULA  ·  inventory-turnover-units-v1')
+        self.turnover_formula_label = QLabel(
+            f'FORMULA  ·  {self.turnover_presentation.formula}'
+        )
         self.turnover_formula_label.setObjectName('reportsTurnoverFormula')
         self.turnover_evidence_label = QLabel(
-            'EVIDENCE AVAILABLE  ·  deterministic read-only sample  ·  no mutation authority'
+            f'EVIDENCE  ·  {self.turnover_presentation.evidence}  ·  no mutation authority'
         )
         self.turnover_evidence_label.setObjectName('reportsTurnoverEvidence')
         self.turnover_evidence_label.setWordWrap(True)
