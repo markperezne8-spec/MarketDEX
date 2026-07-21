@@ -32,6 +32,9 @@ from ui.shell_workspace_catalog import (
     register_product_registry_workspace,
     register_reports_workspace,
 )
+from ui.inventory_workspace_focus_feature import (
+    install_inventory_workspace_focus_feature,
+)
 from ui.viewport_fit_feature import install_viewport_fit_feature
 from ui.workspace_registry import WorkspaceRegistry
 
@@ -156,6 +159,7 @@ class ApplicationComposition:
             reports_workspace,
         )
         install_viewport_fit_feature(window, self.workspace_registry)
+        install_inventory_workspace_focus_feature(window)
         window.product_registry_workspace = product_registry_workspace
         window.collection_position_workspace = collection_position_workspace
         window.market_intelligence_workspace = market_intelligence_workspace
