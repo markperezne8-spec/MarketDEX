@@ -10,16 +10,6 @@ from ui.reports_workspace import ReportsWorkspace
 from ui.shell_workspace_catalog import REPORTS_WORKSPACE_ID
 
 
-def _table_values(table) -> set[str]:
-    values: set[str] = set()
-    for row in range(table.rowCount()):
-        for column in range(table.columnCount()):
-            item = table.item(row, column)
-            if item is not None:
-                values.add(item.text())
-    return values
-
-
 def test_reports_workspace_is_read_only_catalog_surface() -> None:
     app = QApplication.instance() or QApplication([])
     workspace = ReportsWorkspace(build_report_catalog())
@@ -36,23 +26,36 @@ def test_reports_workspace_is_read_only_catalog_surface() -> None:
     workspace.close()
 
 
-def test_reports_workspace_has_visible_inventory_turnover_panel() -> None:
+def test_reports_workspace_has_visible_inventory_turnover_kpi_dashboard() -> None:
     app = QApplication.instance() or QApplication([])
     workspace = ReportsWorkspace(build_report_catalog())
 
     assert workspace.turnover_panel.objectName() == 'reportsInventoryTurnoverPanel'
     assert workspace.turnover_panel.title() == 'Inventory Turnover'
     assert 'read-only visual preview' in workspace.turnover_status_label.text().lower()
-    assert workspace.turnover_table.objectName() == 'reportsInventoryTurnoverTable'
-    assert workspace.turnover_table.editTriggers() == QAbstractItemView.NoEditTriggers
 
-    values = _table_values(workspace.turnover_table)
-    assert 'inventory-turnover-units-v1' in values
-    assert 'Turnover percentage' in values
-    assert '50.0%' in values
-    assert 'Unavailable state' in values
-    assert 'Conflict state' in values
-    assert 'none · read-only presentation' in values
+    expected_metrics = {
+        'reportsTurnoverPercentage': '50.0%',
+        'reportsTurnoverRatio': '0.5×',
+        'reportsTurnoverOpeningUnits': '10',
+        'reportsTurnoverClosingUnits': '6',
+        'reportsTurnoverCompletedSales': '4',
+        'reportsTurnoverAverageUnits': '8',
+    }
+    assert set(workspace.turnover_metric_labels) == set(expected_metrics)
+    for object_name, expected_value in expected_metrics.items():
+        label = workspace.turnover_metric_labels[object_name]
+        assert label.objectName() == object_name
+        assert label.text() == expected_value
+        assert label.isVisibleTo(workspace) is False or not label.isHidden()
+
+    assert '2026-01-01' in workspace.turnover_period_label.text()
+    assert '2026-02-01' in workspace.turnover_period_label.text()
+    assert 'inventory-turnover-units-v1' in workspace.turnover_formula_label.text()
+    assert 'EVIDENCE AVAILABLE' in workspace.turnover_evidence_label.text()
+    assert 'no mutation authority' in workspace.turnover_evidence_label.text()
+    assert 'Unavailable evidence exposes no turnover values' in workspace.turnover_guardrail_label.text()
+    assert 'Conflicting evidence blocks numeric output' in workspace.turnover_guardrail_label.text()
     assert workspace.turnover_panel.findChildren(QPushButton) == []
     workspace.close()
 
@@ -82,6 +85,7 @@ def test_application_composition_mounts_reports_workspace(tmp_path) -> None:
 
     assert window.workspace_host.currentWidget() is window.reports_workspace
     assert window.workspace_host.currentWidget().turnover_panel.title() == 'Inventory Turnover'
+    assert window.workspace_host.currentWidget().turnover_metric_labels['reportsTurnoverPercentage'].text() == '50.0%'
     assert window.workspace_host.workspace_context.text() == 'REPORTS'
     assert window.workspace_host.status_message.text() == 'Reports workspace active'
     window.close()
