@@ -32,6 +32,7 @@ def test_reports_workspace_has_visible_inventory_turnover_kpi_dashboard() -> Non
 
     assert workspace.turnover_panel.objectName() == 'reportsInventoryTurnoverPanel'
     assert workspace.turnover_panel.title() == 'Inventory Turnover'
+    assert workspace.turnover_panel.minimumHeight() >= 250
     assert 'read-only visual preview' in workspace.turnover_status_label.text().lower()
 
     expected_metrics = {
@@ -43,12 +44,17 @@ def test_reports_workspace_has_visible_inventory_turnover_kpi_dashboard() -> Non
         'reportsTurnoverAverageUnits': '8',
     }
     assert set(workspace.turnover_metric_labels) == set(expected_metrics)
+    assert set(workspace.turnover_metric_cards) == set(expected_metrics)
     for object_name, expected_value in expected_metrics.items():
         label = workspace.turnover_metric_labels[object_name]
+        card = workspace.turnover_metric_cards[object_name]
         assert label.objectName() == object_name
         assert label.text() == expected_value
+        assert label.minimumHeight() >= 26
+        assert card.minimumHeight() >= 72
         assert label.isVisibleTo(workspace) is False or not label.isHidden()
 
+    assert workspace.result_table.minimumHeight() <= 180
     assert '2026-01-01' in workspace.turnover_period_label.text()
     assert '2026-02-01' in workspace.turnover_period_label.text()
     assert 'inventory-turnover-units-v1' in workspace.turnover_formula_label.text()
