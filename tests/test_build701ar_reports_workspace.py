@@ -10,6 +10,7 @@ from reports.inventory_turnover_presentation import (
     InventoryTurnoverPresentation,
     present_inventory_turnover,
 )
+from reports.inventory_turnover_preview import build_inventory_turnover_preview_result
 from ui.reports_workspace import ReportsWorkspace
 from ui.shell_workspace_catalog import REPORTS_WORKSPACE_ID
 
@@ -133,15 +134,29 @@ def test_inventory_turnover_catalog_selection_is_preview_only() -> None:
     workspace.close()
 
 
+def test_inventory_turnover_preview_factory_is_deterministic() -> None:
+    first = build_inventory_turnover_preview_result()
+    second = build_inventory_turnover_preview_result()
+
+    assert first == second
+    assert first is not second
+    assert first.provenance == ('reports:deterministic-preview',)
+    assert first.turnover_percentage == 50
+    assert present_inventory_turnover(first).turnover_percentage == '50%'
+
+
 def test_application_composition_mounts_reports_workspace(tmp_path) -> None:
     app = QApplication.instance() or QApplication([])
     composition = ApplicationComposition(tmp_path / 'marketdex.sqlite3')
 
+    assert composition.inventory_turnover_preview_result == (
+        build_inventory_turnover_preview_result()
+    )
     assert composition.inventory_turnover_presentation == present_inventory_turnover(
         composition.inventory_turnover_preview_result
     )
     assert composition.inventory_turnover_preview_result.provenance == (
-        'composition:deterministic-preview',
+        'reports:deterministic-preview',
     )
     assert composition.inventory_turnover_preview_result.turnover_percentage == 50
 
