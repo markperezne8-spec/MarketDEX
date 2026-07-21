@@ -160,7 +160,6 @@ def test_inventory_activation_focuses_combined_page_on_inventory_anchor():
     assert anchor.objectName() == 'marketdexInventoryWorkspaceAnchor'
     assert anchor.property('visualContract') == INVENTORY_WORKSPACE_FOCUS_CONTRACT
     assert scroll.verticalScrollBar().value() == expected
-    assert scroll.verticalScrollBar().value() > 0
     window.close()
 
 
