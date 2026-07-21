@@ -173,3 +173,13 @@ __all__ += (
     'InventoryTurnoverReportProvider',
     'InventoryTurnoverReportQueryService',
 )
+
+from reports.inventory_turnover_presentation import (
+    InventoryTurnoverPresentation,
+    present_inventory_turnover,
+)
+
+__all__ += (
+    'InventoryTurnoverPresentation',
+    'present_inventory_turnover',
+)
