@@ -124,6 +124,7 @@ jobs:
           tests/test_build701af_inventory_age_query_request.py
           tests/test_build701ag_inventory_age_query_request_service.py
           tests/test_cap012e_inventory_turnover_contract_objects.py
+          tests/test_cap012g_inventory_turnover_query_boundary.py
       - name: Upload Reports test results
         if: always()
         uses: actions/upload-artifact@v4
