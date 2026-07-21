@@ -3,6 +3,7 @@ from pathlib import Path
 
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
+from PySide6.QtCore import QPoint
 from PySide6.QtWidgets import (
     QApplication,
     QGroupBox,
@@ -13,6 +14,10 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
+from ui.inventory_workspace_focus_feature import (
+    INVENTORY_WORKSPACE_FOCUS_CONTRACT,
+    install_inventory_workspace_focus_feature,
+)
 from ui.shell_workspace_catalog import (
     INVENTORY_WORKSPACE_ID,
     LISTING_WORKFLOW_WORKSPACE_ID,
@@ -122,6 +127,40 @@ def test_workspace_handoffs_navigate_by_stable_workspace_identity():
     assert window.workspace_host.currentWidget() is window.workspace_host.workspace_widget(
         LISTING_WORKFLOW_WORKSPACE_ID
     )
+    window.close()
+
+
+def test_inventory_activation_focuses_combined_page_on_inventory_anchor():
+    app = QApplication.instance() or QApplication([])
+    window = _window_fixture()
+    mission_control_stub = QLabel('Mission Control content')
+    mission_control_stub.setFixedHeight(1200)
+    window.inventory_panel.layout().insertWidget(0, mission_control_stub)
+
+    install_viewport_fit_feature(window)
+    install_inventory_workspace_focus_feature(window)
+    window.resize(1000, 600)
+    window.show()
+    app.processEvents()
+
+    window.workspace_host.activate(PRICING_WORKSPACE_ID)
+    window.workspace_host.activate(INVENTORY_WORKSPACE_ID)
+    app.processEvents()
+    app.processEvents()
+
+    scroll = window.marketdex_workspace_scroll
+    content = scroll.widget()
+    anchor = window.inventory_workspace_anchor
+    target = anchor.mapTo(content, QPoint(0, 0)).y()
+    expected = max(
+        scroll.verticalScrollBar().minimum(),
+        min(target, scroll.verticalScrollBar().maximum()),
+    )
+
+    assert anchor.objectName() == 'marketdexInventoryWorkspaceAnchor'
+    assert anchor.property('visualContract') == INVENTORY_WORKSPACE_FOCUS_CONTRACT
+    assert scroll.verticalScrollBar().value() == expected
+    assert scroll.verticalScrollBar().value() > 0
     window.close()
 
 
