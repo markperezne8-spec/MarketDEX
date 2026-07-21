@@ -1,3 +1,4 @@
+from dataclasses import FrozenInstanceError
 from datetime import date
 from decimal import Decimal
 
@@ -18,6 +19,7 @@ from reports.inventory_turnover_contract import (
     InventoryTurnoverReportRequest,
     InventoryTurnoverReportResult,
 )
+from reports.inventory_turnover_presentation import present_inventory_turnover
 from reports.inventory_turnover_query import (
     InventoryTurnoverReportProvider,
     InventoryTurnoverReportQueryService,
@@ -236,3 +238,42 @@ def test_deterministic_provider_fails_closed_for_grouped_request() -> None:
     assert result.outcome == OUTCOME_UNAVAILABLE
     assert result.reason == 'grouped Inventory Turnover results are not authorized'
     assert result.turnover_ratio is None
+
+
+def test_inventory_turnover_presentation_formats_valid_result() -> None:
+    result = DeterministicInventoryTurnoverProvider(
+        _evidence(10, 6, 4)
+    ).get_inventory_turnover_result(_request())
+
+    presentation = present_inventory_turnover(result)
+
+    assert presentation.status == 'VALID'
+    assert presentation.period == '2026-01-01 → 2026-02-01'
+    assert presentation.formula == 'inventory-turnover-units-v1'
+    assert presentation.opening_units == '10'
+    assert presentation.closing_units == '6'
+    assert presentation.average_units == '8'
+    assert presentation.completed_sale_units == '4'
+    assert presentation.turnover_ratio == '0.5×'
+    assert presentation.turnover_percentage == '50%'
+    with pytest.raises(FrozenInstanceError):
+        presentation.status = 'changed'  # type: ignore[misc]
+
+
+def test_inventory_turnover_presentation_hides_conflict_numbers() -> None:
+    result = DeterministicInventoryTurnoverProvider(
+        _evidence(10, 6, 4, state=EVIDENCE_CONFLICTING, reason='quantity conflict')
+    ).get_inventory_turnover_result(_request())
+
+    presentation = present_inventory_turnover(result)
+
+    assert presentation.status == 'CONFLICT'
+    assert presentation.reason == 'quantity conflict'
+    assert {
+        presentation.opening_units,
+        presentation.closing_units,
+        presentation.average_units,
+        presentation.completed_sale_units,
+        presentation.turnover_ratio,
+        presentation.turnover_percentage,
+    } == {'Unavailable'}
