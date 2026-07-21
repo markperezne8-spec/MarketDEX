@@ -11,6 +11,7 @@ from reports.inventory_age_query import (
     InventoryAgeReportQueryResult,
     InventoryAgeReportQueryService,
 )
+from reports.inventory_turnover_presentation import InventoryTurnoverPresentation
 from reports.report_query_request import ReportQueryRequest
 from reports.report_query_service import ReportQueryService
 from services.collection_position_service import CollectionPositionService
@@ -59,6 +60,20 @@ class ApplicationComposition:
         self.report_query = ReportQueryService(
             self.report_catalog,
             self.inventory_age_report_query,
+        )
+        self.inventory_turnover_presentation = InventoryTurnoverPresentation(
+            outcome='valid',
+            status='VALID',
+            reason='Deterministic read-only sample',
+            period='2026-01-01 → 2026-02-01',
+            formula='inventory-turnover-units-v1',
+            evidence='available · closed_period',
+            opening_units='10',
+            closing_units='6',
+            average_units='8',
+            completed_sale_units='4',
+            turnover_ratio='0.5×',
+            turnover_percentage='50.0%',
         )
 
     def list_reports(self) -> tuple[ReportDefinition, ...]:
@@ -137,7 +152,12 @@ class ApplicationComposition:
             self.workspace_registry,
             market_intelligence_workspace,
         )
-        reports_workspace = ReportsWorkspace(self.report_catalog, self.query_report, window)
+        reports_workspace = ReportsWorkspace(
+            self.report_catalog,
+            self.query_report,
+            window,
+            turnover_presentation=self.inventory_turnover_presentation,
+        )
         register_reports_workspace(
             self.workspace_registry,
             reports_workspace,
