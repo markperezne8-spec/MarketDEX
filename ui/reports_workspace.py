@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (
     QAbstractItemView,
     QDateEdit,
     QFormLayout,
+    QGroupBox,
     QHeaderView,
     QLabel,
     QLineEdit,
@@ -23,9 +24,24 @@ from reports.inventory_age_query import InventoryAgeReportQueryResult
 
 
 class ReportsWorkspace(QWidget):
-    """Read-only Reports catalog and Inventory Age result surface."""
+    """Read-only Reports catalog and result surface."""
 
     HEADERS = ('Report', 'Business Question', 'Evidence', 'Status')
+    TURNOVER_PREVIEW_ROWS = (
+        ('Report', 'Inventory Turnover'),
+        ('Formula', 'inventory-turnover-units-v1'),
+        ('Period', 'Closed-period preview · 2026-01-01 to 2026-02-01'),
+        ('Opening eligible units', '10'),
+        ('Closing eligible units', '6'),
+        ('Completed-sale units', '4'),
+        ('Average eligible units', '8'),
+        ('Turnover ratio', '0.5'),
+        ('Turnover percentage', '50.0%'),
+        ('Evidence state', 'available · deterministic read-only sample'),
+        ('Unavailable state', 'visible · no turnover values exposed'),
+        ('Conflict state', 'visible · contradictory evidence blocks numeric output'),
+        ('Mutation authority', 'none · read-only presentation'),
+    )
 
     def __init__(
         self,
@@ -64,6 +80,31 @@ class ReportsWorkspace(QWidget):
         self.report_table.horizontalHeader().setStretchLastSection(True)
         self.report_table.setMaximumHeight(190)
 
+        self.turnover_panel = QGroupBox('Inventory Turnover')
+        self.turnover_panel.setObjectName('reportsInventoryTurnoverPanel')
+
+        self.turnover_status_label = QLabel(
+            'Read-only visual preview · deterministic CAP-012H result shape · no live execution.'
+        )
+        self.turnover_status_label.setObjectName('reportsInventoryTurnoverStatus')
+        self.turnover_status_label.setWordWrap(True)
+
+        self.turnover_table = QTableWidget(0, 2)
+        self.turnover_table.setObjectName('reportsInventoryTurnoverTable')
+        self.turnover_table.setHorizontalHeaderLabels(('Inventory Turnover Field', 'Value'))
+        self.turnover_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.turnover_table.horizontalHeader().setSectionResizeMode(
+            0, QHeaderView.ResizeToContents
+        )
+        self.turnover_table.horizontalHeader().setStretchLastSection(True)
+        self.turnover_table.setMaximumHeight(330)
+
+        turnover_layout = QVBoxLayout(self.turnover_panel)
+        turnover_layout.setContentsMargins(12, 12, 12, 12)
+        turnover_layout.setSpacing(8)
+        turnover_layout.addWidget(self.turnover_status_label)
+        turnover_layout.addWidget(self.turnover_table)
+
         self.inventory_position_input = QLineEdit()
         self.inventory_position_input.setObjectName('reportsInventoryPositionInput')
         self.inventory_position_input.setPlaceholderText(
@@ -96,7 +137,7 @@ class ReportsWorkspace(QWidget):
             0, QHeaderView.ResizeToContents
         )
         self.result_table.horizontalHeader().setStretchLastSection(True)
-        self.result_table.setMinimumHeight(360)
+        self.result_table.setMinimumHeight(300)
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(18, 18, 18, 18)
@@ -105,6 +146,7 @@ class ReportsWorkspace(QWidget):
         layout.addWidget(subtitle)
         layout.addWidget(self.status_label)
         layout.addWidget(self.report_table, 1)
+        layout.addWidget(self.turnover_panel)
         layout.addLayout(query_form)
         layout.addWidget(self.result_status_label)
         layout.addWidget(self.result_table)
@@ -132,6 +174,7 @@ class ReportsWorkspace(QWidget):
             f'{len(definitions)} approved report definition(s) · catalog only · '
             'query execution remains composition-owned.'
         )
+        self._render_turnover_preview()
         self.result_status_label.setText(
             'Enter an inventory position and select an as-of date to review a read-only result.'
         )
@@ -148,6 +191,12 @@ class ReportsWorkspace(QWidget):
         definitions = self.catalog.list_definitions()
         if row_index < 0 or row_index >= len(definitions):
             self.result_status_label.setText('Select an approved report definition first.')
+            return
+        if definitions[row_index].report_id != 'inventory-age-patterns':
+            self.result_status_label.setText(
+                f'{definitions[row_index].name}: visible read-only preview only; '
+                'interactive query execution is not enabled for this report.'
+            )
             return
 
         inventory_position_id = self.inventory_position_input.text().strip()
@@ -225,6 +274,15 @@ class ReportsWorkspace(QWidget):
                 ('Source field', 'purchase_date'),
             )
         )
+
+    def _render_turnover_preview(self) -> None:
+        self.turnover_table.setRowCount(len(self.TURNOVER_PREVIEW_ROWS))
+        for row_index, (field, value) in enumerate(self.TURNOVER_PREVIEW_ROWS):
+            for column_index, item_value in enumerate((field, value)):
+                item = QTableWidgetItem(str(item_value))
+                item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+                self.turnover_table.setItem(row_index, column_index, item)
+        self.turnover_table.resizeRowsToContents()
 
     def _set_result_rows(self, values: tuple[tuple[str, object], ...]) -> None:
         self.result_table.setRowCount(len(values))
