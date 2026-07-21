@@ -6,8 +6,28 @@ from PySide6.QtWidgets import QApplication, QAbstractItemView, QPushButton
 
 from composition.application_composition import ApplicationComposition
 from reports.definitions import build_report_catalog
+from reports.inventory_turnover_presentation import InventoryTurnoverPresentation
 from ui.reports_workspace import ReportsWorkspace
 from ui.shell_workspace_catalog import REPORTS_WORKSPACE_ID
+
+
+def _turnover_presentation(**overrides: str) -> InventoryTurnoverPresentation:
+    values = {
+        'outcome': 'valid',
+        'status': 'VALID',
+        'reason': 'Bound presentation fixture',
+        'period': '2026-03-01 → 2026-04-01',
+        'formula': 'inventory-turnover-units-v1',
+        'evidence': 'available · closed_period',
+        'opening_units': '12',
+        'closing_units': '8',
+        'average_units': '10',
+        'completed_sale_units': '5',
+        'turnover_ratio': '0.5×',
+        'turnover_percentage': '50.0%',
+    }
+    values.update(overrides)
+    return InventoryTurnoverPresentation(**values)
 
 
 def test_reports_workspace_is_read_only_catalog_surface() -> None:
@@ -26,22 +46,27 @@ def test_reports_workspace_is_read_only_catalog_surface() -> None:
     workspace.close()
 
 
-def test_reports_workspace_has_visible_inventory_turnover_kpi_dashboard() -> None:
+def test_reports_workspace_binds_inventory_turnover_presentation() -> None:
     app = QApplication.instance() or QApplication([])
-    workspace = ReportsWorkspace(build_report_catalog())
+    presentation = _turnover_presentation()
+    workspace = ReportsWorkspace(
+        build_report_catalog(),
+        turnover_presentation=presentation,
+    )
 
+    assert workspace.turnover_presentation is presentation
     assert workspace.turnover_panel.objectName() == 'reportsInventoryTurnoverPanel'
     assert workspace.turnover_panel.title() == 'Inventory Turnover'
     assert workspace.turnover_panel.minimumHeight() >= 250
-    assert 'read-only visual preview' in workspace.turnover_status_label.text().lower()
+    assert 'bound presentation fixture' in workspace.turnover_status_label.text().lower()
 
     expected_metrics = {
         'reportsTurnoverPercentage': '50.0%',
         'reportsTurnoverRatio': '0.5×',
-        'reportsTurnoverOpeningUnits': '10',
-        'reportsTurnoverClosingUnits': '6',
-        'reportsTurnoverCompletedSales': '4',
-        'reportsTurnoverAverageUnits': '8',
+        'reportsTurnoverOpeningUnits': '12',
+        'reportsTurnoverClosingUnits': '8',
+        'reportsTurnoverCompletedSales': '5',
+        'reportsTurnoverAverageUnits': '10',
     }
     assert set(workspace.turnover_metric_labels) == set(expected_metrics)
     assert set(workspace.turnover_metric_cards) == set(expected_metrics)
@@ -55,14 +80,41 @@ def test_reports_workspace_has_visible_inventory_turnover_kpi_dashboard() -> Non
         assert label.isVisibleTo(workspace) is False or not label.isHidden()
 
     assert workspace.result_table.minimumHeight() <= 180
-    assert '2026-01-01' in workspace.turnover_period_label.text()
-    assert '2026-02-01' in workspace.turnover_period_label.text()
-    assert 'inventory-turnover-units-v1' in workspace.turnover_formula_label.text()
-    assert 'EVIDENCE AVAILABLE' in workspace.turnover_evidence_label.text()
+    assert presentation.period in workspace.turnover_period_label.text()
+    assert presentation.status in workspace.turnover_period_label.text()
+    assert presentation.formula in workspace.turnover_formula_label.text()
+    assert presentation.evidence in workspace.turnover_evidence_label.text()
     assert 'no mutation authority' in workspace.turnover_evidence_label.text()
     assert 'Unavailable evidence exposes no turnover values' in workspace.turnover_guardrail_label.text()
     assert 'Conflicting evidence blocks numeric output' in workspace.turnover_guardrail_label.text()
     assert workspace.turnover_panel.findChildren(QPushButton) == []
+    workspace.close()
+
+
+def test_reports_workspace_preserves_unavailable_turnover_values() -> None:
+    app = QApplication.instance() or QApplication([])
+    presentation = _turnover_presentation(
+        outcome='unavailable',
+        status='UNAVAILABLE',
+        reason='Source coverage unavailable',
+        evidence='unavailable',
+        opening_units='Unavailable',
+        closing_units='Unavailable',
+        average_units='Unavailable',
+        completed_sale_units='Unavailable',
+        turnover_ratio='Unavailable',
+        turnover_percentage='Unavailable',
+    )
+    workspace = ReportsWorkspace(
+        build_report_catalog(),
+        turnover_presentation=presentation,
+    )
+
+    assert 'source coverage unavailable' in workspace.turnover_status_label.text().lower()
+    assert all(
+        label.text() == 'Unavailable'
+        for label in workspace.turnover_metric_labels.values()
+    )
     workspace.close()
 
 
@@ -91,6 +143,7 @@ def test_application_composition_mounts_reports_workspace(tmp_path) -> None:
 
     assert window.workspace_host.currentWidget() is window.reports_workspace
     assert window.workspace_host.currentWidget().turnover_panel.title() == 'Inventory Turnover'
+    assert window.workspace_host.currentWidget().turnover_presentation is composition.inventory_turnover_presentation
     assert window.workspace_host.currentWidget().turnover_metric_labels['reportsTurnoverPercentage'].text() == '50.0%'
     assert window.workspace_host.workspace_context.text() == 'REPORTS'
     assert window.workspace_host.status_message.text() == 'Reports workspace active'
