@@ -32,6 +32,7 @@ from ui.shell_workspace_catalog import (
     register_product_registry_workspace,
     register_reports_workspace,
 )
+from ui.data_freshness_feature import install_data_freshness_feature
 from ui.inventory_workspace_focus_feature import (
     install_inventory_workspace_focus_feature,
 )
@@ -159,6 +160,7 @@ class ApplicationComposition:
             reports_workspace,
         )
         install_viewport_fit_feature(window, self.workspace_registry)
+        install_data_freshness_feature(window)
         install_inventory_workspace_focus_feature(window)
         window.product_registry_workspace = product_registry_workspace
         window.collection_position_workspace = collection_position_workspace
