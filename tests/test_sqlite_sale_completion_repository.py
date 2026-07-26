@@ -116,7 +116,7 @@ def test_malformed_row_fails_closed_as_conflict(tmp_path):
         sale_id="sale-bad",
         asset_id="asset-1",
         event_id="event-bad",
-        created_at="not-a-timestamp",
+        created_at="2026-07-25Tbad",
     )
     adapter = SqliteSalesSaleCompletionRepository(manager)
 
