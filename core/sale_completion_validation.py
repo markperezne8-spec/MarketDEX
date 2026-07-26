@@ -195,9 +195,9 @@ def validate_sale_completion_evidence_set(
             current = parent
 
     terminal_by_scope: dict[tuple[str, str], list[SaleCompletionEvidence]] = {}
-    child_ids = {child.sale_completion_evidence_id for branch in children.values() for child in branch}
+    parent_ids = set(children)
     for item in evidence:
-        if item.sale_completion_evidence_id not in child_ids:
+        if item.sale_completion_evidence_id not in parent_ids:
             terminal_by_scope.setdefault((item.sale_id, item.inventory_id), []).append(item)
     for terminal in terminal_by_scope.values():
         if len(terminal) > 1:
