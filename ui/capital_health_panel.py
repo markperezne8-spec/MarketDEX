@@ -64,10 +64,12 @@ class CapitalHealthPanel(MarketDEXDashboardPanel):
         self.state_badge = MarketDEXStatusBadge(
             state_label,
             state_tone,
-            self.content_widget,
+            self,
         )
         self.state_badge.setProperty('capitalHealthState', self.view_model.state)
         self.state_badge.setProperty('capitalHealthDisplayLabel', state_label)
+        self.add_header_action(self.state_badge)
+
         self.headline_label = QLabel(self.view_model.headline, self.content_widget)
         self.headline_label.setObjectName('capitalHealthHeadline')
         self.headline_label.setWordWrap(True)
@@ -160,7 +162,6 @@ class CapitalHealthPanel(MarketDEXDashboardPanel):
             )
             self.group_layout.addWidget(group_widget)
 
-        self.add_content_widget(self.state_badge)
         self.add_content_widget(self.headline_label)
         self.add_content_widget(self.error_label)
         self.add_content_widget(self.group_row)
