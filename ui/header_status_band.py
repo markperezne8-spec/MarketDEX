@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from PySide6.QtWidgets import QLabel, QWidget, QGridLayout, QVBoxLayout, QSizePolicy
+from PySide6.QtWidgets import QLabel, QWidget, QHBoxLayout, QSizePolicy
 
 from app.engines.mission_control.header_status import (
     HeaderStatusViewModel,
@@ -38,11 +38,7 @@ class HeaderStatusBand(MarketDEXDashboardPanel):
         )
         self.view_model = view_model or build_header_status_view_model()
         state_label, state_tone = HEADER_STATUS_STATE_LABELS[self.view_model.state]
-        self.state_badge = MarketDEXStatusBadge(
-            state_label,
-            state_tone,
-            self,
-        )
+        self.state_badge = MarketDEXStatusBadge(state_label, state_tone, self)
         self.add_header_action(self.state_badge)
 
         self.headline_label = QLabel(self.view_model.headline, self.content_widget)
@@ -55,40 +51,32 @@ class HeaderStatusBand(MarketDEXDashboardPanel):
         self.error_label.setVisible(self.view_model.state == 'error')
 
         self.slot_row = QWidget(self.content_widget)
-        self.slot_layout = QGridLayout(self.slot_row)
+        self.slot_layout = QHBoxLayout(self.slot_row)
         self.slot_layout.setContentsMargins(0, 0, 0, 0)
-        self.slot_layout.setHorizontalSpacing(10)
-        self.slot_layout.setVerticalSpacing(8)
+        self.slot_layout.setSpacing(8)
         self.slot_labels: list[QLabel] = []
         self.slot_state_badges: list[MarketDEXStatusBadge] = []
+        self.slot_cards: list[MarketDEXDashboardPanel] = []
 
-        for index, slot in enumerate(self.view_model.slots):
-            slot_widget = QWidget(self.slot_row)
-            slot_widget.setObjectName('headerStatusSlotCard')
-            slot_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-            slot_layout = QVBoxLayout(slot_widget)
-            slot_layout.setContentsMargins(12, 10, 12, 10)
-            slot_layout.setSpacing(3)
-
-            label = QLabel(slot.label, slot_widget)
-            label.setObjectName('headerStatusSlotLabel')
-            detail = QLabel(slot.detail, slot_widget)
-            detail.setObjectName('headerStatusSlotDetail')
-            detail.setWordWrap(True)
-            slot_state_label, slot_state_tone = HEADER_STATUS_STATE_LABELS[slot.state]
-            slot_state_badge = MarketDEXStatusBadge(
-                slot_state_label,
-                slot_state_tone,
-                slot_widget,
+        for slot in self.view_model.slots:
+            card = MarketDEXDashboardPanel(
+                slot.label,
+                slot.detail,
+                self.slot_row,
+                tone=NorthStarPanelTone.SCOREBOARD,
             )
+            card.setProperty('dashboardRole', 'command-readiness-card')
+            card.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+            state_text, state_tone = HEADER_STATUS_STATE_LABELS[slot.state]
+            badge = MarketDEXStatusBadge(state_text, state_tone, card)
+            card.add_header_action(badge)
+            card.content_widget.setVisible(False)
+            card.setAccessibleName(f'{slot.label}. {state_text}. {slot.detail}')
 
-            slot_layout.addWidget(label)
-            slot_layout.addWidget(detail)
-            slot_layout.addWidget(slot_state_badge)
-            slot_layout.addStretch(1)
-            self.slot_state_badges.append(slot_state_badge)
-            self.slot_labels.extend((label, detail))
-            self.slot_layout.addWidget(slot_widget, index // 3, index % 3)
+            self.slot_cards.append(card)
+            self.slot_state_badges.append(badge)
+            self.slot_labels.extend((card.title_label, card.description_label))
+            self.slot_layout.addWidget(card, 1)
 
         self.add_content_widget(self.headline_label)
         self.add_content_widget(self.error_label)
