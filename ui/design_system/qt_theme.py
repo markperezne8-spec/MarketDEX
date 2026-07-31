@@ -47,8 +47,8 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
     }}
 
     QFrame#marketdexKpiCard[dashboardRole="inventory-command-summary"] {{
-        min-height: 68px;
-        max-height: 82px;
+        min-height: 92px;
+        max-height: 108px;
     }}
 
     QFrame#marketdexDashboardPanel[dashboardRole="inventory-command-placeholder"] {{
