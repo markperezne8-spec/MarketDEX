@@ -46,6 +46,16 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         max-height: 86px;
     }}
 
+    QFrame#marketdexKpiCard[dashboardRole="inventory-command-summary"] {{
+        min-height: 68px;
+        max-height: 82px;
+    }}
+
+    QFrame#marketdexDashboardPanel[dashboardRole="inventory-command-placeholder"] {{
+        min-height: 92px;
+        max-height: 112px;
+    }}
+
     QFrame#marketdexWorkspaceHeader {{
         background: {color(ColorRole.SHELL_BACKGROUND)};
         border-color: {color(ColorRole.BORDER_STRONG)};
