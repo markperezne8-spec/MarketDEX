@@ -171,7 +171,7 @@ class VisualIntelligencePanel(MarketDEXDashboardPanel):
             self.region_widgets.append(region_widget)
             self.region_grid.addWidget(region_widget, index // 2, index % 2)
 
-        self.add_content_widget(self.state_badge)
+        self.add_header_action(self.state_badge)
         self.add_content_widget(self.headline_label)
         self.add_content_widget(self.error_label)
         self.content_layout.addLayout(self.region_grid)
