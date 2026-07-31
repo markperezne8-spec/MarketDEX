@@ -66,10 +66,11 @@ class BusinessScoreboardPanel(MarketDEXDashboardPanel):
         self.state_badge = MarketDEXStatusBadge(
             state_label,
             state_tone,
-            self.content_widget,
+            self,
         )
         self.state_badge.setProperty('businessScoreboardState', self.view_model.state)
         self.state_badge.setProperty('businessScoreboardDisplayLabel', state_label)
+        self.add_header_action(self.state_badge)
         self.period_label = QLabel(
             f'Selected period: {self.view_model.selected_period_label}',
             self.content_widget,
@@ -186,7 +187,6 @@ class BusinessScoreboardPanel(MarketDEXDashboardPanel):
             )
             self.group_layout.addWidget(group_widget)
 
-        self.add_content_widget(self.state_badge)
         self.add_content_widget(self.period_label)
         self.add_content_widget(self.headline_label)
         self.add_content_widget(self.error_label)
