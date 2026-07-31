@@ -41,6 +41,11 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         border-radius: {radius['panel']}px;
     }}
 
+    QFrame#marketdexKpiCard[dashboardRole="existing-kpi"] {{
+        min-height: 72px;
+        max-height: 86px;
+    }}
+
     QFrame#marketdexWorkspaceHeader {{
         background: {color(ColorRole.SHELL_BACKGROUND)};
         border-color: {color(ColorRole.BORDER_STRONG)};
