@@ -18,6 +18,8 @@ from ui.design_system.widgets import (
 
 DATA_FRESHNESS_VISUAL_CONTRACT = 'm1.20b-data-freshness-shell'
 DATA_FRESHNESS_DOMAIN_VISUAL_CONTRACT = 'm1.20b-data-freshness-domain-shell'
+DATA_FRESHNESS_DOMAIN_MINIMUM_HEIGHT = 118
+DATA_FRESHNESS_DOMAIN_MAXIMUM_HEIGHT = 136
 
 DATA_FRESHNESS_STATE_LABELS: dict[DataFreshnessState, tuple[str, StatusTone]] = {
     'ready': ('Ready', StatusTone.POSITIVE),
@@ -105,6 +107,8 @@ class DataFreshnessPanel(MarketDEXDashboardPanel):
                 'visualContract',
                 DATA_FRESHNESS_DOMAIN_VISUAL_CONTRACT,
             )
+            domain_widget.setMinimumHeight(DATA_FRESHNESS_DOMAIN_MINIMUM_HEIGHT)
+            domain_widget.setMaximumHeight(DATA_FRESHNESS_DOMAIN_MAXIMUM_HEIGHT)
 
             domain_label, domain_tone = data_freshness_state_badge_contract(
                 domain.state
