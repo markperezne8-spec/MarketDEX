@@ -36,6 +36,7 @@ class InventoryWorkspaceControlLayout(QWidget):
         for widget in action_widgets:
             actions.addWidget(widget)
         root.addLayout(actions)
+        self.action_layout = actions
 
         query = QHBoxLayout()
         query.setContentsMargins(0, 0, 0, 0)
@@ -46,3 +47,11 @@ class InventoryWorkspaceControlLayout(QWidget):
         query.addWidget(sort_widget)
         query.addWidget(sort_order_widget)
         root.addLayout(query)
+
+    def indexOf(self, widget: QWidget) -> int:
+        """Preserve the legacy action-row layout contract for feature installers."""
+        return self.action_layout.indexOf(widget)
+
+    def insertWidget(self, index: int, widget: QWidget, *args) -> None:
+        """Insert feature-owned controls into the compact action row."""
+        self.action_layout.insertWidget(index, widget, *args)
