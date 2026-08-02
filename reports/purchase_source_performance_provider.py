@@ -4,7 +4,16 @@ from dataclasses import dataclass
 from datetime import date, datetime, time, timezone
 from typing import Protocol, runtime_checkable
 
-from core.sale_completion import SaleCompletionAvailable
+from core.sale_completion import (
+    SaleCompletionAvailable,
+    SaleCompletionConflict,
+    SaleCompletionCompleteness,
+    SaleCompletionUnavailable,
+)
+from core.sale_completion_repository import (
+    SaleCompletionRepositoryDiagnostic,
+    SaleCompletionRepositoryRead,
+)
 from services.sale_completion_query_service import SaleCompletionQueryService
 from reports.purchase_source_performance_calculator import PurchaseSourcePerformanceEvidence
 from reports.purchase_source_performance_contract import PurchaseSourcePerformanceRequest
@@ -131,18 +140,49 @@ class PurchaseSourcePerformanceProvider:
         except Exception:
             return self._status_response(request, 'unavailable', 'sale-completion read dependency unavailable')
 
+        if not isinstance(sale_read, SaleCompletionRepositoryRead):
+            return self._status_response(request, 'unavailable', 'sale-completion read returned unsupported response')
+
         result = sale_read.result
+        if isinstance(result, (SaleCompletionUnavailable, SaleCompletionConflict)):
+            state = 'conflicting' if isinstance(result, SaleCompletionConflict) else 'unavailable'
+            diagnostic = self._diagnostic_reason(sale_read.diagnostic)
+            reason = result.reason_code if not diagnostic else f'{result.reason_code}; {diagnostic}'
+            return self._status_response(request, state, reason)
         if not isinstance(result, SaleCompletionAvailable):
-            state = 'conflicting' if result.status == 'conflict' else 'unavailable'
-            diagnostic = '' if sale_read.diagnostic is None else f'; diagnostic={sale_read.diagnostic.evidence_ids}'
-            return self._status_response(request, state, f'{result.reason_code}{diagnostic}')
+            return self._status_response(request, 'unavailable', 'sale-completion read returned unsupported result')
+
+        expected_as_of = _at_utc_end(request.as_of)
+        expected_from = _at_utc_start(request.period_start)
+        expected_until = _at_utc_start(request.period_end)
+        coverage = getattr(result, 'coverage', None)
+        expected_inventory_ids = tuple(sorted(record.inventory_id for record in records))
+        if (
+            coverage is None
+            or getattr(coverage, 'completeness', None) is not SaleCompletionCompleteness.COMPLETE
+            or getattr(coverage, 'requested_inventory_ids', None) != expected_inventory_ids
+            or getattr(coverage, 'requested_sale_ids', None) != ()
+            or getattr(coverage, 'as_of', None) != expected_as_of
+            or getattr(coverage, 'completed_from', None) != expected_from
+            or getattr(coverage, 'completed_until', None) != expected_until
+        ):
+            return self._status_response(request, 'conflicting', 'sale-completion coverage does not exactly match the requested Inventory identity and time boundaries')
         expected_ids = {record.inventory_id for record in records}
         if any(item.inventory_id not in expected_ids for item in result.evidence):
             return self._status_response(request, 'conflicting', 'sale-completion evidence returned an unrelated Inventory identity')
 
+        # The sale-completion read includes lineage history. Only terminal evidence
+        # is active; a completed parent with a refund, reversal, or supersession
+        # child must not continue contributing completed units.
+        parent_ids = {item.lineage_parent_evidence_id for item in result.evidence if item.lineage_parent_evidence_id is not None}
+        active_evidence = tuple(
+            item for item in result.evidence
+            if item.sale_completion_evidence_id not in parent_ids
+        )
         completed_by_inventory: dict[str, int] = {}
-        for item in result.evidence:
-            completed_by_inventory[item.inventory_id] = completed_by_inventory.get(item.inventory_id, 0) + (item.completed_unit_quantity or 0)
+        for item in active_evidence:
+            if item.lifecycle_state.value == 'completed':
+                completed_by_inventory[item.inventory_id] = completed_by_inventory.get(item.inventory_id, 0) + (item.completed_unit_quantity or 0)
         acquired_by_source: dict[str, int] = {}
         completed_by_source: dict[str, int] = {}
         for record in records:
@@ -168,6 +208,14 @@ class PurchaseSourcePerformanceProvider:
             request=request, evidence=evidence, source_domains=('inventory', 'sale_completion'),
             source_coverage=('complete',), provenance=(f'{provenance_base}:inventory', f'{provenance_base}:sale_completion'),
         )
+
+    @staticmethod
+    def _diagnostic_reason(diagnostic: SaleCompletionRepositoryDiagnostic | None) -> str:
+        if diagnostic is None:
+            return ''
+        if not isinstance(diagnostic, SaleCompletionRepositoryDiagnostic):
+            return 'diagnostic=unsupported'
+        return f'diagnostic_evidence_ids={diagnostic.evidence_ids}'
 
     @staticmethod
     def _status_response(request: PurchaseSourcePerformanceRequest, state: str, reason: str) -> PurchaseSourcePerformanceQueryResponse:
