@@ -26,6 +26,9 @@ from app.engines.mission_control.operational_status import OperationalStatusView
 from app.engines.mission_control.todays_top3 import TodaysTop3ViewModel
 
 
+MISSION_CONTROL_TWO_COLUMN_MINIMUM_WIDTH = 1900
+
+
 class AddAssetDialog(QDialog):
     def __init__(self,parent=None):
         super().__init__(parent); self.setWindowTitle('Add Inventory Asset'); form=QFormLayout(self); self.name=QLineEdit(); self.asset_type=QComboBox(); self.asset_type.addItems(['SINGLE','SEALED','SLAB','ACCESSORY']); self.quantity=QSpinBox(); self.quantity.setRange(0,100000); self.quantity.setValue(1); self.cost=QDoubleSpinBox(); self.cost.setRange(0,1000000); self.cost.setDecimals(2); self.cost.setPrefix('$'); self.purchase_date=QLineEdit(); self.purchase_date.setPlaceholderText('YYYY-MM-DD'); self.purchase_source=QLineEdit(); self.storage_location=QLineEdit(); self.notes=QLineEdit(); form.addRow('Asset Name',self.name); form.addRow('Asset Type',self.asset_type); form.addRow('Quantity',self.quantity); form.addRow('Total Cost',self.cost); form.addRow('Purchase Date',self.purchase_date); form.addRow('Purchase Source',self.purchase_source); form.addRow('Storage Location',self.storage_location); form.addRow('Notes',self.notes); buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); form.addRow(buttons)
@@ -135,7 +138,7 @@ class MainWindow(QMainWindow):
         ):
             widget.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Preferred)
 
-        self._apply_mission_control_layout(wide=True)
+        self._apply_mission_control_layout(wide=False)
         surface.installEventFilter(self)
         return surface
 
@@ -181,7 +184,9 @@ class MainWindow(QMainWindow):
 
     def eventFilter(self,watched,event):
         if watched is self.mission_control_surface and event.type()==QEvent.Type.Resize:
-            self._apply_mission_control_layout(wide=event.size().width()>=940)
+            self._apply_mission_control_layout(
+                wide=event.size().width()>=MISSION_CONTROL_TWO_COLUMN_MINIMUM_WIDTH
+            )
         return super().eventFilter(watched,event)
 
     def _build_dashboard_grid_shell(self):

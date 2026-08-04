@@ -12,7 +12,7 @@ from app.engines.mission_control.operational_status import (
     operational_status_evidence,
 )
 from ui.design_system.widgets import StatusTone
-from ui.main_window import MainWindow
+from ui.main_window import MainWindow, MISSION_CONTROL_TWO_COLUMN_MINIMUM_WIDTH
 from ui.next_steps_panel import NextStepsPanel
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
@@ -381,6 +381,23 @@ def test_mission_control_visual_hierarchy_reflows_for_compact_widths():
     assert window.mission_control_grid.getItemPosition(
         window.mission_control_grid.indexOf(window.capital_health_panel)
     ) == (4, 1, 1, 1)
+
+
+def test_mission_control_uses_full_width_panels_until_the_workspace_can_fit_two_columns():
+    _application()
+    window = MainWindow(_MissionControlService(), _InventoryService())
+
+    window.mission_control_surface.resize(
+        MISSION_CONTROL_TWO_COLUMN_MINIMUM_WIDTH - 1,
+        900,
+    )
+    assert window.mission_control_surface.property('layoutMode') == 'compact'
+
+    window.mission_control_surface.resize(
+        MISSION_CONTROL_TWO_COLUMN_MINIMUM_WIDTH,
+        900,
+    )
+    assert window.mission_control_surface.property('layoutMode') == 'wide'
 
 
 def test_mission_control_dashboard_grid_shell_preserves_existing_kpis_and_placeholders():
