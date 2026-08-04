@@ -1,4 +1,5 @@
 from uuid import uuid4
+from PySide6.QtCore import QEvent
 from PySide6.QtWidgets import QMainWindow,QWidget,QVBoxLayout,QLabel,QPushButton,QGridLayout,QGroupBox,QHBoxLayout,QTableWidget,QTableWidgetItem,QDialog,QFormLayout,QLineEdit,QComboBox,QSpinBox,QDoubleSpinBox,QDialogButtonBox,QMessageBox,QFileDialog,QAbstractItemView,QSizePolicy
 from services.inventory_csv_import_service import InventoryCsvImportService
 from ui.design_system.qt_theme import build_marketdex_qss
@@ -54,8 +55,9 @@ class MainWindow(QMainWindow):
         self._business_scoreboard_view_model=business_scoreboard_view_model
         self._visual_intelligence_view_model=visual_intelligence_view_model
         root=QWidget(); root.setObjectName('marketdexAppRoot'); outer=QHBoxLayout(root); panel=QWidget(); panel.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Preferred); self.inventory_panel=panel; layout=QVBoxLayout(panel); outer.addWidget(panel,1)
-        self.mission_control_header=MarketDEXWorkspaceHeader('MarketDEX OS','MISSION CONTROL — LIVE SQLITE BUSINESS SNAPSHOT'); layout.addWidget(self.mission_control_header)
-        self.values={}; self.dashboard_grid_shell=self._build_dashboard_grid_shell(); layout.addWidget(self.dashboard_grid_shell)
+        self.values={}
+        self.mission_control_surface=self._build_mission_control_surface()
+        layout.addWidget(self.mission_control_surface)
         import_button=QPushButton('Import CSV'); import_button.clicked.connect(self.import_inventory)
         export_button=QPushButton('Export CSV'); export_button.clicked.connect(self.export_inventory)
         self.view_button=QPushButton('View Archived'); self.view_button.clicked.connect(self.toggle_inventory_view)
@@ -89,6 +91,98 @@ class MainWindow(QMainWindow):
 
     @property
     def visual_intelligence_visual_contract(self): return 'm1.14g-visual-intelligence-shell'
+
+    @property
+    def mission_control_visual_hierarchy_contract(self): return 'issue-681-north-star-visual-hierarchy'
+
+    def _build_mission_control_surface(self):
+        surface=QWidget()
+        surface.setObjectName('marketdexMissionControlSurface')
+        surface.setProperty('visualContract',self.mission_control_visual_hierarchy_contract)
+        surface.setAccessibleName('Mission Control North Star command surface')
+        self.mission_control_surface=surface
+        grid=QGridLayout(surface)
+        grid.setContentsMargins(0,0,0,0)
+        grid.setHorizontalSpacing(12)
+        grid.setVerticalSpacing(12)
+        grid.setColumnStretch(0,5)
+        grid.setColumnStretch(1,7)
+        self.mission_control_grid=grid
+        self._mission_control_layout_mode=None
+
+        self.mission_control_header=MarketDEXWorkspaceHeader('MarketDEX OS','MISSION CONTROL — LIVE SQLITE BUSINESS SNAPSHOT')
+        self.header_status_band=HeaderStatusBand(self._header_status_view_model)
+        self.health_status_card=HealthStatusCard(self._health_status_view_model)
+        self.operational_status_strip=OperationalStatusStrip(self._operational_status_view_model)
+        self.next_steps_panel=NextStepsPanel(self._next_steps_view_model)
+        self.todays_top3_panel=TodaysTop3Panel(self._todays_top3_view_model)
+        self.capital_health_panel=CapitalHealthPanel(self._capital_health_view_model)
+        self.opportunity_risk_panel=OpportunityRiskPanel(self._opportunity_risk_view_model)
+        self.business_scoreboard_panel=BusinessScoreboardPanel(self._business_scoreboard_view_model)
+        self.dashboard_grid_shell=self._build_dashboard_grid_shell()
+
+        for widget in (
+            self.mission_control_header,
+            self.header_status_band,
+            self.health_status_card,
+            self.operational_status_strip,
+            self.next_steps_panel,
+            self.todays_top3_panel,
+            self.capital_health_panel,
+            self.opportunity_risk_panel,
+            self.business_scoreboard_panel,
+            self.dashboard_grid_shell,
+        ):
+            widget.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Preferred)
+
+        self._apply_mission_control_layout(wide=True)
+        surface.installEventFilter(self)
+        return surface
+
+    def _apply_mission_control_layout(self,wide):
+        mode='wide' if wide else 'compact'
+        if self._mission_control_layout_mode==mode:return
+        widgets=(
+            self.mission_control_header,
+            self.header_status_band,
+            self.health_status_card,
+            self.operational_status_strip,
+            self.next_steps_panel,
+            self.todays_top3_panel,
+            self.capital_health_panel,
+            self.opportunity_risk_panel,
+            self.business_scoreboard_panel,
+            self.dashboard_grid_shell,
+        )
+        for widget in widgets:self.mission_control_grid.removeWidget(widget)
+        if wide:
+            placements=(
+                (self.mission_control_header,0,0,1,2),
+                (self.header_status_band,1,0,1,2),
+                (self.health_status_card,2,0,1,1),
+                (self.operational_status_strip,2,1,1,1),
+                (self.next_steps_panel,3,0,1,2),
+                (self.todays_top3_panel,4,0,1,1),
+                (self.capital_health_panel,4,1,1,1),
+                (self.opportunity_risk_panel,5,0,1,1),
+                (self.business_scoreboard_panel,5,1,1,1),
+                (self.dashboard_grid_shell,6,0,1,2),
+            )
+            self.mission_control_grid.setColumnStretch(0,5)
+            self.mission_control_grid.setColumnStretch(1,7)
+        else:
+            placements=tuple((widget,index,0,1,2) for index,widget in enumerate(widgets))
+            self.mission_control_grid.setColumnStretch(0,1)
+            self.mission_control_grid.setColumnStretch(1,0)
+        for placement in placements:self.mission_control_grid.addWidget(*placement)
+        self._mission_control_layout_mode=mode
+        self.mission_control_surface.setProperty('layoutMode',mode)
+        self.mission_control_grid.invalidate()
+
+    def eventFilter(self,watched,event):
+        if watched is self.mission_control_surface and event.type()==QEvent.Type.Resize:
+            self._apply_mission_control_layout(wide=event.size().width()>=940)
+        return super().eventFilter(watched,event)
 
     def _build_dashboard_grid_shell(self):
         shell=MarketDEXDashboardPanel('Dashboard Grid','Read-only command-center snapshot',tone=NorthStarPanelTone.COMMAND)
@@ -178,30 +272,6 @@ class MainWindow(QMainWindow):
         except Exception as exc:QMessageBox.critical(self,'Export Failed',str(exc))
 
     def refresh(self):
-        if not hasattr(self, 'header_status_band'):
-            self.header_status_band=HeaderStatusBand(self._header_status_view_model)
-            self.inventory_panel.layout().insertWidget(1, self.header_status_band)
-        if not hasattr(self, 'health_status_card'):
-            self.health_status_card=HealthStatusCard(self._health_status_view_model)
-            self.inventory_panel.layout().insertWidget(2, self.health_status_card)
-        if not hasattr(self, 'operational_status_strip'):
-            self.operational_status_strip=OperationalStatusStrip(self._operational_status_view_model)
-            self.inventory_panel.layout().insertWidget(3, self.operational_status_strip)
-        if not hasattr(self, 'next_steps_panel'):
-            self.next_steps_panel=NextStepsPanel(self._next_steps_view_model)
-            self.inventory_panel.layout().insertWidget(4, self.next_steps_panel)
-        if not hasattr(self, 'todays_top3_panel'):
-            self.todays_top3_panel=TodaysTop3Panel(self._todays_top3_view_model)
-            self.inventory_panel.layout().insertWidget(5, self.todays_top3_panel)
-        if not hasattr(self, 'capital_health_panel'):
-            self.capital_health_panel=CapitalHealthPanel(self._capital_health_view_model)
-            self.inventory_panel.layout().insertWidget(6, self.capital_health_panel)
-        if not hasattr(self, 'opportunity_risk_panel'):
-            self.opportunity_risk_panel=OpportunityRiskPanel(self._opportunity_risk_view_model)
-            self.inventory_panel.layout().insertWidget(7, self.opportunity_risk_panel)
-        if not hasattr(self, 'business_scoreboard_panel'):
-            self.business_scoreboard_panel=BusinessScoreboardPanel(self._business_scoreboard_view_model)
-            self.inventory_panel.layout().insertWidget(8, self.business_scoreboard_panel)
         snapshot=self.service.snapshot()
         for key in ('inventory_units','inventory_asset_count','completed_sales','verified_audits','authority_events'): self.values[key].setText(f'{snapshot[key]:,}')
         for key in ('inventory_cost_minor','revenue_minor','profit_minor'): self.values[key].setText(self._money(snapshot[key]))
