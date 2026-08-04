@@ -100,13 +100,14 @@ def test_mission_control_places_health_card_below_header_and_above_kpis():
     mission = _MissionControlService()
     window = MainWindow(mission, _InventoryService(), model)
 
-    layout = window.inventory_panel.layout()
-    assert layout.itemAt(0).widget() is window.mission_control_header
-    assert layout.itemAt(1).widget() is window.header_status_band
-    assert layout.itemAt(2).widget() is window.health_status_card
-    assert layout.itemAt(3).widget() is window.operational_status_strip
-    assert layout.itemAt(4).widget() is window.next_steps_panel
-    assert layout.itemAt(5).layout() is not None
+    assert window.inventory_panel.layout().itemAt(0).widget() is window.mission_control_surface
+    window._apply_mission_control_layout(wide=True)
+    layout = window.mission_control_grid
+    assert layout.getItemPosition(layout.indexOf(window.mission_control_header)) == (0, 0, 1, 2)
+    assert layout.getItemPosition(layout.indexOf(window.header_status_band)) == (1, 0, 1, 2)
+    assert layout.getItemPosition(layout.indexOf(window.health_status_card)) == (2, 0, 1, 1)
+    assert layout.getItemPosition(layout.indexOf(window.operational_status_strip)) == (2, 1, 1, 1)
+    assert layout.getItemPosition(layout.indexOf(window.next_steps_panel)) == (3, 0, 1, 2)
     assert window.health_status_card.view_model is model
     assert window.health_status_card.state_badge.text() == 'Ready'
 

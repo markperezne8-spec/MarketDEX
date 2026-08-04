@@ -12,7 +12,7 @@ from app.engines.mission_control.operational_status import (
     operational_status_evidence,
 )
 from ui.design_system.widgets import StatusTone
-from ui.main_window import MainWindow
+from ui.main_window import MainWindow, MISSION_CONTROL_TWO_COLUMN_MINIMUM_WIDTH
 from ui.next_steps_panel import NextStepsPanel
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
@@ -322,16 +322,15 @@ def test_mission_control_places_next_steps_after_operational_strip_and_above_kpi
         next_steps_model,
     )
 
-    layout = window.inventory_panel.layout()
-    assert layout.itemAt(0).widget() is window.mission_control_header
-    assert layout.itemAt(1).widget() is window.header_status_band
-    assert layout.itemAt(2).widget() is window.health_status_card
-    assert layout.itemAt(3).widget() is window.operational_status_strip
-    assert layout.itemAt(4).widget() is window.next_steps_panel
-    assert layout.itemAt(5).widget() is window.todays_top3_panel
-    assert layout.itemAt(6).widget() is window.capital_health_panel
-    assert layout.itemAt(7).widget() is window.opportunity_risk_panel
-    assert layout.itemAt(8).widget() is window.dashboard_grid_shell
+    assert window.inventory_panel.layout().itemAt(0).widget() is window.mission_control_surface
+    window._apply_mission_control_layout(wide=True)
+    layout = window.mission_control_grid
+    assert layout.getItemPosition(layout.indexOf(window.next_steps_panel)) == (3, 0, 1, 2)
+    assert layout.getItemPosition(layout.indexOf(window.todays_top3_panel)) == (4, 0, 1, 1)
+    assert layout.getItemPosition(layout.indexOf(window.capital_health_panel)) == (4, 1, 1, 1)
+    assert layout.getItemPosition(layout.indexOf(window.opportunity_risk_panel)) == (5, 0, 1, 1)
+    assert layout.getItemPosition(layout.indexOf(window.business_scoreboard_panel)) == (5, 1, 1, 1)
+    assert layout.getItemPosition(layout.indexOf(window.dashboard_grid_shell)) == (6, 0, 1, 2)
     assert window.dashboard_grid_shell.property('visualContract') == (
         'm1.14e-north-star-dashboard-grid-shell'
     )
@@ -343,6 +342,62 @@ def test_mission_control_places_next_steps_after_operational_strip_and_above_kpi
     window.refresh()
     assert window.next_steps_panel is first_panel
     assert mission.snapshot_calls == 2
+
+
+def test_mission_control_visual_hierarchy_reflows_for_compact_widths():
+    _application()
+    window = MainWindow(_MissionControlService(), _InventoryService())
+
+    assert window.mission_control_surface.property('visualContract') == (
+        'issue-681-north-star-visual-hierarchy'
+    )
+    window._apply_mission_control_layout(wide=True)
+    assert window.mission_control_surface.property('layoutMode') == 'wide'
+
+    window._apply_mission_control_layout(wide=False)
+
+    assert window.mission_control_surface.property('layoutMode') == 'compact'
+    expected_order = (
+        window.mission_control_header,
+        window.header_status_band,
+        window.health_status_card,
+        window.operational_status_strip,
+        window.next_steps_panel,
+        window.todays_top3_panel,
+        window.capital_health_panel,
+        window.opportunity_risk_panel,
+        window.business_scoreboard_panel,
+        window.dashboard_grid_shell,
+    )
+    for row, widget in enumerate(expected_order):
+        index = window.mission_control_grid.indexOf(widget)
+        assert window.mission_control_grid.getItemPosition(index) == (row, 0, 1, 2)
+
+    window._apply_mission_control_layout(wide=True)
+    assert window.mission_control_surface.property('layoutMode') == 'wide'
+    assert window.mission_control_grid.getItemPosition(
+        window.mission_control_grid.indexOf(window.todays_top3_panel)
+    ) == (4, 0, 1, 1)
+    assert window.mission_control_grid.getItemPosition(
+        window.mission_control_grid.indexOf(window.capital_health_panel)
+    ) == (4, 1, 1, 1)
+
+
+def test_mission_control_uses_full_width_panels_until_the_workspace_can_fit_two_columns():
+    _application()
+    window = MainWindow(_MissionControlService(), _InventoryService())
+
+    window.mission_control_surface.resize(
+        MISSION_CONTROL_TWO_COLUMN_MINIMUM_WIDTH - 1,
+        900,
+    )
+    assert window.mission_control_surface.property('layoutMode') == 'compact'
+
+    window.mission_control_surface.resize(
+        MISSION_CONTROL_TWO_COLUMN_MINIMUM_WIDTH,
+        900,
+    )
+    assert window.mission_control_surface.property('layoutMode') == 'wide'
 
 
 def test_mission_control_dashboard_grid_shell_preserves_existing_kpis_and_placeholders():

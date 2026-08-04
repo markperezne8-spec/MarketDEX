@@ -609,17 +609,15 @@ def test_mission_control_places_business_scoreboard_after_opportunity_risk_befor
         business_scoreboard_view_model=business_scoreboard_model,
     )
 
-    layout = window.inventory_panel.layout()
-    assert layout.itemAt(0).widget() is window.mission_control_header
-    assert layout.itemAt(1).widget() is window.header_status_band
-    assert layout.itemAt(2).widget() is window.health_status_card
-    assert layout.itemAt(3).widget() is window.operational_status_strip
-    assert layout.itemAt(4).widget() is window.next_steps_panel
-    assert layout.itemAt(5).widget() is window.todays_top3_panel
-    assert layout.itemAt(6).widget() is window.capital_health_panel
-    assert layout.itemAt(7).widget() is window.opportunity_risk_panel
-    assert layout.itemAt(8).widget() is window.business_scoreboard_panel
-    assert layout.itemAt(9).widget() is window.dashboard_grid_shell
+    assert window.inventory_panel.layout().itemAt(0).widget() is window.mission_control_surface
+    window._apply_mission_control_layout(wide=True)
+    layout = window.mission_control_grid
+    assert layout.getItemPosition(layout.indexOf(window.next_steps_panel)) == (3, 0, 1, 2)
+    assert layout.getItemPosition(layout.indexOf(window.todays_top3_panel)) == (4, 0, 1, 1)
+    assert layout.getItemPosition(layout.indexOf(window.capital_health_panel)) == (4, 1, 1, 1)
+    assert layout.getItemPosition(layout.indexOf(window.opportunity_risk_panel)) == (5, 0, 1, 1)
+    assert layout.getItemPosition(layout.indexOf(window.business_scoreboard_panel)) == (5, 1, 1, 1)
+    assert layout.getItemPosition(layout.indexOf(window.dashboard_grid_shell)) == (6, 0, 1, 2)
     assert window.business_scoreboard_panel.view_model is business_scoreboard_model
 
     old_panel = window.business_scoreboard_panel
