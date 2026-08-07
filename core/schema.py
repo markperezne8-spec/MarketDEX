@@ -1,4 +1,4 @@
-SCHEMA_VERSION=25
+SCHEMA_VERSION=24
 SCHEMA_SQL=r'''
 CREATE TABLE IF NOT EXISTS schema_metadata (schema_version INTEGER NOT NULL, applied_at TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS event_identity (event_id TEXT PRIMARY KEY,event_type TEXT NOT NULL,request_id TEXT NOT NULL UNIQUE,occurred_at TEXT NOT NULL,committed_at TEXT NOT NULL,payload_json TEXT NOT NULL,payload_sha256 TEXT NOT NULL);
