@@ -317,4 +317,93 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         min-height: 24px;
         min-width: 24px;
     }}
+
+    QWidget#reportsWorkspace {
+        background: {color(ColorRole.APP_BACKGROUND){'}'};
+    }
+
+    QWidget#reportsScrollContent {
+        background: {color(ColorRole.APP_BACKGROUND){'}'};
+    }
+
+    QLabel#reportsTitle {
+        color: {color(ColorRole.TEXT_PRIMARY){'}'};
+        font-size: 20pt;
+        font-weight: 700;
+        padding-top: 4px;
+    }
+
+    QLabel#reportsSubtitle,
+    QLabel#reportsStatusLabel,
+    QLabel#reportsResultStatusLabel,
+    QLabel#reportsInventoryTurnoverStatus,
+    QLabel#reportsTurnoverPeriod,
+    QLabel#reportsTurnoverFormula,
+    QLabel#reportsTurnoverEvidence,
+    QLabel#reportsTurnoverGuardrails {
+        color: {color(ColorRole.TEXT_SECONDARY){'}'};
+    }
+
+    QTableWidget#reportsCatalogTable,
+    QTableWidget#reportsResultTable {
+        background: {color(ColorRole.SURFACE_PRIMARY){'}'};
+        alternate-background-color: {color(ColorRole.SURFACE_SECONDARY){'}'};
+        border: 1px solid {color(ColorRole.BORDER_STRONG){'}'};
+        border-radius: {radius['panel']{'}'}px;
+        gridline-color: {color(ColorRole.BORDER_SUBTLE){'}'};
+        color: {color(ColorRole.TEXT_PRIMARY){'}'};
+        selection-background-color: {color(ColorRole.SURFACE_INTERACTIVE){'}'};
+    }
+
+    QGroupBox#reportsInventoryTurnoverPanel {
+        background: {color(ColorRole.SURFACE_PRIMARY){'}'};
+        border: 1px solid {color(ColorRole.BORDER_STRONG){'}'};
+        border-radius: {radius['prominent']{'}'}px;
+        color: {color(ColorRole.TEXT_PRIMARY){'}'};
+        margin-top: 12px;
+        padding: 18px 12px 12px 12px;
+        font-weight: 700;
+    }
+
+    QFrame#reportsTurnoverPercentageCard,
+    QFrame#reportsTurnoverRatioCard,
+    QFrame#reportsTurnoverOpeningUnitsCard,
+    QFrame#reportsTurnoverClosingUnitsCard,
+    QFrame#reportsTurnoverCompletedSalesCard,
+    QFrame#reportsTurnoverAverageUnitsCard {
+        background: {color(ColorRole.SURFACE_SECONDARY){'}'};
+        border: 1px solid {color(ColorRole.BORDER_SUBTLE){'}'};
+        border-radius: {radius['control']{'}'}px;
+    }
+
+    QLabel#reportsTurnoverPercentageCaption,
+    QLabel#reportsTurnoverRatioCaption,
+    QLabel#reportsTurnoverOpeningUnitsCaption,
+    QLabel#reportsTurnoverClosingUnitsCaption,
+    QLabel#reportsTurnoverCompletedSalesCaption,
+    QLabel#reportsTurnoverAverageUnitsCaption {
+        color: {color(ColorRole.TEXT_MUTED){'}'};
+        font-size: 9pt;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+    }
+
+    QLabel#reportsTurnoverPercentage,
+    QLabel#reportsTurnoverRatio,
+    QLabel#reportsTurnoverOpeningUnits,
+    QLabel#reportsTurnoverClosingUnits,
+    QLabel#reportsTurnoverCompletedSales,
+    QLabel#reportsTurnoverAverageUnits {
+        color: {color(ColorRole.TEXT_PRIMARY){'}'};
+        font-size: 16pt;
+        font-weight: 700;
+    }
+
+    QWidget#reportsInventoryAgeQueryForm {
+        background: {color(ColorRole.SURFACE_PRIMARY){'}'};
+        border: 1px solid {color(ColorRole.BORDER_SUBTLE){'}'};
+        border-radius: {radius['panel']{'}'}px;
+        padding: 12px;
+    }
+
     """.strip()
