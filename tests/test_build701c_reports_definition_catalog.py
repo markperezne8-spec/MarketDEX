@@ -8,6 +8,7 @@ from reports.definitions import (
     CURRENT_STATE,
     EVENT_HISTORY,
     INVENTORY_TURNOVER_REPORT,
+    PURCHASE_SOURCE_PERFORMANCE_REPORT,
     OUTCOMES,
     ReportCatalog,
     ReportDefinition,
@@ -96,13 +97,14 @@ def test_application_composition_owns_one_non_executable_catalog(tmp_path) -> No
     first = ApplicationComposition(tmp_path / 'first.sqlite3')
     second = ApplicationComposition(tmp_path / 'second.sqlite3')
 
-    expected_ids = ('inventory-age-patterns', 'inventory-turnover')
+    expected_ids = ('inventory-age-patterns', 'inventory-turnover', 'purchase-source-performance')
     assert isinstance(first.report_catalog, ReportCatalog)
     assert first.report_catalog.report_ids == expected_ids
     assert second.report_catalog.report_ids == expected_ids
     assert [item.report_id for item in first.report_catalog.list_definitions()] == [
         'inventory-age-patterns',
         'inventory-turnover',
+        'purchase-source-performance',
     ]
     assert first.report_catalog.get('inventory-turnover') is INVENTORY_TURNOVER_REPORT
     assert first.report_catalog is not second.report_catalog

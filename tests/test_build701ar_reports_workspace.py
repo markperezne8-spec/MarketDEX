@@ -40,7 +40,7 @@ def test_reports_workspace_is_read_only_catalog_surface() -> None:
 
     assert workspace.objectName() == 'reportsWorkspace'
     assert workspace.report_table.columnCount() == 4
-    assert workspace.report_table.rowCount() == 2
+    assert workspace.report_table.rowCount() == 3
     assert workspace.report_table.editTriggers() == QAbstractItemView.NoEditTriggers
     assert workspace.report_table.item(0, 0).text() == 'Inventory Age Patterns'
     assert workspace.report_table.item(1, 0).text() == 'Inventory Turnover'

@@ -10,6 +10,7 @@ from reports.inventory_age_query import (
 )
 from reports.inventory_age_query_request import InventoryAgeReportQueryRequest
 from reports.report_query_request import ReportQueryRequest
+from reports.purchase_source_performance_query import PurchaseSourcePerformanceQueryResponse, PurchaseSourcePerformanceQueryService
 
 
 class ReportQueryService:
@@ -19,9 +20,11 @@ class ReportQueryService:
         self,
         catalog: ReportCatalog,
         inventory_age_query: InventoryAgeReportQueryService,
+        purchase_source_performance_query: PurchaseSourcePerformanceQueryService | None = None,
     ) -> None:
         self._catalog = catalog
         self._inventory_age_query = inventory_age_query
+        self._purchase_source_performance_query = purchase_source_performance_query
 
     def query(
         self,
@@ -32,11 +35,11 @@ class ReportQueryService:
         """Execute one immutable report request envelope."""
         if not isinstance(request, ReportQueryRequest):
             raise TypeError('Reports query requires ReportQueryRequest')
-        return self.query_inventory_age_report(
-            request.report_id,
-            request.inventory_age_request,
-            query_inventory_age=query_inventory_age,
-        )
+        if request.purchase_source_request is not None:
+            if request.report_id != 'purchase-source-performance' or self._purchase_source_performance_query is None:
+                raise KeyError(f'unsupported executable report: {request.report_id}')
+            return self._purchase_source_performance_query.get_evidence_for_request(request.purchase_source_request)
+        return self.query_inventory_age_report(request.report_id, request.inventory_age_request, query_inventory_age=query_inventory_age)
 
     def query_inventory_age_report(
         self,

@@ -146,11 +146,21 @@ INVENTORY_TURNOVER_REPORT = ReportDefinition(
     ),
 )
 
+PURCHASE_SOURCE_PERFORMANCE_REPORT = ReportDefinition(
+    report_id='purchase-source-performance',
+    name='Purchase Source Performance',
+    business_question='How does sell-through vary by purchase source?',
+    evidence_families=(EVENT_HISTORY, OUTCOMES),
+    source_domains=('inventory', 'listing', 'audit'),
+    description='Catalog definition for the approved purchase-source performance query boundary.',
+)
+
 
 def build_report_catalog() -> ReportCatalog:
     return ReportCatalog(
         (
             INVENTORY_AGE_PATTERNS_REPORT,
             INVENTORY_TURNOVER_REPORT,
+            PURCHASE_SOURCE_PERFORMANCE_REPORT,
         )
     )
