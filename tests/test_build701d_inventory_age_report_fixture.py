@@ -21,7 +21,7 @@ def test_inventory_age_fixture_matches_workbook_backed_definition() -> None:
 def test_default_catalog_contains_deterministic_report_fixtures() -> None:
     catalog = build_report_catalog()
 
-    assert catalog.report_ids == ('inventory-age-patterns', 'inventory-turnover')
+    assert catalog.report_ids == ('inventory-age-patterns', 'inventory-turnover', 'purchase-source-performance')
     assert catalog.list_definitions() == (
         INVENTORY_AGE_PATTERNS_REPORT,
         INVENTORY_TURNOVER_REPORT,
