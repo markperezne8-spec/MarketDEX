@@ -19,6 +19,7 @@ from reports.report_query_request import ReportQueryRequest
 from reports.report_query_service import ReportQueryService
 from reports.purchase_source_performance_inventory_adapter import PurchaseSourcePerformanceInventoryAdapter
 from reports.purchase_source_performance_provider import PurchaseSourcePerformanceProvider
+from reports.purchase_source_performance_query import PurchaseSourcePerformanceQueryService
 from services.collection_position_service import CollectionPositionService
 from services.inventory_app_service import InventoryAppService
 from services.inventory_detail_read import InventoryDetailReadAdapter
@@ -67,6 +68,9 @@ class ApplicationComposition:
             self.purchase_source_performance_inventory_adapter,
             self.sale_completion_query,
         )
+        self.purchase_source_performance_query = PurchaseSourcePerformanceQueryService(
+            self.purchase_source_performance_provider
+        )
         self.inventory_age_input_provider = ApplicationInventoryAgeInputProvider(
             InventoryDetailReadAdapter(self.inventory.database.read_connection),
             InventoryProductLinkReadAdapter(self.inventory.database.read_connection),
@@ -82,6 +86,7 @@ class ApplicationComposition:
         self.report_query = ReportQueryService(
             self.report_catalog,
             self.inventory_age_report_query,
+            self.purchase_source_performance_query,
         )
         self.inventory_turnover_preview_result = (
             build_inventory_turnover_preview_result()
