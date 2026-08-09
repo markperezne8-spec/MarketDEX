@@ -3,6 +3,8 @@ from datetime import date
 from pathlib import Path
 
 from composition.feature_catalog import install_features
+from core.sale_completion_repository_registration import register_sale_completion_repository
+from core.sqlite_inventory_acquisition_projection_repository import SqliteInventoryAcquisitionProjectionRepository
 from market_intelligence.composition import MarketIntelligenceComposition
 from reports.definitions import ReportCatalog, ReportDefinition, build_report_catalog
 from reports.inventory_age_provider import ApplicationInventoryAgeInputProvider
@@ -15,12 +17,15 @@ from reports.inventory_turnover_presentation import present_inventory_turnover
 from reports.inventory_turnover_preview import build_inventory_turnover_preview_result
 from reports.report_query_request import ReportQueryRequest
 from reports.report_query_service import ReportQueryService
+from reports.purchase_source_performance_inventory_adapter import PurchaseSourcePerformanceInventoryAdapter
+from reports.purchase_source_performance_provider import PurchaseSourcePerformanceProvider
 from services.collection_position_service import CollectionPositionService
 from services.inventory_app_service import InventoryAppService
 from services.inventory_detail_read import InventoryDetailReadAdapter
 from services.inventory_product_link_read import InventoryProductLinkReadAdapter
 from services.mission_control_service import MissionControlService
 from services.product_registry_lookup_service import ProductRegistryLookupService
+from services.sale_completion_query_service import SaleCompletionQueryService
 from ui.main_window import MainWindow
 from ui.product_registry_workspace import ProductRegistryWorkspace
 from ui.collection_position_workspace import CollectionPositionWorkspace
@@ -50,6 +55,18 @@ class ApplicationComposition:
         self.database_path = Path(self.database_path)
         self.mission_control = MissionControlService(self.database_path)
         self.inventory = InventoryAppService(self.database_path)
+        self.sale_completion_repository = register_sale_completion_repository(self.inventory.database)
+        self.sale_completion_query = SaleCompletionQueryService(self.sale_completion_repository)
+        self.inventory_acquisition_projection_repository = SqliteInventoryAcquisitionProjectionRepository(
+            self.inventory.database
+        )
+        self.purchase_source_performance_inventory_adapter = PurchaseSourcePerformanceInventoryAdapter(
+            self.inventory_acquisition_projection_repository
+        )
+        self.purchase_source_performance_provider = PurchaseSourcePerformanceProvider(
+            self.purchase_source_performance_inventory_adapter,
+            self.sale_completion_query,
+        )
         self.inventory_age_input_provider = ApplicationInventoryAgeInputProvider(
             InventoryDetailReadAdapter(self.inventory.database.read_connection),
             InventoryProductLinkReadAdapter(self.inventory.database.read_connection),
