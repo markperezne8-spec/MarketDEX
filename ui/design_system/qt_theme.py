@@ -405,4 +405,26 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         border-radius: {radius['panel']}px;
         padding: 12px;
     }}
-    """.strip()
+
+    QGroupBox#reportsPurchaseSourcePanel {{
+        background: {color(ColorRole.SURFACE_PRIMARY)};
+        border: 1px solid {color(ColorRole.BORDER_STRONG)};
+        border-radius: {radius['prominent']}px;
+        color: {color(ColorRole.TEXT_PRIMARY)};
+        margin-top: 12px;
+        padding: 18px 12px 12px 12px;
+        font-weight: 700;
+    }}
+
+    QLabel#reportsPurchaseSourceStatus {{
+        color: {color(ColorRole.TEXT_SECONDARY)};
+    }}
+
+    QTableWidget#reportsPurchaseSourceTable {{
+        background: {color(ColorRole.SURFACE_PRIMARY)};
+        alternate-background-color: {color(ColorRole.SURFACE_SECONDARY)};
+        border: 1px solid {color(ColorRole.BORDER_SUBTLE)};
+        border-radius: {radius['panel']}px;
+        color: {color(ColorRole.TEXT_PRIMARY)};
+        gridline-color: {color(ColorRole.BORDER_SUBTLE)};
+    }}    """.strip()
