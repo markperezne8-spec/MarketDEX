@@ -25,6 +25,10 @@ from PySide6.QtWidgets import (
 from reports.definitions import ReportCatalog
 from reports.inventory_age_query import InventoryAgeReportQueryResult
 from reports.inventory_turnover_presentation import InventoryTurnoverPresentation
+from reports.purchase_source_performance_presentation import (
+    PurchaseSourcePerformancePresentation,
+    PurchaseSourcePerformancePresentationRow,
+)
 
 
 def _unavailable_turnover_presentation() -> InventoryTurnoverPresentation:
@@ -41,6 +45,29 @@ def _unavailable_turnover_presentation() -> InventoryTurnoverPresentation:
         completed_sale_units='Unavailable',
         turnover_ratio='Unavailable',
         turnover_percentage='Unavailable',
+    )
+
+
+def _unavailable_purchase_source_presentation() -> PurchaseSourcePerformancePresentation:
+    return PurchaseSourcePerformancePresentation(
+        period_start=date(1970, 1, 1),
+        period_end=date(1970, 1, 2),
+        as_of=date(1970, 1, 2),
+        source_coverage=('unavailable',),
+        provenance=('reports-workspace:preview-unavailable',),
+        rows=(
+            PurchaseSourcePerformancePresentationRow(
+                purchase_source_label='Unavailable',
+                outcome='unavailable',
+                acquired_units=None,
+                completed_sale_units=None,
+                remaining_unsold_units=None,
+                sell_through_percentage=None,
+                evidence_state='unavailable',
+                reason='Presentation snapshot not provided',
+                provenance=('reports-workspace:preview-unavailable',),
+            ),
+        ),
     )
 
 
@@ -65,12 +92,16 @@ class ReportsWorkspace(QWidget):
         parent=None,
         *,
         turnover_presentation: InventoryTurnoverPresentation | None = None,
+        purchase_source_presentation: PurchaseSourcePerformancePresentation | None = None,
     ):
         super().__init__(parent)
         self.catalog = catalog
         self.query_report = query_report
         self.turnover_presentation = (
             turnover_presentation or _unavailable_turnover_presentation()
+        )
+        self.purchase_source_presentation = (
+            purchase_source_presentation or _unavailable_purchase_source_presentation()
         )
         self.setObjectName('reportsWorkspace')
 
@@ -169,6 +200,31 @@ class ReportsWorkspace(QWidget):
         turnover_layout.addWidget(self.turnover_evidence_label)
         turnover_layout.addWidget(self.turnover_guardrail_label)
 
+        self.purchase_source_panel = QGroupBox('Purchase Source Performance')
+        self.purchase_source_panel.setObjectName('reportsPurchaseSourcePanel')
+        self.purchase_source_panel.setMinimumHeight(220)
+        self.purchase_source_status_label = QLabel()
+        self.purchase_source_status_label.setObjectName('reportsPurchaseSourceStatus')
+        self.purchase_source_status_label.setWordWrap(True)
+        self.purchase_source_table = QTableWidget(0, 5)
+        self.purchase_source_table.setObjectName('reportsPurchaseSourceTable')
+        self.purchase_source_table.setHorizontalHeaderLabels(
+            ('Purchase source', 'Outcome', 'Acquired', 'Completed sales', 'Sell-through')
+        )
+        self.purchase_source_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.purchase_source_table.setSelectionMode(QTableWidget.NoSelection)
+        self.purchase_source_table.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeToContents
+        )
+        self.purchase_source_table.horizontalHeader().setStretchLastSection(True)
+        self.purchase_source_table.setMinimumHeight(92)
+        purchase_source_layout = QVBoxLayout(self.purchase_source_panel)
+        purchase_source_layout.setContentsMargins(12, 12, 12, 12)
+        purchase_source_layout.setSpacing(8)
+        purchase_source_layout.addWidget(self.purchase_source_status_label)
+        purchase_source_layout.addWidget(self.purchase_source_table)
+        self._refresh_purchase_source_preview()
+
         self.inventory_position_input = QLineEdit()
         self.inventory_position_input.setObjectName('reportsInventoryPositionInput')
         self.inventory_position_input.setPlaceholderText('Inventory position ID')
@@ -213,6 +269,7 @@ class ReportsWorkspace(QWidget):
         content_layout.addWidget(self.status_label)
         content_layout.addWidget(self.report_table)
         content_layout.addWidget(self.turnover_panel)
+        content_layout.addWidget(self.purchase_source_panel)
         content_layout.addWidget(self.query_form_widget)
         content_layout.addWidget(self.result_status_label)
         content_layout.addWidget(self.result_table)
@@ -228,6 +285,31 @@ class ReportsWorkspace(QWidget):
         layout.addWidget(self.scroll_area)
 
         self.refresh()
+
+
+    def _refresh_purchase_source_preview(self) -> None:
+        presentation = self.purchase_source_presentation
+        self.purchase_source_status_label.setText(
+            'Read-only visual preview · '
+            f'{len(presentation.rows)} source row(s) · '
+            f'PERIOD {presentation.period_start.isoformat()} → {presentation.period_end.isoformat()} · '
+            f'AS-OF {presentation.as_of.isoformat()} · '
+            f'COVERAGE {", ".join(presentation.source_coverage)}'
+        )
+        self.purchase_source_table.setRowCount(len(presentation.rows))
+        for row_index, row in enumerate(presentation.rows):
+            values = (
+                row.purchase_source_label,
+                row.outcome.upper(),
+                row.acquired_units if row.acquired_units is not None else 'Unavailable',
+                row.completed_sale_units if row.completed_sale_units is not None else 'Unavailable',
+                (f'{row.sell_through_percentage}%' if row.sell_through_percentage is not None else 'Unavailable'),
+            )
+            for column_index, value in enumerate(values):
+                item = QTableWidgetItem(str(value))
+                item.setFlags(item.flags() & ~Qt.ItemIsEditable)
+                self.purchase_source_table.setItem(row_index, column_index, item)
+        self.purchase_source_table.resizeRowsToContents()
 
     def refresh(self) -> None:
         definitions = self.catalog.list_definitions()
