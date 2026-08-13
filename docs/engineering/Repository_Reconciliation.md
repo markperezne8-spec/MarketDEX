@@ -7,7 +7,7 @@
 
 ## Baseline
 
-Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary. This reconciliation is current through PR #554 and the merged Build 701 Reports sequence.
+Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary. This reconciliation is current through PR #710 and the merged CAP-012 Reports sequence.
 
 ## Permanent Runtime Authority
 
@@ -63,7 +63,7 @@ The delivered contract is intentionally limited to canonical Product Registry id
 
 Build 701 introduced the canonical CAP-012 Reports foundation through `reports/definitions.py`, Inventory Age source/provider/query/request contracts, `reports/report_query_service.py`, root application composition, workspace registration, and `ui/reports_workspace.py`.
 
-The delivered contract contains one approved report: `inventory-age-patterns`. It is catalog-only, offline, deterministic, composition-owned, and read-only. Result presentation preserves outcome, reason, inventory position, as-of date, source domain, source date, source field, evidence state, and explicit unavailable/non-found semantics without creating duplicate persistence or business authority.
+The delivered contract contains three approved report definitions, with Inventory Age and Inventory Turnover previews plus the merged Purchase Source Performance read-only preview. Reports remain deterministic, composition-owned, and read-only; Purchase Source Performance uses an explicit unavailable placeholder when no snapshot is supplied. Result presentation preserves outcome, reason, inventory position, as-of date, source domain, source date, source field, evidence state, and explicit unavailable/non-found semantics without creating duplicate persistence or business authority.
 
 The dedicated Reports CI gate and Desktop Build composition tests protect the current extension point. CAP-012 is `Partial`, not `Missing` and not `Complete`; additional report definitions, cross-domain reconciliation, charts, exports, providers, persistence, and expanded analytics require separately approved workbook-backed boundaries.
 
@@ -77,7 +77,7 @@ The read-only Collection Position service/workspace and the composition-owned Re
 
 The Capability Matrix identifies Collection and Reports as `Partial`. Collection Position remains incomplete as an ownership model until its workbook-backed position grain, field vocabulary, evidence ownership, transition rules, and archive semantics are accepted.
 
-Reports has one verified Inventory Age report but no authorization to infer the next report from roadmap memory. The next Reports slice must begin with one approved workbook-backed business question, explicit source-domain authority, deterministic query/read-model contracts, and scoped verification. No chart, export, provider, persistence, cross-domain total, or automation follows by assumption.
+Reports has one verified Inventory Age report but no authorization to infer the next report from roadmap memory. The next Reports slice must begin with one approved workbook-backed business question, explicit source-domain authority, deterministic query/read-model contracts, and scoped verification. The merged Purchase Source Performance preview does not authorize live execution, new queries, charts, exports, persistence, cross-domain totals, or automation.
 
 ## Reconciliation Result
 
