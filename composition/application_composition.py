@@ -19,6 +19,8 @@ from reports.report_query_request import ReportQueryRequest
 from reports.report_query_service import ReportQueryService
 from reports.purchase_source_performance_inventory_adapter import PurchaseSourcePerformanceInventoryAdapter
 from reports.purchase_source_performance_provider import PurchaseSourcePerformanceProvider
+from reports.purchase_source_performance_contract import PurchaseSourcePerformanceRequest
+from reports.purchase_source_performance_presentation import present_purchase_source_performance
 from reports.purchase_source_performance_query import PurchaseSourcePerformanceQueryService
 from services.collection_position_service import CollectionPositionService
 from services.inventory_app_service import InventoryAppService
@@ -71,6 +73,7 @@ class ApplicationComposition:
         self.purchase_source_performance_query = PurchaseSourcePerformanceQueryService(
             self.purchase_source_performance_provider
         )
+        self.purchase_source_performance_presentation = self._build_purchase_source_performance_presentation()
         self.inventory_age_input_provider = ApplicationInventoryAgeInputProvider(
             InventoryDetailReadAdapter(self.inventory.database.read_connection),
             InventoryProductLinkReadAdapter(self.inventory.database.read_connection),
@@ -94,6 +97,17 @@ class ApplicationComposition:
         self.inventory_turnover_presentation = present_inventory_turnover(
             self.inventory_turnover_preview_result
         )
+
+    def _build_purchase_source_performance_presentation(self):
+        """Build one deterministic, composition-owned read-only snapshot for Reports."""
+        request = PurchaseSourcePerformanceRequest(
+            period_start=date(2026, 1, 1),
+            period_end=date(2026, 2, 1),
+            as_of=date(2026, 2, 1),
+            source_coverage_required=("inventory", "sale_completion"),
+        )
+        response = self.purchase_source_performance_query.get_evidence_for_request(request)
+        return present_purchase_source_performance(response)
 
     def list_reports(self) -> tuple[ReportDefinition, ...]:
         """Return the immutable, composition-owned report catalog view."""
@@ -176,6 +190,7 @@ class ApplicationComposition:
             self.query_report,
             window,
             turnover_presentation=self.inventory_turnover_presentation,
+            purchase_source_presentation=self.purchase_source_performance_presentation,
         )
         register_reports_workspace(
             self.workspace_registry,
