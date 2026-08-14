@@ -207,6 +207,7 @@ class ApplicationComposition:
             window,
             turnover_presentation=self.inventory_turnover_presentation,
             purchase_source_presentation=self.purchase_source_performance_presentation,
+            purchase_source_query=self.query_purchase_source_performance,
         )
         register_reports_workspace(
             self.workspace_registry,
