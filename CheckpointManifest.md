@@ -563,3 +563,15 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - PR #718 delivered the composition-owned Purchase Source Performance snapshot with visual acceptance.
 - PR #720 reconciled CAP-012AN documentation with the delivered acquisition projection and adapter boundary; documentation-only CI passed.
 - CAP-012 remains `Partial`; future live execution or expanded presentation requires a separately approved boundary.
+
+
+## 🏁 Checkpoint 072 — CAP-012 Reports Workspace Wiring
+
+- PR [#725](https://github.com/markperezne8-spec/MarketDEX/pull/725) exposed the composition-owned Purchase Source Performance query boundary; CI [#1013](https://github.com/markperezne8-spec/MarketDEX/actions/runs/31776779701) passed for exact head `8267337be13acdf9e99cc632488ed1a73a619866`; merge commit `4e1b0fa073d6695f37760d5e8d7e3c5b2a0ca1bb`.
+- PR [#727](https://github.com/markperezne8-spec/MarketDEX/pull/727) reconciled CAP-012 documentation; CI [#1015](https://github.com/markperezne8-spec/MarketDEX/actions/runs/31777796443) passed for exact head `be7ae1957b9682e3d8c16c263e50967a5ee8721f`; merge commit `409674ef1bbe5e48728af933c237a00dad879e4f`.
+- PR [#729](https://github.com/markperezne8-spec/MarketDEX/pull/729) wired the existing query into the Reports workspace with read-only controls; CI [#1017](https://github.com/markperezne8-spec/MarketDEX/actions/runs/31787132407) passed for exact head `c5b67daac4c175242dafb1608defde3f487a7f46`; merge commit `941c65ca4730f052a9f2f9bb9978de99fe74afaa`.
+- PR #729 changed only the Reports workspace, application composition wiring, and focused workspace tests.
+- Mark's maximized full-window screenshot passed visual acceptance: controls, result table, complete coverage, empty-result honesty, readable spacing, and adjacent Inventory content were preserved.
+- CAP-012 remains offline-first, deterministic, read-only, composition-owned, and without live providers, persistence, exports, schedulers, alerts, automation, or business-state mutation.
+- CAP-006 Collection remains unchanged; future Collection runtime work requires a separately approved boundary.
+- This documentation synchronization is tracked by issue #730. It introduces no runtime or UI behavior and requires no new visual check.
