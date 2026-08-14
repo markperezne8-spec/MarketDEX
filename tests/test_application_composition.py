@@ -1,9 +1,11 @@
+from datetime import date
 import os
 
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
 from PySide6.QtWidgets import QApplication
 
+from reports.purchase_source_performance_contract import PurchaseSourcePerformanceRequest
 from composition.application_composition import ApplicationComposition
 from market_intelligence.composition import MarketIntelligenceComposition
 from services.inventory_app_service import InventoryAppService
@@ -44,3 +46,20 @@ def test_application_composition_verifies_the_runtime_without_creating_a_window(
     composition.verify_runtime()
 
     assert composition.database_path.exists()
+
+
+def test_application_composition_routes_purchase_source_performance_through_reports_boundary(tmp_path):
+    composition = ApplicationComposition(tmp_path / 'marketdex.sqlite3')
+    request = PurchaseSourcePerformanceRequest(
+        period_start=date(2026, 1, 1),
+        period_end=date(2026, 2, 1),
+        as_of=date(2026, 2, 1),
+        source_coverage_required=('inventory', 'sale_completion'),
+    )
+
+    response = composition.query_purchase_source_performance(request)
+
+    assert response.request == request
+    assert response.source_domains == ('inventory', 'sale_completion')
+    assert response.source_coverage
+    assert response.provenance

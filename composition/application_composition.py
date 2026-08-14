@@ -22,6 +22,7 @@ from reports.purchase_source_performance_provider import PurchaseSourcePerforman
 from reports.purchase_source_performance_contract import PurchaseSourcePerformanceRequest
 from reports.purchase_source_performance_presentation import present_purchase_source_performance
 from reports.purchase_source_performance_query import PurchaseSourcePerformanceQueryService
+from reports.purchase_source_performance_query import PurchaseSourcePerformanceQueryResponse
 from services.collection_position_service import CollectionPositionService
 from services.inventory_app_service import InventoryAppService
 from services.inventory_detail_read import InventoryDetailReadAdapter
@@ -157,6 +158,21 @@ class ApplicationComposition:
             request,
             query_inventory_age=self.query_inventory_age,
         )
+
+    def query_purchase_source_performance(
+        self,
+        request: PurchaseSourcePerformanceRequest,
+    ) -> PurchaseSourcePerformanceQueryResponse:
+        """Query Purchase Source Performance through the canonical Reports boundary."""
+        if not isinstance(request, PurchaseSourcePerformanceRequest):
+            raise TypeError(
+                'Purchase Source Performance query requires PurchaseSourcePerformanceRequest'
+            )
+        report_request = ReportQueryRequest(
+            'purchase-source-performance',
+            purchase_source_request=request,
+        )
+        return self.report_query.query(report_request)
 
     def build_main_window(self) -> MainWindow:
         window = MainWindow(self.mission_control, self.inventory)
