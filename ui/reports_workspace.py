@@ -140,7 +140,7 @@ class ReportsWorkspace(QWidget):
         self.turnover_panel.setMinimumHeight(350)
 
         self.turnover_status_label = QLabel(
-            'Read-only result · '
+            'Read-only visual preview · '
             f'{self.turnover_presentation.status} · '
             f'{self.turnover_presentation.reason}'
         )
@@ -256,8 +256,8 @@ class ReportsWorkspace(QWidget):
         purchase_source_form.addRow('As-of date', self.purchase_source_as_of_input)
         purchase_source_form.addRow('', self.purchase_source_run_button)
         purchase_source_layout.addWidget(self.purchase_source_status_label)
-        purchase_source_layout.addWidget(self.purchase_source_table)
         purchase_source_layout.addWidget(purchase_source_controls)
+        purchase_source_layout.addWidget(self.purchase_source_table)
         self._refresh_purchase_source_preview()
 
         self.inventory_position_input = QLineEdit()
@@ -325,7 +325,7 @@ class ReportsWorkspace(QWidget):
     def _refresh_purchase_source_preview(self) -> None:
         presentation = self.purchase_source_presentation
         self.purchase_source_status_label.setText(
-            'Read-only visual preview · '
+            'Read-only result · '
             f'{len(presentation.rows)} source row(s) · '
             f'PERIOD {presentation.period_start.isoformat()} → {presentation.period_end.isoformat()} · '
             f'AS-OF {presentation.as_of.isoformat()} · '
