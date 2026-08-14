@@ -410,3 +410,13 @@ M1.16 remains protected from action controls, task execution, popup or dialog be
 - Visual review was not required for this repository-hygiene and CI-governance sequence.
 - Pull required locally: **YES when Mark is back at the PC**: GitHub Desktop -> `main` -> Fetch origin -> Pull origin.
 - Next movement may proceed from synchronized GitHub `main`; local runtime or visual checks should wait until Mark pulls.
+
+
+## CAP-012 Reports synchronization — PRs #718 and #720
+
+- PR #718 delivered the composition-owned, immutable Purchase Source Performance presentation snapshot and passed the required visual acceptance.
+- PR #720 reconciled CAP-012AN documentation with the delivered canonical acquisition projection and report adapter; its documentation-only CI passed.
+- CAP-012 remains `Partial`. Live provider execution, expanded queries, charts, exports, persistence, and automation remain separately gated.
+
+- Main is synchronized at merge commit `438d30924aa3c64d550d05bc9ee36688b741a295` before this documentation sync.
+- No visual check is required for this documentation-only boundary.

@@ -556,3 +556,10 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Final sequence merge commit: `1d837b6355b232770d27c12d7cbf3dc1024f14b3`.
 - No runtime behavior, UI behavior, dependency, business logic, persistence, networking, provider, alert, notification, automation, or business-state mutation was introduced.
 - Visual check was not required.
+
+
+## CAP-012 Reports synchronization — PRs #718 and #720
+
+- PR #718 delivered the composition-owned Purchase Source Performance snapshot with visual acceptance.
+- PR #720 reconciled CAP-012AN documentation with the delivered acquisition projection and adapter boundary; documentation-only CI passed.
+- CAP-012 remains `Partial`; future live execution or expanded presentation requires a separately approved boundary.
