@@ -53,7 +53,7 @@ def test_application_composition_routes_purchase_source_performance_through_repo
     request = PurchaseSourcePerformanceRequest(
         period_start=date(2026, 1, 1),
         period_end=date(2026, 2, 1),
-        as_of=__import__('datetime').date(2026, 2, 1),
+        as_of=date(2026, 2, 1),
         source_coverage_required=('inventory', 'sale_completion'),
     )
 
