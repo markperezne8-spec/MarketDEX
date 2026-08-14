@@ -1,3 +1,4 @@
+from datetime import date
 import os
 
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
@@ -50,8 +51,8 @@ def test_application_composition_verifies_the_runtime_without_creating_a_window(
 def test_application_composition_routes_purchase_source_performance_through_reports_boundary(tmp_path):
     composition = ApplicationComposition(tmp_path / 'marketdex.sqlite3')
     request = PurchaseSourcePerformanceRequest(
-        period_start=__import__('datetime').date(2026, 1, 1),
-        period_end=__import__('datetime').date(2026, 2, 1),
+        period_start=date(2026, 1, 1),
+        period_end=date(2026, 2, 1),
         as_of=__import__('datetime').date(2026, 2, 1),
         source_coverage_required=('inventory', 'sale_completion'),
     )
