@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 071
+# MarketDEX Foundation Checkpoint 072
 
-**Status:** 🏁 Checkpoint Complete — Reports Result Presentation
+**Status:** 🏁 Checkpoint Complete — CAP-012 Reports Workspace Wiring
 **Canonical branch:** `main`
 **Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
@@ -8,7 +8,7 @@
 
 MarketDEX remains an offline-first Windows desktop collectibles operating system. Pokémon TCG is the first optimized workflow. Continue the existing permanent codebase; do not restart it, create a competing shell, duplicate persistence authority, or treat chat history as product authority.
 
-The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, catalog-routing, immutable-request, request-service integration, catalog-approved routing, request-contract hardening, immutable request-envelope integration, composition-envelope verification, catalog-to-composition presentation, and result-context/source-authority slices. Reports remains offline-first, deterministic, read-only, and composition-owned; no live provider, persistence authority, cache, mutation, network behavior, export, scheduler, alert, or automation was introduced.
+The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, catalog-routing, immutable-request, request-service integration, catalog-approved routing, request-contract hardening, immutable request-envelope integration, composition-envelope verification, catalog-to-composition presentation, result-context/source-authority slices, the Purchase Source Performance composition snapshot, and the Reports workspace wiring. Reports remains offline-first, deterministic, read-only, and composition-owned; no live provider, persistence authority, cache, mutation, network behavior, export, scheduler, alert, or automation was introduced.
 
 ## Permanent operating rules
 
@@ -77,24 +77,26 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 - Inventory detail and CAP-005B product-link adapters remain the only approved evidence paths.
 - Reports presentation, workspaces, and domain code do not open SQLite connections, construct database managers, query source tables directly, or repair evidence.
 - The existing `build_inventory_age_row_from_input` bridge remains pure and may receive only verified found input evidence in a later query service.
+- Purchase Source Performance query execution remains composition-owned and is injected into `ReportsWorkspace`.
+- Reports maps Purchase Source Performance responses through the existing presentation boundary and preserves complete, unavailable, and conflicting outcomes.
 
 ## Exact next gate
 
-**Build 701BF visual acceptance is complete. The next separately scoped Reports slice may proceed.**
+**CAP-012 Reports workspace wiring is complete through PR #729. This documentation-only checkpoint synchronization is the current controlled gate.**
 
-Verified visual acceptance: `Test_Inventory` produced `NOT_FOUND`; the result table showed `Source domain = inventory`, while preserving outcome, reason, inventory position, and as-of date.
+Verified sequence:
 
-The next runtime build may extend the composed Inventory Age query path only through deterministic, read-only application boundaries and approved evidence. It must:
+1. PR #725 exposed the composition-owned Purchase Source Performance query boundary.
+2. PR #727 reconciled the capability documentation.
+3. PR #729 wired the query into the Reports workspace with read-only period and as-of controls.
 
-1. preserve the immutable query-result outcomes and verified-found row derivation;
-2. reuse the composition-owned query service and existing database authority;
-3. add no Reports workspace, presentation, chart, export, persistence, write, event, audit, repair, migration, network, scheduler, alert, cloud sync, or automation behavior.
+The next runtime or expanded Reports movement requires a separately approved issue and boundary. CAP-006 Collection remains unchanged; no Collection runtime authority is invented here.
 
 ## Pull and visual status
 
-- Pull required now: **NO**
-- Pull scope: Build **701BF** was merged and visually accepted.
-- Visual review required now: **NO — Build 701BF passed**
+- Pull required now: **YES after this documentation sync is merged**
+- Pull scope: checkpoint synchronization for CAP-012 Reports.
+- Visual review required now: **NO — PR #729 visual acceptance passed**
 - ChatGPT Work required now: **NO**
 
 ## Progress snapshot
@@ -420,3 +422,27 @@ M1.16 remains protected from action controls, task execution, popup or dialog be
 
 - Main is synchronized at merge commit `438d30924aa3c64d550d05bc9ee36688b741a295` before this documentation sync.
 - No visual check is required for this documentation-only boundary.
+
+
+## CAP-012 Reports synchronization — PRs #725, #727, and #729
+
+- PR [#725](https://github.com/markperezne8-spec/MarketDEX/pull/725) exposed the composition-owned Purchase Source Performance query boundary.
+  - Exact head: `8267337be13acdf9e99cc632488ed1a73a619866`
+  - CI [#1013](https://github.com/markperezne8-spec/MarketDEX/actions/runs/31776779701) passed.
+  - Merge commit: `4e1b0fa073d6695f37760d5e8d7e3c5b2a0ca1bb`.
+- PR [#727](https://github.com/markperezne8-spec/MarketDEX/pull/727) reconciled the capability documentation.
+  - Exact head: `be7ae1957b9682e3d8c16c263e50967a5ee8721f`
+  - CI [#1015](https://github.com/markperezne8-spec/MarketDEX/actions/runs/31777796443) passed.
+  - Merge commit: `409674ef1bbe5e48728af933c237a00dad879e4f`.
+- PR [#729](https://github.com/markperezne8-spec/MarketDEX/pull/729) wired the existing query into the Reports workspace.
+  - Exact head: `c5b67daac4c175242dafb1608defde3f487a7f46`
+  - CI [#1017](https://github.com/markperezne8-spec/MarketDEX/actions/runs/31787132407) passed for that exact head.
+  - Scope was limited to `ui/reports_workspace.py`, `composition/application_composition.py`, and `tests/test_reports_workspace.py`.
+  - Visual acceptance passed from the maximized full-window Reports screenshot.
+  - Merge commit: `941c65ca4730f052a9f2f9bb9978de99fe74afaa`.
+- CAP-012 remains offline-first, deterministic, read-only, composition-owned, and without live providers, persistence, exports, schedulers, alerts, automation, or business-state mutation.
+- CAP-006 Collection remains unchanged by this sequence and requires its own approved boundary before runtime work.
+
+## Current controlled next gate
+
+After this synchronization is merged and pulled, the next CAP-012 Reports movement must be separately approved and separately scoped. No duplicate PR or runtime path is authorized.
