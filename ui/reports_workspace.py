@@ -25,6 +25,9 @@ from PySide6.QtWidgets import (
 from reports.definitions import ReportCatalog
 from reports.inventory_age_query import InventoryAgeReportQueryResult
 from reports.inventory_turnover_presentation import InventoryTurnoverPresentation
+from reports.purchase_source_performance_contract import PurchaseSourcePerformanceRequest
+from reports.purchase_source_performance_presentation import present_purchase_source_performance
+from reports.purchase_source_performance_query import PurchaseSourcePerformanceQueryResponse
 from reports.purchase_source_performance_presentation import (
     PurchaseSourcePerformancePresentation,
     PurchaseSourcePerformancePresentationRow,
@@ -93,10 +96,13 @@ class ReportsWorkspace(QWidget):
         *,
         turnover_presentation: InventoryTurnoverPresentation | None = None,
         purchase_source_presentation: PurchaseSourcePerformancePresentation | None = None,
+        purchase_source_query: Callable[[PurchaseSourcePerformanceRequest], PurchaseSourcePerformanceQueryResponse]
+        | None = None,
     ):
         super().__init__(parent)
         self.catalog = catalog
         self.query_report = query_report
+        self.purchase_source_query = purchase_source_query
         self.turnover_presentation = (
             turnover_presentation or _unavailable_turnover_presentation()
         )
@@ -109,8 +115,8 @@ class ReportsWorkspace(QWidget):
         title.setObjectName('reportsTitle')
 
         subtitle = QLabel(
-            'Read-only report catalog. Approved Reports use the offline composition boundary; '
-            'no live providers, persistence, or automatic execution are enabled.'
+            'Read-only report catalog. Purchase Source Performance uses the composition-owned '
+            'query boundary; no persistence, exports, or background execution are enabled.'
         )
         subtitle.setObjectName('reportsSubtitle')
         subtitle.setWordWrap(True)
@@ -221,7 +227,36 @@ class ReportsWorkspace(QWidget):
         purchase_source_layout = QVBoxLayout(self.purchase_source_panel)
         purchase_source_layout.setContentsMargins(12, 12, 12, 12)
         purchase_source_layout.setSpacing(8)
+        self.purchase_source_period_start_input = QDateEdit(QDate(2026, 1, 1))
+        self.purchase_source_period_start_input.setObjectName('reportsPurchaseSourcePeriodStart')
+        self.purchase_source_period_start_input.setCalendarPopup(True)
+        self.purchase_source_period_start_input.setDisplayFormat('yyyy-MM-dd')
+
+        self.purchase_source_period_end_input = QDateEdit(QDate(2026, 2, 1))
+        self.purchase_source_period_end_input.setObjectName('reportsPurchaseSourcePeriodEnd')
+        self.purchase_source_period_end_input.setCalendarPopup(True)
+        self.purchase_source_period_end_input.setDisplayFormat('yyyy-MM-dd')
+
+        self.purchase_source_as_of_input = QDateEdit(QDate(2026, 2, 1))
+        self.purchase_source_as_of_input.setObjectName('reportsPurchaseSourceAsOf')
+        self.purchase_source_as_of_input.setCalendarPopup(True)
+        self.purchase_source_as_of_input.setDisplayFormat('yyyy-MM-dd')
+
+        self.purchase_source_run_button = QPushButton('Run read-only report')
+        self.purchase_source_run_button.setObjectName('reportsPurchaseSourceRunButton')
+        self.purchase_source_run_button.clicked.connect(self.run_purchase_source_performance)
+
+        purchase_source_controls = QWidget()
+        purchase_source_controls.setObjectName('reportsPurchaseSourceControls')
+        purchase_source_form = QFormLayout(purchase_source_controls)
+        purchase_source_form.setContentsMargins(0, 0, 0, 0)
+        purchase_source_form.setVerticalSpacing(8)
+        purchase_source_form.addRow('Period start', self.purchase_source_period_start_input)
+        purchase_source_form.addRow('Period end', self.purchase_source_period_end_input)
+        purchase_source_form.addRow('As-of date', self.purchase_source_as_of_input)
+        purchase_source_form.addRow('', self.purchase_source_run_button)
         purchase_source_layout.addWidget(self.purchase_source_status_label)
+        purchase_source_layout.addWidget(purchase_source_controls)
         purchase_source_layout.addWidget(self.purchase_source_table)
         self._refresh_purchase_source_preview()
 
@@ -290,7 +325,7 @@ class ReportsWorkspace(QWidget):
     def _refresh_purchase_source_preview(self) -> None:
         presentation = self.purchase_source_presentation
         self.purchase_source_status_label.setText(
-            'Read-only visual preview · '
+            'Read-only result · '
             f'{len(presentation.rows)} source row(s) · '
             f'PERIOD {presentation.period_start.isoformat()} → {presentation.period_end.isoformat()} · '
             f'AS-OF {presentation.as_of.isoformat()} · '
@@ -311,6 +346,37 @@ class ReportsWorkspace(QWidget):
                 self.purchase_source_table.setItem(row_index, column_index, item)
         self.purchase_source_table.resizeRowsToContents()
 
+    def run_purchase_source_performance(self) -> None:
+        if self.purchase_source_query is None:
+            self.purchase_source_status_label.setText(
+                'Purchase Source Performance: query execution remains composition-owned.'
+            )
+            return
+
+        period_start = self.purchase_source_period_start_input.date().toPython()
+        period_end = self.purchase_source_period_end_input.date().toPython()
+        as_of = self.purchase_source_as_of_input.date().toPython()
+        try:
+            request = PurchaseSourcePerformanceRequest(
+                period_start=period_start,
+                period_end=period_end,
+                as_of=as_of,
+                source_coverage_required=('inventory', 'sale_completion'),
+            )
+            response = self.purchase_source_query(request)
+            self.purchase_source_presentation = present_purchase_source_performance(response)
+        except (TypeError, ValueError) as exc:
+            self.purchase_source_status_label.setText(
+                f'Purchase Source Performance: INVALID REQUEST · {exc}'
+            )
+            return
+        except Exception:
+            self.purchase_source_presentation = _unavailable_purchase_source_presentation()
+            self.purchase_source_status_label.setText(
+                'Purchase Source Performance: UNAVAILABLE · query boundary unavailable'
+            )
+        self._refresh_purchase_source_preview()
+
     def refresh(self) -> None:
         definitions = self.catalog.list_definitions()
         self.report_table.setRowCount(len(definitions))
@@ -330,7 +396,7 @@ class ReportsWorkspace(QWidget):
         self.report_table.resizeRowsToContents()
         self.status_label.setText(
             f'{len(definitions)} approved report definition(s) · catalog only · '
-            'query execution remains composition-owned.'
+            'read-only query execution remains composition-owned.'
         )
         self.result_status_label.setText(
             'Enter an inventory position and select an as-of date to review a read-only result.'
