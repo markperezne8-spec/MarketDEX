@@ -64,3 +64,37 @@ def test_reports_workspace_rejects_invalid_purchase_source_dates_without_queryin
     assert calls == []
     assert 'INVALID REQUEST' in workspace.purchase_source_status_label.text()
     workspace.close()
+
+
+def test_reports_workspace_exposes_visual_north_star_summary_cards():
+    app = QApplication.instance() or QApplication([])
+    workspace = ReportsWorkspace(build_report_catalog())
+
+    cards = workspace.report_summary_cards
+
+    assert tuple(cards) == (
+        'inventory-age-patterns',
+        'inventory-turnover',
+        'purchase-source-performance',
+    )
+    assert tuple(card.objectName() for card in cards.values()) == (
+        'marketdexKpiCard',
+        'marketdexKpiCard',
+        'marketdexKpiCard',
+    )
+    assert tuple(card.label_widget.text() for card in cards.values()) == (
+        'Inventory Age Patterns',
+        'Inventory Turnover',
+        'Purchase Source Performance',
+    )
+    assert tuple(card.value_widget.text() for card in cards.values()) == (
+        'APPROVED',
+        'APPROVED',
+        'APPROVED',
+    )
+    assert tuple(card.comparison_widget.text() for card in cards.values()) == (
+        'READ-ONLY',
+        'READ-ONLY',
+        'READ-ONLY',
+    )
+    workspace.close()
