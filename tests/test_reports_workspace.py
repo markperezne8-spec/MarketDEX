@@ -82,6 +82,11 @@ def test_reports_workspace_exposes_visual_north_star_summary_cards():
         'marketdexKpiCard',
         'marketdexKpiCard',
     )
+    assert tuple(card.property('dashboardRole') for card in cards.values()) == (
+        'inventory-command-summary',
+        'inventory-command-summary',
+        'inventory-command-summary',
+    )
     assert tuple(card.label_widget.text() for card in cards.values()) == (
         'Inventory Age Patterns',
         'Inventory Turnover',
