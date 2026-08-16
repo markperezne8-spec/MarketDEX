@@ -164,6 +164,7 @@ class ReportsWorkspace(QWidget):
         self.report_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.report_table.setSelectionBehavior(QTableWidget.SelectRows)
         self.report_table.setSelectionMode(QTableWidget.SingleSelection)
+        self.report_table.verticalHeader().setVisible(False)
         self.report_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.report_table.horizontalHeader().setStretchLastSection(True)
         self.report_table.setMinimumHeight(120)
