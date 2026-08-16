@@ -9,6 +9,7 @@ from PySide6.QtWidgets import (
     QDateEdit,
     QFormLayout,
     QFrame,
+    QHBoxLayout,
     QGridLayout,
     QGroupBox,
     QHeaderView,
@@ -32,6 +33,7 @@ from reports.purchase_source_performance_presentation import (
     PurchaseSourcePerformancePresentation,
     PurchaseSourcePerformancePresentationRow,
 )
+from ui.design_system.widgets import MarketDEXKpiCard
 
 
 def _unavailable_turnover_presentation() -> InventoryTurnoverPresentation:
@@ -123,6 +125,38 @@ class ReportsWorkspace(QWidget):
 
         self.status_label = QLabel()
         self.status_label.setObjectName('reportsStatusLabel')
+
+        self.report_summary_cards: dict[str, MarketDEXKpiCard] = {}
+        report_summary_layout = QHBoxLayout()
+        report_summary_layout.setContentsMargins(0, 0, 0, 0)
+        report_summary_layout.setSpacing(10)
+        report_summary_specs = (
+            (
+                'inventory-age-patterns',
+                'Inventory Age Patterns',
+                'Inventory-sourced read-only boundary',
+            ),
+            (
+                'inventory-turnover',
+                'Inventory Turnover',
+                'Read-only preview contract',
+            ),
+            (
+                'purchase-source-performance',
+                'Purchase Source Performance',
+                'Composition-owned local query',
+            ),
+        )
+        for report_id, label, evidence in report_summary_specs:
+            card = MarketDEXKpiCard(label, 'APPROVED')
+            card.setProperty('dashboardRole', 'inventory-command-summary')
+            card.set_comparison('READ-ONLY')
+            card.set_evidence(evidence)
+            card.setAccessibleName(
+                f'{label}. Approved. Read-only. {evidence}.'
+            )
+            report_summary_layout.addWidget(card, 1)
+            self.report_summary_cards[report_id] = card
 
         self.report_table = QTableWidget(0, len(self.HEADERS))
         self.report_table.setObjectName('reportsCatalogTable')
@@ -302,6 +336,7 @@ class ReportsWorkspace(QWidget):
         content_layout.addWidget(title)
         content_layout.addWidget(subtitle)
         content_layout.addWidget(self.status_label)
+        content_layout.addLayout(report_summary_layout)
         content_layout.addWidget(self.report_table)
         content_layout.addWidget(self.turnover_panel)
         content_layout.addWidget(self.purchase_source_panel)
