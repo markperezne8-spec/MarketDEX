@@ -103,3 +103,13 @@ def test_reports_workspace_exposes_visual_north_star_summary_cards():
         'READ-ONLY',
     )
     workspace.close()
+
+
+def test_reports_workspace_hides_catalog_row_number_chrome():
+    app = QApplication.instance() or QApplication([])
+    workspace = ReportsWorkspace(build_report_catalog())
+
+    assert not workspace.report_table.verticalHeader().isVisible()
+    workspace.report_table.selectRow(0)
+    assert workspace.report_table.currentRow() == 0
+    workspace.close()
