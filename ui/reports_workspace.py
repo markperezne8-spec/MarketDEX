@@ -149,7 +149,7 @@ class ReportsWorkspace(QWidget):
         )
         for report_id, label, evidence in report_summary_specs:
             card = MarketDEXKpiCard(label, 'APPROVED')
-            card.setProperty('dashboardRole', 'existing-kpi')
+            card.setProperty('dashboardRole', 'inventory-command-summary')
             card.set_comparison('READ-ONLY')
             card.set_evidence(evidence)
             card.setAccessibleName(
