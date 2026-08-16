@@ -22,3 +22,12 @@ A desktop requirement is not complete until its workbook source, implementation 
 REQ-COL-001 remains `In Progress` because its read-only projection is verified while its Collection-owned position grain, field vocabulary, evidence ownership, lifecycle, persistence, and mutation contracts remain blocked by the CAP-006B authority gate.
 
 REQ-REP-001 is `In Progress` because the catalog-only Inventory Age report, composition-owned query path, read-only result presentation, and provenance evidence are verified, while additional workbook-backed reports, cross-domain reconciliation, charts, exports, providers, persistence, and expanded analytics remain separately gated.
+
+## REQ-REP-001 reconciliation after PR #729
+
+- Purchase Source Performance is now represented in the read-only Reports workspace through constructor-injected composition/query boundaries.
+- The workspace exposes deterministic period start, period end, and as-of controls and preserves invalid-request, unavailable, conflicting, complete-coverage, provenance, and empty-result semantics.
+- Focused workspace tests and the full Reports/Desktop CI path passed in CI [#1017](https://github.com/markperezne8-spec/MarketDEX/actions/runs/31787132407) for exact PR #729 head `c5b67daac4c175242dafb1608defde3f487a7f46`.
+- Visual acceptance passed for the maximized Reports workspace screenshot.
+- REQ-REP-001 remains `In Progress`: read-only local execution and presentation are delivered, while exports, persistence, external providers, networking, automation, and expanded analytics remain separately gated.
+- CAP-006 remains `Partial` and blocked on workbook-backed Collection authority; no Collection implementation is introduced here.
