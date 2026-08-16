@@ -10,11 +10,14 @@ from reports.inventory_age_query import (
 )
 from reports.inventory_age_query_request import InventoryAgeReportQueryRequest
 from reports.report_query_request import ReportQueryRequest
-from reports.purchase_source_performance_query import PurchaseSourcePerformanceQueryResponse, PurchaseSourcePerformanceQueryService
+from reports.purchase_source_performance_query import (
+    PurchaseSourcePerformanceQueryResponse,
+    PurchaseSourcePerformanceQueryService,
+)
 
 
 class ReportQueryService:
-    """Routes catalog-approved report requests to read-only query services."""
+    """Routes approved read-only report requests to their query boundaries."""
 
     def __init__(
         self,
@@ -31,8 +34,8 @@ class ReportQueryService:
         request: ReportQueryRequest,
         query_inventory_age: Callable[[str, date], InventoryAgeReportQueryResult]
         | None = None,
-    ) -> InventoryAgeReportQueryResult:
-        """Execute one immutable report request envelope."""
+    ) -> InventoryAgeReportQueryResult | PurchaseSourcePerformanceQueryResponse:
+        """Execute one immutable request through an approved read-only boundary."""
         if not isinstance(request, ReportQueryRequest):
             raise TypeError('Reports query requires ReportQueryRequest')
         if request.purchase_source_request is not None:
@@ -48,7 +51,7 @@ class ReportQueryService:
         query_inventory_age: Callable[[str, date], InventoryAgeReportQueryResult]
         | None = None,
     ) -> InventoryAgeReportQueryResult:
-        """Execute the only currently approved report through its query boundary."""
+        """Execute the approved Inventory Age report through its query boundary."""
         if not isinstance(request, InventoryAgeReportQueryRequest):
             raise TypeError(
                 'Inventory Age report query requires InventoryAgeReportQueryRequest'
