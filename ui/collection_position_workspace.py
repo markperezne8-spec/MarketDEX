@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (
 )
 
 from services.collection_position_service import CollectionPositionService
+from ui.design_system.widgets import MarketDEXKpiCard
 
 
 class CollectionPositionWorkspace(QWidget):
@@ -37,6 +38,20 @@ class CollectionPositionWorkspace(QWidget):
         subtitle.setWordWrap(True)
         subtitle.setObjectName('collectionPositionSubtitle')
 
+        self.authority_card = MarketDEXKpiCard(
+            'Collection Position Projection',
+            'READ-ONLY',
+        )
+        self.authority_card.setProperty('dashboardRole', 'inventory-command-summary')
+        self.authority_card.set_comparison('AUTHORITY GATE')
+        self.authority_card.set_evidence(
+            'Product Registry + Inventory projection · no Collection writes'
+        )
+        self.authority_card.setAccessibleName(
+            'Collection Position Projection. Read-only. Authority gate. '
+            'Product Registry and Inventory projection. No Collection writes.'
+        )
+
         self.search_input = QLineEdit()
         self.search_input.setObjectName('collectionPositionSearchInput')
         self.search_input.setPlaceholderText('Search product, product ID, asset ID, or location')
@@ -54,6 +69,7 @@ class CollectionPositionWorkspace(QWidget):
         self.results_table.setObjectName('collectionPositionResultsTable')
         self.results_table.setHorizontalHeaderLabels(self.COLUMN_HEADERS)
         self.results_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.results_table.verticalHeader().setVisible(False)
         self.results_table.setSelectionBehavior(QTableWidget.SelectRows)
         self.results_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.results_table.horizontalHeader().setStretchLastSection(True)
@@ -61,6 +77,7 @@ class CollectionPositionWorkspace(QWidget):
         layout = QVBoxLayout(self)
         layout.addWidget(title)
         layout.addWidget(subtitle)
+        layout.addWidget(self.authority_card)
         layout.addLayout(controls)
         layout.addWidget(self.status_label)
         layout.addWidget(self.results_table, 1)
