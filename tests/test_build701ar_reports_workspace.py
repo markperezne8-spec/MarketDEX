@@ -1,3 +1,4 @@
+from datetime import date
 import os
 
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
@@ -6,6 +7,8 @@ from PySide6.QtWidgets import QApplication, QAbstractItemView, QPushButton
 
 from composition.application_composition import ApplicationComposition
 from reports.definitions import build_report_catalog
+from reports.inventory_age import InventoryAgeReportRow
+from reports.inventory_age_query import InventoryAgeReportQueryResult
 from reports.inventory_turnover_presentation import (
     InventoryTurnoverPresentation,
     present_inventory_turnover,
@@ -47,6 +50,68 @@ def test_reports_workspace_is_read_only_catalog_surface() -> None:
     assert workspace.report_table.item(0, 3).text() == 'APPROVED · READ-ONLY'
     assert workspace.report_table.item(1, 3).text() == 'APPROVED · READ-ONLY'
     assert 'catalog only' in workspace.status_label.text()
+    workspace.close()
+
+
+def test_reports_workspace_exposes_inventory_age_visual_preview_defaults() -> None:
+    app = QApplication.instance() or QApplication([])
+    workspace = ReportsWorkspace(build_report_catalog())
+
+    assert workspace.inventory_age_panel.objectName() == 'reportsInventoryAgePanel'
+    assert workspace.inventory_age_panel.title() == 'Inventory Age Patterns'
+    assert 'CATALOG-ONLY' in workspace.inventory_age_status_label.text()
+    assert 'UNAVAILABLE' in workspace.inventory_age_status_label.text()
+    assert set(workspace.inventory_age_metric_labels) == {
+        'reportsInventoryAgeDays',
+        'reportsInventoryAgeSourceDate',
+        'reportsInventoryAgeEvidence',
+    }
+    assert all(
+        label.text() == 'Unavailable'
+        for label in workspace.inventory_age_metric_labels.values()
+    )
+    assert 'no mutation authority' in workspace.inventory_age_evidence_label.text()
+    assert workspace.inventory_age_panel.findChildren(QPushButton) == []
+    workspace.close()
+
+
+def test_reports_workspace_updates_inventory_age_visual_preview_from_query() -> None:
+    app = QApplication.instance() or QApplication([])
+
+    def query(*_args):
+        return InventoryAgeReportQueryResult(
+            'found',
+            InventoryAgeReportRow(
+                inventory_position_id='INV-001',
+                product_id='PROD-001',
+                product_name='Sample product',
+                current_quantity=2,
+                inventory_status='available',
+                as_of_date=date(2026, 2, 1),
+                source_start_date=date(2026, 1, 1),
+                age_days=31,
+                evidence_state='available',
+                source_date_raw='2026-01-01',
+                evidence_reason='source_date_available',
+            ),
+            reason='source_date_available',
+        )
+
+    workspace = ReportsWorkspace(build_report_catalog(), query_report=query)
+    workspace.inventory_position_input.setText('INV-001')
+    workspace.as_of_date_input.setDate(QDate(2026, 2, 1))
+    workspace.review_button.click()
+
+    assert workspace.inventory_age_status_label.text() == (
+        'Read-only visual preview · FOUND · CATALOG-ONLY · READ-ONLY EVIDENCE'
+    )
+    assert workspace.inventory_age_metric_labels['reportsInventoryAgeDays'].text() == '31'
+    assert workspace.inventory_age_metric_labels['reportsInventoryAgeSourceDate'].text() == '2026-01-01'
+    assert workspace.inventory_age_metric_labels['reportsInventoryAgeEvidence'].text() == (
+        'available · source_date_available'
+    )
+    assert 'INV-001' in workspace.inventory_age_context_label.text()
+    assert '2026-02-01' in workspace.inventory_age_context_label.text()
     workspace.close()
 
 
