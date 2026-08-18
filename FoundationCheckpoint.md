@@ -446,3 +446,16 @@ M1.16 remains protected from action controls, task execution, popup or dialog be
 ## Current controlled next gate
 
 After this synchronization is merged and pulled, the next CAP-012 Reports movement must be separately approved and separately scoped. No duplicate PR or runtime path is authorized.
+
+
+## CAP-006E — Collection Visual Authority Evidence Synchronization
+
+- Issue [#738](https://github.com/markperezne8-spec/MarketDEX/issues/738) records the accepted visual evidence for the merged Collection authority-card build.
+- PR [#737](https://github.com/markperezne8-spec/MarketDEX/pull/737) introduced the read-only Collection Position Projection authority card and removed the Collection table row-number gutter.
+- Exact PR head: `b5c7c78304a67c224419be3f38499e68964c36d2`.
+- CI [#1034](https://github.com/markperezne8-spec/MarketDEX/actions/runs/31954583951) passed for that exact head.
+- Merge commit: `dadadf0da7c197d784f986405b4e22e4284c22f3`.
+- Mark accepted the maximized screenshot: readable READ-ONLY and AUTHORITY GATE labels, Product Registry + Inventory projection evidence, aligned controls, and no numbered row gutter.
+- CAP-006 remains Partial and read-only. No Collection persistence, CRUD, inference, valuation, lifecycle mutation, Inventory conversion, provider, network, export, automation, or business-state mutation authority was introduced.
+- This CAP-006E synchronization changes documentation only; no new visual check is required.
+- After merge, GitHub Desktop should be synchronized to the merge commit before the next build.
