@@ -88,6 +88,11 @@ class ReportsWorkspace(QWidget):
         ('Completed sales', 'completed_sale_units', 'reportsTurnoverCompletedSales'),
         ('Average units', 'average_units', 'reportsTurnoverAverageUnits'),
     )
+    INVENTORY_AGE_METRICS = (
+        ('Age (days)', 'reportsInventoryAgeDays'),
+        ('Source date', 'reportsInventoryAgeSourceDate'),
+        ('Evidence', 'reportsInventoryAgeEvidence'),
+    )
 
     def __init__(
         self,
@@ -169,6 +174,64 @@ class ReportsWorkspace(QWidget):
         self.report_table.horizontalHeader().setStretchLastSection(True)
         self.report_table.setMinimumHeight(120)
         self.report_table.setMaximumHeight(150)
+
+        self.inventory_age_panel = QGroupBox('Inventory Age Patterns')
+        self.inventory_age_panel.setObjectName('reportsInventoryAgePanel')
+        self.inventory_age_panel.setMinimumHeight(250)
+        self.inventory_age_status_label = QLabel()
+        self.inventory_age_status_label.setObjectName('reportsInventoryAgeStatus')
+        self.inventory_age_status_label.setWordWrap(True)
+
+        self.inventory_age_metric_labels: dict[str, QLabel] = {}
+        self.inventory_age_metric_cards: dict[str, QFrame] = {}
+        inventory_age_metrics_layout = QGridLayout()
+        inventory_age_metrics_layout.setContentsMargins(0, 0, 0, 0)
+        inventory_age_metrics_layout.setHorizontalSpacing(10)
+        inventory_age_metrics_layout.setVerticalSpacing(10)
+        for index, (caption, object_name) in enumerate(self.INVENTORY_AGE_METRICS):
+            card = QFrame()
+            card.setObjectName(f'{object_name}Card')
+            card.setFrameShape(QFrame.StyledPanel)
+            card.setMinimumHeight(76)
+            card_layout = QVBoxLayout(card)
+            card_layout.setContentsMargins(12, 9, 12, 9)
+            card_layout.setSpacing(2)
+
+            caption_label = QLabel(caption.upper())
+            caption_label.setObjectName(f'{object_name}Caption')
+            caption_label.setMinimumHeight(18)
+            value_label = QLabel('Unavailable')
+            value_label.setObjectName(object_name)
+            value_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+            value_label.setMinimumHeight(26)
+
+            card_layout.addWidget(caption_label)
+            card_layout.addWidget(value_label)
+            inventory_age_metrics_layout.addWidget(card, index // 3, index % 3)
+            self.inventory_age_metric_cards[object_name] = card
+            self.inventory_age_metric_labels[object_name] = value_label
+
+        self.inventory_age_context_label = QLabel()
+        self.inventory_age_context_label.setObjectName('reportsInventoryAgeContext')
+        self.inventory_age_context_label.setWordWrap(True)
+        self.inventory_age_evidence_label = QLabel()
+        self.inventory_age_evidence_label.setObjectName('reportsInventoryAgeEvidence')
+        self.inventory_age_evidence_label.setWordWrap(True)
+        self.inventory_age_guardrail_label = QLabel(
+            'Missing Inventory detail evidence leaves age unavailable. '
+            'Conflicting evidence blocks numeric output.'
+        )
+        self.inventory_age_guardrail_label.setObjectName('reportsInventoryAgeGuardrails')
+        self.inventory_age_guardrail_label.setWordWrap(True)
+
+        inventory_age_layout = QVBoxLayout(self.inventory_age_panel)
+        inventory_age_layout.setContentsMargins(12, 12, 12, 12)
+        inventory_age_layout.setSpacing(8)
+        inventory_age_layout.addWidget(self.inventory_age_status_label)
+        inventory_age_layout.addLayout(inventory_age_metrics_layout)
+        inventory_age_layout.addWidget(self.inventory_age_context_label)
+        inventory_age_layout.addWidget(self.inventory_age_evidence_label)
+        inventory_age_layout.addWidget(self.inventory_age_guardrail_label)
 
         self.turnover_panel = QGroupBox('Inventory Turnover')
         self.turnover_panel.setObjectName('reportsInventoryTurnoverPanel')
@@ -328,6 +391,7 @@ class ReportsWorkspace(QWidget):
         self.result_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)
         self.result_table.horizontalHeader().setStretchLastSection(True)
         self.result_table.setMinimumHeight(180)
+        self._refresh_inventory_age_preview()
 
         self.scroll_content = QWidget()
         self.scroll_content.setObjectName('reportsScrollContent')
@@ -339,6 +403,7 @@ class ReportsWorkspace(QWidget):
         content_layout.addWidget(self.status_label)
         content_layout.addLayout(report_summary_layout)
         content_layout.addWidget(self.report_table)
+        content_layout.addWidget(self.inventory_age_panel)
         content_layout.addWidget(self.turnover_panel)
         content_layout.addWidget(self.purchase_source_panel)
         content_layout.addWidget(self.query_form_widget)
@@ -357,6 +422,53 @@ class ReportsWorkspace(QWidget):
 
         self.refresh()
 
+
+    def _refresh_inventory_age_preview(
+        self,
+        result: InventoryAgeReportQueryResult | None = None,
+        inventory_position_id: str = '',
+        as_of_date: date | None = None,
+    ) -> None:
+        values = ('Unavailable', 'Unavailable', 'Unavailable')
+        if result is None:
+            status = (
+                'Read-only visual preview · CATALOG-ONLY · UNAVAILABLE · '
+                'enter an inventory position to review evidence.'
+            )
+            reason = 'no Inventory detail evidence'
+        elif not result.is_found or result.row is None:
+            status = (
+                f'Read-only visual preview · CATALOG-ONLY · '
+                f'{result.outcome.upper()} · {result.reason or "No report row available"}'
+            )
+            reason = result.reason or 'No report row available'
+        else:
+            row = result.row
+            values = (
+                str(row.age_days) if row.age_days is not None else 'Unavailable',
+                row.source_start_date.isoformat()
+                if row.source_start_date is not None
+                else 'Unavailable',
+                f'{row.evidence_state} · {row.evidence_reason}',
+            )
+            status = 'Read-only visual preview · FOUND · CATALOG-ONLY · READ-ONLY EVIDENCE'
+            reason = f'{row.evidence_state} · {row.evidence_reason}'
+
+        self.inventory_age_status_label.setText(status)
+        for object_name, value in zip(
+            self.inventory_age_metric_labels,
+            values,
+            strict=True,
+        ):
+            self.inventory_age_metric_labels[object_name].setText(value)
+        self.inventory_age_context_label.setText(
+            f'POSITION · {inventory_position_id or "Not provided"} · '
+            f'AS-OF · {as_of_date.isoformat() if as_of_date else "Not provided"} · '
+            'SOURCE DOMAIN · inventory · SOURCE FIELD · purchase_date'
+        )
+        self.inventory_age_evidence_label.setText(
+            f'EVIDENCE · {reason} · no mutation authority'
+        )
 
     def _refresh_purchase_source_preview(self) -> None:
         presentation = self.purchase_source_presentation
@@ -438,6 +550,7 @@ class ReportsWorkspace(QWidget):
             'Enter an inventory position and select an as-of date to review a read-only result.'
         )
         self.result_table.setRowCount(0)
+        self._refresh_inventory_age_preview()
 
     def review_selected_report(self) -> None:
         if self.query_report is None:
@@ -463,6 +576,7 @@ class ReportsWorkspace(QWidget):
             self.result_status_label.setText(
                 'Enter an inventory position ID before reviewing a result.'
             )
+            self._refresh_inventory_age_preview()
             return
 
         report_name = definitions[row_index].name
@@ -485,6 +599,11 @@ class ReportsWorkspace(QWidget):
         inventory_position_id: str = '',
         as_of_date: date | None = None,
     ) -> None:
+        self._refresh_inventory_age_preview(
+            result,
+            inventory_position_id,
+            as_of_date,
+        )
         self.result_table.setRowCount(0)
         if not result.is_found or result.row is None:
             self.result_status_label.setText(
