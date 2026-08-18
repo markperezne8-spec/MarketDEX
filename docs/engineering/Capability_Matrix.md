@@ -4,7 +4,7 @@
 **Authority:** Derived operational engineering status
 **Owner:** Lead Software Architect
 **Update trigger:** Merged delivery changes capability evidence or classification
-**Baseline:** `main` after PR #725 / CAP-012 Purchase Source Performance composition query boundary
+**Baseline:** `main` after PR #737 / CAP-006 Collection visual authority evidence
 
 ## Status Vocabulary
 
@@ -17,7 +17,7 @@
 | CAP-003 | Listing planning and execution workflow | Listing workflow and sale-completion workbook authority | `listing_plans`; listing package review schema; listing UI feature chain; publication lifecycle services | Listing CI gate; listing plan repository and operator sale-completion tests | Complete | Preserve; reconcile future workbook changes before extension |
 | CAP-004 | Mission Control / dashboard | Mission Control / REQ-MIS-001 | root `launcher.py` selects `services/mission_control_service.py`; root `ui/main_window.py` renders the canonical nine-key read-only snapshot contract; broader `services/dashboard_service.py` remains non-root legacy/secondary evidence | `tests/test_mission_control_integration.py` gates protected SQLite projection semantics, read-only behavior, exact snapshot keys, and permanent-root launcher selection; dedicated Mission Control vertical-slice CI gate | Complete | Preserve root `MissionControlService` as canonical desktop projection; do not promote `DashboardService` or add metrics without a separately justified authority boundary |
 | CAP-005 | Product Registry | Product Registry / REQ-PROD-001 | `services/product_registry_service.py`; `services/product_registry_lookup_service.py`; read-only `ui/product_registry_workspace.py`; root application composition and workspace catalog registration | CAP-005A persistence, CAP-005B inventory linkage, CAP-005C lookup/workspace/navigation/zero-mutation tests; Core Tests and Desktop Build CI | Complete | Preserve the canonical registry and read-only operator lookup; extend only through a separately justified capability boundary |
-| CAP-006 | Collection | Collection / REQ-COL-001 | Provisional read-only `services/collection_position_service.py`; `ui/collection_position_workspace.py`; canonical workspace registration and application composition; `docs/Architecture/CAP-006B_COLLECTION_WRITE_AUTHORITY_GATE.md`; no Collection write authority | CAP-006 projection, empty/unmatched, workspace read-only, and navigation tests; Desktop/Core CI via PR #175 | Partial | Preserve the read-only projection and enforce the CAP-006B authority gate; do not add persistence or mutations until workbook-backed position grain, field vocabulary, and ownership transitions are approved |
+| CAP-006 | Collection | Collection / REQ-COL-001 | Provisional read-only `services/collection_position_service.py`; `ui/collection_position_workspace.py`; canonical workspace registration and application composition; `docs/Architecture/CAP-006B_COLLECTION_WRITE_AUTHORITY_GATE.md`; `docs/Architecture/CAP-006E_COLLECTION_VISUAL_AUTHORITY_EVIDENCE.md`; no Collection write authority | CAP-006 projection, empty/unmatched, workspace read-only, and navigation tests; Desktop/Core CI via PR #175; PR #737 CI #1034 and accepted visual evidence for the read-only authority card | Partial | Preserve the read-only projection and enforce the CAP-006B authority gate; do not add persistence or mutations until workbook-backed position grain, field vocabulary, and ownership transitions are approved |
 | CAP-007 | Audit and immutable history | Audit Trail / REQ-AUD-001 | `event_identity`; `audit_history`; `audit_events`; append-only and immutable schema triggers | Core runtime authority and multiple authority/conformance tests | Complete | Preserve append-only authority |
 | CAP-008 | Settlement execution authority | Settlement Evidence Intake and Linkage Rules / REQ-SET-001; workbook Builds 481-497 | `services/settlement_service.py`; `repositories/settlement_repository.py`; `settlement_evidence`; `settlement_evidence_linkage`; `settlement_executions`; `settlement_history`; read-only settlement verification authority derivation | CAP-008A parent evidence, CAP-008B linkage, CAP-008C Build 484 pending-allocation, CAP-008D Builds 487-497 verification authority-chain, and M39A settlement regression suites in Core Tests CI; PR #148 green | Complete | Preserve settlement evidence and verification authority; do not create tax, reconciliation, automatic matching/allocation, or settlement-completion authority by assumption |
 | CAP-009 | Settlement allocation evidence and cross-check | Settlement Allocation Evidence / REQ-ALL-001; Builds 498-501 | Build 498 `settlement_allocation_evidence`; Build 499 `settlement_allocation_cross_checks`; Build 500 sale-level readiness evidence through immutable `audit_events`; Build 501 lifecycle derivation in `SettlementAllocationService`; `SettlementAllocationRepository`; marketplace allocation remains separate inventory reservation authority | CAP-009A intake, CAP-009B group cross-check/remainder, CAP-009C sale-level readiness, CAP-009D lifecycle, and Build 504 stale cross-check authority regressions in Core Tests CI | Complete | Preserve current-group cross-check and lifecycle authority; do not fold marketplace inventory allocation into settlement allocation |
@@ -51,3 +51,16 @@ A `Complete` classification prohibits rebuilding the capability. A `Partial` cap
 - Visual acceptance passed from the maximized full-window Reports screenshot.
 - External providers, networking, exports, persistence, automation, and expanded analytics remain separately gated.
 - CAP-006 remains `Partial` and blocked on workbook-backed Collection position authority; this reconciliation introduces no Collection scope.
+
+
+## CAP-006E Collection visual authority evidence reconciliation
+
+- CAP-006 remains `Partial` and blocked on workbook-backed Collection position authority.
+- PR [#737](https://github.com/markperezne8-spec/MarketDEX/pull/737) delivered the read-only Collection Position Projection authority card and removed table row-number chrome.
+- Exact PR head: `b5c7c78304a67c224419be3f38499e68964c36d2`.
+- CI [#1034](https://github.com/markperezne8-spec/MarketDEX/actions/runs/31954583951) passed for that exact head.
+- Merge commit: `dadadf0da7c197d784f986405b4e22e4284c22f3`.
+- Visual acceptance passed from Mark's maximized Collection Overview screenshot.
+- The authority card explicitly states `READ-ONLY`, `AUTHORITY GATE`, and `Product Registry + Inventory projection · no Collection writes`.
+- No Collection persistence, CRUD, inference, valuation, lifecycle mutation, Inventory conversion, provider, network, export, automation, or business-state mutation authority was added.
+- The CAP-006E synchronization is documentation-only and requires no new visual check.

@@ -575,3 +575,15 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - CAP-012 remains offline-first, deterministic, read-only, composition-owned, and without live providers, persistence, exports, schedulers, alerts, automation, or business-state mutation.
 - CAP-006 Collection remains unchanged; future Collection runtime work requires a separately approved boundary.
 - This documentation synchronization is tracked by issue #730. It introduces no runtime or UI behavior and requires no new visual check.
+
+
+## CAP-006E — Collection Visual Authority Evidence Synchronization
+
+- Issue [#738](https://github.com/markperezne8-spec/MarketDEX/issues/738) records the accepted visual evidence for the merged Collection authority-card build.
+- PR [#737](https://github.com/markperezne8-spec/MarketDEX/pull/737) introduced the read-only Collection Position Projection authority card and removed the Collection table row-number gutter.
+- Exact PR head: `b5c7c78304a67c224419be3f38499e68964c36d2`.
+- CI [#1034](https://github.com/markperezne8-spec/MarketDEX/actions/runs/31954583951) passed for that exact head.
+- Merge commit: `dadadf0da7c197d784f986405b4e22e4284c22f3`.
+- Mark accepted the maximized screenshot and confirmed the read-only, no-write boundary.
+- CAP-006 remains Partial; this evidence sync does not authorize persistence, CRUD, inference, valuation, lifecycle mutation, Inventory conversion, providers, networking, exports, automation, or business-state mutation.
+- No new visual check is required for this documentation-only synchronization.
