@@ -26,7 +26,7 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: requirements.txt
-      - run: sudo apt-get update && sudo apt-get install -y libegl1
+      - run: timeout 180s sudo apt-get update -o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 && timeout 180s sudo apt-get install -y --no-install-recommends libegl1
       - run: pip install -q -r requirements.txt pytest
       - run: pytest -q --tb=short --junitxml=core-results.xml tests/test_runtime_database_authority.py tests/test_cap005a_product_registry_authority.py tests/test_cap005b_inventory_product_link_authority.py tests/test_build701p_inventory_product_link_read_boundary.py tests/test_build701q_inventory_product_link_read_request.py tests/test_build701r_inventory_product_link_read_adapter.py tests/test_build701s_inventory_detail_read_boundary.py tests/test_build701t_inventory_detail_read_adapter.py tests/test_cap005c_product_registry_lookup.py tests/test_cap008a_settlement_evidence_parent.py tests/test_cap008b_settlement_evidence_linkage.py tests/test_cap008d_settlement_verification_authority.py tests/test_cap008e_linkage_contradiction_guidance.py tests/test_cap009a_settlement_allocation_evidence.py tests/test_cap009b_allocation_group_cross_check.py tests/test_cap009c_sale_settlement_attribution_readiness.py tests/test_cap009d_allocation_group_lifecycle.py tests/test_build504_stale_cross_check_authority.py tests/test_build504_stale_cross_check_lock_authority.py tests/test_cap010a_allocation_revision_supersession.py tests/test_cap011a_allocation_evidence_lock.py tests/test_m39a_standalone_settlement.py app/engines/health/tests/test_health_application_adapter.py app/engines/health/tests/test_health_application_adapter_contract.py app/engines/health/tests/test_health_application_payload.py
       - name: Upload core test results
@@ -46,7 +46,7 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: requirements.txt
-      - run: sudo apt-get update && sudo apt-get install -y libegl1
+      - run: timeout 180s sudo apt-get update -o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 && timeout 180s sudo apt-get install -y --no-install-recommends libegl1
       - run: pip install -q -r requirements.txt pytest
       - name: Run Collection gate
         run: >-
@@ -72,7 +72,7 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: requirements.txt
-      - run: sudo apt-get update && sudo apt-get install -y libegl1
+      - run: timeout 180s sudo apt-get update -o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 && timeout 180s sudo apt-get install -y --no-install-recommends libegl1
       - run: pip install -q -r requirements.txt pytest
       - name: Run Market Intelligence gate
         run: >-
@@ -99,7 +99,7 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: requirements.txt
-      - run: sudo apt-get update && sudo apt-get install -y libegl1
+      - run: timeout 180s sudo apt-get update -o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 && timeout 180s sudo apt-get install -y --no-install-recommends libegl1
       - run: pip install -q -r requirements.txt pytest
       - name: Run Reports gate
         run: >-
@@ -156,7 +156,7 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: requirements.txt
-      - run: sudo apt-get update && sudo apt-get install -y libegl1
+      - run: timeout 180s sudo apt-get update -o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 && timeout 180s sudo apt-get install -y --no-install-recommends libegl1
       - run: pip install -q -r requirements.txt pytest
       - run: pytest -q --tb=short tests/test_inventory_profit_feature.py tests/test_inventory_price_guidance_feature.py tests/test_inventory_business_scenarios.py
 
@@ -170,7 +170,7 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: requirements.txt
-      - run: sudo apt-get update && sudo apt-get install -y libegl1
+      - run: timeout 180s sudo apt-get update -o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 && timeout 180s sudo apt-get install -y --no-install-recommends libegl1
       - run: pip install -q -r requirements.txt pytest
       - name: Run Listing gate
         run: pytest -q --tb=short --junitxml=listing-results.xml tests/test_listing_plan_repository.py tests/test_operator_sale_completion.py tests/test_listing_workspace_ci_note.py
@@ -192,7 +192,7 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: requirements.txt
-      - run: sudo apt-get update && sudo apt-get install -y libegl1
+      - run: timeout 180s sudo apt-get update -o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 && timeout 180s sudo apt-get install -y --no-install-recommends libegl1
       - run: pip install -q -r requirements.txt pytest
       - name: Validate Mission Control design-system migration
         run: >-
