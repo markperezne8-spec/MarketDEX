@@ -336,6 +336,10 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
     QLabel#reportsSubtitle,
     QLabel#reportsStatusLabel,
     QLabel#reportsResultStatusLabel,
+    QLabel#reportsInventoryAgeStatus,
+    QLabel#reportsInventoryAgeContext,
+    QLabel#reportsInventoryAgeEvidence,
+    QLabel#reportsInventoryAgeGuardrails,
     QLabel#reportsInventoryTurnoverStatus,
     QLabel#reportsTurnoverPeriod,
     QLabel#reportsTurnoverFormula,
@@ -355,6 +359,7 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         selection-background-color: {color(ColorRole.SURFACE_INTERACTIVE)};
     }}
 
+    QGroupBox#reportsInventoryAgePanel,
     QGroupBox#reportsInventoryTurnoverPanel {{
         background: {color(ColorRole.SURFACE_PRIMARY)};
         border: 1px solid {color(ColorRole.BORDER_STRONG)};
@@ -365,6 +370,9 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         font-weight: 700;
     }}
 
+    QFrame#reportsInventoryAgeDaysCard,
+    QFrame#reportsInventoryAgeSourceDateCard,
+    QFrame#reportsInventoryAgeEvidenceCard,
     QFrame#reportsTurnoverPercentageCard,
     QFrame#reportsTurnoverRatioCard,
     QFrame#reportsTurnoverOpeningUnitsCard,
@@ -376,6 +384,9 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         border-radius: {radius['control']}px;
     }}
 
+    QLabel#reportsInventoryAgeDaysCaption,
+    QLabel#reportsInventoryAgeSourceDateCaption,
+    QLabel#reportsInventoryAgeEvidenceCaption,
     QLabel#reportsTurnoverPercentageCaption,
     QLabel#reportsTurnoverRatioCaption,
     QLabel#reportsTurnoverOpeningUnitsCaption,
@@ -388,6 +399,9 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         letter-spacing: 0.4px;
     }}
 
+    QLabel#reportsInventoryAgeDays,
+    QLabel#reportsInventoryAgeSourceDate,
+    QLabel#reportsInventoryAgeEvidence,
     QLabel#reportsTurnoverPercentage,
     QLabel#reportsTurnoverRatio,
     QLabel#reportsTurnoverOpeningUnits,
