@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 072
+# MarketDEX Foundation Checkpoint 073
 
-**Status:** 🏁 Checkpoint Complete — CAP-012 Reports Workspace Wiring
+**Status:** 🏁 Checkpoint Complete — CAP-012 Reports Visual Preview Evidence
 **Canonical branch:** `main`
 **Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
@@ -8,7 +8,7 @@
 
 MarketDEX remains an offline-first Windows desktop collectibles operating system. Pokémon TCG is the first optimized workflow. Continue the existing permanent codebase; do not restart it, create a competing shell, duplicate persistence authority, or treat chat history as product authority.
 
-The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, catalog-routing, immutable-request, request-service integration, catalog-approved routing, request-contract hardening, immutable request-envelope integration, composition-envelope verification, catalog-to-composition presentation, result-context/source-authority slices, the Purchase Source Performance composition snapshot, and the Reports workspace wiring. Reports remains offline-first, deterministic, read-only, and composition-owned; no live provider, persistence authority, cache, mutation, network behavior, export, scheduler, alert, or automation was introduced.
+The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, catalog-routing, immutable-request, request-service integration, catalog-approved routing, request-contract hardening, immutable request-envelope integration, composition-envelope verification, catalog-to-composition presentation, result-context/source-authority slices, the Purchase Source Performance composition snapshot, the Reports workspace wiring, and the Inventory Age Patterns visual preview. Reports remains offline-first, deterministic, read-only, and composition-owned; no live provider, persistence authority, cache, mutation, network behavior, export, scheduler, alert, or automation was introduced.
 
 ## Permanent operating rules
 
@@ -82,20 +82,21 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 
 ## Exact next gate
 
-**CAP-012 Reports workspace wiring is complete through PR #729. This documentation-only checkpoint synchronization is the current controlled gate.**
+**CAP-012 Reports Inventory Age visual preview is complete through PR #739. This documentation-only checkpoint synchronization is the current controlled gate.**
 
 Verified sequence:
 
 1. PR #725 exposed the composition-owned Purchase Source Performance query boundary.
 2. PR #727 reconciled the capability documentation.
 3. PR #729 wired the query into the Reports workspace with read-only period and as-of controls.
+4. PR #739 added the Inventory Age Patterns read-only visual preview with honest unavailable defaults and North Star styling.
 
-The next runtime or expanded Reports movement requires a separately approved issue and boundary. CAP-006 Collection remains unchanged; no Collection runtime authority is invented here.
+The next runtime or expanded Reports movement requires a separately approved issue and boundary. CAP-006 Collection remains Partial and blocked on workbook-backed position authority; no Collection runtime authority is invented here.
 
 ## Pull and visual status
 
 - Pull required now: **YES after this documentation sync is merged**
-- Pull scope: checkpoint synchronization for CAP-012 Reports.
+- Pull scope: Checkpoint 073 synchronization for CAP-012 Reports and CAP-006 Collection evidence.
 - Visual review required now: **NO — PR #729 visual acceptance passed**
 - ChatGPT Work required now: **NO**
 
@@ -109,7 +110,7 @@ The next runtime or expanded Reports movement requires a separately approved iss
 - Reports request contract enforcement: `[██████████] 100%` — immutable request type is enforced before query invocation.
 - Reports request-envelope integration: `[██████████] 100%` — report identity and approved Inventory Age request are composed immutably.
 - Composition-envelope verification: `[██████████] 100%` — normalized request routing is covered.
-- Reports workspace and visual presentation: `[██████████] 100%` — first read-only result surface and source-authority acceptance complete.
+- Reports workspace and visual presentation: `[██████████] 100%` — approved read-only surfaces, including the Inventory Age Patterns visual preview, have passed acceptance.
 
 ## Next-chat handoff
 
@@ -459,3 +460,18 @@ After this synchronization is merged and pulled, the next CAP-012 Reports moveme
 - CAP-006 remains Partial and read-only. No Collection persistence, CRUD, inference, valuation, lifecycle mutation, Inventory conversion, provider, network, export, automation, or business-state mutation authority was introduced.
 - This CAP-006E synchronization changes documentation only; no new visual check is required.
 - After merge, GitHub Desktop should be synchronized to the merge commit before the next build.
+
+
+## 🏁 Checkpoint 073 — CAP-012 Reports preview and CAP-006 Collection evidence
+
+- Issue [#740](https://github.com/markperezne8-spec/MarketDEX/issues/740) records this documentation-only synchronization boundary.
+- Main baseline before this branch was merge commit `6b9de6cbe9f2dcdd14b32506a2afe733db1f9a34`.
+- PR [#739](https://github.com/markperezne8-spec/MarketDEX/pull/739) added the Inventory Age Patterns read-only visual preview panel.
+- Exact PR #739 head: `8da4873f2f4a0c5f328eb1c6e5a53efa2654fce1`.
+- CI [#1041](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32332846188) passed for that exact head.
+- PR #739 squash merge commit: `6b9de6cbe9f2dcdd14b32506a2afe733db1f9a34`.
+- Mark accepted the maximized Reports screenshot: navy/blue North Star panel and cards, honest `Unavailable` values, inventory source context, evidence wording, and `no mutation authority`.
+- CAP-012 remains Partial with the three approved Reports boundaries; no fourth report, expanded query, live provider, export, persistence, automation, or mutation authority was introduced.
+- CAP-006 remains Partial and read-only. PR #738 reconciled the accepted PR #737 Collection authority-card evidence; Collection remains blocked on workbook-backed position grain, field vocabulary, evidence ownership, lifecycle, and Inventory transition authority.
+- This synchronization changes documentation only and requires no new visual check.
+- Next controlled gate: any further CAP-012 expansion or CAP-006 runtime/authority change requires a separately approved, separately scoped issue.
