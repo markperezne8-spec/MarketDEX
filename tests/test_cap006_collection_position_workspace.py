@@ -1,4 +1,5 @@
 import os
+from types import SimpleNamespace
 
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
@@ -25,4 +26,43 @@ def test_collection_workspace_is_read_only_and_handles_empty_state(tmp_path):
     )
     assert workspace.results_table.rowCount() == 0
     assert workspace.status_label.text() == 'No Collection positions are currently linked.'
+    assert workspace.empty_state_panel.objectName() == 'collectionPositionEmptyState'
+    assert not workspace.empty_state_panel.isHidden()
+    assert workspace.empty_state_title_label.text() == 'No linked Collection positions'
+
+    workspace.search_input.setText('missing')
+    workspace.refresh_results()
+    assert not workspace.empty_state_panel.isHidden()
+    assert workspace.empty_state_title_label.text() == 'No matching Collection positions'
+
+    class StubService:
+        def __init__(self):
+            self.rows = ()
+
+        def list_positions(self, _query=''):
+            return self.rows
+
+    stub = StubService()
+    populated_workspace = CollectionPositionWorkspace(stub)
+    stub.rows = (
+        SimpleNamespace(
+            canonical_name='Sample product',
+            product_id='PROD-001',
+            asset_id='ASSET-001',
+            quantity=1,
+            storage_location='Shelf A',
+            purchase_date='2026-01-01',
+            purchase_source='purchase',
+            condition_grade=None,
+            collector_intent=None,
+        ),
+    )
+    populated_workspace.refresh_results()
+    assert populated_workspace.results_table.rowCount() == 1
+    assert populated_workspace.empty_state_panel.isHidden()
+
+    stub.rows = ()
+    populated_workspace.refresh_results()
+    assert not populated_workspace.empty_state_panel.isHidden()
+    populated_workspace.close()
     workspace.close()
