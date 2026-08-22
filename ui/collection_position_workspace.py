@@ -1,6 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QAbstractItemView,
+    QFrame,
     QHBoxLayout,
     QHeaderView,
     QLabel,
@@ -65,6 +66,28 @@ class CollectionPositionWorkspace(QWidget):
 
         self.status_label = QLabel('No Collection positions loaded.')
         self.status_label.setObjectName('collectionPositionStatusLabel')
+
+        self.empty_state_panel = QFrame()
+        self.empty_state_panel.setObjectName('collectionPositionEmptyState')
+        self.empty_state_title_label = QLabel('No linked Collection positions')
+        self.empty_state_title_label.setObjectName('collectionPositionEmptyStateTitle')
+        self.empty_state_detail_label = QLabel(
+            'This workspace is a read-only Product Registry + Inventory projection. '
+            'Collection writes remain blocked until their authority is approved.'
+        )
+        self.empty_state_detail_label.setObjectName('collectionPositionEmptyStateDetail')
+        self.empty_state_detail_label.setWordWrap(True)
+        self.empty_state_panel.setAccessibleName(
+            'No linked Collection positions. '
+            'Read-only Product Registry and Inventory projection. '
+            'Collection writes remain blocked until authority is approved.'
+        )
+        empty_state_layout = QVBoxLayout(self.empty_state_panel)
+        empty_state_layout.setContentsMargins(14, 10, 14, 10)
+        empty_state_layout.setSpacing(3)
+        empty_state_layout.addWidget(self.empty_state_title_label)
+        empty_state_layout.addWidget(self.empty_state_detail_label)
+
         self.results_table = QTableWidget(0, len(self.COLUMN_HEADERS))
         self.results_table.setObjectName('collectionPositionResultsTable')
         self.results_table.setHorizontalHeaderLabels(self.COLUMN_HEADERS)
@@ -80,6 +103,7 @@ class CollectionPositionWorkspace(QWidget):
         layout.addWidget(self.authority_card)
         layout.addLayout(controls)
         layout.addWidget(self.status_label)
+        layout.addWidget(self.empty_state_panel)
         layout.addWidget(self.results_table, 1)
         self.refresh_results()
 
@@ -98,9 +122,20 @@ class CollectionPositionWorkspace(QWidget):
                 item.setFlags(item.flags() & ~Qt.ItemIsEditable)
                 self.results_table.setItem(row_index, column_index, item)
         query = self.search_input.text().strip()
+        self.empty_state_panel.setVisible(not results)
         if query and not results:
             self.status_label.setText('No Collection positions matched this search.')
+            self.empty_state_title_label.setText('No matching Collection positions')
+            self.empty_state_detail_label.setText(
+                'Try another product, product ID, asset ID, or location. '
+                'The workspace remains a read-only Product Registry + Inventory projection.'
+            )
         elif results:
             self.status_label.setText(f'{len(results)} Collection position(s) found.')
         else:
             self.status_label.setText('No Collection positions are currently linked.')
+            self.empty_state_title_label.setText('No linked Collection positions')
+            self.empty_state_detail_label.setText(
+                'This workspace is a read-only Product Registry + Inventory projection. '
+                'Collection writes remain blocked until their authority is approved.'
+            )
