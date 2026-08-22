@@ -587,3 +587,19 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Mark accepted the maximized screenshot and confirmed the read-only, no-write boundary.
 - CAP-006 remains Partial; this evidence sync does not authorize persistence, CRUD, inference, valuation, lifecycle mutation, Inventory conversion, providers, networking, exports, automation, or business-state mutation.
 - No new visual check is required for this documentation-only synchronization.
+
+
+## 🏁 Checkpoint 073 — CAP-012 Reports preview and CAP-006 Collection evidence
+
+- Issue [#740](https://github.com/markperezne8-spec/MarketDEX/issues/740) tracks this documentation-only synchronization.
+- Main baseline before the branch was merge commit `6b9de6cbe9f2dcdd14b32506a2afe733db1f9a34`.
+- PR [#739](https://github.com/markperezne8-spec/MarketDEX/pull/739) added the read-only Inventory Age Patterns visual preview panel.
+- Exact PR #739 head: `8da4873f2f4a0c5f328eb1c6e5a53efa2654fce1`.
+- CI [#1041](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32332846188) passed for that exact head.
+- PR #739 squash merge commit: `6b9de6cbe9f2dcdd14b32506a2afe733db1f9a34`.
+- Mark accepted the maximized Reports screenshot with the navy/blue North Star treatment, honest unavailable values, inventory source context, evidence wording, and no mutation authority.
+- CAP-012 remains Partial with Inventory Age Patterns, Inventory Turnover, and Purchase Source Performance as the approved Reports set.
+- PR [#738](https://github.com/markperezne8-spec/MarketDEX/pull/738) records the CAP-006E documentation reconciliation after PR #737.
+- CAP-006 remains Partial and read-only; no Collection persistence, CRUD, inference, valuation, lifecycle mutation, Inventory conversion, provider, networking, export, automation, or business-state mutation authority was introduced.
+- No new visual check is required for this documentation-only synchronization.
+- Future CAP-012 expansion or CAP-006 runtime/authority work requires a separately approved boundary.
