@@ -630,3 +630,23 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - CAP-012 remains Partial and read-only; no new report authority, query authority, persistence, export, networking, automation, or mutation was introduced.
 - No new visual check is required for this documentation-only synchronization.
 - Future CAP-012 expansion requires a separately approved workbook-backed boundary.
+
+
+## 🏁 CAP-006 and CAP-012 synchronization after PRs #745 and #746
+
+- Issue [#747](https://github.com/markperezne8-spec/MarketDEX/issues/747) tracks this documentation-only synchronization.
+- Main baseline before the branch was merge commit `7a591bf7cdcb16454ec9d29eea463758133c2d5c`.
+- PR [#745](https://github.com/markperezne8-spec/MarketDEX/pull/745) delivered the CAP-006 read-only field-authority panel.
+- Exact PR #745 head: `a8e529fc082429535e889c8d3b6a098e08de594b`.
+- CI [#1053](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32695854552) passed for that exact head.
+- PR #745 squash merge commit: `3afe559292cac3d3b0f5f905d95b45d89bb9d01c`.
+- Mark accepted the maximized Collection Overview screenshot with `Unrecorded Collection fields`, explicit `Not recorded` semantics, the Product Registry + Inventory projection, and no Collection writes.
+- CAP-006 remains Partial and read-only; no Collection authority was added.
+- PR [#746](https://github.com/markperezne8-spec/MarketDEX/pull/746) delivered the CAP-012 Inventory Age evidence-gate panel.
+- Exact PR #746 head: `4ff7bbc5c9b8319a7b9b13be82e5b2ad2ef6b652`.
+- CI [#1055](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32698189459) passed for that exact head.
+- PR #746 squash merge commit: `7a591bf7cdcb16454ec9d29eea463758133c2d5c`.
+- Mark accepted the maximized Reports screenshot with `Inventory Age evidence gate`, `CATALOG-ONLY · UNAVAILABLE`, unavailable metrics, source context, and explicit missing/conflicting-evidence wording.
+- CAP-012 remains Partial and read-only; the approved three-report boundary and fail-closed semantics remain unchanged.
+- No new visual check is required for this documentation-only synchronization.
+- Future CAP-006 runtime/authority work or CAP-012 expansion requires a separately approved workbook-backed boundary.

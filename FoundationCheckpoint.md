@@ -1,6 +1,6 @@
 # MarketDEX Foundation Checkpoint 075
 
-**Status:** 🏁 Checkpoint Complete — CAP-012 Purchase Source Performance Empty-State Evidence
+**Status:** 🏁 Checkpoint Complete — CAP-006 and CAP-012 Evidence Synchronization
 **Canonical branch:** `main`
 **Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
@@ -82,7 +82,7 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 
 ## Exact next gate
 
-**CAP-012 Purchase Source Performance empty-result visual clarity is complete through PR #743. This documentation-only checkpoint synchronization is the current controlled gate.**
+**CAP-006 field-authority clarity and CAP-012 Inventory Age evidence-gate clarity are complete through PRs #745 and #746. This documentation-only synchronization through Issue #747 is the current controlled gate.**
 
 Verified sequence:
 
@@ -92,13 +92,15 @@ Verified sequence:
 4. PR #739 added the Inventory Age Patterns read-only visual preview with honest unavailable defaults and North Star styling.
 5. PR #741 added the Collection read-only empty-state panel with explicit Product Registry + Inventory projection and blocked-write guidance.
 6. PR #743 added the Purchase Source Performance read-only empty-result panel with explicit period/as-of context and no-fabricated-zero guidance.
+7. PR #745 added the CAP-006 unrecorded Collection field-authority panel without adding Collection write authority.
+8. PR #746 added the CAP-012 Inventory Age evidence-gate panel without changing query, evidence, or mutation authority.
 
 The next CAP-006 runtime or authority movement requires workbook-backed position authority and a separately approved issue and boundary. The next expanded Reports movement also requires a separately approved authority boundary; no Collection runtime authority is invented here.
 
 ## Pull and visual status
 
 - Pull required now: **YES after this documentation sync is merged**
-- Pull scope: Checkpoint 075 synchronization for CAP-012 Purchase Source Performance evidence.
+- Pull scope: Issue #747 synchronization for merged PRs #745 and #746.
 - Visual review required now: **NO — PR #743 visual acceptance passed**
 - ChatGPT Work required now: **NO**
 
@@ -504,3 +506,23 @@ After this synchronization is merged and pulled, the next CAP-012 Reports moveme
 - CAP-012 remains Partial and read-only. No new report, query, persistence, export, networking, automation, or mutation authority was introduced.
 - This synchronization changes documentation only and requires no new visual check.
 - Next controlled gate: any further CAP-012 expansion requires a separately approved workbook-backed boundary.
+
+
+## 🏁 CAP-006 and CAP-012 synchronization after PRs #745 and #746
+
+- Issue [#747](https://github.com/markperezne8-spec/MarketDEX/issues/747) records this documentation-only synchronization boundary.
+- Main baseline before this branch was merge commit `7a591bf7cdcb16454ec9d29eea463758133c2d5c`.
+- PR [#745](https://github.com/markperezne8-spec/MarketDEX/pull/745) delivered the CAP-006 read-only field-authority panel.
+- Exact PR #745 head: `a8e529fc082429535e889c8d3b6a098e08de594b`.
+- CI [#1053](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32695854552) passed for that exact head.
+- PR #745 squash merge commit: `3afe559292cac3d3b0f5f905d95b45d89bb9d01c`.
+- Mark accepted the maximized Collection Overview screenshot showing `Unrecorded Collection fields`, the explicit `Not recorded` authority boundary, the Product Registry + Inventory projection, and no Collection writes.
+- CAP-006 remains Partial and read-only; workbook-backed position grain, field vocabulary, evidence ownership, lifecycle, and Inventory transition authority remain unresolved.
+- PR [#746](https://github.com/markperezne8-spec/MarketDEX/pull/746) delivered the CAP-012 Inventory Age evidence-gate panel.
+- Exact PR #746 head: `4ff7bbc5c9b8319a7b9b13be82e5b2ad2ef6b652`.
+- CI [#1055](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32698189459) passed for that exact head.
+- PR #746 squash merge commit: `7a591bf7cdcb16454ec9d29eea463758133c2d5c`.
+- Mark accepted the maximized Reports screenshot showing `Inventory Age evidence gate`, `CATALOG-ONLY · UNAVAILABLE`, unavailable metrics, source context, and the wording that missing detail evidence leaves age unavailable and conflicting evidence blocks numeric output.
+- CAP-012 remains Partial and read-only; the approved three-report set and explicit unavailable/conflicting/no-fabricated-value semantics are preserved.
+- This synchronization changes documentation only and requires no new visual check.
+- Next controlled gate: any further CAP-006 runtime/authority movement or CAP-012 expansion requires a separately approved, separately scoped workbook-backed boundary.
