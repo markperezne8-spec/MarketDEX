@@ -224,6 +224,33 @@ class ReportsWorkspace(QWidget):
         self.inventory_age_guardrail_label.setObjectName('reportsInventoryAgeGuardrails')
         self.inventory_age_guardrail_label.setWordWrap(True)
 
+        self.inventory_age_evidence_gate_panel = QFrame()
+        self.inventory_age_evidence_gate_panel.setObjectName(
+            'reportsInventoryAgeEvidenceGate'
+        )
+        self.inventory_age_evidence_gate_title_label = QLabel(
+            'Inventory Age evidence gate'
+        )
+        self.inventory_age_evidence_gate_title_label.setObjectName(
+            'reportsInventoryAgeEvidenceGateTitle'
+        )
+        self.inventory_age_evidence_gate_panel.setAccessibleName(
+            'Inventory Age evidence gate. '
+            'Missing Inventory detail evidence leaves age unavailable. '
+            'Conflicting evidence blocks numeric output.'
+        )
+        inventory_age_evidence_gate_layout = QVBoxLayout(
+            self.inventory_age_evidence_gate_panel
+        )
+        inventory_age_evidence_gate_layout.setContentsMargins(14, 10, 14, 10)
+        inventory_age_evidence_gate_layout.setSpacing(3)
+        inventory_age_evidence_gate_layout.addWidget(
+            self.inventory_age_evidence_gate_title_label
+        )
+        inventory_age_evidence_gate_layout.addWidget(
+            self.inventory_age_guardrail_label
+        )
+
         inventory_age_layout = QVBoxLayout(self.inventory_age_panel)
         inventory_age_layout.setContentsMargins(12, 12, 12, 12)
         inventory_age_layout.setSpacing(8)
@@ -231,7 +258,7 @@ class ReportsWorkspace(QWidget):
         inventory_age_layout.addLayout(inventory_age_metrics_layout)
         inventory_age_layout.addWidget(self.inventory_age_context_label)
         inventory_age_layout.addWidget(self.inventory_age_evidence_label)
-        inventory_age_layout.addWidget(self.inventory_age_guardrail_label)
+        inventory_age_layout.addWidget(self.inventory_age_evidence_gate_panel)
 
         self.turnover_panel = QGroupBox('Inventory Turnover')
         self.turnover_panel.setObjectName('reportsInventoryTurnoverPanel')
