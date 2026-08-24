@@ -395,6 +395,18 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         selection-background-color: {color(ColorRole.SURFACE_INTERACTIVE)};
     }}
 
+    QFrame#reportsInventoryAgeEvidenceGate {{
+        background: {color(ColorRole.SURFACE_SECONDARY)};
+        border: 1px solid {color(ColorRole.BORDER_SUBTLE)};
+        border-radius: {radius['panel']}px;
+    }}
+
+    QLabel#reportsInventoryAgeEvidenceGateTitle {{
+        color: {color(ColorRole.TEXT_PRIMARY)};
+        font-size: 12pt;
+        font-weight: 700;
+    }}
+
     QGroupBox#reportsInventoryAgePanel,
     QGroupBox#reportsInventoryTurnoverPanel {{
         background: {color(ColorRole.SURFACE_PRIMARY)};
