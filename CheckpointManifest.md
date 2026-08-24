@@ -617,3 +617,16 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - CAP-006 remains Partial and read-only; this visual clarity build introduced no Collection authority, persistence, CRUD, lifecycle, inference, valuation, Inventory conversion, provider, networking, export, automation, or mutation.
 - No new visual check is required for this documentation-only synchronization.
 - Future CAP-006 runtime or authority work requires separately approved workbook-backed position decisions.
+
+## 🏁 Checkpoint 075 — CAP-012 Purchase Source Performance empty-state evidence
+
+- Issue [#744](https://github.com/markperezne8-spec/MarketDEX/issues/744) tracks this documentation-only synchronization.
+- Main baseline before the branch was merge commit `1b9ca2577e7542b0c80bc4340c391da9ac526659`.
+- PR [#743](https://github.com/markperezne8-spec/MarketDEX/pull/743) added the read-only Purchase Source Performance zero-row panel and populated-row visibility coverage.
+- Exact PR #743 head: `988934ab4c21581a463866aadd19caed1c0e8af1`.
+- CI [#1049](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32688317552) passed for that exact head.
+- PR #743 squash merge commit: `1b9ca2577e7542b0c80bc4340c391da9ac526659`.
+- Mark accepted the maximized Reports screenshot with the navy/blue empty-result panel, period/as-of context, explicit read-only semantics, `missing evidence is not converted to zero`, and the intact zero-row table and controls.
+- CAP-012 remains Partial and read-only; no new report authority, query authority, persistence, export, networking, automation, or mutation was introduced.
+- No new visual check is required for this documentation-only synchronization.
+- Future CAP-012 expansion requires a separately approved workbook-backed boundary.
