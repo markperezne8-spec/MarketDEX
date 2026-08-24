@@ -53,6 +53,31 @@ class CollectionPositionWorkspace(QWidget):
             'Product Registry and Inventory projection. No Collection writes.'
         )
 
+        self.field_authority_panel = QFrame()
+        self.field_authority_panel.setObjectName('collectionPositionFieldAuthority')
+        self.field_authority_title_label = QLabel('Unrecorded Collection fields')
+        self.field_authority_title_label.setObjectName(
+            'collectionPositionFieldAuthorityTitle'
+        )
+        self.field_authority_detail_label = QLabel(
+            'Condition / Grade and Collector Intent remain Not recorded until their '
+            'authority is approved. This workspace does not infer or write those values.'
+        )
+        self.field_authority_detail_label.setObjectName(
+            'collectionPositionFieldAuthorityDetail'
+        )
+        self.field_authority_detail_label.setWordWrap(True)
+        self.field_authority_panel.setAccessibleName(
+            'Unrecorded Collection fields. Condition / Grade and Collector Intent '
+            'remain Not recorded until authority is approved. This workspace does not '
+            'infer or write those values.'
+        )
+        field_authority_layout = QVBoxLayout(self.field_authority_panel)
+        field_authority_layout.setContentsMargins(14, 10, 14, 10)
+        field_authority_layout.setSpacing(3)
+        field_authority_layout.addWidget(self.field_authority_title_label)
+        field_authority_layout.addWidget(self.field_authority_detail_label)
+
         self.search_input = QLineEdit()
         self.search_input.setObjectName('collectionPositionSearchInput')
         self.search_input.setPlaceholderText('Search product, product ID, asset ID, or location')
@@ -101,6 +126,7 @@ class CollectionPositionWorkspace(QWidget):
         layout.addWidget(title)
         layout.addWidget(subtitle)
         layout.addWidget(self.authority_card)
+        layout.addWidget(self.field_authority_panel)
         layout.addLayout(controls)
         layout.addWidget(self.status_label)
         layout.addWidget(self.empty_state_panel)
