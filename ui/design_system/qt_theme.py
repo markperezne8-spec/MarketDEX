@@ -454,6 +454,22 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         color: {color(ColorRole.TEXT_SECONDARY)};
     }}
 
+    QFrame#reportsPurchaseSourceEmptyState {{
+        background: {color(ColorRole.SURFACE_PRIMARY)};
+        border: 1px solid {color(ColorRole.BORDER_STRONG)};
+        border-radius: {radius['panel']}px;
+    }}
+
+    QLabel#reportsPurchaseSourceEmptyStateTitle {{
+        color: {color(ColorRole.TEXT_PRIMARY)};
+        font-size: 12pt;
+        font-weight: 700;
+    }}
+
+    QLabel#reportsPurchaseSourceEmptyStateDetail {{
+        color: {color(ColorRole.TEXT_SECONDARY)};
+    }}
+
     QTableWidget#reportsPurchaseSourceTable {{
         background: {color(ColorRole.SURFACE_PRIMARY)};
         alternate-background-color: {color(ColorRole.SURFACE_SECONDARY)};
