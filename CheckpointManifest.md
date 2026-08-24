@@ -603,3 +603,17 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - CAP-006 remains Partial and read-only; no Collection persistence, CRUD, inference, valuation, lifecycle mutation, Inventory conversion, provider, networking, export, automation, or business-state mutation authority was introduced.
 - No new visual check is required for this documentation-only synchronization.
 - Future CAP-012 expansion or CAP-006 runtime/authority work requires a separately approved boundary.
+
+
+## 🏁 Checkpoint 074 — CAP-006 Collection empty-state evidence
+
+- Issue [#742](https://github.com/markperezne8-spec/MarketDEX/issues/742) tracks this documentation-only synchronization.
+- Main baseline before the branch was merge commit `88f11e9968ddbcd40beb1653f32d1525a81592dc`.
+- PR [#741](https://github.com/markperezne8-spec/MarketDEX/pull/741) added the read-only Collection empty-state panel and empty/unmatched/populated visibility coverage.
+- Exact PR #741 head: `7881cfbae8ee145b5c83b8383d70947cd6ea52ee`.
+- CI [#1045](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32578607084) passed for that exact head.
+- PR #741 squash merge commit: `88f11e9968ddbcd40beb1653f32d1525a81592dc`.
+- Mark accepted the maximized Collection Overview screenshot with the navy/blue panel, explicit empty state, Product Registry + Inventory projection explanation, blocked-write guidance, preserved authority card, and intact table.
+- CAP-006 remains Partial and read-only; this visual clarity build introduced no Collection authority, persistence, CRUD, lifecycle, inference, valuation, Inventory conversion, provider, networking, export, automation, or mutation.
+- No new visual check is required for this documentation-only synchronization.
+- Future CAP-006 runtime or authority work requires separately approved workbook-backed position decisions.
