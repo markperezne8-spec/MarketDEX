@@ -338,6 +338,22 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         color: {color(ColorRole.TEXT_SECONDARY)};
     }}
 
+    QFrame#collectionPositionFieldAuthority {{
+        background: {color(ColorRole.SURFACE_SECONDARY)};
+        border: 1px solid {color(ColorRole.BORDER_SUBTLE)};
+        border-radius: {radius['panel']}px;
+    }}
+
+    QLabel#collectionPositionFieldAuthorityTitle {{
+        color: {color(ColorRole.TEXT_PRIMARY)};
+        font-size: 12pt;
+        font-weight: 700;
+    }}
+
+    QLabel#collectionPositionFieldAuthorityDetail {{
+        color: {color(ColorRole.TEXT_SECONDARY)};
+    }}
+
     QWidget#reportsWorkspace {{
         background: {color(ColorRole.APP_BACKGROUND)};
     }}
