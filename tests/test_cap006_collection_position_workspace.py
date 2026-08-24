@@ -29,6 +29,15 @@ def test_collection_workspace_is_read_only_and_handles_empty_state(tmp_path):
     assert workspace.empty_state_panel.objectName() == 'collectionPositionEmptyState'
     assert not workspace.empty_state_panel.isHidden()
     assert workspace.empty_state_title_label.text() == 'No linked Collection positions'
+    assert workspace.field_authority_panel.objectName() == (
+        'collectionPositionFieldAuthority'
+    )
+    assert workspace.field_authority_title_label.text() == (
+        'Unrecorded Collection fields'
+    )
+    assert 'does not infer or write' in (
+        workspace.field_authority_detail_label.text()
+    )
 
     workspace.search_input.setText('missing')
     workspace.refresh_results()
@@ -59,6 +68,8 @@ def test_collection_workspace_is_read_only_and_handles_empty_state(tmp_path):
     )
     populated_workspace.refresh_results()
     assert populated_workspace.results_table.rowCount() == 1
+    assert populated_workspace.results_table.item(0, 7).text() == 'Not recorded'
+    assert populated_workspace.results_table.item(0, 8).text() == 'Not recorded'
     assert populated_workspace.empty_state_panel.isHidden()
 
     stub.rows = ()
