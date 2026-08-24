@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 074
+# MarketDEX Foundation Checkpoint 075
 
-**Status:** 🏁 Checkpoint Complete — CAP-006 Collection Empty-State Evidence
+**Status:** 🏁 Checkpoint Complete — CAP-012 Purchase Source Performance Empty-State Evidence
 **Canonical branch:** `main`
 **Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
@@ -8,7 +8,7 @@
 
 MarketDEX remains an offline-first Windows desktop collectibles operating system. Pokémon TCG is the first optimized workflow. Continue the existing permanent codebase; do not restart it, create a competing shell, duplicate persistence authority, or treat chat history as product authority.
 
-The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, catalog-routing, immutable-request, request-service integration, catalog-approved routing, request-contract hardening, immutable request-envelope integration, composition-envelope verification, catalog-to-composition presentation, result-context/source-authority slices, the Purchase Source Performance composition snapshot, the Reports workspace wiring, and the Inventory Age Patterns visual preview. CAP-006 now also has the read-only Collection authority card and an explicit empty-state visual surface. Reports remains offline-first, deterministic, read-only, and composition-owned; no live provider, persistence authority, cache, mutation, network behavior, export, scheduler, alert, or automation was introduced.
+The Reports foundation has advanced through controlled, read-only Inventory Age query, composition, application-boundary, catalog-routing, immutable-request, request-service integration, catalog-approved routing, request-contract hardening, immutable request-envelope integration, composition-envelope verification, catalog-to-composition presentation, result-context/source-authority slices, the Purchase Source Performance composition snapshot, the Reports workspace wiring, the Inventory Age Patterns visual preview, and the Purchase Source Performance empty-result visual surface. CAP-006 also has the read-only Collection authority card and an explicit empty-state visual surface. Reports remains offline-first, deterministic, read-only, and composition-owned; no live provider, persistence authority, cache, mutation, network behavior, export, scheduler, alert, or automation was introduced.
 
 ## Permanent operating rules
 
@@ -82,7 +82,7 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 
 ## Exact next gate
 
-**CAP-006 Collection empty-state visual clarity is complete through PR #741. This documentation-only checkpoint synchronization is the current controlled gate.**
+**CAP-012 Purchase Source Performance empty-result visual clarity is complete through PR #743. This documentation-only checkpoint synchronization is the current controlled gate.**
 
 Verified sequence:
 
@@ -91,14 +91,15 @@ Verified sequence:
 3. PR #729 wired the query into the Reports workspace with read-only period and as-of controls.
 4. PR #739 added the Inventory Age Patterns read-only visual preview with honest unavailable defaults and North Star styling.
 5. PR #741 added the Collection read-only empty-state panel with explicit Product Registry + Inventory projection and blocked-write guidance.
+6. PR #743 added the Purchase Source Performance read-only empty-result panel with explicit period/as-of context and no-fabricated-zero guidance.
 
 The next CAP-006 runtime or authority movement requires workbook-backed position authority and a separately approved issue and boundary. The next expanded Reports movement also requires a separately approved authority boundary; no Collection runtime authority is invented here.
 
 ## Pull and visual status
 
 - Pull required now: **YES after this documentation sync is merged**
-- Pull scope: Checkpoint 074 synchronization for CAP-006 Collection evidence.
-- Visual review required now: **NO — PR #729 visual acceptance passed**
+- Pull scope: Checkpoint 075 synchronization for CAP-012 Purchase Source Performance evidence.
+- Visual review required now: **NO — PR #743 visual acceptance passed**
 - ChatGPT Work required now: **NO**
 
 ## Progress snapshot
@@ -490,3 +491,16 @@ After this synchronization is merged and pulled, the next CAP-012 Reports moveme
 - CAP-006 remains Partial and read-only. The panel improves comprehension only; it does not authorize Collection persistence, CRUD, lifecycle, inference, valuation, Inventory conversion, or mutation.
 - This synchronization changes documentation only and requires no new visual check.
 - Next controlled gate: any CAP-006 runtime/authority change requires the blocked workbook-backed decisions to be approved first.
+
+## 🏁 Checkpoint 075 — CAP-012 Purchase Source Performance empty-state evidence
+
+- Issue [#744](https://github.com/markperezne8-spec/MarketDEX/issues/744) records this documentation-only synchronization boundary.
+- Main baseline before this branch was merge commit `1b9ca2577e7542b0c80bc4340c391da9ac526659`.
+- PR [#743](https://github.com/markperezne8-spec/MarketDEX/pull/743) added the Purchase Source Performance read-only empty-result panel and populated-row visibility coverage.
+- Exact PR #743 head: `988934ab4c21581a463866aadd19caed1c0e8af1`.
+- CI [#1049](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32688317552) passed for that exact head.
+- PR #743 squash merge commit: `1b9ca2577e7542b0c80bc4340c391da9ac526659`.
+- Mark accepted the maximized Reports screenshot showing the navy/blue panel, zero source rows, period/as-of context, read-only controls, intact table, and explicit `missing evidence is not converted to zero` wording.
+- CAP-012 remains Partial and read-only. No new report, query, persistence, export, networking, automation, or mutation authority was introduced.
+- This synchronization changes documentation only and requires no new visual check.
+- Next controlled gate: any further CAP-012 expansion requires a separately approved workbook-backed boundary.
