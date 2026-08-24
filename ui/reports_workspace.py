@@ -310,6 +310,38 @@ class ReportsWorkspace(QWidget):
         self.purchase_source_status_label = QLabel()
         self.purchase_source_status_label.setObjectName('reportsPurchaseSourceStatus')
         self.purchase_source_status_label.setWordWrap(True)
+
+        self.purchase_source_empty_state_panel = QFrame()
+        self.purchase_source_empty_state_panel.setObjectName(
+            'reportsPurchaseSourceEmptyState'
+        )
+        self.purchase_source_empty_state_title_label = QLabel(
+            'No purchase-source rows available'
+        )
+        self.purchase_source_empty_state_title_label.setObjectName(
+            'reportsPurchaseSourceEmptyStateTitle'
+        )
+        self.purchase_source_empty_state_detail_label = QLabel()
+        self.purchase_source_empty_state_detail_label.setObjectName(
+            'reportsPurchaseSourceEmptyStateDetail'
+        )
+        self.purchase_source_empty_state_detail_label.setWordWrap(True)
+        self.purchase_source_empty_state_panel.setAccessibleName(
+            'No purchase-source rows available. '
+            'Read-only result; missing evidence is not converted to zero.'
+        )
+        purchase_source_empty_state_layout = QVBoxLayout(
+            self.purchase_source_empty_state_panel
+        )
+        purchase_source_empty_state_layout.setContentsMargins(14, 10, 14, 10)
+        purchase_source_empty_state_layout.setSpacing(3)
+        purchase_source_empty_state_layout.addWidget(
+            self.purchase_source_empty_state_title_label
+        )
+        purchase_source_empty_state_layout.addWidget(
+            self.purchase_source_empty_state_detail_label
+        )
+
         self.purchase_source_table = QTableWidget(0, 5)
         self.purchase_source_table.setObjectName('reportsPurchaseSourceTable')
         self.purchase_source_table.setHorizontalHeaderLabels(
@@ -354,6 +386,7 @@ class ReportsWorkspace(QWidget):
         purchase_source_form.addRow('As-of date', self.purchase_source_as_of_input)
         purchase_source_form.addRow('', self.purchase_source_run_button)
         purchase_source_layout.addWidget(self.purchase_source_status_label)
+        purchase_source_layout.addWidget(self.purchase_source_empty_state_panel)
         purchase_source_layout.addWidget(purchase_source_controls)
         purchase_source_layout.addWidget(self.purchase_source_table)
         self._refresh_purchase_source_preview()
@@ -478,6 +511,13 @@ class ReportsWorkspace(QWidget):
             f'PERIOD {presentation.period_start.isoformat()} → {presentation.period_end.isoformat()} · '
             f'AS-OF {presentation.as_of.isoformat()} · '
             f'COVERAGE {", ".join(presentation.source_coverage)}'
+        )
+        self.purchase_source_empty_state_panel.setVisible(not presentation.rows)
+        self.purchase_source_empty_state_detail_label.setText(
+            f'No source rows were returned for PERIOD '
+            f'{presentation.period_start.isoformat()} → {presentation.period_end.isoformat()} '
+            f'and AS-OF {presentation.as_of.isoformat()}. '
+            'The result remains read-only; missing evidence is not converted to zero.'
         )
         self.purchase_source_table.setRowCount(len(presentation.rows))
         for row_index, row in enumerate(presentation.rows):
