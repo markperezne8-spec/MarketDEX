@@ -318,6 +318,26 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         min-width: 24px;
     }}
 
+    QWidget#collectionPositionWorkspace {{
+        background: {color(ColorRole.APP_BACKGROUND)};
+    }}
+
+    QFrame#collectionPositionEmptyState {{
+        background: {color(ColorRole.SURFACE_PRIMARY)};
+        border: 1px solid {color(ColorRole.BORDER_STRONG)};
+        border-radius: {radius['panel']}px;
+    }}
+
+    QLabel#collectionPositionEmptyStateTitle {{
+        color: {color(ColorRole.TEXT_PRIMARY)};
+        font-size: 12pt;
+        font-weight: 700;
+    }}
+
+    QLabel#collectionPositionEmptyStateDetail {{
+        color: {color(ColorRole.TEXT_SECONDARY)};
+    }}
+
     QWidget#reportsWorkspace {{
         background: {color(ColorRole.APP_BACKGROUND)};
     }}
