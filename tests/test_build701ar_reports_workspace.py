@@ -14,6 +14,10 @@ from reports.inventory_turnover_presentation import (
     InventoryTurnoverPresentation,
     present_inventory_turnover,
 )
+from reports.purchase_source_performance_presentation import (
+    PurchaseSourcePerformancePresentation,
+    PurchaseSourcePerformancePresentationRow,
+)
 from reports.inventory_turnover_preview import build_inventory_turnover_preview_result
 from ui.reports_workspace import ReportsWorkspace
 from ui.shell_workspace_catalog import REPORTS_WORKSPACE_ID
@@ -244,3 +248,58 @@ def test_application_composition_mounts_reports_workspace(tmp_path) -> None:
     assert window.workspace_host.workspace_context.text() == 'REPORTS'
     assert window.workspace_host.status_message.text() == 'Reports workspace active'
     window.close()
+
+
+def test_reports_workspace_clarifies_purchase_source_empty_results() -> None:
+    app = QApplication.instance() or QApplication([])
+    empty_presentation = PurchaseSourcePerformancePresentation(
+        period_start=date(2026, 1, 1),
+        period_end=date(2026, 2, 1),
+        as_of=date(2026, 2, 1),
+        source_coverage=('inventory', 'sale_completion'),
+        provenance=('test:empty-result',),
+        rows=(),
+    )
+    workspace = ReportsWorkspace(
+        build_report_catalog(),
+        purchase_source_presentation=empty_presentation,
+    )
+
+    assert workspace.purchase_source_empty_state_panel.objectName() == (
+        'reportsPurchaseSourceEmptyState'
+    )
+    assert not workspace.purchase_source_empty_state_panel.isHidden()
+    assert workspace.purchase_source_empty_state_title_label.text() == (
+        'No purchase-source rows available'
+    )
+    assert 'missing evidence is not converted to zero' in (
+        workspace.purchase_source_empty_state_detail_label.text()
+    )
+    assert workspace.purchase_source_table.rowCount() == 0
+
+    populated_presentation = PurchaseSourcePerformancePresentation(
+        period_start=date(2026, 1, 1),
+        period_end=date(2026, 2, 1),
+        as_of=date(2026, 2, 1),
+        source_coverage=('inventory', 'sale_completion'),
+        provenance=('test:populated-result',),
+        rows=(
+            PurchaseSourcePerformancePresentationRow(
+                purchase_source_label='Direct purchase',
+                outcome='complete',
+                acquired_units=4,
+                completed_sale_units=2,
+                remaining_unsold_units=2,
+                sell_through_percentage=50,
+                evidence_state='available',
+                reason='complete',
+                provenance=('test:populated-result',),
+            ),
+        ),
+    )
+    workspace.purchase_source_presentation = populated_presentation
+    workspace._refresh_purchase_source_preview()
+
+    assert workspace.purchase_source_empty_state_panel.isHidden()
+    assert workspace.purchase_source_table.rowCount() == 1
+    workspace.close()
