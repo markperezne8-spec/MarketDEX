@@ -76,6 +76,15 @@ def test_reports_workspace_exposes_inventory_age_visual_preview_defaults() -> No
         for label in workspace.inventory_age_metric_labels.values()
     )
     assert 'no mutation authority' in workspace.inventory_age_evidence_label.text()
+    assert workspace.inventory_age_evidence_gate_panel.objectName() == (
+        'reportsInventoryAgeEvidenceGate'
+    )
+    assert workspace.inventory_age_evidence_gate_title_label.text() == (
+        'Inventory Age evidence gate'
+    )
+    assert 'Missing Inventory detail evidence leaves age unavailable.' in (
+        workspace.inventory_age_guardrail_label.text()
+    )
     assert workspace.inventory_age_panel.findChildren(QPushButton) == []
     workspace.close()
 
