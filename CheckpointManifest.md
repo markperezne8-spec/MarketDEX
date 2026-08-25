@@ -650,3 +650,17 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - CAP-012 remains Partial and read-only; the approved three-report boundary and fail-closed semantics remain unchanged.
 - No new visual check is required for this documentation-only synchronization.
 - Future CAP-006 runtime/authority work or CAP-012 expansion requires a separately approved workbook-backed boundary.
+
+
+## 🏁 CAP-012 catalog scope synchronization after PR #748
+
+- Issue [#749](https://github.com/markperezne8-spec/MarketDEX/issues/749) tracks this documentation-only synchronization.
+- Main baseline before the branch was merge commit `97d9718123b677708adb76371a3d61bfe77de36e`.
+- PR [#748](https://github.com/markperezne8-spec/MarketDEX/pull/748) delivered the read-only `Approved report catalog` scope panel above the Reports summary cards.
+- Exact PR #748 head: `ffeffe750ceefd6cb6d6983e34c21800d4520f11`.
+- CI [#1059](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32886676226) passed for that exact head.
+- PR #748 squash merge commit: `97d9718123b677708adb76371a3d61bfe77de36e`.
+- Mark accepted the maximized Reports screenshot showing the catalog scope panel, preserved catalog-only/composition-owned status text, three approved report cards, intact table, and aligned North Star styling.
+- CAP-012 remains Partial and read-only; no report, query, provider, persistence, export, networking, automation, or mutation authority was added.
+- No new visual check is required for this documentation-only synchronization.
+- Future CAP-012 expansion requires a separately approved workbook-backed boundary.
