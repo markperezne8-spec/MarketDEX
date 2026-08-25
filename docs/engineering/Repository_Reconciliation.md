@@ -7,7 +7,7 @@
 
 ## Baseline
 
-Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary. This reconciliation is current through PR #748 and the merged CAP-006/CAP-012 visual evidence sequence.
+Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary. This reconciliation is current through PR #750 and the merged CAP-006/CAP-012 visual evidence sequence.
 
 ## Permanent Runtime Authority
 
@@ -128,3 +128,13 @@ The repository contains older and overlapping documentation locations and multip
 - Squash merge commit: `97d9718123b677708adb76371a3d61bfe77de36e`.
 - Accepted visual evidence confirms the approved report count, catalog-only behavior, composition-owned query execution, three approved report cards, intact catalog table, and North Star alignment.
 - CAP-012 remains `Partial` and read-only. No new report, query, provider, persistence, export, networking, automation, or mutation authority was introduced.
+
+
+### CAP-012 post-PR #750 read-only preview state evidence
+
+- PR [#750](https://github.com/markperezne8-spec/MarketDEX/pull/750) delivered consistent `READ-ONLY PREVIEW` labels for the three existing Reports preview panels.
+- Exact PR #750 head: `caac9d1457b3189a560af5e21ba5df2f035dfd24`.
+- CI [#1063](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32893850196) passed for that exact head across all nine required gates.
+- Squash merge commit: `40cf9b7a6c65373519f2ba979cdc5728fa658c79`.
+- Accepted maximized Reports screenshots confirm the Inventory Age Patterns, Inventory Turnover, and Purchase Source Performance labels, preserved read-only evidence semantics, intact controls, no clipping, and North Star styling.
+- CAP-012 remains `Partial`, read-only, composition-owned, and fail-closed. No new report, query, provider, persistence, export, networking, automation, or mutation authority was introduced.
