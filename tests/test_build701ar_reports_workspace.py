@@ -55,6 +55,9 @@ def test_reports_workspace_is_read_only_catalog_surface() -> None:
     assert workspace.report_table.item(0, 3).text() == 'APPROVED · READ-ONLY'
     assert workspace.report_table.item(1, 3).text() == 'APPROVED · READ-ONLY'
     assert 'catalog only' in workspace.status_label.text()
+    assert workspace.catalog_scope_panel.objectName() == 'reportsCatalogScopePanel'
+    assert workspace.catalog_scope_title_label.text() == 'Approved report catalog'
+    assert 'composition-owned' in workspace.catalog_scope_panel.accessibleName()
     workspace.close()
 
 
