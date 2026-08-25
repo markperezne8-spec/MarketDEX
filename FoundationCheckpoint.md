@@ -1,6 +1,6 @@
 # MarketDEX Foundation Checkpoint 075
 
-**Status:** 🏁 Checkpoint Complete — CAP-006 and CAP-012 Evidence Synchronization
+**Status:** 🏁 Checkpoint Complete — CAP-012 Reports Catalog Scope Synchronization
 **Canonical branch:** `main`
 **Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
@@ -82,7 +82,7 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 
 ## Exact next gate
 
-**CAP-006 field-authority clarity and CAP-012 Inventory Age evidence-gate clarity are complete through PRs #745 and #746. This documentation-only synchronization through Issue #747 is the current controlled gate.**
+**CAP-012 Reports catalog scope is complete through PR #748. This documentation-only synchronization through Issue #749 is the current controlled gate.**
 
 Verified sequence:
 
@@ -94,13 +94,14 @@ Verified sequence:
 6. PR #743 added the Purchase Source Performance read-only empty-result panel with explicit period/as-of context and no-fabricated-zero guidance.
 7. PR #745 added the CAP-006 unrecorded Collection field-authority panel without adding Collection write authority.
 8. PR #746 added the CAP-012 Inventory Age evidence-gate panel without changing query, evidence, or mutation authority.
+9. PR #748 added the Reports catalog scope panel while reusing the existing read-only boundary text.
 
 The next CAP-006 runtime or authority movement requires workbook-backed position authority and a separately approved issue and boundary. The next expanded Reports movement also requires a separately approved authority boundary; no Collection runtime authority is invented here.
 
 ## Pull and visual status
 
 - Pull required now: **YES after this documentation sync is merged**
-- Pull scope: Issue #747 synchronization for merged PRs #745 and #746.
+- Pull scope: Issue #749 synchronization for merged PR #748.
 - Visual review required now: **NO — PR #743 visual acceptance passed**
 - ChatGPT Work required now: **NO**
 
@@ -526,3 +527,17 @@ After this synchronization is merged and pulled, the next CAP-012 Reports moveme
 - CAP-012 remains Partial and read-only; the approved three-report set and explicit unavailable/conflicting/no-fabricated-value semantics are preserved.
 - This synchronization changes documentation only and requires no new visual check.
 - Next controlled gate: any further CAP-006 runtime/authority movement or CAP-012 expansion requires a separately approved, separately scoped workbook-backed boundary.
+
+
+## 🏁 CAP-012 catalog scope synchronization after PR #748
+
+- Issue [#749](https://github.com/markperezne8-spec/MarketDEX/issues/749) records this documentation-only synchronization boundary.
+- Main baseline before this branch was merge commit `97d9718123b677708adb76371a3d61bfe77de36e`.
+- PR [#748](https://github.com/markperezne8-spec/MarketDEX/pull/748) delivered the compact `Approved report catalog` scope panel above the existing Reports summary cards.
+- Exact PR #748 head: `ffeffe750ceefd6cb6d6983e34c21800d4520f11`.
+- CI [#1059](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32886676226) passed for that exact head.
+- PR #748 squash merge commit: `97d9718123b677708adb76371a3d61bfe77de36e`.
+- Mark accepted the maximized Reports screenshot showing the approved report catalog panel, preserved catalog-only/composition-owned status text, three approved report cards, intact report table, and North Star styling without clipping.
+- CAP-012 remains Partial and read-only. The three approved report definitions, unavailable/conflicting evidence semantics, no-fabricated-value rule, and composition-owned query boundary remain unchanged.
+- This synchronization changes documentation only and requires no new visual check.
+- Next controlled gate: any further CAP-012 expansion requires a separately approved workbook-backed boundary.
