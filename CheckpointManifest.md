@@ -664,3 +664,17 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - CAP-012 remains Partial and read-only; no report, query, provider, persistence, export, networking, automation, or mutation authority was added.
 - No new visual check is required for this documentation-only synchronization.
 - Future CAP-012 expansion requires a separately approved workbook-backed boundary.
+
+
+## 🏁 CAP-012 read-only preview state synchronization after PR #750
+
+- Issue [#751](https://github.com/markperezne8-spec/MarketDEX/issues/751) tracks this documentation-only synchronization.
+- Main baseline before the branch was merge commit `f5f9c7a6b0c7b951caf95c1131516e4c2e2e4de6`.
+- PR [#750](https://github.com/markperezne8-spec/MarketDEX/pull/750) added consistent `READ-ONLY PREVIEW` labels to the three existing Reports preview panels.
+- Exact PR #750 head: `caac9d1457b3189a560af5e21ba5df2f035dfd24`.
+- CI [#1063](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32893850196) passed for that exact head across all nine required gates.
+- PR #750 squash merge commit: `40cf9b7a6c65373519f2ba979cdc5728fa658c79`.
+- Mark accepted maximized Reports screenshots confirming the three labels, preserved read-only evidence semantics, intact controls, no clipping, and North Star styling.
+- CAP-012 remains Partial and read-only; no new report, query, provider, persistence, export, networking, automation, or mutation authority was added.
+- No new visual check is required for this documentation-only synchronization.
+- Future CAP-012 expansion requires a separately approved workbook-backed boundary.
