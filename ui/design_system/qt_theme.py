@@ -369,6 +369,18 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         padding-top: 4px;
     }}
 
+    QFrame#reportsCatalogScopePanel {{
+        background: {color(ColorRole.SURFACE_SECONDARY)};
+        border: 1px solid {color(ColorRole.BORDER_SUBTLE)};
+        border-radius: {radius['panel']}px;
+    }}
+
+    QLabel#reportsCatalogScopeTitle {{
+        color: {color(ColorRole.TEXT_PRIMARY)};
+        font-size: 12pt;
+        font-weight: 700;
+    }}
+
     QLabel#reportsSubtitle,
     QLabel#reportsStatusLabel,
     QLabel#reportsResultStatusLabel,

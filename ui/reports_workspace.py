@@ -130,6 +130,21 @@ class ReportsWorkspace(QWidget):
 
         self.status_label = QLabel()
         self.status_label.setObjectName('reportsStatusLabel')
+        self.status_label.setWordWrap(True)
+
+        self.catalog_scope_panel = QFrame()
+        self.catalog_scope_panel.setObjectName('reportsCatalogScopePanel')
+        self.catalog_scope_title_label = QLabel('Approved report catalog')
+        self.catalog_scope_title_label.setObjectName('reportsCatalogScopeTitle')
+        self.catalog_scope_panel.setAccessibleName(
+            'Approved report catalog. '
+            'The Reports catalog is read-only and query execution remains composition-owned.'
+        )
+        catalog_scope_layout = QVBoxLayout(self.catalog_scope_panel)
+        catalog_scope_layout.setContentsMargins(14, 10, 14, 10)
+        catalog_scope_layout.setSpacing(3)
+        catalog_scope_layout.addWidget(self.catalog_scope_title_label)
+        catalog_scope_layout.addWidget(self.status_label)
 
         self.report_summary_cards: dict[str, MarketDEXKpiCard] = {}
         report_summary_layout = QHBoxLayout()
@@ -460,7 +475,7 @@ class ReportsWorkspace(QWidget):
         content_layout.setSpacing(10)
         content_layout.addWidget(title)
         content_layout.addWidget(subtitle)
-        content_layout.addWidget(self.status_label)
+        content_layout.addWidget(self.catalog_scope_panel)
         content_layout.addLayout(report_summary_layout)
         content_layout.addWidget(self.report_table)
         content_layout.addWidget(self.inventory_age_panel)
