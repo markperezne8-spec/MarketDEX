@@ -1,6 +1,6 @@
 # MarketDEX Foundation Checkpoint 075
 
-**Status:** 🏁 Checkpoint Complete — CAP-012 Reports Catalog Scope Synchronization
+**Status:** 🏁 Checkpoint Complete — CAP-012 Reports Read-only Preview State Synchronization
 **Canonical branch:** `main`
 **Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
@@ -82,7 +82,7 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 
 ## Exact next gate
 
-**CAP-012 Reports catalog scope is complete through PR #748. This documentation-only synchronization through Issue #749 is the current controlled gate.**
+**CAP-012 Reports catalog scope and read-only preview state headers are complete through PR #750. This documentation-only synchronization through Issue #751 is the current controlled gate.**
 
 Verified sequence:
 
@@ -101,8 +101,8 @@ The next CAP-006 runtime or authority movement requires workbook-backed position
 ## Pull and visual status
 
 - Pull required now: **YES after this documentation sync is merged**
-- Pull scope: Issue #749 synchronization for merged PR #748.
-- Visual review required now: **NO — PR #743 visual acceptance passed**
+- Pull scope: Issue #751 synchronization for merged PR #750.
+- Visual review required now: **NO — PR #750 visual acceptance passed**
 - ChatGPT Work required now: **NO**
 
 ## Progress snapshot
@@ -539,5 +539,19 @@ After this synchronization is merged and pulled, the next CAP-012 Reports moveme
 - PR #748 squash merge commit: `97d9718123b677708adb76371a3d61bfe77de36e`.
 - Mark accepted the maximized Reports screenshot showing the approved report catalog panel, preserved catalog-only/composition-owned status text, three approved report cards, intact report table, and North Star styling without clipping.
 - CAP-012 remains Partial and read-only. The three approved report definitions, unavailable/conflicting evidence semantics, no-fabricated-value rule, and composition-owned query boundary remain unchanged.
+- This synchronization changes documentation only and requires no new visual check.
+- Next controlled gate: any further CAP-012 expansion requires a separately approved workbook-backed boundary.
+
+
+## 🏁 CAP-012 read-only preview state synchronization after PR #750
+
+- Issue [#751](https://github.com/markperezne8-spec/MarketDEX/issues/751) records this documentation-only synchronization boundary.
+- Main baseline before this branch was merge commit `f5f9c7a6b0c7b951caf95c1131516e4c2e2e4de6`.
+- PR [#750](https://github.com/markperezne8-spec/MarketDEX/pull/750) delivered consistent `READ-ONLY PREVIEW` labels across the Inventory Age Patterns, Inventory Turnover, and Purchase Source Performance panels.
+- Exact PR #750 head: `caac9d1457b3189a560af5e21ba5df2f035dfd24`.
+- CI [#1063](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32893850196) passed for that exact head across all nine required gates.
+- PR #750 squash merge commit: `40cf9b7a6c65373519f2ba979cdc5728fa658c79`.
+- Mark accepted maximized Reports screenshots confirming all three labels, preserved metrics and empty-result semantics, intact controls, no clipping, and North Star styling.
+- CAP-012 remains Partial and read-only. No new report definition, query, provider, persistence, export, networking, automation, or mutation authority was introduced.
 - This synchronization changes documentation only and requires no new visual check.
 - Next controlled gate: any further CAP-012 expansion requires a separately approved workbook-backed boundary.
