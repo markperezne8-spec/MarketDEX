@@ -7,7 +7,7 @@
 
 ## Baseline
 
-Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary. This reconciliation is current through PR #746 and the merged CAP-006/CAP-012 visual evidence sequence.
+Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary. This reconciliation is current through PR #748 and the merged CAP-006/CAP-012 visual evidence sequence.
 
 ## Permanent Runtime Authority
 
@@ -63,7 +63,7 @@ The delivered contract is intentionally limited to canonical Product Registry id
 
 Build 701 introduced the canonical CAP-012 Reports foundation through `reports/definitions.py`, Inventory Age source/provider/query/request contracts, `reports/report_query_service.py`, root application composition, workspace registration, and `ui/reports_workspace.py`.
 
-The delivered contract contains three approved report definitions, with Inventory Age and Inventory Turnover previews plus the merged Purchase Source Performance read-only preview. PR #718 added the composition-owned immutable Purchase Source Performance snapshot and preserved the read-only Reports workspace; PR #720 reconciled CAP-012AN with the delivered canonical acquisition projection and adapter boundary. PR #725 exposed the composition-owned `ApplicationComposition.query_purchase_source_performance` read-only query seam through the canonical Reports query service. Reports remain deterministic, composition-owned, and read-only; the preview remains explicitly unavailable when no snapshot is supplied. PR #743 adds a zero-row Purchase Source Performance empty-result panel with period/as-of context while preserving the empty table and explicit no-fabricated-zero semantics. PR #746 adds the Inventory Age evidence-gate panel while preserving catalog-only, unavailable, source-context, and no-mutation semantics. Result presentation preserves outcome, reason, inventory position, as-of date, source domain, source date, source field, evidence state, and explicit unavailable/non-found semantics without creating duplicate persistence or business authority.
+The delivered contract contains three approved report definitions, with Inventory Age and Inventory Turnover previews plus the merged Purchase Source Performance read-only preview. PR #718 added the composition-owned immutable Purchase Source Performance snapshot and preserved the read-only Reports workspace; PR #720 reconciled CAP-012AN with the delivered canonical acquisition projection and adapter boundary. PR #725 exposed the composition-owned `ApplicationComposition.query_purchase_source_performance` read-only query seam through the canonical Reports query service. Reports remain deterministic, composition-owned, and read-only; the preview remains explicitly unavailable when no snapshot is supplied. PR #743 adds a zero-row Purchase Source Performance empty-result panel with period/as-of context while preserving the empty table and explicit no-fabricated-zero semantics. PR #746 adds the Inventory Age evidence-gate panel while preserving catalog-only, unavailable, source-context, and no-mutation semantics. PR #748 adds the Reports catalog scope panel while preserving the existing approved-count, catalog-only, and composition-owned boundary. Result presentation preserves outcome, reason, inventory position, as-of date, source domain, source date, source field, evidence state, and explicit unavailable/non-found semantics without creating duplicate persistence or business authority.
 
 The dedicated Reports CI gate and Desktop Build composition tests protect the current extension point. CAP-012 is `Partial`, not `Missing` and not `Complete`; additional report definitions, cross-domain reconciliation, charts, exports, providers, persistence, and expanded analytics require separately approved workbook-backed boundaries.
 
@@ -83,7 +83,7 @@ Reports has a verified Inventory Age report and a composition-owned Purchase Sou
 
 CAP-008 / Builds 481-497 parity is `Complete` after PR #148, CAP-005 Product Registry is `Complete` after PR #171, and CAP-006 has a provisional read-only slice after PR #175 with its mutation boundary locked by PR #178.
 
-CAP-012 is reconciled from `Missing` to `Partial` based on the merged Build 701 sequence through PR #359 and the later Purchase Source Performance and Inventory Age visual sequence through PR #746: immutable definitions, composition-owned query execution, canonical workspace presentation, provenance-visible Inventory Age results, the delivered acquisition projection/adapter boundary, dedicated Reports CI, accepted visual evidence, and Purchase Source Performance empty-result clarity are present on `main`.
+CAP-012 is reconciled from `Missing` to `Partial` based on the merged Build 701 sequence through PR #359 and the later Purchase Source Performance, Inventory Age, and Reports catalog visual sequence through PR #748: immutable definitions, composition-owned query execution, canonical workspace presentation, provenance-visible Inventory Age results, the delivered acquisition projection/adapter boundary, dedicated Reports CI, accepted visual evidence, and Purchase Source Performance empty-result clarity are present on `main`.
 
 The next implementation build must be separately approved and must not derive authority from placeholder UI, roadmap language, stale capability classification, or this reconciliation record alone.
 
@@ -118,3 +118,13 @@ The repository contains older and overlapping documentation locations and multip
 - Squash merge commit: `7a591bf7cdcb16454ec9d29eea463758133c2d5c`.
 - Accepted visual evidence shows `Inventory Age evidence gate`, `CATALOG-ONLY · UNAVAILABLE`, unavailable metrics, source context, and explicit missing/conflicting-evidence wording.
 - CAP-012 remains `Partial`, read-only, composition-owned, and fail-closed. No new report, query, provider, persistence, export, networking, automation, or mutation authority was introduced.
+
+
+### CAP-012 post-PR #748 catalog scope evidence
+
+- PR [#748](https://github.com/markperezne8-spec/MarketDEX/pull/748) delivered the compact read-only `Approved report catalog` scope panel.
+- Exact PR #748 head: `ffeffe750ceefd6cb6d6983e34c21800d4520f11`.
+- CI [#1059](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32886676226) passed for that exact head.
+- Squash merge commit: `97d9718123b677708adb76371a3d61bfe77de36e`.
+- Accepted visual evidence confirms the approved report count, catalog-only behavior, composition-owned query execution, three approved report cards, intact catalog table, and North Star alignment.
+- CAP-012 remains `Partial` and read-only. No new report, query, provider, persistence, export, networking, automation, or mutation authority was introduced.
