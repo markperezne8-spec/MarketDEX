@@ -381,6 +381,15 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
         font-weight: 700;
     }}
 
+    QLabel#reportsInventoryAgeMode,
+    QLabel#reportsInventoryTurnoverMode,
+    QLabel#reportsPurchaseSourceMode {{
+        color: {color(ColorRole.TEXT_MUTED)};
+        font-size: 8pt;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+    }}
+
     QLabel#reportsSubtitle,
     QLabel#reportsStatusLabel,
     QLabel#reportsResultStatusLabel,

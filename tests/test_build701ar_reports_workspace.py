@@ -92,6 +92,22 @@ def test_reports_workspace_exposes_inventory_age_visual_preview_defaults() -> No
     workspace.close()
 
 
+def test_reports_preview_panels_expose_read_only_mode_headers() -> None:
+    app = QApplication.instance() or QApplication([])
+    workspace = ReportsWorkspace(build_report_catalog())
+
+    expected_headers = (
+        (workspace.inventory_age_mode_label, 'reportsInventoryAgeMode'),
+        (workspace.turnover_mode_label, 'reportsInventoryTurnoverMode'),
+        (workspace.purchase_source_mode_label, 'reportsPurchaseSourceMode'),
+    )
+    for label, object_name in expected_headers:
+        assert label.objectName() == object_name
+        assert label.text() == 'READ-ONLY PREVIEW'
+
+    workspace.close()
+
+
 def test_reports_workspace_updates_inventory_age_visual_preview_from_query() -> None:
     app = QApplication.instance() or QApplication([])
 

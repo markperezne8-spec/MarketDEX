@@ -196,6 +196,11 @@ class ReportsWorkspace(QWidget):
         self.inventory_age_status_label = QLabel()
         self.inventory_age_status_label.setObjectName('reportsInventoryAgeStatus')
         self.inventory_age_status_label.setWordWrap(True)
+        self.inventory_age_mode_label = QLabel('READ-ONLY PREVIEW')
+        self.inventory_age_mode_label.setObjectName('reportsInventoryAgeMode')
+        self.inventory_age_mode_label.setAccessibleName(
+            'Inventory Age Patterns read-only preview'
+        )
 
         self.inventory_age_metric_labels: dict[str, QLabel] = {}
         self.inventory_age_metric_cards: dict[str, QFrame] = {}
@@ -269,6 +274,7 @@ class ReportsWorkspace(QWidget):
         inventory_age_layout = QVBoxLayout(self.inventory_age_panel)
         inventory_age_layout.setContentsMargins(12, 12, 12, 12)
         inventory_age_layout.setSpacing(8)
+        inventory_age_layout.addWidget(self.inventory_age_mode_label)
         inventory_age_layout.addWidget(self.inventory_age_status_label)
         inventory_age_layout.addLayout(inventory_age_metrics_layout)
         inventory_age_layout.addWidget(self.inventory_age_context_label)
@@ -278,6 +284,11 @@ class ReportsWorkspace(QWidget):
         self.turnover_panel = QGroupBox('Inventory Turnover')
         self.turnover_panel.setObjectName('reportsInventoryTurnoverPanel')
         self.turnover_panel.setMinimumHeight(350)
+        self.turnover_mode_label = QLabel('READ-ONLY PREVIEW')
+        self.turnover_mode_label.setObjectName('reportsInventoryTurnoverMode')
+        self.turnover_mode_label.setAccessibleName(
+            'Inventory Turnover read-only preview'
+        )
 
         self.turnover_status_label = QLabel(
             'Read-only visual preview · '
@@ -339,6 +350,7 @@ class ReportsWorkspace(QWidget):
         turnover_layout = QVBoxLayout(self.turnover_panel)
         turnover_layout.setContentsMargins(12, 12, 12, 12)
         turnover_layout.setSpacing(8)
+        turnover_layout.addWidget(self.turnover_mode_label)
         turnover_layout.addWidget(self.turnover_status_label)
         turnover_layout.addLayout(metrics_layout)
         turnover_layout.addWidget(self.turnover_period_label)
@@ -349,6 +361,11 @@ class ReportsWorkspace(QWidget):
         self.purchase_source_panel = QGroupBox('Purchase Source Performance')
         self.purchase_source_panel.setObjectName('reportsPurchaseSourcePanel')
         self.purchase_source_panel.setMinimumHeight(220)
+        self.purchase_source_mode_label = QLabel('READ-ONLY PREVIEW')
+        self.purchase_source_mode_label.setObjectName('reportsPurchaseSourceMode')
+        self.purchase_source_mode_label.setAccessibleName(
+            'Purchase Source Performance read-only preview'
+        )
         self.purchase_source_status_label = QLabel()
         self.purchase_source_status_label.setObjectName('reportsPurchaseSourceStatus')
         self.purchase_source_status_label.setWordWrap(True)
@@ -427,6 +444,7 @@ class ReportsWorkspace(QWidget):
         purchase_source_form.addRow('Period end', self.purchase_source_period_end_input)
         purchase_source_form.addRow('As-of date', self.purchase_source_as_of_input)
         purchase_source_form.addRow('', self.purchase_source_run_button)
+        purchase_source_layout.addWidget(self.purchase_source_mode_label)
         purchase_source_layout.addWidget(self.purchase_source_status_label)
         purchase_source_layout.addWidget(self.purchase_source_empty_state_panel)
         purchase_source_layout.addWidget(purchase_source_controls)
