@@ -331,3 +331,16 @@ def test_reports_workspace_clarifies_purchase_source_empty_results() -> None:
     assert workspace.purchase_source_empty_state_panel.isHidden()
     assert workspace.purchase_source_table.rowCount() == 1
     workspace.close()
+
+
+def test_reports_workspace_preserves_read_only_action_scope() -> None:
+    app = QApplication.instance() or QApplication([])
+    workspace = ReportsWorkspace(build_report_catalog())
+
+    assert workspace.inventory_age_panel.findChildren(QPushButton) == []
+    assert workspace.turnover_panel.findChildren(QPushButton) == []
+    assert [button.text() for button in workspace.purchase_source_panel.findChildren(QPushButton)] == [
+        'Run read-only report'
+    ]
+    assert workspace.purchase_source_run_button is not None
+    workspace.close()
