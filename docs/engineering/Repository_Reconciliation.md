@@ -7,7 +7,7 @@
 
 ## Baseline
 
-Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary. This reconciliation is current through PR #750 and the merged CAP-006/CAP-012 visual evidence sequence.
+Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary. This reconciliation is current through PR #753 and the merged CAP-006/CAP-012 read-only regression evidence sequence.
 
 ## Permanent Runtime Authority
 
@@ -147,3 +147,10 @@ The repository contains older and overlapping documentation locations and multip
 - Squash merge commit: `cc2ae18e5b1e67320791181dd3bcc3ee4334a4cb`.
 - The two-file scope preserves non-editable Reports actions, fail-closed unavailable/conflicting semantics, Collection refresh-only behavior, and unrecorded classification fields.
 - No runtime, UI, workbook, provider, persistence, export, networking, automation, or mutation authority was added.
+
+
+## Top-level baseline normalization after PR #753
+
+- Repository reconciliation now points to current `main` at `5fe59155cee74b79406ab0c7e3356919a24a1d5c`.
+- PR #753 is the current documentation boundary after PR #752 test-only regression hardening.
+- CAP-006 and CAP-012 remain read-only and separately gated for any workbook-backed authority expansion.

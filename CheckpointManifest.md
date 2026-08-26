@@ -685,3 +685,9 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - PR [#752](https://github.com/markperezne8-spec/MarketDEX/pull/752) was squash-merged after exact-head verification.
 - Exact PR head: `ceac91e5b623cc245c5d80b73d189332f6cb9dbd`.
 - CI [#1068](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32937077082) passed all required gates.
+
+## Current checkpoint index — PR #754
+
+- Current main before this documentation build: `5fe59155cee74b79406ab0c7e3356919a24a1d5c`.
+- Issue [#754](https://github.com/markperezne8-spec/MarketDEX/issues/754) normalizes top-level checkpoint pointers after PR [#753](https://github.com/markperezne8-spec/MarketDEX/pull/753).
+- This build changes documentation only and preserves the approved CAP-012/CAP-006 read-only boundary.
