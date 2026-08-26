@@ -3,7 +3,7 @@ from types import SimpleNamespace
 
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
-from PySide6.QtWidgets import QApplication, QAbstractItemView
+from PySide6.QtWidgets import QApplication, QAbstractItemView, QPushButton
 
 from services.collection_position_service import CollectionPositionService
 from ui.collection_position_workspace import CollectionPositionWorkspace
@@ -76,4 +76,19 @@ def test_collection_workspace_is_read_only_and_handles_empty_state(tmp_path):
     populated_workspace.refresh_results()
     assert not populated_workspace.empty_state_panel.isHidden()
     populated_workspace.close()
+    workspace.close()
+
+
+def test_collection_workspace_exposes_refresh_only_control() -> None:
+    app = QApplication.instance() or QApplication([])
+    workspace = CollectionPositionWorkspace(
+        CollectionPositionService(':memory:')
+    )
+
+    assert [
+        button.text()
+        for button in workspace.findChildren(QPushButton)
+    ] == ['Refresh']
+    assert workspace.search_button.objectName() == 'collectionPositionRefreshButton'
+    assert workspace.search_button.text() == 'Refresh'
     workspace.close()
