@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 075
+# MarketDEX Foundation Checkpoint 077
 
-**Status:** 🏁 Checkpoint Complete — CAP-012 Reports Read-only Preview State Synchronization
+**Status:** 🏁 Checkpoint Complete — CAP-012/CAP-006 Read-only Boundary Regression Reconciliation
 **Canonical branch:** `main`
 **Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
@@ -82,7 +82,7 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 
 ## Exact next gate
 
-**CAP-012 Reports catalog scope and read-only preview state headers are complete through PR #750. This documentation-only synchronization through Issue #751 is the current controlled gate.**
+**CAP-012/CAP-006 read-only boundary regression hardening and its documentation reconciliation are complete through PR #753. This top-level normalization is the current controlled gate.**
 
 Verified sequence:
 
@@ -96,13 +96,13 @@ Verified sequence:
 8. PR #746 added the CAP-012 Inventory Age evidence-gate panel without changing query, evidence, or mutation authority.
 9. PR #748 added the Reports catalog scope panel while reusing the existing read-only boundary text.
 
-The next CAP-006 runtime or authority movement requires workbook-backed position authority and a separately approved issue and boundary. The next expanded Reports movement also requires a separately approved authority boundary; no Collection runtime authority is invented here.
+The next CAP-006 runtime or authority movement requires workbook-backed position authority and a separately approved issue and boundary. The next expanded Reports movement also requires a separately approved authority boundary. Preserve the approved CAP-012/CAP-006 read-only, fail-closed boundary; do not invent Collection runtime authority.
 
 ## Pull and visual status
 
-- Pull required now: **YES after this documentation sync is merged**
-- Pull scope: Issue #751 synchronization for merged PR #750.
-- Visual review required now: **NO — PR #750 visual acceptance passed**
+- Pull required now: **YES after this checkpoint normalization is merged**
+- Pull scope: Issue #754 top-level checkpoint authority normalization after PR #753.
+- Visual review required now: **NO — this build changes documentation only**
 - ChatGPT Work required now: **NO**
 
 ## Progress snapshot
@@ -569,3 +569,10 @@ After this synchronization is merged and pulled, the next CAP-012 Reports moveme
 - No new report, Collection authority, UI behavior, persistence, export, networking, automation, or mutation authority was introduced.
 - This synchronization is documentation-only and requires no visual check.
 - Next controlled gate: any runtime expansion still requires a separately approved workbook-backed boundary.
+
+
+## Checkpoint 077 top-level authority normalization
+
+- Current main: `5fe59155cee74b79406ab0c7e3356919a24a1d5c`.
+- PR [#753](https://github.com/markperezne8-spec/MarketDEX/pull/753) reconciled PR #752 regression evidence across the permanent records.
+- This issue aligns the top-level status and resume gate with the already merged PR #753 evidence.
