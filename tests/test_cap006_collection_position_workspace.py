@@ -79,10 +79,10 @@ def test_collection_workspace_is_read_only_and_handles_empty_state(tmp_path):
     workspace.close()
 
 
-def test_collection_workspace_exposes_refresh_only_control() -> None:
+def test_collection_workspace_exposes_refresh_only_control(tmp_path) -> None:
     app = QApplication.instance() or QApplication([])
     workspace = CollectionPositionWorkspace(
-        CollectionPositionService(':memory:')
+        CollectionPositionService(tmp_path / 'marketdex.sqlite3')
     )
 
     assert [
