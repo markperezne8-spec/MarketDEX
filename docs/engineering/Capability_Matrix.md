@@ -4,7 +4,7 @@
 **Authority:** Derived operational engineering status
 **Owner:** Lead Software Architect
 **Update trigger:** Merged delivery changes capability evidence or classification
-**Baseline:** `main` at PR #752 merge commit `cc2ae18e5b1e67320791181dd3bcc3ee4334a4cb` / CAP-012/CAP-006 read-only boundary regression hardening
+**Baseline:** `main` at PR #753 merge commit `5fe59155cee74b79406ab0c7e3356919a24a1d5c` / CAP-012/CAP-006 regression evidence reconciliation
 
 ## Status Vocabulary
 
@@ -161,3 +161,10 @@ A `Complete` classification prohibits rebuilding the capability. A `Partial` cap
 - CAP-006 remains Partial/read-only with no Collection writes and no inference of unrecorded classification fields.
 - No new report, Collection, persistence, export, networking, automation, or mutation authority was introduced.
 - Any runtime expansion remains separately gated by workbook-backed authority.
+
+
+## Top-level baseline normalization after PR #753
+
+- The derived capability baseline now points to current `main` at `5fe59155cee74b79406ab0c7e3356919a24a1d5c`.
+- PR #753 is the current documentation reconciliation boundary for the merged CAP-012/CAP-006 read-only regression hardening.
+- CAP-006 and CAP-012 remain Partial; no new authority or runtime expansion is implied.
