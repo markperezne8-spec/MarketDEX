@@ -555,3 +555,17 @@ After this synchronization is merged and pulled, the next CAP-012 Reports moveme
 - CAP-012 remains Partial and read-only. No new report definition, query, provider, persistence, export, networking, automation, or mutation authority was introduced.
 - This synchronization changes documentation only and requires no new visual check.
 - Next controlled gate: any further CAP-012 expansion requires a separately approved workbook-backed boundary.
+
+
+## Checkpoint 076 — CAP-012/CAP-006 regression boundary synchronization
+
+- PR [#752](https://github.com/markperezne8-spec/MarketDEX/pull/752) delivered focused regression coverage for the approved Reports and Collection read-only boundary.
+- Exact PR #752 head: `ceac91e5b623cc245c5d80b73d189332f6cb9dbd`.
+- CI [#1068](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32937077082) passed all nine required jobs, including Reports, Collection, Core Tests, and Desktop Build.
+- PR #752 squash merge commit: `cc2ae18e5b1e67320791181dd3bcc3ee4334a4cb`.
+- Scope was limited to `tests/test_build701ar_reports_workspace.py` and `tests/test_cap006_collection_position_workspace.py`.
+- CAP-012 remains Partial, read-only, composition-owned, and fail-closed. The tests preserve non-editable report surfaces and unavailable/conflicting evidence semantics.
+- CAP-006 remains Partial and read-only. The tests preserve the refresh-only Collection projection and unrecorded Condition / Grade and Collector Intent boundary.
+- No new report, Collection authority, UI behavior, persistence, export, networking, automation, or mutation authority was introduced.
+- This synchronization is documentation-only and requires no visual check.
+- Next controlled gate: any runtime expansion still requires a separately approved workbook-backed boundary.
