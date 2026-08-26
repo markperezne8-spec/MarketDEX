@@ -678,3 +678,10 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - CAP-012 remains Partial and read-only; no new report, query, provider, persistence, export, networking, automation, or mutation authority was added.
 - No new visual check is required for this documentation-only synchronization.
 - Future CAP-012 expansion requires a separately approved workbook-backed boundary.
+
+
+## CAP-012/CAP-006 PR #752 synchronization
+
+- PR [#752](https://github.com/markperezne8-spec/MarketDEX/pull/752) was squash-merged after exact-head verification.
+- Exact PR head: `ceac91e5b623cc245c5d80b73d189332f6cb9dbd`.
+- CI [#1068](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32937077082) passed all required gates.

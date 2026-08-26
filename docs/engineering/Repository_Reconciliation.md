@@ -138,3 +138,12 @@ The repository contains older and overlapping documentation locations and multip
 - Squash merge commit: `40cf9b7a6c65373519f2ba979cdc5728fa658c79`.
 - Accepted maximized Reports screenshots confirm the Inventory Age Patterns, Inventory Turnover, and Purchase Source Performance labels, preserved read-only evidence semantics, intact controls, no clipping, and North Star styling.
 - CAP-012 remains `Partial`, read-only, composition-owned, and fail-closed. No new report, query, provider, persistence, export, networking, automation, or mutation authority was introduced.
+
+
+## CAP-012/CAP-006 PR #752 reconciliation
+
+- PR [#752](https://github.com/markperezne8-spec/MarketDEX/pull/752) delivered test-only regression hardening for the existing CAP-012 Reports and CAP-006 Collection read-only boundaries.
+- Exact PR #752 head: `ceac91e5b623cc245c5d80b73d189332f6cb9dbd`; CI [#1068](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32937077082) passed all nine required jobs.
+- Squash merge commit: `cc2ae18e5b1e67320791181dd3bcc3ee4334a4cb`.
+- The two-file scope preserves non-editable Reports actions, fail-closed unavailable/conflicting semantics, Collection refresh-only behavior, and unrecorded classification fields.
+- No runtime, UI, workbook, provider, persistence, export, networking, automation, or mutation authority was added.

@@ -4,7 +4,7 @@
 **Authority:** Derived operational engineering status
 **Owner:** Lead Software Architect
 **Update trigger:** Merged delivery changes capability evidence or classification
-**Baseline:** `main` at PR #750 merge commit `40cf9b7a6c65373519f2ba979cdc5728fa658c79` / CAP-012 Reports read-only preview state synchronization
+**Baseline:** `main` at PR #752 merge commit `cc2ae18e5b1e67320791181dd3bcc3ee4334a4cb` / CAP-012/CAP-006 read-only boundary regression hardening
 
 ## Status Vocabulary
 
@@ -148,3 +148,16 @@ A `Complete` classification prohibits rebuilding the capability. A `Partial` cap
 - Accepted visual evidence confirms all three labels, preserved metrics and empty-result semantics, intact controls, no clipping, and North Star styling.
 - No new report definition, query, provider, persistence, export, networking, automation, or mutation authority was introduced.
 - CAP-006 remains `Partial` and blocked on workbook-backed Collection position authority; this reconciliation introduces no Collection scope.
+
+
+## CAP-012/CAP-006 post-PR #752 reconciliation
+
+- PR [#752](https://github.com/markperezne8-spec/MarketDEX/pull/752) added focused regression coverage for the existing approved read-only boundary.
+- Exact PR #752 head: `ceac91e5b623cc245c5d80b73d189332f6cb9dbd`.
+- CI [#1068](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32937077082) passed all nine required jobs.
+- Squash merge commit: `cc2ae18e5b1e67320791181dd3bcc3ee4334a4cb`.
+- Changed files: `tests/test_build701ar_reports_workspace.py`, `tests/test_cap006_collection_position_workspace.py`.
+- CAP-012 remains Partial/read-only with fail-closed unavailable/conflicting evidence semantics.
+- CAP-006 remains Partial/read-only with no Collection writes and no inference of unrecorded classification fields.
+- No new report, Collection, persistence, export, networking, automation, or mutation authority was introduced.
+- Any runtime expansion remains separately gated by workbook-backed authority.
