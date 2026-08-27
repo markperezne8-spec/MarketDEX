@@ -54,6 +54,31 @@ def test_python_cache_dependency_paths_remain_explicit():
     ) in workflow
 
 
+def test_desktop_build_uses_cache_backed_windows_tooling():
+    workflow = _workflow_text()
+    desktop_build = workflow.split('\n  desktop-build:\n', 1)[1]
+
+    required_markers = (
+        'uses: actions/cache@v4',
+        'path: .venv',
+        "hashFiles('requirements-build.txt', 'requirements.txt')",
+        "steps.windows-python-cache.outputs.cache-hit != 'true'",
+        r'.\.venv\Scripts\python.exe -m pytest',
+        'path: build',
+        'restore-keys:',
+        r'.\.venv\Scripts\python.exe -m PyInstaller --noconfirm MarketDEX.spec',
+    )
+
+    missing_markers = [
+        marker
+        for marker in required_markers
+        if marker not in desktop_build
+    ]
+
+    assert not missing_markers, ', '.join(missing_markers)
+    assert 'pyinstaller --noconfirm --clean MarketDEX.spec' not in desktop_build
+
+
 def test_desktop_build_keeps_packaging_and_installer_gates():
     workflow = _workflow_text()
     desktop_build = workflow.split('\n  desktop-build:\n', 1)[1]
@@ -61,7 +86,7 @@ def test_desktop_build_keeps_packaging_and_installer_gates():
     required_markers = (
         'tests/test_ci_workflow_contract.py',
         'Run Desktop contract gate',
-        'pyinstaller --noconfirm --clean MarketDEX.spec',
+        r'.\.venv\Scripts\python.exe -m PyInstaller --noconfirm MarketDEX.spec',
         'Verify packaged runtime',
         'Build MarketDEX installer',
         'Verify installed MarketDEX runtime',
