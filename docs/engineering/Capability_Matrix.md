@@ -178,3 +178,15 @@ A `Complete` classification prohibits rebuilding the capability. A `Partial` cap
 - Squash merge commit: `b6d40ab7f75dcb445dbff5ca286754b9e855c46c`.
 - Visual acceptance passed on a maximized Mission Control screenshot with the North Star shell hierarchy, persistent navigation, LOCAL AUTHORITY, and OFFLINE FIRST visible.
 - Scope was presentation-only; CAP-006 and CAP-012 remain Partial/read-only with no new capability authority.
+
+
+## CAP-006/CAP-012 Visual North Star navigation evidence after PR #757
+
+- CAP-006 and CAP-012 remain Partial and read-only; this evidence does not change their capability classification or authority.
+- PR [#757](https://github.com/markperezne8-spec/MarketDEX/pull/757) grouped the existing persistent navigation into OPERATIONS, COLLECTION, and INTELLIGENCE and added semantic North Star accent treatment.
+- Exact PR #757 head: `30d08d2aad7864af574d650678dfd3c8293fcf6`.
+- CI [#1079](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33036161560) passed all nine required gates.
+- Squash merge commit/current main: `806c11693e416ed5f93f039682f15d80cce503e3`.
+- Mark accepted the maximized Mission Control screenshot with visible grouping, adjacent related workspaces, preserved shell hierarchy, semantic accents, and no clipping or overlap.
+- No new report, Collection, query, provider, persistence, export, networking, automation, or mutation authority was introduced.
+- Issue [#758](https://github.com/markperezne8-spec/MarketDEX/issues/758) reconciles this evidence in the permanent records; further runtime or authority movement remains separately gated by workbook-backed approval.
