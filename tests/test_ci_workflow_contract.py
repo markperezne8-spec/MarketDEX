@@ -69,7 +69,7 @@ def test_desktop_build_uses_cache_backed_windows_tooling():
         'Run Desktop contract gate and package build',
         'Start-Process -FilePath ".\\.venv\\Scripts\\python.exe"',
         '$packageBuild.WaitForExit()',
-        r'.\.venv\Scripts\python.exe -m PyInstaller --noconfirm MarketDEX.spec',
+        "'PyInstaller', '--noconfirm', 'MarketDEX.spec'",
     )
 
     missing_markers = [
@@ -90,7 +90,7 @@ def test_desktop_build_keeps_packaging_and_installer_gates():
     required_markers = (
         'tests/test_ci_workflow_contract.py',
         'Run Desktop contract gate',
-        r'.\.venv\Scripts\python.exe -m PyInstaller --noconfirm MarketDEX.spec',
+        "'PyInstaller', '--noconfirm', 'MarketDEX.spec'",
         'Verify packaged runtime',
         'Build MarketDEX installer',
         'Verify installed MarketDEX runtime',
