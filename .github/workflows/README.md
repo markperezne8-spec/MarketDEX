@@ -7,4 +7,5 @@
 
 
 - Pull-request Desktop Build reuses the Windows .venv and PyInstaller analysis cache when the dependency lock and packaging specification are compatible.
+- The Desktop contract suite and PyInstaller package build run concurrently; both must succeed before packaged-runtime, installer, and installed-runtime verification begins.
 - Manual RC workflows intentionally keep clean PyInstaller rebuilds for release reproducibility.
