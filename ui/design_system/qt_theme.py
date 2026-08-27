@@ -44,6 +44,7 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
     QFrame#marketdexKpiCard[dashboardRole="existing-kpi"] {{
         min-height: 72px;
         max-height: 86px;
+        border-top: {border['selected']}px solid {color(ColorRole.INFORMATION)};
     }}
 
     QFrame#marketdexKpiCard[dashboardRole="inventory-command-summary"] {{
