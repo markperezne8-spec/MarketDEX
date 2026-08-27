@@ -77,6 +77,7 @@ def test_desktop_build_uses_cache_backed_windows_tooling():
 
     assert not missing_markers, ', '.join(missing_markers)
     assert 'pyinstaller --noconfirm --clean MarketDEX.spec' not in desktop_build
+    assert '\n      - run: pip install -q -r requirements-build.txt pytest' not in desktop_build
 
 
 def test_desktop_build_keeps_packaging_and_installer_gates():
