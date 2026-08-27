@@ -7,7 +7,7 @@
 
 ## Baseline
 
-Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary. This reconciliation is current through PR #755 and the accepted Visual North Star shell header evidence sequence.
+Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary. This reconciliation is current through PR #762 and the accepted release-readiness and repository-hygiene evidence sequence.
 
 ## Permanent Runtime Authority
 
@@ -188,3 +188,18 @@ The repository contains older and overlapping documentation locations and multip
 - CAP-006 remains Partial/read-only and blocked on workbook-backed Collection position authority.
 - CAP-012 remains Partial/read-only and blocked from expanded report authority or execution without a separately approved workbook-backed boundary.
 - Issue [#760](https://github.com/markperezne8-spec/MarketDEX/issues/760) records this documentation-only reconciliation; no visual check is required.
+
+
+## Release-readiness and repository-hygiene evidence after PR #762
+
+- Repository reconciliation is current through PR [#762](https://github.com/markperezne8-spec/MarketDEX/pull/762) and its merged main push verification.
+- Exact PR #762 head: `ef000b48830a46174a6ef105196305a8e26b80e9`; CI [#1090](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33053608595) passed all nine required jobs.
+- Squash merge/current `main`: `dec3d337f09eb1a203d19c70e57cdce869f66275`; main push CI [#1091](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33053830686) passed.
+- The delivered documentation and hygiene scope adds the root install guide, aligns the release process, improves installer metadata, and removes tracked generated Python bytecode and historical startup-log residue.
+- The tracked `data/marketdex.sqlite3` database was deliberately preserved. No user data was deleted, migrated, or reclassified.
+- CAP-006 and CAP-012 remain Partial/read-only/fail-closed. Workbook-backed authority expansion remains separately gated.
+- This reconciliation changes documentation only and requires no visual check.
+
+## Next controlled release gate
+
+The next implementation slice should establish one authoritative product version and a reproducible Windows distribution path, including installer and checksum publication. It must preserve the existing launcher, composition root, runtime database authority, and user-data protection rules.
