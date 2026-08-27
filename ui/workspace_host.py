@@ -17,6 +17,17 @@ from ui.design_system.tokens import ColorRole, build_visual_north_star_tokens
 from ui.workspace_registry import WorkspaceRegistry
 
 
+_NAVIGATION_GROUPS = {
+    'Inventory': 'OPERATIONS',
+    'Pricing': 'OPERATIONS',
+    'Listing Workflow': 'OPERATIONS',
+    'Product Registry': 'COLLECTION',
+    'Collection Overview': 'COLLECTION',
+    'Market Intelligence': 'INTELLIGENCE',
+    'Reports': 'INTELLIGENCE',
+}
+
+
 class _NavigationRailContract:
     """Compatibility surface for the former tab-bar presentation contract."""
 
@@ -41,6 +52,8 @@ class WorkspaceHost(QWidget):
         self._workspace_indexes: dict[str, int] = {}
         self._workspace_titles: list[str] = []
         self._navigation_buttons: list[QPushButton] = []
+        self._navigation_group_labels: list[QLabel] = []
+        self._last_navigation_group: str | None = None
         self._mounted = False
         self._document_mode = True
         self._movable = False
@@ -171,6 +184,10 @@ class WorkspaceHost(QWidget):
         return tuple(self._workspace_titles)
 
     @property
+    def navigation_group_labels(self) -> tuple[QLabel, ...]:
+        return tuple(self._navigation_group_labels)
+
+    @property
     def navigation_visual_contract(self) -> str:
         return 'm1.14d-north-star-left-navigation'
 
@@ -213,9 +230,20 @@ class WorkspaceHost(QWidget):
     def addTab(self, page: QWidget, title: str, workspace_id: str | None = None) -> int:
         index = self.workspace_stack.addWidget(page)
         self._workspace_titles.append(title)
+
+        group = _NAVIGATION_GROUPS.get(title, 'WORKSPACES')
+        if group != self._last_navigation_group:
+            group_label = QLabel(group, self.navigation_rail)
+            group_label.setObjectName('marketdexNavigationGroup')
+            group_label.setAccessibleName(f'{group.title()} workspace group')
+            self.navigation_items.addWidget(group_label)
+            self._navigation_group_labels.append(group_label)
+            self._last_navigation_group = group
+
         button = QPushButton(title, self.navigation_rail)
         button.setObjectName('marketdexNavigationItem')
         button.setProperty('northStarRole', 'workspace-navigation')
+        button.setProperty('navigationGroup', group.lower())
         if workspace_id is not None:
             button.setProperty('workspaceId', workspace_id)
         button.setAccessibleName(f'Open {title} workspace')
@@ -324,6 +352,14 @@ def _build_workspace_host_qss() -> str:
                 font-weight: 800;
                 padding: 5px 10px;
             }}
+            QLabel#marketdexNavigationGroup {{
+                color: {color(ColorRole.TEXT_MUTED)};
+                font-size: 10px;
+                font-weight: 800;
+                letter-spacing: 1px;
+                margin-top: 8px;
+                padding-left: 2px;
+            }}
             QPushButton#marketdexNavigationItem {{
                 background: {color(ColorRole.SURFACE_PRIMARY)};
                 border: {border['standard']}px solid {color(ColorRole.BORDER_SUBTLE)};
@@ -340,6 +376,15 @@ def _build_workspace_host_qss() -> str:
                 background: {color(ColorRole.SURFACE_INTERACTIVE)};
                 border-color: {color(ColorRole.BORDER_STRONG)};
                 color: {color(ColorRole.TEXT_PRIMARY)};
+            }}
+            QPushButton#marketdexNavigationItem[navigationGroup="operations"] {{
+                border-left-color: {color(ColorRole.PRIMARY_ACTION)};
+            }}
+            QPushButton#marketdexNavigationItem[navigationGroup="collection"] {{
+                border-left-color: {color(ColorRole.COLLECTION)};
+            }}
+            QPushButton#marketdexNavigationItem[navigationGroup="intelligence"] {{
+                border-left-color: {color(ColorRole.INFORMATION)};
             }}
             QPushButton#marketdexNavigationItem:checked {{
                 background: {color(ColorRole.SURFACE_INTERACTIVE)};
