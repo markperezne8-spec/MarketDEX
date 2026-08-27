@@ -1,3 +1,0 @@
-MarketDEX M34.B1 startup 
-Folder: C:\Projects\MarketDEX_OS 
-Launching MarketDEX... 
