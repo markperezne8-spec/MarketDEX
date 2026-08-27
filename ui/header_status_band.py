@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from PySide6.QtWidgets import QLabel, QWidget, QHBoxLayout, QSizePolicy
+from PySide6.QtWidgets import QLabel, QWidget, QGridLayout, QSizePolicy
 
 from app.engines.mission_control.header_status import (
     HeaderStatusViewModel,
@@ -51,14 +51,17 @@ class HeaderStatusBand(MarketDEXDashboardPanel):
         self.error_label.setVisible(self.view_model.state == 'error')
 
         self.slot_row = QWidget(self.content_widget)
-        self.slot_layout = QHBoxLayout(self.slot_row)
+        self.slot_layout = QGridLayout(self.slot_row)
         self.slot_layout.setContentsMargins(0, 0, 0, 0)
-        self.slot_layout.setSpacing(8)
+        self.slot_layout.setHorizontalSpacing(8)
+        self.slot_layout.setVerticalSpacing(8)
+        for column in range(3):
+            self.slot_layout.setColumnStretch(column, 1)
         self.slot_labels: list[QLabel] = []
         self.slot_state_badges: list[MarketDEXStatusBadge] = []
         self.slot_cards: list[MarketDEXDashboardPanel] = []
 
-        for slot in self.view_model.slots:
+        for index, slot in enumerate(self.view_model.slots):
             card = MarketDEXDashboardPanel(
                 slot.label,
                 slot.detail,
@@ -76,7 +79,7 @@ class HeaderStatusBand(MarketDEXDashboardPanel):
             self.slot_cards.append(card)
             self.slot_state_badges.append(badge)
             self.slot_labels.extend((card.title_label, card.description_label))
-            self.slot_layout.addWidget(card, 1)
+            self.slot_layout.addWidget(card, index // 3, index % 3)
 
         self.add_content_widget(self.headline_label)
         self.add_content_widget(self.error_label)
