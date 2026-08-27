@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 079
+# MarketDEX Foundation Checkpoint 080
 
-**Status:** 🏁 Checkpoint Complete — Visual North Star Navigation Reconciliation
+**Status:** 🏁 Checkpoint Complete — Visual North Star Dashboard-Panel Reconciliation
 **Canonical branch:** `main`
 **Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
@@ -82,7 +82,7 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 
 ## Exact next gate
 
-**CAP-012/CAP-006 read-only boundary regression hardening and the Visual North Star shell header are complete through PR #755. This documentation-only reconciliation is the current controlled gate.**
+**Visual North Star shell foundation work is complete through PR #759. This documentation-only reconciliation is the current controlled gate.**
 
 Verified sequence:
 
@@ -102,8 +102,8 @@ The next CAP-006 runtime or authority movement requires workbook-backed position
 ## Pull and visual status
 
 - Pull required now: **YES after this documentation reconciliation is merged**
-- Pull scope: Issue #756 Visual North Star shell-header evidence reconciliation after PR #755.
-- Visual review required now: **NO — PR #755 visual acceptance passed**
+- Pull scope: Issue #760 Visual North Star dashboard-panel evidence reconciliation after PR #759.
+- Visual review required now: **NO — PR #759 visual acceptance passed**
 - ChatGPT Work required now: **NO**
 
 ## Progress snapshot
@@ -603,3 +603,16 @@ After this synchronization is merged and pulled, the next CAP-012 Reports moveme
 - CAP-006 and CAP-012 remain Partial, read-only, composition-owned where applicable, and fail-closed. No workbook-backed authority was inferred.
 - PR [#758](https://github.com/markperezne8-spec/MarketDEX/issues/758) records this documentation-only synchronization; no additional visual check is required.
 - Next controlled gate: any CAP-006 runtime/authority movement or expanded CAP-012 behavior still requires a separately approved workbook-backed boundary.
+
+
+## Checkpoint 080 synchronization
+
+- Current main after PR #759: `ea7f993a7164d8ac897619a77e854462c7230615`.
+- PR [#759](https://github.com/markperezne8-spec/MarketDEX/pull/759) delivered semantic Visual North Star accent rails for reusable dashboard panels.
+- Exact PR #759 head: `c2ab9f04f46aff998680d35edea8666f2b3e28ce`.
+- CI [#1083](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33037632359) passed all nine required gates, including Mission Control Visual Slice and Desktop Build.
+- Squash merge commit: `ea7f993a7164d8ac897619a77e854462c7230615`.
+- Mark accepted the maximized Mission Control screenshot showing semantic panel accents, preserved KPI and read-only content, intact North Star hierarchy, and no clipping or overlap.
+- The presentation-only scope preserved workspace IDs, routes, activation, services, data, commands, launcher, composition root, and capability authority.
+- CAP-006 and CAP-012 remain Partial, read-only, composition-owned where applicable, and fail-closed. No workbook-backed authority was inferred.
+- PR [#760](https://github.com/markperezne8-spec/MarketDEX/issues/760) records this documentation-only synchronization; no additional visual check is required.
