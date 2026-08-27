@@ -91,6 +91,8 @@ def test_workspace_host_exposes_navigation_rail_shell_contract():
     assert host.global_header_brand.text() == 'MarketDEX OS'
     assert host.global_header_context.objectName() == 'marketdexGlobalContext'
     assert host.global_header_context.text() == 'COMMAND CENTER'
+    assert host.global_header_title.objectName() == 'marketdexGlobalTitle'
+    assert host.global_header_title.text() == 'MISSION CONTROL'
     assert host.global_header_status.objectName() == 'marketdexGlobalStatus'
     assert host.global_header_status.text() == '● LOCAL AUTHORITY'
     assert host.global_header_mode.objectName() == 'marketdexGlobalMode'
@@ -105,6 +107,8 @@ def test_workspace_host_exposes_navigation_rail_shell_contract():
     assert host.tabBar().expanding() is False
     assert '#2579D8' in host.styleSheet()
     assert '#FFD12E' in host.styleSheet()
+    assert 'QLabel#marketdexGlobalTitle' in host.styleSheet()
+    assert 'letter-spacing: 1.5px' in host.styleSheet()
     host.close()
 
 
