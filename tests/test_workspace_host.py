@@ -82,6 +82,18 @@ def test_workspace_host_exposes_navigation_rail_shell_contract():
     assert host.workspace_stack.objectName() == 'marketdexWorkspaceStack'
     assert host.navigation_badge.objectName() == 'marketdexNavigationBadge'
     assert host.navigation_badge.text() == 'COMMAND RAIL'
+    assert host.global_header.objectName() == 'marketdexGlobalHeader'
+    assert host.global_header.accessibleName() == (
+        'MarketDEX global command-center header'
+    )
+    assert host.global_header_brand.objectName() == 'marketdexGlobalBrand'
+    assert host.global_header_brand.text() == 'MarketDEX OS'
+    assert host.global_header_context.objectName() == 'marketdexGlobalContext'
+    assert host.global_header_context.text() == 'COMMAND CENTER'
+    assert host.global_header_status.objectName() == 'marketdexGlobalStatus'
+    assert host.global_header_status.text() == '● LOCAL AUTHORITY'
+    assert host.global_header_mode.objectName() == 'marketdexGlobalMode'
+    assert host.global_header_mode.text() == 'OFFLINE FIRST'
     assert host.navigation_rail.accessibleName() == (
         'MarketDEX command navigation rail'
     )
