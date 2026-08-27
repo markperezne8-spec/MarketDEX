@@ -17,6 +17,10 @@ def test_main_window_declares_one_branded_application_shell():
     assert "marketdexNavigationRail" in source
     assert "marketdexWorkspaceFrame" in source
     assert "marketdexStatusBar" in source
+    assert "marketdexGlobalHeader" in source
+    assert "marketdexGlobalBrand" in source
+    assert "marketdexGlobalStatus" in source
+    assert "marketdexGlobalMode" in source
     assert "QStackedWidget" in source
 
 
