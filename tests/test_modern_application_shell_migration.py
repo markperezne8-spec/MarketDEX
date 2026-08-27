@@ -21,6 +21,11 @@ def test_main_window_declares_one_branded_application_shell():
     assert "marketdexGlobalBrand" in source
     assert "marketdexGlobalStatus" in source
     assert "marketdexGlobalMode" in source
+    assert "marketdexNavigationGroup" in source
+    assert "navigationGroup" in source
+    assert "OPERATIONS" in source
+    assert "COLLECTION" in source
+    assert "INTELLIGENCE" in source
     assert "QStackedWidget" in source
 
 
@@ -36,6 +41,13 @@ def test_shell_exposes_persistent_workspace_navigation():
         assert label in catalog
 
     assert "setCurrentIndex" in source
+    assert "Inventory', 10" in catalog
+    assert "Pricing', 11" in catalog
+    assert "Listing Workflow', 12" in catalog
+    assert "Product Registry', 20" in catalog
+    assert "Collection Overview', 21" in catalog
+    assert "Market Intelligence', 30" in catalog
+    assert "Reports', 31" in catalog
 
     mission_control = MAIN_WINDOW.read_text(encoding="utf-8")
     assert "Mission Control" in mission_control

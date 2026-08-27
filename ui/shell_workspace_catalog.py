@@ -26,28 +26,28 @@ class ShellWorkspaceSpec:
 PRODUCT_REGISTRY_WORKSPACE = ShellWorkspaceSpec(
     PRODUCT_REGISTRY_WORKSPACE_ID,
     'Product Registry',
-    15,
+    20,
 )
 COLLECTION_POSITION_WORKSPACE = ShellWorkspaceSpec(
     COLLECTION_POSITION_WORKSPACE_ID,
     'Collection Overview',
-    16,
+    21,
 )
 MARKET_INTELLIGENCE_WORKSPACE = ShellWorkspaceSpec(
     MARKET_INTELLIGENCE_WORKSPACE_ID,
     'Market Intelligence',
-    17,
+    30,
 )
 REPORTS_WORKSPACE = ShellWorkspaceSpec(
     REPORTS_WORKSPACE_ID,
     'Reports',
-    18,
+    31,
 )
 
 CORE_SHELL_WORKSPACES = (
     ShellWorkspaceSpec(INVENTORY_WORKSPACE_ID, 'Inventory', 10),
-    ShellWorkspaceSpec(PRICING_WORKSPACE_ID, 'Pricing', 20),
-    ShellWorkspaceSpec(LISTING_WORKFLOW_WORKSPACE_ID, 'Listing Workflow', 30),
+    ShellWorkspaceSpec(PRICING_WORKSPACE_ID, 'Pricing', 11),
+    ShellWorkspaceSpec(LISTING_WORKFLOW_WORKSPACE_ID, 'Listing Workflow', 12),
 )
 
 

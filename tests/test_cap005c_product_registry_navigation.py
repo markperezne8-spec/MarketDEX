@@ -24,24 +24,24 @@ def test_application_composition_mounts_product_registry_in_shell_order(tmp_path
     assert isinstance(window.product_registry_workspace, ProductRegistryWorkspace)
     assert window.workspace_host.workspace_ids == (
         'inventory',
+        'pricing',
+        'listing-workflow',
         PRODUCT_REGISTRY_WORKSPACE_ID,
         'collection-position',
         MARKET_INTELLIGENCE_WORKSPACE_ID,
         REPORTS_WORKSPACE_ID,
-        'pricing',
-        'listing-workflow',
     )
     assert [
         window.workspace_host.tabText(index)
         for index in range(window.workspace_host.count())
     ] == [
         'Inventory',
+        'Pricing',
+        'Listing Workflow',
         'Product Registry',
         'Collection Overview',
         'Market Intelligence',
         'Reports',
-        'Pricing',
-        'Listing Workflow',
     ]
     window.close()
 
