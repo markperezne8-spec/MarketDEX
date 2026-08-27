@@ -2,6 +2,10 @@
 
 MarketDEX is a Windows desktop, offline-first collectibles business operating system. It helps organize inventory, collection positions, pricing, listings, sales, settlement evidence, reports, and business intelligence while keeping authoritative data local and auditable.
 
+## Version and releases
+
+The canonical product version is maintained in `version.py` and verified against the Windows executable marker and installer metadata by CI. Releases should publish the installer first, with the portable executable clearly identified as an optional diagnostic artifact.
+
 ## Install on Windows
 
 1. Open the repository's Releases page: https://github.com/markperezne8-spec/MarketDEX/releases

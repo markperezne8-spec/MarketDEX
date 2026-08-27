@@ -4,6 +4,10 @@
 
 Every release must be reproducible, installable, reversible, and traceable to a verified commit. The installer is the primary Windows distribution artifact; a raw executable is a diagnostic or release-candidate artifact unless the release explicitly says otherwise.
 
+## Version authority
+
+`version.py` is the canonical dependency-free source for the product version. The desktop version marker and Inno Setup metadata are release outputs and must match it exactly. The release-version contract test runs in CI before packaging.
+
 ## Required release sequence
 
 1. Confirm the exact main commit and intended semantic version.
