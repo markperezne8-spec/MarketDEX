@@ -134,6 +134,12 @@ class WorkspaceHost(QWidget):
         global_header_layout.addWidget(self.global_header_context)
         global_header_layout.addStretch(1)
 
+        self.global_header_title = QLabel('MISSION CONTROL', self.global_header)
+        self.global_header_title.setObjectName('marketdexGlobalTitle')
+        self.global_header_title.setAccessibleName('Mission Control command-deck title')
+        global_header_layout.addWidget(self.global_header_title)
+        global_header_layout.addStretch(1)
+
         self.global_header_status = QLabel('● LOCAL AUTHORITY', self.global_header)
         self.global_header_status.setObjectName('marketdexGlobalStatus')
         self.global_header_status.setAccessibleName('Local authority status')
@@ -411,6 +417,7 @@ def _build_workspace_host_qss() -> str:
                 background: {color(ColorRole.APP_BACKGROUND)};
             }}
             QFrame#marketdexGlobalHeader {{
+                min-height: 42px;
                 background: qlineargradient(
                     x1: 0, y1: 0, x2: 1, y2: 0,
                     stop: 0 {color(ColorRole.SHELL_BACKGROUND)},
@@ -431,6 +438,12 @@ def _build_workspace_host_qss() -> str:
                 font-weight: 800;
                 letter-spacing: 1px;
             }}
+            QLabel#marketdexGlobalTitle {{
+                color: {color(ColorRole.TEXT_PRIMARY)};
+                font-size: 18px;
+                font-weight: 800;
+                letter-spacing: 1.5px;
+            }}
             QLabel#marketdexGlobalStatus {{
                 background: {color(ColorRole.SURFACE_PRIMARY)};
                 border: {border['standard']}px solid {color(ColorRole.POSITIVE)};
@@ -450,10 +463,11 @@ def _build_workspace_host_qss() -> str:
                 padding: 4px 9px;
             }}
             QLabel#marketdexWorkspaceContext {{
-                color: {color(ColorRole.TEXT_MUTED)};
-                font-size: 11px;
+                color: {color(ColorRole.INFORMATION)};
+                font-size: 12px;
                 font-weight: 800;
-                letter-spacing: 1px;
+                letter-spacing: 1.4px;
+                padding-left: 4px;
             }}
             QStackedWidget#marketdexWorkspaceStack {{
                 background: {color(ColorRole.APP_BACKGROUND)};
