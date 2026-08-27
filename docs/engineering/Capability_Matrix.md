@@ -190,3 +190,15 @@ A `Complete` classification prohibits rebuilding the capability. A `Partial` cap
 - Mark accepted the maximized Mission Control screenshot with visible grouping, adjacent related workspaces, preserved shell hierarchy, semantic accents, and no clipping or overlap.
 - No new report, Collection, query, provider, persistence, export, networking, automation, or mutation authority was introduced.
 - Issue [#758](https://github.com/markperezne8-spec/MarketDEX/issues/758) reconciles this evidence in the permanent records; further runtime or authority movement remains separately gated by workbook-backed approval.
+
+
+## CAP-006/CAP-012 Visual North Star dashboard-panel evidence after PR #759
+
+- CAP-006 and CAP-012 remain Partial and read-only; this evidence does not change their capability classification or authority.
+- PR [#759](https://github.com/markperezne8-spec/MarketDEX/pull/759) added semantic dashboard-panel accents using existing North Star tone and color roles.
+- Exact PR #759 head: `c2ab9f04f46aff998680d35edea8666f2b3e28ce`.
+- CI [#1083](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33037632359) passed all nine required gates.
+- Squash merge/current main: `ea7f993a7164d8ac897619a77e854462c7230615`.
+- Mark accepted the maximized Mission Control screenshot with semantic panel accents, preserved content and hierarchy, and no clipping or overlap.
+- No new report, Collection, query, provider, persistence, export, networking, automation, or mutation authority was introduced.
+- Issue [#760](https://github.com/markperezne8-spec/MarketDEX/issues/760) reconciles this evidence; further runtime or authority movement remains workbook-gated.
