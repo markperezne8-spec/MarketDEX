@@ -176,3 +176,15 @@ The repository contains older and overlapping documentation locations and multip
 - CAP-006 remains Partial/read-only and blocked on workbook-backed Collection position authority.
 - CAP-012 remains Partial/read-only and blocked from expanded report authority or execution without a separately approved workbook-backed boundary.
 - Issue [#758](https://github.com/markperezne8-spec/MarketDEX/issues/758) records this documentation-only reconciliation; no visual check is required.
+
+
+## Visual North Star dashboard-panel evidence after PR #759
+
+- Repository reconciliation is current through PR [#759](https://github.com/markperezne8-spec/MarketDEX/pull/759) and the accepted Mission Control visual evidence.
+- Exact PR #759 head: `c2ab9f04f46aff998680d35edea8666f2b3e28ce`; CI [#1083](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33037632359) passed all nine required jobs.
+- Squash merge/current `main`: `ea7f993a7164d8ac897619a77e854462c7230615`.
+- The presentation-only change adds semantic left-edge accents to reusable dashboard panels while preserving content, data, workspace identity, routing, activation, services, launcher, composition root, and authority.
+- Visual acceptance passed on a maximized Mission Control screenshot with no clipping or overlap.
+- CAP-006 remains Partial/read-only and blocked on workbook-backed Collection position authority.
+- CAP-012 remains Partial/read-only and blocked from expanded report authority or execution without a separately approved workbook-backed boundary.
+- Issue [#760](https://github.com/markperezne8-spec/MarketDEX/issues/760) records this documentation-only reconciliation; no visual check is required.
