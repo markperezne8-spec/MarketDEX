@@ -164,3 +164,15 @@ The repository contains older and overlapping documentation locations and multip
 - Accepted visual evidence confirms MarketDEX OS branding, COMMAND CENTER context, LOCAL AUTHORITY, OFFLINE FIRST, persistent navigation, and no clipping or overlap.
 - The three-file presentation-only scope preserved the launcher, composition root, workspace registry, services, data, commands, workspace IDs, and read-only capability boundaries.
 - CAP-006 and CAP-012 remain separately gated for workbook-backed authority expansion.
+
+
+## Visual North Star navigation evidence after PR #757
+
+- This reconciliation is current through PR [#757](https://github.com/markperezne8-spec/MarketDEX/pull/757) and the accepted Mission Control visual evidence.
+- Exact PR #757 head: `30d08d2aad7864af574d650678dfd3c8293fcf80`; CI [#1079](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33036161560) passed all nine required jobs.
+- Squash merge/current `main`: `806c11693e416ed5f93f039682f15d80cce503e3`.
+- The delivered presentation-only change groups existing navigation as OPERATIONS, COLLECTION, and INTELLIGENCE and applies semantic accent colors without changing workspace identity, routing, activation, services, data, commands, launcher, composition root, or authority.
+- Visual acceptance passed on a maximized Mission Control screenshot with no clipping or overlap.
+- CAP-006 remains Partial/read-only and blocked on workbook-backed Collection position authority.
+- CAP-012 remains Partial/read-only and blocked from expanded report authority or execution without a separately approved workbook-backed boundary.
+- Issue [#758](https://github.com/markperezne8-spec/MarketDEX/issues/758) records this documentation-only reconciliation; no visual check is required.
