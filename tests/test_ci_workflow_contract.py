@@ -66,6 +66,9 @@ def test_desktop_build_uses_cache_backed_windows_tooling():
         r'.\.venv\Scripts\python.exe -m pytest',
         'path: build',
         'restore-keys:',
+        'Run Desktop contract gate and package build',
+        'Start-Process -FilePath ".\\.venv\\Scripts\\python.exe"',
+        '$packageBuild.WaitForExit()',
         r'.\.venv\Scripts\python.exe -m PyInstaller --noconfirm MarketDEX.spec',
     )
 
