@@ -1,0 +1,38 @@
+name: Windows RC Package Gate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Package Windows RC
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            requirements-build.txt
+            requirements.txt
+      - run: pip install -q -r requirements-build.txt pytest
+      - name: Run release contract tests
+        run: pytest -q --tb=short tests/test_windows_rc_artifact_contract.py tests/test_windows_rc_delivery_contract.py tests/test_release_version_contract.py
+      - run: python -m PyInstaller --clean --noconfirm MarketDEX.spec
+      - name: Verify packaged executable
+        shell: pwsh
+        run: |
+          $env:MARKETDEX_DATA_DIR = Join-Path $env:RUNNER_TEMP "marketdex-rc-data"
+          $process = Start-Process -FilePath ".\dist\MarketDEX.exe" -ArgumentList "--verify-runtime" -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw "Packaged MarketDEX runtime verification failed with exit code $($process.ExitCode)." }
+          if (!(Test-Path "$env:MARKETDEX_DATA_DIR\marketdex.sqlite3")) { throw "Packaged runtime database was not created." }
+      - name: Publish Windows RC executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: MarketDEX-Windows-RC
+          path: dist/MarketDEX.exe
+          if-no-files-found: error
