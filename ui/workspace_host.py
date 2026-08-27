@@ -102,6 +102,37 @@ class WorkspaceHost(QWidget):
         workspace_layout.setContentsMargins(18, 14, 18, 12)
         workspace_layout.setSpacing(10)
 
+        self.global_header = QFrame(self.workspace_frame)
+        self.global_header.setObjectName('marketdexGlobalHeader')
+        self.global_header.setAccessibleName('MarketDEX global command-center header')
+        global_header_layout = QHBoxLayout(self.global_header)
+        global_header_layout.setContentsMargins(14, 9, 14, 9)
+        global_header_layout.setSpacing(10)
+
+        self.global_header_brand = QLabel('MarketDEX OS', self.global_header)
+        self.global_header_brand.setObjectName('marketdexGlobalBrand')
+        self.global_header_brand.setAccessibleName('MarketDEX OS brand')
+
+        self.global_header_context = QLabel('COMMAND CENTER', self.global_header)
+        self.global_header_context.setObjectName('marketdexGlobalContext')
+        self.global_header_context.setAccessibleName('Command center context')
+
+        global_header_layout.addWidget(self.global_header_brand)
+        global_header_layout.addWidget(self.global_header_context)
+        global_header_layout.addStretch(1)
+
+        self.global_header_status = QLabel('● LOCAL AUTHORITY', self.global_header)
+        self.global_header_status.setObjectName('marketdexGlobalStatus')
+        self.global_header_status.setAccessibleName('Local authority status')
+
+        self.global_header_mode = QLabel('OFFLINE FIRST', self.global_header)
+        self.global_header_mode.setObjectName('marketdexGlobalMode')
+        self.global_header_mode.setAccessibleName('Offline first operating mode')
+
+        global_header_layout.addWidget(self.global_header_status)
+        global_header_layout.addWidget(self.global_header_mode)
+        workspace_layout.addWidget(self.global_header)
+
         self.workspace_context = QLabel('MISSION CONTROL', self.workspace_frame)
         self.workspace_context.setObjectName('marketdexWorkspaceContext')
         workspace_layout.addWidget(self.workspace_context)
@@ -329,6 +360,36 @@ def _build_workspace_host_qss() -> str:
             }}
             QFrame#marketdexWorkspaceFrame {{
                 background: {color(ColorRole.APP_BACKGROUND)};
+            }}
+            QFrame#marketdexGlobalHeader {{
+                background: {color(ColorRole.SURFACE_PRIMARY)};
+                border: {border['standard']}px solid {color(ColorRole.BORDER_STRONG)};
+                border-radius: {radius['prominent']}px;
+            }}
+            QLabel#marketdexGlobalBrand {{
+                color: {color(ColorRole.TEXT_PRIMARY)};
+                font-size: 16px;
+                font-weight: 800;
+            }}
+            QLabel#marketdexGlobalContext {{
+                color: {color(ColorRole.INFORMATION)};
+                font-size: 10px;
+                font-weight: 800;
+                letter-spacing: 1px;
+            }}
+            QLabel#marketdexGlobalStatus {{
+                color: {color(ColorRole.POSITIVE)};
+                font-size: 10px;
+                font-weight: 800;
+            }}
+            QLabel#marketdexGlobalMode {{
+                background: {color(ColorRole.SURFACE_INTERACTIVE)};
+                border: {border['standard']}px solid {color(ColorRole.BORDER_STRONG)};
+                border-radius: {radius['pill']}px;
+                color: {color(ColorRole.INFORMATION)};
+                font-size: 10px;
+                font-weight: 800;
+                padding: 4px 9px;
             }}
             QLabel#marketdexWorkspaceContext {{
                 color: {color(ColorRole.TEXT_MUTED)};
