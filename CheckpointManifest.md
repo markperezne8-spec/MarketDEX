@@ -717,3 +717,15 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Scope was presentation-only. Workspace IDs, routes, activation, launcher, composition root, data, services, commands, and capability authority were unchanged.
 - CAP-006 and CAP-012 remain Partial/read-only/fail-closed; any authority or runtime expansion remains workbook-gated.
 - This reconciliation changes documentation only and requires no visual check.
+
+
+## Visual North Star dashboard-panel reconciliation after PR #759
+
+- Issue [#760](https://github.com/markperezne8-spec/MarketDEX/issues/760) records this documentation-only synchronization boundary.
+- PR [#759](https://github.com/markperezne8-spec/MarketDEX/pull/759) delivered semantic left-edge accents for reusable `MarketDEXDashboardPanel` tone selectors.
+- Exact PR #759 head: `c2ab9f04f46aff998680d35edea8666f2b3e28ce`.
+- CI [#1083](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33037632359) passed all nine required jobs.
+- Squash merge/current main SHA: `ea7f993a7164d8ac897619a77e854462c7230615`.
+- Visual acceptance passed on the maximized Mission Control screenshot; semantic accents, preserved hierarchy, and no-clipping criteria were satisfied.
+- Scope was presentation-only and changed no data, authority, runtime, routing, or workspace behavior.
+- This reconciliation changes documentation only and requires no visual check.
