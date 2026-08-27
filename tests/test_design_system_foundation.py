@@ -76,6 +76,9 @@ def test_visual_north_star_panel_tones_map_to_existing_color_roles():
         assert f'northStarTone="{tone.value}"' in qss
         assert f'border-left-color: {tokens.color(role)};' in qss
 
+    assert 'QFrame#marketdexKpiCard[dashboardRole="existing-kpi"]' in qss
+    assert f'border-top: {tokens.border_widths["selected"]}px solid {tokens.color(ColorRole.INFORMATION)};' in qss
+
 
 def test_component_catalog_has_unique_ids_and_required_foundation_components():
     components = build_component_catalog()
