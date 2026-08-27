@@ -82,6 +82,7 @@ def test_workspace_host_exposes_navigation_rail_shell_contract():
     assert host.workspace_stack.objectName() == 'marketdexWorkspaceStack'
     assert host.navigation_badge.objectName() == 'marketdexNavigationBadge'
     assert host.navigation_badge.text() == 'COMMAND RAIL'
+    assert host.navigation_group_labels == ()
     assert host.global_header.objectName() == 'marketdexGlobalHeader'
     assert host.global_header.accessibleName() == (
         'MarketDEX global command-center header'
@@ -135,9 +136,15 @@ def test_workspace_host_north_star_navigation_visuals_preserve_routes():
         'Pricing',
         'Listing Workflow',
     ]
+    assert [label.text() for label in host.navigation_group_labels] == [
+        'OPERATIONS',
+    ]
     assert [
         button.property('northStarRole') for button in host.navigation_buttons
     ] == ['workspace-navigation'] * 3
+    assert [
+        button.property('navigationGroup') for button in host.navigation_buttons
+    ] == ['operations'] * 3
     assert [
         button.property('workspaceId') for button in host.navigation_buttons
     ] == ['inventory', 'pricing', 'listing-workflow']
@@ -148,4 +155,64 @@ def test_workspace_host_north_star_navigation_visuals_preserve_routes():
     ]
     assert all(button.isCheckable() for button in host.navigation_buttons)
     assert not any('new-workspace' in button.text() for button in host.navigation_buttons)
+    host.close()
+
+
+
+def test_workspace_host_groups_north_star_navigation_without_changing_routes():
+    app = QApplication.instance() or QApplication([])
+    registry = WorkspaceRegistry()
+    registry.register(WorkspaceDefinition('inventory', 'Inventory', _widget, order=10))
+    registry.register(WorkspaceDefinition('pricing', 'Pricing', _widget, order=11))
+    registry.register(
+        WorkspaceDefinition('listing-workflow', 'Listing Workflow', _widget, order=12)
+    )
+    registry.register(
+        WorkspaceDefinition('product-registry', 'Product Registry', _widget, order=20)
+    )
+    registry.register(
+        WorkspaceDefinition('collection-position', 'Collection Overview', _widget, order=21)
+    )
+    registry.register(
+        WorkspaceDefinition('market-intelligence', 'Market Intelligence', _widget, order=30)
+    )
+    registry.register(WorkspaceDefinition('reports', 'Reports', _widget, order=31))
+
+    host = WorkspaceHost(registry)
+    host.mount_registered_workspaces()
+
+    assert host.navigation_titles == (
+        'Inventory',
+        'Pricing',
+        'Listing Workflow',
+        'Product Registry',
+        'Collection Overview',
+        'Market Intelligence',
+        'Reports',
+    )
+    assert [label.text() for label in host.navigation_group_labels] == [
+        'OPERATIONS',
+        'COLLECTION',
+        'INTELLIGENCE',
+    ]
+    assert [
+        button.property('navigationGroup') for button in host.navigation_buttons
+    ] == [
+        'operations',
+        'operations',
+        'operations',
+        'collection',
+        'collection',
+        'intelligence',
+        'intelligence',
+    ]
+    assert host.workspace_ids == (
+        'inventory',
+        'pricing',
+        'listing-workflow',
+        'product-registry',
+        'collection-position',
+        'market-intelligence',
+        'reports',
+    )
     host.close()
