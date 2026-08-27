@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from ui.design_system.component_contracts import ComponentState, build_component_catalog
+from ui.design_system.qt_theme import build_marketdex_qss
 from ui.design_system.tokens import (
     ColorRole,
     Density,
@@ -61,6 +62,19 @@ def test_visual_north_star_panel_tones_map_to_existing_color_roles():
     assert tokens.north_star_panel_tones[NorthStarPanelTone.SCOREBOARD] == (
         ColorRole.PRIMARY_ACTION
     )
+
+    qss = build_marketdex_qss(tokens)
+    expected_accents = {
+        NorthStarPanelTone.COMMAND: ColorRole.INFORMATION,
+        NorthStarPanelTone.SCOREBOARD: ColorRole.PRIMARY_ACTION,
+        NorthStarPanelTone.OPPORTUNITY: ColorRole.OPPORTUNITY,
+        NorthStarPanelTone.RISK: ColorRole.NEGATIVE,
+        NorthStarPanelTone.INVENTORY: ColorRole.PRIMARY_ACTION,
+        NorthStarPanelTone.INTELLIGENCE: ColorRole.COLLECTION,
+    }
+    for tone, role in expected_accents.items():
+        assert f'northStarTone="{tone.value}"' in qss
+        assert f'border-left-color: {tokens.color(role)};' in qss
 
 
 def test_component_catalog_has_unique_ids_and_required_foundation_components():

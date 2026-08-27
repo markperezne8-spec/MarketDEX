@@ -69,31 +69,37 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
     QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.COMMAND.value}"] {{
         background: {color(tokens.north_star_panel_tones[NorthStarPanelTone.COMMAND])};
         border-color: {color(ColorRole.BORDER_STRONG)};
+        border-left-color: {color(ColorRole.INFORMATION)};
     }}
 
     QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.SCOREBOARD.value}"] {{
         background: {color(ColorRole.SURFACE_PRIMARY)};
         border-color: {color(tokens.north_star_panel_tones[NorthStarPanelTone.SCOREBOARD])};
+        border-left-color: {color(ColorRole.PRIMARY_ACTION)};
     }}
 
     QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.OPPORTUNITY.value}"] {{
         background: {color(ColorRole.SURFACE_PRIMARY)};
         border-color: {color(tokens.north_star_panel_tones[NorthStarPanelTone.OPPORTUNITY])};
+        border-left-color: {color(ColorRole.OPPORTUNITY)};
     }}
 
     QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.RISK.value}"] {{
         background: {color(ColorRole.SURFACE_PRIMARY)};
         border-color: {color(tokens.north_star_panel_tones[NorthStarPanelTone.RISK])};
+        border-left-color: {color(ColorRole.NEGATIVE)};
     }}
 
     QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.INVENTORY.value}"] {{
         background: {color(tokens.north_star_panel_tones[NorthStarPanelTone.INVENTORY])};
         border-color: {color(ColorRole.BORDER_STRONG)};
+        border-left-color: {color(ColorRole.PRIMARY_ACTION)};
     }}
 
     QFrame#marketdexDashboardPanel[northStarTone="{NorthStarPanelTone.INTELLIGENCE.value}"] {{
         background: {color(ColorRole.SURFACE_PRIMARY)};
         border-color: {color(tokens.north_star_panel_tones[NorthStarPanelTone.INTELLIGENCE])};
+        border-left-color: {color(ColorRole.COLLECTION)};
     }}
 
     QLabel#marketdexWorkspaceTitle {{
