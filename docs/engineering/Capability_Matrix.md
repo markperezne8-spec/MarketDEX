@@ -4,7 +4,7 @@
 **Authority:** Derived operational engineering status
 **Owner:** Lead Software Architect
 **Update trigger:** Merged delivery changes capability evidence or classification
-**Baseline:** `main` at PR #753 merge commit `5fe59155cee74b79406ab0c7e3356919a24a1d5c` / CAP-012/CAP-006 regression evidence reconciliation
+**Baseline:** `main` at PR #762 merge commit `dec3d337f09eb1a203d19c70e57cdce869f66275` / release-readiness and repository-hygiene evidence
 
 ## Status Vocabulary
 
@@ -202,3 +202,14 @@ A `Complete` classification prohibits rebuilding the capability. A `Partial` cap
 - Mark accepted the maximized Mission Control screenshot with semantic panel accents, preserved content and hierarchy, and no clipping or overlap.
 - No new report, Collection, query, provider, persistence, export, networking, automation, or mutation authority was introduced.
 - Issue [#760](https://github.com/markperezne8-spec/MarketDEX/issues/760) reconciles this evidence; further runtime or authority movement remains workbook-gated.
+
+
+## Release-readiness and repository-hygiene evidence after PR #762
+
+- PR [#762](https://github.com/markperezne8-spec/MarketDEX/pull/762) delivered canonical install guidance, release-process documentation, installer metadata improvements, and safe source hygiene.
+- Exact PR #762 head: `ef000b48830a46174a6ef105196305a8e26b80e9`.
+- CI [#1090](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33053608595) passed all nine required gates; main push CI [#1091](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33053830686) passed after merge.
+- Squash merge/current main: `dec3d337f09eb1a203d19c70e57cdce869f66275`.
+- Tracked Python bytecode and historical startup-log residue were removed; the tracked `data/marketdex.sqlite3` database was preserved because no data migration or backup authority was approved.
+- No capability classification changed. CAP-006 and CAP-012 remain Partial/read-only/fail-closed, with workbook-backed authority expansion required for future runtime movement.
+- No visual check was required for this maintenance boundary.

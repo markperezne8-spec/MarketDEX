@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 080
+# MarketDEX Foundation Checkpoint 081
 
-**Status:** 🏁 Checkpoint Complete — Visual North Star Dashboard-Panel Reconciliation
+**Status:** 🏁 Checkpoint Complete — Release Readiness and Repository Hygiene
 **Canonical branch:** `main`
 **Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
@@ -82,7 +82,7 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 
 ## Exact next gate
 
-**Visual North Star shell foundation work is complete through PR #759. This documentation-only reconciliation is the current controlled gate.**
+**Release-readiness and repository hygiene are complete through PR #762. This documentation-only reconciliation is the current controlled gate.**
 
 Verified sequence:
 
@@ -102,7 +102,7 @@ The next CAP-006 runtime or authority movement requires workbook-backed position
 ## Pull and visual status
 
 - Pull required now: **YES after this documentation reconciliation is merged**
-- Pull scope: Issue #760 Visual North Star dashboard-panel evidence reconciliation after PR #759.
+- Pull scope: Issue #763 release-readiness and repository-hygiene evidence reconciliation after PR #762.
 - Visual review required now: **NO — PR #759 visual acceptance passed**
 - ChatGPT Work required now: **NO**
 
@@ -616,3 +616,19 @@ After this synchronization is merged and pulled, the next CAP-012 Reports moveme
 - The presentation-only scope preserved workspace IDs, routes, activation, services, data, commands, launcher, composition root, and capability authority.
 - CAP-006 and CAP-012 remain Partial, read-only, composition-owned where applicable, and fail-closed. No workbook-backed authority was inferred.
 - PR [#760](https://github.com/markperezne8-spec/MarketDEX/issues/760) records this documentation-only synchronization; no additional visual check is required.
+
+
+## Checkpoint 081 — Release-readiness and repository-hygiene synchronization after PR #762
+
+- Issue [#763](https://github.com/markperezne8-spec/MarketDEX/issues/763) records this documentation-only synchronization boundary.
+- PR [#762](https://github.com/markperezne8-spec/MarketDEX/pull/762) delivered the first release-readiness and repository-hygiene slice.
+- Exact PR #762 head: `ef000b48830a46174a6ef105196305a8e26b80e9`.
+- CI [#1090](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33053608595) passed all nine required gates, including the packaged Desktop Build and installer verification.
+- Main push CI [#1091](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33053830686) passed for the merged commit.
+- Squash merge/current `main`: `dec3d337f09eb1a203d19c70e57cdce869f66275`.
+- The delivered scope adds canonical install guidance, updates the release process, improves installer metadata, and removes tracked Python bytecode and historical startup-log residue.
+- The tracked `data/marketdex.sqlite3` database was intentionally preserved; no user data was deleted or migrated by this slice.
+- CAP-006 and CAP-012 remain Partial, read-only, composition-owned where applicable, and fail-closed. Workbook-backed authority expansion remains separately gated.
+- No runtime, UI, schema, persistence, provider, export, networking, automation, or mutation authority was introduced.
+- This reconciliation changes documentation only and requires no visual check.
+- Next controlled gate: version/release authority and distribution workflow improvements, followed by data-protection and quality-gate work in separately scoped changes.
