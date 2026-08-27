@@ -1,0 +1,91 @@
+name: Windows RC Delivery
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Git tag for the prerelease"
+        required: true
+        default: "windows-rc-2"
+      release_name:
+        description: "GitHub prerelease title"
+        required: true
+        default: "MarketDEX Windows RC 2"
+
+permissions:
+  contents: write
+
+env:
+  QT_QPA_PLATFORM: offscreen
+
+jobs:
+  deliver:
+    name: Build and publish Windows RC
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            requirements-build.txt
+            requirements.txt
+      - run: pip install -q -r requirements-build.txt pytest
+      - name: Run release contract tests
+        run: pytest -q --tb=short tests/test_windows_rc_artifact_contract.py tests/test_windows_rc_delivery_contract.py tests/test_release_version_contract.py
+      - run: python -m PyInstaller --clean --noconfirm MarketDEX.spec
+      - name: Verify release candidate executable
+        shell: pwsh
+        run: |
+          $env:MARKETDEX_DATA_DIR = Join-Path $env:RUNNER_TEMP "marketdex-rc-data"
+          $process = Start-Process -FilePath ".\dist\MarketDEX.exe" -ArgumentList "--verify-runtime" -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw "Release candidate runtime verification failed with exit code $($process.ExitCode)." }
+          if (!(Test-Path "$env:MARKETDEX_DATA_DIR\marketdex.sqlite3")) { throw "Release candidate database was not created." }
+      - name: Install Inno Setup compiler
+        shell: pwsh
+        run: choco install innosetup -y --no-progress
+      - name: Build release candidate installer
+        shell: pwsh
+        run: |
+          $compiler = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (!(Test-Path $compiler)) { $compiler = "${env:ProgramFiles}\Inno Setup 6\ISCC.exe" }
+          if (!(Test-Path $compiler)) { throw "Inno Setup compiler was not found." }
+          & $compiler ".\installer\MarketDEX.iss"
+          if ($LASTEXITCODE -ne 0) { throw "Inno Setup compiler failed with exit code $LASTEXITCODE." }
+          if (!(Test-Path ".\dist\MarketDEX_Setup.exe")) { throw "MarketDEX_Setup.exe was not created." }
+      - name: Verify installed release candidate
+        shell: pwsh
+        run: |
+          $installDir = Join-Path $env:RUNNER_TEMP "marketdex-installed"
+          $installArgs = @('/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/SP-', "/DIR=$installDir")
+          $install = Start-Process -FilePath ".\dist\MarketDEX_Setup.exe" -ArgumentList $installArgs -Wait -PassThru
+          if ($install.ExitCode -ne 0) { throw "MarketDEX installer failed with exit code $($install.ExitCode)." }
+          if (!(Test-Path "$installDir\MarketDEX.exe")) { throw "Installed MarketDEX.exe was not found." }
+          $env:MARKETDEX_DATA_DIR = Join-Path $env:RUNNER_TEMP "marketdex-installed-data"
+          $verify = Start-Process -FilePath "$installDir\MarketDEX.exe" -ArgumentList "--verify-runtime" -Wait -PassThru
+          if ($verify.ExitCode -ne 0) { throw "Installed release candidate verification failed with exit code $($verify.ExitCode)." }
+          if (!(Test-Path "$env:MARKETDEX_DATA_DIR\marketdex.sqlite3")) { throw "Installed runtime database was not created." }
+      - name: Generate SHA-256 checksums
+        shell: pwsh
+        run: |
+          $artifacts = @("dist\MarketDEX.exe", "dist\MarketDEX_Setup.exe")
+          $lines = foreach ($artifact in $artifacts) {
+            $hash = Get-FileHash -Algorithm SHA256 -Path $artifact
+            "$($hash.Hash.ToLowerInvariant())  $([System.IO.Path]::GetFileName($artifact))"
+          }
+          $lines | Set-Content -Path "dist\SHA256SUMS.txt" -Encoding ascii
+      - name: Publish prerelease
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ inputs.tag_name }}" \
+            "dist/MarketDEX.exe" \
+            "dist/MarketDEX_Setup.exe" \
+            "dist/SHA256SUMS.txt" \
+            --prerelease \
+            --title "${{ inputs.release_name }}" \
+            --notes "Download MarketDEX.exe and launch it directly."
