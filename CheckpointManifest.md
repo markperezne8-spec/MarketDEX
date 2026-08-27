@@ -729,3 +729,14 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Visual acceptance passed on the maximized Mission Control screenshot; semantic accents, preserved hierarchy, and no-clipping criteria were satisfied.
 - Scope was presentation-only and changed no data, authority, runtime, routing, or workspace behavior.
 - This reconciliation changes documentation only and requires no visual check.
+
+
+## 🧹 Release-readiness and repository-hygiene synchronization after PR #762
+
+- Issue [#763](https://github.com/markperezne8-spec/MarketDEX/issues/763) records this documentation-only synchronization.
+- PR [#762](https://github.com/markperezne8-spec/MarketDEX/pull/762) added canonical `README.md` installation guidance, refreshed the release process, improved Windows installer metadata, and removed tracked Python bytecode plus historical startup-log residue.
+- Exact PR #762 head: `ef000b48830a46174a6ef105196305a8e26b80e9`.
+- CI [#1090](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33053608595) passed all nine required jobs; main push CI [#1091](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33053830686) also passed.
+- Squash merge/current main: `dec3d337f09eb1a203d19c70e57cdce869f66275`.
+- The tracked `data/marketdex.sqlite3` database remains preserved because no backup or migration boundary was authorized.
+- No visual check was required. CAP-006 and CAP-012 remain Partial/read-only/fail-closed with workbook-backed expansion still gated.
