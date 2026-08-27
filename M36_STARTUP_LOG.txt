@@ -1,2 +1,0 @@
-MarketDEX M36.B1 startup 
-Folder: C:\Projects\MarketDEX_OS 
