@@ -704,3 +704,16 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Mark accepted the maximized Mission Control screenshot confirming the North Star shell hierarchy, persistent navigation, LOCAL AUTHORITY, OFFLINE FIRST, and no clipping or overlap.
 - The three-file presentation-only scope preserved services, data, commands, workspace IDs, launcher, composition root, and read-only authority boundaries.
 - No new visual check is required for this documentation-only synchronization.
+
+
+## Visual North Star navigation reconciliation after PR #757
+
+- Issue [#758](https://github.com/markperezne8-spec/MarketDEX/issues/758) records the documentation-only synchronization boundary.
+- PR [#757](https://github.com/markperezne8-spec/MarketDEX/pull/757) delivered grouped persistent navigation with OPERATIONS, COLLECTION, and INTELLIGENCE labels and semantic accent colors.
+- Exact PR #757 head: `30d08d2aad7864af574d650678dfd3c8293fcf80`.
+- CI [#1079](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33036161560) passed all nine required jobs.
+- Squash merge/main SHA: `806c11693e416ed5f93f039682f15d80cce503e3`.
+- Visual acceptance passed on the maximized Mission Control screenshot; grouping, accents, hierarchy, and no-clipping criteria were satisfied.
+- Scope was presentation-only. Workspace IDs, routes, activation, launcher, composition root, data, services, commands, and capability authority were unchanged.
+- CAP-006 and CAP-012 remain Partial/read-only/fail-closed; any authority or runtime expansion remains workbook-gated.
+- This reconciliation changes documentation only and requires no visual check.
