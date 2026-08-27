@@ -328,7 +328,11 @@ def _build_workspace_host_qss() -> str:
                 background: {color(ColorRole.APP_BACKGROUND)};
             }}
             QFrame#marketdexNavigationRail {{
-                background: {color(ColorRole.SHELL_BACKGROUND)};
+                background: qlineargradient(
+                    x1: 0, y1: 0, x2: 1, y2: 0,
+                    stop: 0 {color(ColorRole.SHELL_BACKGROUND)},
+                    stop: 1 {color(ColorRole.APP_BACKGROUND)}
+                );
                 border-right: {border['selected']}px solid {color(ColorRole.BORDER_STRONG)};
             }}
             QLabel#marketdexShellBrand {{
@@ -407,7 +411,12 @@ def _build_workspace_host_qss() -> str:
                 background: {color(ColorRole.APP_BACKGROUND)};
             }}
             QFrame#marketdexGlobalHeader {{
-                background: {color(ColorRole.SURFACE_PRIMARY)};
+                background: qlineargradient(
+                    x1: 0, y1: 0, x2: 1, y2: 0,
+                    stop: 0 {color(ColorRole.SHELL_BACKGROUND)},
+                    stop: 0.62 {color(ColorRole.SURFACE_PRIMARY)},
+                    stop: 1 {color(ColorRole.SURFACE_INTERACTIVE)}
+                );
                 border: {border['standard']}px solid {color(ColorRole.BORDER_STRONG)};
                 border-radius: {radius['prominent']}px;
             }}
@@ -423,9 +432,13 @@ def _build_workspace_host_qss() -> str:
                 letter-spacing: 1px;
             }}
             QLabel#marketdexGlobalStatus {{
+                background: {color(ColorRole.SURFACE_PRIMARY)};
+                border: {border['standard']}px solid {color(ColorRole.POSITIVE)};
+                border-radius: {radius['pill']}px;
                 color: {color(ColorRole.POSITIVE)};
                 font-size: 10px;
                 font-weight: 800;
+                padding: 4px 9px;
             }}
             QLabel#marketdexGlobalMode {{
                 background: {color(ColorRole.SURFACE_INTERACTIVE)};
