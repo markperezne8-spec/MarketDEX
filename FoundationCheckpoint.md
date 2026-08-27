@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 078
+# MarketDEX Foundation Checkpoint 079
 
-**Status:** 🏁 Checkpoint Complete — Visual North Star Shell Header Reconciliation
+**Status:** 🏁 Checkpoint Complete — Visual North Star Navigation Reconciliation
 **Canonical branch:** `main`
 **Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
@@ -589,3 +589,17 @@ After this synchronization is merged and pulled, the next CAP-012 Reports moveme
 - The change is presentation-only: services, data, commands, workspace IDs, launcher, composition root, and authority boundaries remain unchanged.
 - CAP-006 and CAP-012 remain Partial/read-only and fail-closed; no new workbook-backed authority was introduced.
 - PR [#756](https://github.com/markperezne8-spec/MarketDEX/pull/756) records this documentation reconciliation; no additional visual check is required.
+
+
+## Checkpoint 079 synchronization
+
+- Current main after PR #757: `806c11693e416ed5f93f039682f15d80cce503e3`.
+- PR [#757](https://github.com/markperezne8-spec/MarketDEX/pull/757) delivered the Visual North Star persistent navigation-rail grouping and semantic accents.
+- Exact PR #757 head: `30d08d2aad7864af574d650678dfd3c8293fcf80`.
+- CI [#1079](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33036161560) passed all nine required gates, including Mission Control Visual Slice and Desktop Build.
+- Squash merge commit: `806c11693e416ed5f93f039682f15d80cce503e3`.
+- Mark accepted the maximized Mission Control screenshot showing OPERATIONS, COLLECTION, and INTELLIGENCE group labels, related workspaces adjacent, semantic left accents, preserved shell hierarchy, and no clipping or overlap.
+- The presentation-only scope preserved workspace IDs, routes, activation, services, data, commands, launcher, composition root, and the read-only CAP-006/CAP-012 boundaries.
+- CAP-006 and CAP-012 remain Partial, read-only, composition-owned where applicable, and fail-closed. No workbook-backed authority was inferred.
+- PR [#758](https://github.com/markperezne8-spec/MarketDEX/issues/758) records this documentation-only synchronization; no additional visual check is required.
+- Next controlled gate: any CAP-006 runtime/authority movement or expanded CAP-012 behavior still requires a separately approved workbook-backed boundary.
