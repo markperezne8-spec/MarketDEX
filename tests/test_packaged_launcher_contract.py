@@ -43,6 +43,6 @@ def test_packaging_targets_the_permanent_root_launcher_and_single_executable():
     assert "name='MarketDEX'" in spec
     assert 'console=False' in spec
     assert 'desktop/launcher.py' not in spec
-    assert 'pyinstaller --noconfirm --clean MarketDEX.spec' in workflow
+    assert r'.\.venv\Scripts\python.exe -m PyInstaller --noconfirm MarketDEX.spec' in workflow
     assert '.\\dist\\MarketDEX.exe' in workflow
     assert 'path: dist/MarketDEX.exe' in workflow
