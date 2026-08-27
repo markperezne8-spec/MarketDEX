@@ -13,6 +13,7 @@ def test_mission_control_uses_a_three_column_north_star_command_deck():
     assert "(self.todays_top3_panel,4,0,1,1)" in source
     assert "(self.capital_health_panel,4,1,1,1)" in source
     assert "(self.opportunity_risk_panel,4,2,1,1)" in source
+    assert "(self.business_scoreboard_panel,5,0,1,3)" in source
     assert "(self.dashboard_grid_shell,6,0,1,3)" in source
     assert "self.mission_control_grid.setColumnStretch(1,7)" not in source
 
