@@ -53,7 +53,7 @@ class OpportunityRiskPanel(MarketDEXDashboardPanel):
             'Opportunity + Risk',
             'Read-only situational awareness',
             parent,
-            tone=NorthStarPanelTone.SCOREBOARD,
+            tone=NorthStarPanelTone.RISK,
         )
         self.view_model = view_model or build_opportunity_risk_view_model()
         self.setProperty('dashboardRole', 'opportunity-risk-shell')

@@ -158,7 +158,7 @@ def test_todays_top3_panel_renders_injected_view_model_in_order():
 
     assert panel.title_label.text() == "Today's Top 3"
     assert panel.description_label.text() == 'Read-only attention priorities'
-    assert panel.property('northStarTone') == NorthStarPanelTone.COMMAND.value
+    assert panel.property('northStarTone') == NorthStarPanelTone.OPPORTUNITY.value
     assert panel.property('dashboardRole') == 'todays-top3-shell'
     assert panel.property('visualContract') == 'm1.15c-todays-top3-display-states'
     assert panel.property('attentionState') == 'ready'
