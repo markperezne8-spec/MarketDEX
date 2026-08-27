@@ -19,3 +19,8 @@ An existing non-empty runtime database is treated as operator data and is preser
 ## Next release boundary
 
 Complete release-candidate hardening: full desktop workflow regression, packaging readiness, startup and runtime usability defects, and a verified release-candidate checkpoint. No marketplace polling, inferred sales, or remote state mutation is introduced.
+
+
+## Build acceleration boundary
+
+The pull-request Windows build now uses a cache-backed Python environment keyed to the locked build dependencies and a commit-aware PyInstaller analysis cache. This reduces repeated setup work while preserving the desktop contract gate, packaged-runtime verification, installer build, and installed-runtime verification. Manual release workflows remain clean rebuilds.
