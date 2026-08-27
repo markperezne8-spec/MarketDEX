@@ -7,8 +7,10 @@ from PySide6.QtWidgets import QApplication
 from composition import ApplicationComposition
 from core.runtime_database_migration import migrate_legacy_database_if_needed
 from ui.main_window import MainWindow
+from version import __version__
 
 APP_NAME = 'MarketDEX'
+APP_VERSION = __version__
 DATABASE_FILENAME = 'marketdex.sqlite3'
 
 
