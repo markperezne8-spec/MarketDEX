@@ -1,6 +1,6 @@
-# MarketDEX Foundation Checkpoint 077
+# MarketDEX Foundation Checkpoint 078
 
-**Status:** 🏁 Checkpoint Complete — CAP-012/CAP-006 Read-only Boundary Regression Reconciliation
+**Status:** 🏁 Checkpoint Complete — Visual North Star Shell Header Reconciliation
 **Canonical branch:** `main`
 **Source of truth:** GitHub repository `markperezne8-spec/MarketDEX`
 
@@ -82,7 +82,7 @@ All listed CI runs passed their complete required jobs, including Reports, Core 
 
 ## Exact next gate
 
-**CAP-012/CAP-006 read-only boundary regression hardening and its documentation reconciliation are complete through PR #753. This top-level normalization is the current controlled gate.**
+**CAP-012/CAP-006 read-only boundary regression hardening and the Visual North Star shell header are complete through PR #755. This documentation-only reconciliation is the current controlled gate.**
 
 Verified sequence:
 
@@ -95,14 +95,15 @@ Verified sequence:
 7. PR #745 added the CAP-006 unrecorded Collection field-authority panel without adding Collection write authority.
 8. PR #746 added the CAP-012 Inventory Age evidence-gate panel without changing query, evidence, or mutation authority.
 9. PR #748 added the Reports catalog scope panel while reusing the existing read-only boundary text.
+10. PR #755 added the branded command-center header to the canonical WorkspaceHost with presentation-only North Star styling and focused shell-contract coverage.
 
 The next CAP-006 runtime or authority movement requires workbook-backed position authority and a separately approved issue and boundary. The next expanded Reports movement also requires a separately approved authority boundary. Preserve the approved CAP-012/CAP-006 read-only, fail-closed boundary; do not invent Collection runtime authority.
 
 ## Pull and visual status
 
-- Pull required now: **YES after this checkpoint normalization is merged**
-- Pull scope: Issue #754 top-level checkpoint authority normalization after PR #753.
-- Visual review required now: **NO — this build changes documentation only**
+- Pull required now: **YES after this documentation reconciliation is merged**
+- Pull scope: Issue #756 Visual North Star shell-header evidence reconciliation after PR #755.
+- Visual review required now: **NO — PR #755 visual acceptance passed**
 - ChatGPT Work required now: **NO**
 
 ## Progress snapshot
@@ -576,3 +577,15 @@ After this synchronization is merged and pulled, the next CAP-012 Reports moveme
 - Current main: `5fe59155cee74b79406ab0c7e3356919a24a1d5c`.
 - PR [#753](https://github.com/markperezne8-spec/MarketDEX/pull/753) reconciled PR #752 regression evidence across the permanent records.
 - This issue aligns the top-level status and resume gate with the already merged PR #753 evidence.
+
+
+## Checkpoint 078 synchronization
+
+- PR [#755](https://github.com/markperezne8-spec/MarketDEX/pull/755) added the branded command-center header to the canonical `WorkspaceHost`.
+- Exact PR #755 head: `c46bc244d3d28efe568114302264e09a5c1db82c`.
+- CI [#1074](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33030902498) passed all nine required gates.
+- Squash merge commit: `b6d40ab7f75dcb445dbff5ca286754b9e855c46c`.
+- Accepted maximized Mission Control screenshot confirms `MarketDEX OS`, `COMMAND CENTER`, `LOCAL AUTHORITY`, `OFFLINE FIRST`, persistent navigation, and no clipping or overlap.
+- The change is presentation-only: services, data, commands, workspace IDs, launcher, composition root, and authority boundaries remain unchanged.
+- CAP-006 and CAP-012 remain Partial/read-only and fail-closed; no new workbook-backed authority was introduced.
+- PR [#756](https://github.com/markperezne8-spec/MarketDEX/pull/756) records this documentation reconciliation; no additional visual check is required.

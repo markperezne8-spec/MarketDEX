@@ -165,6 +165,16 @@ A `Complete` classification prohibits rebuilding the capability. A `Partial` cap
 
 ## Top-level baseline normalization after PR #753
 
-- The derived capability baseline now points to current `main` at `5fe59155cee74b79406ab0c7e3356919a24a1d5c`.
-- PR #753 is the current documentation reconciliation boundary for the merged CAP-012/CAP-006 read-only regression hardening.
+- The derived capability baseline now points to current `main` at `b6d40ab7f75dcb445dbff5ca286754b9e855c46c`.
+- PR #755 is the current visual shell delivery boundary for the accepted Visual North Star command-center header.
 - CAP-006 and CAP-012 remain Partial; no new authority or runtime expansion is implied.
+
+
+## Visual North Star shell header after PR #755
+
+- PR [#755](https://github.com/markperezne8-spec/MarketDEX/pull/755) added the branded command-center header to the canonical WorkspaceHost.
+- Exact PR #755 head: `c46bc244d3d28efe568114302264e09a5c1db82c`.
+- CI [#1074](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33030902498) passed all nine required gates.
+- Squash merge commit: `b6d40ab7f75dcb445dbff5ca286754b9e855c46c`.
+- Visual acceptance passed on a maximized Mission Control screenshot with the North Star shell hierarchy, persistent navigation, LOCAL AUTHORITY, and OFFLINE FIRST visible.
+- Scope was presentation-only; CAP-006 and CAP-012 remain Partial/read-only with no new capability authority.

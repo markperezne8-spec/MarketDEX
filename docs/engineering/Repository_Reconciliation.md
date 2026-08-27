@@ -7,7 +7,7 @@
 
 ## Baseline
 
-Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary. This reconciliation is current through PR #753 and the merged CAP-006/CAP-012 read-only regression evidence sequence.
+Reconciliation began after EC-001 and PR #121. Repository evidence, CI gates, merged pull-request history, schema authority, and existing traceability records are re-verified at each controlled delivery boundary. This reconciliation is current through PR #755 and the accepted Visual North Star shell header evidence sequence.
 
 ## Permanent Runtime Authority
 
@@ -154,3 +154,13 @@ The repository contains older and overlapping documentation locations and multip
 - Repository reconciliation now points to current `main` at `5fe59155cee74b79406ab0c7e3356919a24a1d5c`.
 - PR #753 is the current documentation boundary after PR #752 test-only regression hardening.
 - CAP-006 and CAP-012 remain read-only and separately gated for any workbook-backed authority expansion.
+
+
+## Visual North Star shell header evidence after PR #755
+
+- PR [#755](https://github.com/markperezne8-spec/MarketDEX/pull/755) delivered the branded command-center header in the canonical WorkspaceHost.
+- Exact PR #755 head: `c46bc244d3d28efe568114302264e09a5c1db82c`; CI [#1074](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33030902498) passed all nine required jobs.
+- Squash merge commit: `b6d40ab7f75dcb445dbff5ca286754b9e855c46c`.
+- Accepted visual evidence confirms MarketDEX OS branding, COMMAND CENTER context, LOCAL AUTHORITY, OFFLINE FIRST, persistent navigation, and no clipping or overlap.
+- The three-file presentation-only scope preserved the launcher, composition root, workspace registry, services, data, commands, workspace IDs, and read-only capability boundaries.
+- CAP-006 and CAP-012 remain separately gated for workbook-backed authority expansion.

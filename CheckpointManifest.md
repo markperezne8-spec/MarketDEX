@@ -686,8 +686,21 @@ Historical checkpoint knowledge is merged here instead of preserving separate ro
 - Exact PR head: `ceac91e5b623cc245c5d80b73d189332f6cb9dbd`.
 - CI [#1068](https://github.com/markperezne8-spec/MarketDEX/actions/runs/32937077082) passed all required gates.
 
-## Current checkpoint index — PR #754
+## Current checkpoint index — PR #755
 
-- Current main before this documentation build: `5fe59155cee74b79406ab0c7e3356919a24a1d5c`.
-- Issue [#754](https://github.com/markperezne8-spec/MarketDEX/issues/754) normalizes top-level checkpoint pointers after PR [#753](https://github.com/markperezne8-spec/MarketDEX/pull/753).
-- This build changes documentation only and preserves the approved CAP-012/CAP-006 read-only boundary.
+- Current main before this documentation build: `b6d40ab7f75dcb445dbff5ca286754b9e855c46c`.
+- Issue [#755](https://github.com/markperezne8-spec/MarketDEX/issues/755) delivered the Visual North Star shell header after PR [#754](https://github.com/markperezne8-spec/MarketDEX/pull/754).
+- This build changed the canonical shell presentation only and preserves the approved CAP-012/CAP-006 read-only boundary.
+
+
+## 🏁 Visual North Star shell header synchronization after PR #755
+
+- Issue [#756](https://github.com/markperezne8-spec/MarketDEX/issues/756) tracks this documentation-only synchronization.
+- Main baseline before the branch was merge commit `b6d40ab7f75dcb445dbff5ca286754b9e855c46c`.
+- PR [#755](https://github.com/markperezne8-spec/MarketDEX/pull/755) added the branded command-center header to the canonical WorkspaceHost.
+- Exact PR #755 head: `c46bc244d3d28efe568114302264e09a5c1db82c`.
+- CI [#1074](https://github.com/markperezne8-spec/MarketDEX/actions/runs/33030902498) passed all nine required gates.
+- PR #755 squash merge commit: `b6d40ab7f75dcb445dbff5ca286754b9e855c46c`.
+- Mark accepted the maximized Mission Control screenshot confirming the North Star shell hierarchy, persistent navigation, LOCAL AUTHORITY, OFFLINE FIRST, and no clipping or overlap.
+- The three-file presentation-only scope preserved services, data, commands, workspace IDs, launcher, composition root, and read-only authority boundaries.
+- No new visual check is required for this documentation-only synchronization.
