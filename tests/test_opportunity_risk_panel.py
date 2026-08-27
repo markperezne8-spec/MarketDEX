@@ -591,7 +591,7 @@ def test_mission_control_places_opportunity_risk_after_capital_health_before_das
     assert layout.getItemPosition(layout.indexOf(window.todays_top3_panel)) == (4, 0, 1, 1)
     assert layout.getItemPosition(layout.indexOf(window.capital_health_panel)) == (4, 1, 1, 1)
     assert layout.getItemPosition(layout.indexOf(window.opportunity_risk_panel)) == (4, 2, 1, 1)
-    assert layout.getItemPosition(layout.indexOf(window.business_scoreboard_panel)) == (5, 1, 1, 1)
+    assert layout.getItemPosition(layout.indexOf(window.business_scoreboard_panel)) == (5, 0, 1, 3)
     assert layout.getItemPosition(layout.indexOf(window.dashboard_grid_shell)) == (6, 0, 1, 3)
     assert window.opportunity_risk_panel.view_model is opportunity_risk_model
 
