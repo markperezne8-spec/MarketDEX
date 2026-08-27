@@ -197,7 +197,7 @@ jobs:
       - name: Validate Mission Control design-system migration
         run: >-
           pytest -q --tb=short
-          tests/test_mission_control_design_system_migration.py
+          tests/test_mission_control_design_system_migration.py tests/test_mission_control_north_star_layout.py
           tests/test_design_system_foundation.py
           tests/test_qt_design_system_primitives.py
           app/engines/mission_control/tests/test_capital_health.py

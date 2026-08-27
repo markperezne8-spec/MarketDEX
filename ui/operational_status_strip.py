@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from PySide6.QtWidgets import QFrame, QLabel, QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy
+from PySide6.QtWidgets import QFrame, QLabel, QWidget, QGridLayout, QHBoxLayout, QVBoxLayout, QSizePolicy
 
 from app.engines.mission_control.operational_status import (
     OperationalStatusViewModel,
@@ -56,12 +56,15 @@ class OperationalStatusStrip(MarketDEXDashboardPanel):
         self.error_label.setVisible(self.view_model.state == 'error')
 
         self.group_row = QWidget(self.content_widget)
-        self.group_layout = QHBoxLayout(self.group_row)
+        self.group_layout = QGridLayout(self.group_row)
         self.group_layout.setContentsMargins(0, 0, 0, 0)
-        self.group_layout.setSpacing(8)
+        self.group_layout.setHorizontalSpacing(8)
+        self.group_layout.setVerticalSpacing(8)
+        self.group_layout.setColumnStretch(0, 1)
+        self.group_layout.setColumnStretch(1, 1)
         self.group_labels: list[QLabel] = []
         self.group_state_badges: list[MarketDEXStatusBadge] = []
-        for group in self.view_model.groups:
+        for index, group in enumerate(self.view_model.groups):
             group_widget = QFrame(self.group_row)
             group_widget.setObjectName('marketdexKpiCard')
             group_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
@@ -94,7 +97,7 @@ class OperationalStatusStrip(MarketDEXDashboardPanel):
 
             self.group_state_badges.append(group_state_badge)
             self.group_labels.extend((label, detail))
-            self.group_layout.addWidget(group_widget, 1)
+            self.group_layout.addWidget(group_widget, index // 2, index % 2)
 
         self.add_content_widget(self.headline_label)
         self.add_content_widget(self.error_label)

@@ -26,7 +26,7 @@ from app.engines.mission_control.operational_status import OperationalStatusView
 from app.engines.mission_control.todays_top3 import TodaysTop3ViewModel
 
 
-MISSION_CONTROL_TWO_COLUMN_MINIMUM_WIDTH = 1900
+MISSION_CONTROL_TWO_COLUMN_MINIMUM_WIDTH = 1200
 
 
 class AddAssetDialog(QDialog):
@@ -108,8 +108,9 @@ class MainWindow(QMainWindow):
         grid.setContentsMargins(0,0,0,0)
         grid.setHorizontalSpacing(12)
         grid.setVerticalSpacing(12)
-        grid.setColumnStretch(0,5)
-        grid.setColumnStretch(1,7)
+        grid.setColumnStretch(0,4)
+        grid.setColumnStretch(1,6)
+        grid.setColumnStretch(2,5)
         self.mission_control_grid=grid
         self._mission_control_layout_mode=None
 
@@ -160,23 +161,25 @@ class MainWindow(QMainWindow):
         for widget in widgets:self.mission_control_grid.removeWidget(widget)
         if wide:
             placements=(
-                (self.mission_control_header,0,0,1,2),
-                (self.header_status_band,1,0,1,2),
+                (self.mission_control_header,0,0,1,3),
+                (self.header_status_band,1,0,1,3),
                 (self.health_status_card,2,0,1,1),
-                (self.operational_status_strip,2,1,1,1),
+                (self.operational_status_strip,2,1,1,2),
                 (self.next_steps_panel,3,0,1,2),
                 (self.todays_top3_panel,4,0,1,1),
                 (self.capital_health_panel,4,1,1,1),
-                (self.opportunity_risk_panel,5,0,1,1),
-                (self.business_scoreboard_panel,5,1,1,1),
-                (self.dashboard_grid_shell,6,0,1,2),
+                (self.opportunity_risk_panel,4,2,1,1),
+                (self.business_scoreboard_panel,5,0,1,3),
+                (self.dashboard_grid_shell,6,0,1,3),
             )
-            self.mission_control_grid.setColumnStretch(0,5)
-            self.mission_control_grid.setColumnStretch(1,7)
+            self.mission_control_grid.setColumnStretch(0,4)
+            self.mission_control_grid.setColumnStretch(1,6)
+            self.mission_control_grid.setColumnStretch(2,5)
         else:
             placements=tuple((widget,index,0,1,2) for index,widget in enumerate(widgets))
             self.mission_control_grid.setColumnStretch(0,1)
             self.mission_control_grid.setColumnStretch(1,0)
+            self.mission_control_grid.setColumnStretch(2,0)
         for placement in placements:self.mission_control_grid.addWidget(*placement)
         self._mission_control_layout_mode=mode
         self.mission_control_surface.setProperty('layoutMode',mode)

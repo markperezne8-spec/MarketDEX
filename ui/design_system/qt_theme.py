@@ -172,7 +172,9 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
     QLabel#marketdexPanelTitle,
     QLabel#marketdexKpiLabel {{
         color: {color(ColorRole.TEXT_SECONDARY)};
+        font-size: 11pt;
         font-weight: 700;
+        letter-spacing: 0.2px;
     }}
 
     QLabel#marketdexKpiValue {{
