@@ -128,9 +128,16 @@ class MarketDEXKpiCard(QFrame):
         label: str,
         value: str = "—",
         parent: QWidget | None = None,
+        *,
+        dashboard_role: str | None = None,
+        metric_group: str | None = None,
     ) -> None:
         super().__init__(parent)
         self.setObjectName("marketdexKpiCard")
+        if dashboard_role:
+            self.setProperty("dashboardRole", dashboard_role)
+        if metric_group:
+            self.setProperty("dashboardMetricGroup", metric_group)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
 
         layout = QVBoxLayout(self)
