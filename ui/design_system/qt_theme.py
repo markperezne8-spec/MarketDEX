@@ -44,7 +44,18 @@ def build_marketdex_qss(tokens: MarketDEXDesignTokens) -> str:
     QFrame#marketdexKpiCard[dashboardRole="existing-kpi"] {{
         min-height: 72px;
         max-height: 86px;
+    }}
+
+    QFrame#marketdexKpiCard[dashboardRole="existing-kpi"][dashboardMetricGroup="inventory"] {{
         border-top: {border['selected']}px solid {color(ColorRole.INFORMATION)};
+    }}
+
+    QFrame#marketdexKpiCard[dashboardRole="existing-kpi"][dashboardMetricGroup="commercial"] {{
+        border-top: {border['selected']}px solid {color(ColorRole.OPPORTUNITY)};
+    }}
+
+    QFrame#marketdexKpiCard[dashboardRole="existing-kpi"][dashboardMetricGroup="governance"] {{
+        border-top: {border['selected']}px solid {color(ColorRole.COLLECTION)};
     }}
 
     QFrame#marketdexKpiCard[dashboardRole="inventory-command-summary"] {{
