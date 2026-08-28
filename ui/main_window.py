@@ -218,7 +218,7 @@ class MainWindow(QMainWindow):
             ('⚙️ Authority Events','authority_events','governance'),
         )
         for index,(label,key,metric_group) in enumerate(cards):
-            card=MarketDEXKpiCard(label,'--',metric_group=metric_group); card.setProperty('dashboardRole','existing-kpi'); self.values[key]=card.value_widget; grid.addWidget(card,index//2,index%2)
+            card=MarketDEXKpiCard(label,'--',dashboard_role='existing-kpi',metric_group=metric_group); self.values[key]=card.value_widget; grid.addWidget(card,index//2,index%2)
         self.inventory_command_center=self._build_inventory_command_center()
         grid.addWidget(self.inventory_command_center,4,0,1,2)
         self.visual_intelligence_shell=self._build_visual_intelligence_shell()
