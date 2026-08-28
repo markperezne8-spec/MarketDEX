@@ -28,6 +28,20 @@ def test_mission_control_uses_a_three_column_north_star_command_deck():
     assert "self.business_scoreboard_panel.set_tone(NorthStarPanelTone.SCOREBOARD)" in source
 
 
+def test_dashboard_grid_kpis_use_presentation_only_category_cues():
+    source = MAIN_WINDOW.read_text(encoding="utf-8")
+    theme_source = (ROOT / "ui" / "design_system" / "qt_theme.py").read_text(encoding="utf-8")
+
+    assert "for index,(label,key,metric_group) in enumerate(cards)" in source
+    assert "card.setProperty('dashboardMetricGroup',metric_group)" in source
+    assert "('📦 Inventory Units','inventory_units','inventory')" in source
+    assert "('💰 Inventory Cost','inventory_cost_minor','commercial')" in source
+    assert "('🛡️ Verified Audits','verified_audits','governance')" in source
+    assert '[dashboardMetricGroup="inventory"]' in theme_source
+    assert '[dashboardMetricGroup="commercial"]' in theme_source
+    assert '[dashboardMetricGroup="governance"]' in theme_source
+
+
 def test_nested_readiness_rows_wrap_without_horizontal_overflow():
     header_source = HEADER_STATUS_BAND.read_text(encoding="utf-8")
     operational_source = OPERATIONAL_STATUS_STRIP.read_text(encoding="utf-8")
