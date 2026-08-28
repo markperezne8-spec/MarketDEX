@@ -30,12 +30,29 @@ VISUAL_INTELLIGENCE_STATE_LABELS: dict[
     'error': ('Error-safe', StatusTone.NEGATIVE),
 }
 
+VISUAL_INTELLIGENCE_STATE_PANEL_TONES: dict[
+    VisualIntelligenceState, NorthStarPanelTone
+] = {
+    'ready': NorthStarPanelTone.SCOREBOARD,
+    'unavailable': NorthStarPanelTone.OPPORTUNITY,
+    'partial': NorthStarPanelTone.OPPORTUNITY,
+    'error': NorthStarPanelTone.RISK,
+}
+
 
 def visual_intelligence_state_badge_contract(
     state: VisualIntelligenceState,
 ) -> tuple[str, StatusTone]:
     try:
         return VISUAL_INTELLIGENCE_STATE_LABELS[state]
+    except KeyError as exc:
+        raise ValueError('unsupported Visual Intelligence display state') from exc
+
+def visual_intelligence_state_panel_tone(
+    state: VisualIntelligenceState,
+) -> NorthStarPanelTone:
+    try:
+        return VISUAL_INTELLIGENCE_STATE_PANEL_TONES[state]
     except KeyError as exc:
         raise ValueError('unsupported Visual Intelligence display state') from exc
 
@@ -107,7 +124,7 @@ class VisualIntelligencePanel(MarketDEXDashboardPanel):
                 region.title,
                 region.subtitle,
                 self.content_widget,
-                tone=NorthStarPanelTone.SCOREBOARD,
+                tone=visual_intelligence_state_panel_tone(region.state),
             )
             region_widget.setObjectName('marketdexDashboardPanel')
             region_widget.setProperty(
