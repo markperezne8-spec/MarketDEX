@@ -33,7 +33,7 @@ def test_dashboard_grid_kpis_use_presentation_only_category_cues():
     theme_source = (ROOT / "ui" / "design_system" / "qt_theme.py").read_text(encoding="utf-8")
 
     assert "for index,(label,key,metric_group) in enumerate(cards)" in source
-    assert "card.setProperty('dashboardMetricGroup',metric_group)" in source
+    assert "MarketDEXKpiCard(label,'--',metric_group=metric_group)" in source
     assert "('📦 Inventory Units','inventory_units','inventory')" in source
     assert "('💰 Inventory Cost','inventory_cost_minor','commercial')" in source
     assert "('🛡️ Verified Audits','verified_audits','governance')" in source
