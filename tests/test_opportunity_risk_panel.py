@@ -267,7 +267,7 @@ def test_opportunity_risk_panel_renders_injected_view_model_in_order():
 
     assert panel.title_label.text() == 'Opportunity + Risk'
     assert panel.description_label.text() == 'Read-only situational awareness'
-    assert panel.property('northStarTone') == NorthStarPanelTone.SCOREBOARD.value
+    assert panel.property('northStarTone') == NorthStarPanelTone.RISK.value
     assert panel.property('dashboardRole') == 'opportunity-risk-shell'
     assert panel.property('visualContract') == OPPORTUNITY_RISK_VISUAL_CONTRACT
     assert panel.property('opportunityRiskState') == 'ready'

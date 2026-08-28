@@ -34,7 +34,7 @@ class TodaysTop3Panel(MarketDEXDashboardPanel):
             "Today's Top 3",
             'Read-only attention priorities',
             parent,
-            tone=NorthStarPanelTone.COMMAND,
+            tone=NorthStarPanelTone.OPPORTUNITY,
         )
         self.view_model = view_model or build_todays_top3_view_model()
         self.setProperty('dashboardRole', 'todays-top3-shell')

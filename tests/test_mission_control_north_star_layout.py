@@ -22,6 +22,10 @@ def test_mission_control_uses_a_three_column_north_star_command_deck():
     assert "self.health_status_card.set_tone(NorthStarPanelTone.RISK)" in source
     assert "self.operational_status_strip.set_tone(NorthStarPanelTone.OPPORTUNITY)" in source
     assert "self.next_steps_panel.set_tone(NorthStarPanelTone.SCOREBOARD)" in source
+    assert "self.todays_top3_panel.set_tone(NorthStarPanelTone.OPPORTUNITY)" in source
+    assert "self.capital_health_panel.set_tone(NorthStarPanelTone.SCOREBOARD)" in source
+    assert "self.opportunity_risk_panel.set_tone(NorthStarPanelTone.RISK)" in source
+    assert "self.business_scoreboard_panel.set_tone(NorthStarPanelTone.SCOREBOARD)" in source
 
 
 def test_nested_readiness_rows_wrap_without_horizontal_overflow():

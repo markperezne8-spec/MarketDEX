@@ -123,9 +123,13 @@ class MainWindow(QMainWindow):
         self.next_steps_panel=NextStepsPanel(self._next_steps_view_model)
         self.next_steps_panel.set_tone(NorthStarPanelTone.SCOREBOARD)
         self.todays_top3_panel=TodaysTop3Panel(self._todays_top3_view_model)
+        self.todays_top3_panel.set_tone(NorthStarPanelTone.OPPORTUNITY)
         self.capital_health_panel=CapitalHealthPanel(self._capital_health_view_model)
+        self.capital_health_panel.set_tone(NorthStarPanelTone.SCOREBOARD)
         self.opportunity_risk_panel=OpportunityRiskPanel(self._opportunity_risk_view_model)
+        self.opportunity_risk_panel.set_tone(NorthStarPanelTone.RISK)
         self.business_scoreboard_panel=BusinessScoreboardPanel(self._business_scoreboard_view_model)
+        self.business_scoreboard_panel.set_tone(NorthStarPanelTone.SCOREBOARD)
         self.dashboard_grid_shell=self._build_dashboard_grid_shell()
 
         for widget in (
