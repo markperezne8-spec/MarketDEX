@@ -207,9 +207,18 @@ class MainWindow(QMainWindow):
         shell.setAccessibleName('Mission Control dashboard grid shell. Read-only command-center snapshot.')
         badge=MarketDEXStatusBadge('Read-only',StatusTone.INFORMATION,shell); shell.add_header_action(badge)
         grid=QGridLayout(); grid.setContentsMargins(0,0,0,0); grid.setHorizontalSpacing(10); grid.setVerticalSpacing(10); self.dashboard_grid=grid
-        cards=(('📦 Inventory Units','inventory_units'),('🗂️ Inventory Assets','inventory_asset_count'),('💰 Inventory Cost','inventory_cost_minor'),('🧾 Completed Sales','completed_sales'),('📈 Revenue','revenue_minor'),('💵 Profit','profit_minor'),('🛡️ Verified Audits','verified_audits'),('⚙️ Authority Events','authority_events'))
-        for index,(label,key) in enumerate(cards):
-            card=MarketDEXKpiCard(label,'--'); card.setProperty('dashboardRole','existing-kpi'); self.values[key]=card.value_widget; grid.addWidget(card,index//2,index%2)
+        cards=(
+            ('📦 Inventory Units','inventory_units','inventory'),
+            ('🗂️ Inventory Assets','inventory_asset_count','inventory'),
+            ('💰 Inventory Cost','inventory_cost_minor','commercial'),
+            ('🧾 Completed Sales','completed_sales','commercial'),
+            ('📈 Revenue','revenue_minor','commercial'),
+            ('💵 Profit','profit_minor','commercial'),
+            ('🛡️ Verified Audits','verified_audits','governance'),
+            ('⚙️ Authority Events','authority_events','governance'),
+        )
+        for index,(label,key,metric_group) in enumerate(cards):
+            card=MarketDEXKpiCard(label,'--'); card.setProperty('dashboardRole','existing-kpi'); card.setProperty('dashboardMetricGroup',metric_group); self.values[key]=card.value_widget; grid.addWidget(card,index//2,index%2)
         self.inventory_command_center=self._build_inventory_command_center()
         grid.addWidget(self.inventory_command_center,4,0,1,2)
         self.visual_intelligence_shell=self._build_visual_intelligence_shell()
