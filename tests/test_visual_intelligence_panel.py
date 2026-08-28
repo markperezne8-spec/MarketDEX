@@ -6,12 +6,14 @@ from app.engines.mission_control.visual_intelligence import (
     build_visual_intelligence_view_model,
     visual_intelligence_evidence,
 )
+from ui.design_system.tokens import NorthStarPanelTone
 from ui.design_system.widgets import StatusTone
 from ui.visual_intelligence_panel import (
     VISUAL_INTELLIGENCE_REGION_VISUAL_CONTRACT,
     VISUAL_INTELLIGENCE_VISUAL_CONTRACT,
     VisualIntelligencePanel,
     visual_intelligence_state_badge_contract,
+    visual_intelligence_state_panel_tone,
 )
 
 
@@ -88,6 +90,10 @@ def test_panel_renders_injected_model_without_fallback_builder(monkeypatch):
         'ready',
         'ready',
     ]
+    assert all(
+        widget.property('northStarTone') == NorthStarPanelTone.SCOREBOARD.value
+        for widget in panel.region_widgets
+    )
 
 
 def test_panel_preserves_partial_and_error_safe_display_states():
@@ -105,8 +111,10 @@ def test_panel_preserves_partial_and_error_safe_display_states():
     error_panel = VisualIntelligencePanel(error_model)
 
     assert partial_panel.state_badge.text() == 'Partial'
+    assert partial_panel.region_widgets[0].property('northStarTone') == NorthStarPanelTone.OPPORTUNITY.value
     assert partial_panel.region_widgets[0].findChildren(type(partial_panel.state_badge))[0].text() == 'Partial'
     assert error_panel.state_badge.text() == 'Error-safe'
+    assert error_panel.region_widgets[0].property('northStarTone') == NorthStarPanelTone.RISK.value
     assert error_panel.error_label.text() == (
         'Prepared visual evidence could not be read.'
     )
@@ -124,6 +132,19 @@ def test_panel_preserves_partial_and_error_safe_display_states():
 )
 def test_state_badge_contract_is_locked(state, label, tone):
     assert visual_intelligence_state_badge_contract(state) == (label, tone)
+
+
+@pytest.mark.parametrize(
+    ('state', 'panel_tone'),
+    [
+        ('ready', NorthStarPanelTone.SCOREBOARD),
+        ('unavailable', NorthStarPanelTone.OPPORTUNITY),
+        ('partial', NorthStarPanelTone.OPPORTUNITY),
+        ('error', NorthStarPanelTone.RISK),
+    ],
+)
+def test_state_panel_tone_contract_is_locked(state, panel_tone):
+    assert visual_intelligence_state_panel_tone(state) is panel_tone
 
 
 def test_panel_has_no_action_controls_or_runtime_side_effects():
