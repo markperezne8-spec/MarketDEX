@@ -28,12 +28,30 @@ DATA_FRESHNESS_STATE_LABELS: dict[DataFreshnessState, tuple[str, StatusTone]] = 
     'error': ('Error-safe', StatusTone.NEGATIVE),
 }
 
+DATA_FRESHNESS_STATE_PANEL_TONES: dict[
+    DataFreshnessState, NorthStarPanelTone
+] = {
+    'ready': NorthStarPanelTone.SCOREBOARD,
+    'unavailable': NorthStarPanelTone.OPPORTUNITY,
+    'partial': NorthStarPanelTone.OPPORTUNITY,
+    'error': NorthStarPanelTone.RISK,
+}
+
 
 def data_freshness_state_badge_contract(
     state: DataFreshnessState,
 ) -> tuple[str, StatusTone]:
     try:
         return DATA_FRESHNESS_STATE_LABELS[state]
+    except KeyError as exc:
+        raise ValueError('unsupported Data Freshness display state') from exc
+
+
+def data_freshness_state_panel_tone(
+    state: DataFreshnessState,
+) -> NorthStarPanelTone:
+    try:
+        return DATA_FRESHNESS_STATE_PANEL_TONES[state]
     except KeyError as exc:
         raise ValueError('unsupported Data Freshness display state') from exc
 
@@ -97,7 +115,7 @@ class DataFreshnessPanel(MarketDEXDashboardPanel):
                 domain.title,
                 domain.source_authority,
                 self.content_widget,
-                tone=NorthStarPanelTone.SCOREBOARD,
+                tone=data_freshness_state_panel_tone(domain.state),
             )
             domain_widget.setObjectName('marketdexDashboardPanel')
             domain_widget.setProperty('dashboardRole', 'data-freshness-domain-shell')
