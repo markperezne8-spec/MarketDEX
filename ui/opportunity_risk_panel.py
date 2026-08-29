@@ -31,12 +31,30 @@ OPPORTUNITY_RISK_STATE_LABELS: dict[OpportunityRiskState, tuple[str, StatusTone]
     'error': ('Error-safe', StatusTone.NEGATIVE),
 }
 
+OPPORTUNITY_RISK_STATE_PANEL_TONES: dict[
+    OpportunityRiskState, NorthStarPanelTone
+] = {
+    'ready': NorthStarPanelTone.SCOREBOARD,
+    'unavailable': NorthStarPanelTone.OPPORTUNITY,
+    'partial': NorthStarPanelTone.OPPORTUNITY,
+    'error': NorthStarPanelTone.RISK,
+}
+
 
 def opportunity_risk_state_badge_contract(
     state: OpportunityRiskState,
 ) -> tuple[str, StatusTone]:
     try:
         return OPPORTUNITY_RISK_STATE_LABELS[state]
+    except KeyError as exc:
+        raise ValueError('unsupported Opportunity + Risk display state') from exc
+
+
+def opportunity_risk_state_panel_tone(
+    state: OpportunityRiskState,
+) -> NorthStarPanelTone:
+    try:
+        return OPPORTUNITY_RISK_STATE_PANEL_TONES[state]
     except KeyError as exc:
         raise ValueError('unsupported Opportunity + Risk display state') from exc
 
@@ -99,7 +117,7 @@ class OpportunityRiskPanel(MarketDEXDashboardPanel):
                 group.title,
                 group.freshness_label,
                 self.group_row,
-                tone=NorthStarPanelTone.SCOREBOARD,
+                tone=opportunity_risk_state_panel_tone(group.state),
             )
             group_widget.setProperty('dashboardRole', 'opportunity-risk-group-card')
             group_widget.setProperty('opportunityRiskKind', group.kind)
