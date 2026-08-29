@@ -35,6 +35,7 @@ from ui.opportunity_risk_panel import (
     OPPORTUNITY_RISK_VISUAL_CONTRACT,
     OpportunityRiskPanel,
     opportunity_risk_state_badge_contract,
+    opportunity_risk_state_panel_tone,
 )
 
 
@@ -284,6 +285,14 @@ def test_opportunity_risk_panel_renders_injected_view_model_in_order():
         'Ready',
         'Ready',
     ]
+    ready_cards = [
+        card for card in panel.findChildren(QWidget)
+        if card.property('dashboardRole') == 'opportunity-risk-group-card'
+    ]
+    assert [card.property('northStarTone') for card in ready_cards] == [
+        NorthStarPanelTone.SCOREBOARD.value,
+        NorthStarPanelTone.SCOREBOARD.value,
+    ]
     assert [label.text() for label in panel.group_labels] == [
         'Opportunities',
         'Prepared local freshness',
@@ -413,6 +422,10 @@ def test_opportunity_risk_group_cards_preserve_state_contract_properties():
         'Ready',
         'Partial',
     ]
+    assert [card.property('northStarTone') for card in cards] == [
+        NorthStarPanelTone.SCOREBOARD.value,
+        NorthStarPanelTone.OPPORTUNITY.value,
+    ]
 
 
 def test_opportunity_risk_items_preserve_each_display_state_contract():
@@ -499,6 +512,19 @@ def test_opportunity_risk_state_badge_contract_rejects_unknown_state():
     with pytest.raises(ValueError):
         opportunity_risk_state_badge_contract('live')
 
+
+
+@pytest.mark.parametrize(
+    ('state', 'panel_tone'),
+    [
+        ('ready', NorthStarPanelTone.SCOREBOARD),
+        ('unavailable', NorthStarPanelTone.OPPORTUNITY),
+        ('partial', NorthStarPanelTone.OPPORTUNITY),
+        ('error', NorthStarPanelTone.RISK),
+    ],
+)
+def test_opportunity_risk_state_panel_tone_contract_is_locked(state, panel_tone):
+    assert opportunity_risk_state_panel_tone(state) is panel_tone
 
 def test_opportunity_risk_panel_has_no_action_controls():
     _application()
