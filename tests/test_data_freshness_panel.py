@@ -11,7 +11,9 @@ from ui.data_freshness_panel import (
     DATA_FRESHNESS_VISUAL_CONTRACT,
     DataFreshnessPanel,
     data_freshness_state_badge_contract,
+    data_freshness_state_panel_tone,
 )
+from ui.design_system.tokens import NorthStarPanelTone
 from ui.design_system.widgets import StatusTone
 
 
@@ -69,6 +71,10 @@ def test_panel_renders_injected_ready_model():
         'ready',
         'ready',
     ]
+    assert all(
+        widget.property('northStarTone') == NorthStarPanelTone.SCOREBOARD.value
+        for widget in panel.domain_widgets
+    )
 
 
 def test_panel_preserves_partial_and_error_safe_states():
@@ -84,6 +90,12 @@ def test_panel_preserves_partial_and_error_safe_states():
     assert error.state_badge.text() == 'Error-safe'
     assert error.error_label.text() == 'Prepared evidence could not be read.'
     assert not error.error_label.isHidden()
+    assert partial.domain_widgets[0].property('northStarTone') == (
+        NorthStarPanelTone.OPPORTUNITY.value
+    )
+    assert error.domain_widgets[0].property('northStarTone') == (
+        NorthStarPanelTone.RISK.value
+    )
 
 
 @pytest.mark.parametrize(
@@ -98,6 +110,19 @@ def test_panel_preserves_partial_and_error_safe_states():
 def test_state_badge_contract_is_locked(state, label, tone):
     assert data_freshness_state_badge_contract(state) == (label, tone)
 
+
+
+@pytest.mark.parametrize(
+    ('state', 'panel_tone'),
+    [
+        ('ready', NorthStarPanelTone.SCOREBOARD),
+        ('unavailable', NorthStarPanelTone.OPPORTUNITY),
+        ('partial', NorthStarPanelTone.OPPORTUNITY),
+        ('error', NorthStarPanelTone.RISK),
+    ],
+)
+def test_state_panel_tone_contract_is_locked(state, panel_tone):
+    assert data_freshness_state_panel_tone(state) is panel_tone
 
 def test_panel_has_no_action_controls_or_side_effects():
     _application()
