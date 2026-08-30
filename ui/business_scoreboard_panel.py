@@ -28,12 +28,31 @@ BUSINESS_SCOREBOARD_STATE_LABELS: dict[BusinessScoreboardState, tuple[str, Statu
     'error': ('Error-safe', StatusTone.NEGATIVE),
 }
 
+BUSINESS_SCOREBOARD_STATE_PANEL_TONES: dict[
+    BusinessScoreboardState, NorthStarPanelTone
+] = {
+    'ready': NorthStarPanelTone.SCOREBOARD,
+    'unavailable': NorthStarPanelTone.OPPORTUNITY,
+    'partial': NorthStarPanelTone.OPPORTUNITY,
+    'not_applicable': NorthStarPanelTone.SCOREBOARD,
+    'error': NorthStarPanelTone.RISK,
+}
+
 
 def business_scoreboard_state_badge_contract(
     state: BusinessScoreboardState,
 ) -> tuple[str, StatusTone]:
     try:
         return BUSINESS_SCOREBOARD_STATE_LABELS[state]
+    except KeyError as exc:
+        raise ValueError('unsupported Business Scoreboard display state') from exc
+
+
+def business_scoreboard_state_panel_tone(
+    state: BusinessScoreboardState,
+) -> NorthStarPanelTone:
+    try:
+        return BUSINESS_SCOREBOARD_STATE_PANEL_TONES[state]
     except KeyError as exc:
         raise ValueError('unsupported Business Scoreboard display state') from exc
 
@@ -102,7 +121,7 @@ class BusinessScoreboardPanel(MarketDEXDashboardPanel):
                 group.title,
                 group.period_label,
                 self.group_row,
-                tone=NorthStarPanelTone.SCOREBOARD,
+                tone=business_scoreboard_state_panel_tone(group.state),
             )
             group_widget.setProperty('dashboardRole', 'business-scoreboard-group-card')
             group_widget.setProperty('businessScoreboardGroup', group.group)
