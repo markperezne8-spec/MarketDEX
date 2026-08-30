@@ -21,6 +21,20 @@ TODAYS_TOP3_STATE_LABELS = {
     'error': ('Error-safe', StatusTone.NEGATIVE),
 }
 
+TODAYS_TOP3_STATE_PANEL_TONES = {
+    'ready': NorthStarPanelTone.SCOREBOARD,
+    'unavailable': NorthStarPanelTone.OPPORTUNITY,
+    'partial': NorthStarPanelTone.OPPORTUNITY,
+    'error': NorthStarPanelTone.RISK,
+}
+
+
+def todays_top3_state_panel_tone(state: str) -> NorthStarPanelTone:
+    try:
+        return TODAYS_TOP3_STATE_PANEL_TONES[state]
+    except KeyError as exc:
+        raise ValueError("unsupported Today's Top 3 display state") from exc
+
 
 class TodaysTop3Panel(MarketDEXDashboardPanel):
     """Compact read-only Mission Control attention-priority surface."""
@@ -65,7 +79,7 @@ class TodaysTop3Panel(MarketDEXDashboardPanel):
                 f'#{item.rank} {item.title}',
                 item.affected_area,
                 self.item_row,
-                tone=NorthStarPanelTone.SCOREBOARD,
+                tone=todays_top3_state_panel_tone(item.state),
             )
             item_widget.setProperty('dashboardRole', 'todays-top3-priority-card')
             item_widget.setProperty('priorityRank', item.rank)
