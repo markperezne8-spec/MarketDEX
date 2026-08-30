@@ -37,6 +37,7 @@ from ui.business_scoreboard_panel import (
     BUSINESS_SCOREBOARD_VISUAL_CONTRACT,
     BusinessScoreboardPanel,
     business_scoreboard_state_badge_contract,
+    business_scoreboard_state_panel_tone,
 )
 from ui.design_system.tokens import NorthStarPanelTone
 from ui.design_system.widgets import StatusTone
@@ -326,6 +327,14 @@ def test_business_scoreboard_panel_renders_injected_view_model_in_order():
         'Ready',
         'Ready',
     ]
+    ready_cards = [
+        card for card in panel.findChildren(QWidget)
+        if card.property('dashboardRole') == 'business-scoreboard-group-card'
+    ]
+    assert [card.property('northStarTone') for card in ready_cards] == [
+        NorthStarPanelTone.SCOREBOARD.value,
+        NorthStarPanelTone.SCOREBOARD.value,
+    ]
     assert [label.text() for label in panel.group_labels] == [
         'Money',
         '30 DAYS',
@@ -493,6 +502,10 @@ def test_business_scoreboard_group_cards_preserve_state_contract_properties():
         'Partial',
         'Not applicable',
     ]
+    assert [card.property('northStarTone') for card in cards] == [
+        NorthStarPanelTone.OPPORTUNITY.value,
+        NorthStarPanelTone.SCOREBOARD.value,
+    ]
     assert [label.property('businessScoreboardState') for label in panel.metric_labels] == [
         'partial',
         'not_applicable',
@@ -524,6 +537,22 @@ def test_business_scoreboard_state_badge_contract_rejects_unknown_state():
     with pytest.raises(ValueError):
         business_scoreboard_state_badge_contract('live')
 
+
+
+@pytest.mark.parametrize(
+    ('state', 'panel_tone'),
+    [
+        ('ready', NorthStarPanelTone.SCOREBOARD),
+        ('unavailable', NorthStarPanelTone.OPPORTUNITY),
+        ('partial', NorthStarPanelTone.OPPORTUNITY),
+        ('not_applicable', NorthStarPanelTone.SCOREBOARD),
+        ('error', NorthStarPanelTone.RISK),
+    ],
+)
+def test_business_scoreboard_state_panel_tone_contract_is_locked(
+    state, panel_tone
+):
+    assert business_scoreboard_state_panel_tone(state) is panel_tone
 
 def test_business_scoreboard_panel_has_no_action_controls():
     _application()
