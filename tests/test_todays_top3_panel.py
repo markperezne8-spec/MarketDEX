@@ -18,7 +18,10 @@ from app.engines.mission_control.todays_top3 import (
 from ui.design_system.tokens import NorthStarPanelTone
 from ui.design_system.widgets import StatusTone
 from ui.main_window import MainWindow
-from ui.todays_top3_panel import TodaysTop3Panel
+from ui.todays_top3_panel import (
+    TodaysTop3Panel,
+    todays_top3_state_panel_tone,
+)
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 TODAYS_TOP3_PANEL = REPOSITORY_ROOT / 'ui' / 'todays_top3_panel.py'
@@ -174,6 +177,13 @@ def test_todays_top3_panel_renders_injected_view_model_in_order():
     assert [
         badge.property('tone') for badge in panel.item_state_badges
     ] == [StatusTone.POSITIVE.value] * 3
+    ready_cards = [
+        card for card in panel.findChildren(QWidget)
+        if card.property('dashboardRole') == 'todays-top3-priority-card'
+    ]
+    assert [card.property('northStarTone') for card in ready_cards] == [
+        NorthStarPanelTone.SCOREBOARD.value,
+    ] * 3
     assert [label.text() for label in panel.item_labels] == [
         '#1 Review listing readiness',
         'Listing',
@@ -367,7 +377,25 @@ def test_todays_top3_priority_cards_preserve_state_contract_properties():
         StatusTone.WARNING.value,
         StatusTone.NEGATIVE.value,
     ]
+    assert [card.property('northStarTone') for card in cards] == [
+        NorthStarPanelTone.SCOREBOARD.value,
+        NorthStarPanelTone.OPPORTUNITY.value,
+        NorthStarPanelTone.RISK.value,
+    ]
 
+
+
+@pytest.mark.parametrize(
+    ('state', 'panel_tone'),
+    [
+        ('ready', NorthStarPanelTone.SCOREBOARD),
+        ('unavailable', NorthStarPanelTone.OPPORTUNITY),
+        ('partial', NorthStarPanelTone.OPPORTUNITY),
+        ('error', NorthStarPanelTone.RISK),
+    ],
+)
+def test_todays_top3_state_panel_tone_contract_is_locked(state, panel_tone):
+    assert todays_top3_state_panel_tone(state) is panel_tone
 
 def test_todays_top3_panel_has_no_action_controls():
     _application()
