@@ -23,6 +23,7 @@ from app.engines.mission_control.todays_top3 import (
     todays_top3_evidence,
 )
 from ui.capital_health_panel import CapitalHealthPanel
+from ui.capital_health_panel import capital_health_state_panel_tone
 from ui.capital_health_panel import CAPITAL_HEALTH_GROUP_VISUAL_CONTRACT
 from ui.capital_health_panel import CAPITAL_HEALTH_VISUAL_CONTRACT
 from ui.capital_health_panel import capital_health_state_badge_contract
@@ -248,6 +249,8 @@ def test_capital_health_panel_renders_injected_view_model_in_order():
         'Ready',
         'Ready',
     ]
+    cards = [card for card in panel.findChildren(QWidget) if card.property('dashboardRole') == 'capital-health-group-card']
+    assert [card.property('northStarTone') for card in cards] == [NorthStarPanelTone.SCOREBOARD.value] * 4
     assert [label.text() for label in panel.metric_labels] == [
         'Available Cash: $10 prepared value — Available Cash prepared local evidence.',
         (
@@ -421,6 +424,12 @@ def test_capital_health_group_cards_preserve_state_contract_properties():
         'Error-safe',
         'Unavailable',
     ]
+    assert [card.property('northStarTone') for card in cards] == [
+        NorthStarPanelTone.SCOREBOARD.value,
+        NorthStarPanelTone.OPPORTUNITY.value,
+        NorthStarPanelTone.RISK.value,
+        NorthStarPanelTone.OPPORTUNITY.value,
+    ]
 
 
 @pytest.mark.parametrize(
@@ -434,6 +443,20 @@ def test_capital_health_group_cards_preserve_state_contract_properties():
 )
 def test_capital_health_state_badge_contract_is_locked(state, label, tone):
     assert capital_health_state_badge_contract(state) == (label, tone)
+
+
+
+@pytest.mark.parametrize(
+    ('state', 'panel_tone'),
+    [
+        ('ready', NorthStarPanelTone.SCOREBOARD),
+        ('unavailable', NorthStarPanelTone.OPPORTUNITY),
+        ('partial', NorthStarPanelTone.OPPORTUNITY),
+        ('error', NorthStarPanelTone.RISK),
+    ],
+)
+def test_capital_health_state_panel_tone_contract_is_locked(state, panel_tone):
+    assert capital_health_state_panel_tone(state) is panel_tone
 
 
 def test_capital_health_state_badge_contract_rejects_unknown_state():
