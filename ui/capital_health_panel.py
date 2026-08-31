@@ -26,6 +26,20 @@ CAPITAL_HEALTH_STATE_LABELS: dict[CapitalHealthState, tuple[str, StatusTone]] = 
     'error': ('Error-safe', StatusTone.NEGATIVE),
 }
 
+CAPITAL_HEALTH_STATE_PANEL_TONES: dict[CapitalHealthState, NorthStarPanelTone] = {
+    'ready': NorthStarPanelTone.SCOREBOARD,
+    'unavailable': NorthStarPanelTone.OPPORTUNITY,
+    'partial': NorthStarPanelTone.OPPORTUNITY,
+    'error': NorthStarPanelTone.RISK,
+}
+
+
+def capital_health_state_panel_tone(state: CapitalHealthState) -> NorthStarPanelTone:
+    try:
+        return CAPITAL_HEALTH_STATE_PANEL_TONES[state]
+    except KeyError as exc:
+        raise ValueError('unsupported Capital Health display state') from exc
+
 
 def capital_health_state_badge_contract(
     state: CapitalHealthState,
@@ -94,7 +108,7 @@ class CapitalHealthPanel(MarketDEXDashboardPanel):
                 group.title,
                 group.period_label,
                 self.group_row,
-                tone=NorthStarPanelTone.SCOREBOARD,
+                tone=capital_health_state_panel_tone(group.state),
             )
             group_widget.setProperty('dashboardRole', 'capital-health-group-card')
             group_widget.setProperty('capitalHealthGroup', group.group)
