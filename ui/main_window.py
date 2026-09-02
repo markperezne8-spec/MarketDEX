@@ -120,7 +120,6 @@ class MainWindow(QMainWindow):
         self.operational_status_strip=OperationalStatusStrip(self._operational_status_view_model)
         self.operational_status_strip.set_tone(NorthStarPanelTone.OPPORTUNITY)
         self.next_steps_panel=NextStepsPanel(self._next_steps_view_model)
-        self.next_steps_panel.set_tone(NorthStarPanelTone.SCOREBOARD)
         self.todays_top3_panel=TodaysTop3Panel(self._todays_top3_view_model)
         self.todays_top3_panel.set_tone(NorthStarPanelTone.OPPORTUNITY)
         self.capital_health_panel=CapitalHealthPanel(self._capital_health_view_model)
