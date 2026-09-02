@@ -6,15 +6,20 @@ from app.engines.health.status_view_model import (
     HealthStatusViewModel,
     build_health_status_view_model,
 )
+from ui.design_system.tokens import NorthStarPanelTone
 from ui.design_system.widgets import MarketDEXDashboardPanel, MarketDEXStatusBadge, StatusTone
+
+
+HEALTH_STATE_PANEL_TONES = {'available': NorthStarPanelTone.SCOREBOARD, 'unavailable': NorthStarPanelTone.OPPORTUNITY, 'error': NorthStarPanelTone.RISK}
 
 
 class HealthStatusCard(MarketDEXDashboardPanel):
     """Compact read-only Health status surface backed by injected evidence."""
 
     def __init__(self, view_model: HealthStatusViewModel | None = None, parent=None) -> None:
-        super().__init__('System Health', 'Read-only Health readiness', parent)
         self.view_model = view_model or build_health_status_view_model(status_text=None)
+        super().__init__('System Health', 'Read-only Health readiness', parent, tone=HEALTH_STATE_PANEL_TONES[self.view_model.state])
+        self.set_tone(HEALTH_STATE_PANEL_TONES[self.view_model.state])
         state_labels = {
             'available': ('Ready', StatusTone.POSITIVE),
             'unavailable': ('Unavailable', StatusTone.WARNING),
