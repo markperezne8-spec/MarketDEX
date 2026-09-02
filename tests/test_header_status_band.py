@@ -18,6 +18,7 @@ from app.engines.mission_control.operational_status import (
 from ui.design_system.tokens import NorthStarPanelTone
 from ui.design_system.widgets import StatusTone
 from ui.header_status_band import HeaderStatusBand
+from ui.header_status_band import header_status_state_panel_tone
 from ui.main_window import MainWindow
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
@@ -168,6 +169,7 @@ def test_header_status_band_renders_injected_view_model_in_order():
         'Ready',
         'Ready',
     ]
+    assert [card.property('northStarTone') for card in band.slot_cards] == [NorthStarPanelTone.SCOREBOARD.value] * 5
     assert [label.text() for label in band.slot_labels] == [
         'Operating context',
         'Mission Control context is prepared.',
@@ -268,6 +270,11 @@ def test_header_status_band_renders_error_safely_inline():
         'Unavailable',
         'Unavailable',
     ]
+
+
+@pytest.mark.parametrize(('state', 'tone'), [('ready', NorthStarPanelTone.SCOREBOARD), ('unavailable', NorthStarPanelTone.OPPORTUNITY), ('partial', NorthStarPanelTone.OPPORTUNITY), ('error', NorthStarPanelTone.RISK)])
+def test_header_status_state_panel_tone_contract_is_locked(state, tone):
+    assert header_status_state_panel_tone(state) is tone
 
 
 def test_header_status_band_has_no_action_controls():

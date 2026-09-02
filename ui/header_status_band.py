@@ -21,6 +21,20 @@ HEADER_STATUS_STATE_LABELS = {
     'error': ('Error-safe', StatusTone.NEGATIVE),
 }
 
+HEADER_STATUS_STATE_PANEL_TONES = {
+    'ready': NorthStarPanelTone.SCOREBOARD,
+    'unavailable': NorthStarPanelTone.OPPORTUNITY,
+    'partial': NorthStarPanelTone.OPPORTUNITY,
+    'error': NorthStarPanelTone.RISK,
+}
+
+
+def header_status_state_panel_tone(state: str) -> NorthStarPanelTone:
+    try:
+        return HEADER_STATUS_STATE_PANEL_TONES[state]
+    except KeyError as exc:
+        raise ValueError('unsupported Command Overview display state') from exc
+
 
 class HeaderStatusBand(MarketDEXDashboardPanel):
     """Compact visual overview of Mission Control readiness."""
@@ -66,7 +80,7 @@ class HeaderStatusBand(MarketDEXDashboardPanel):
                 slot.label,
                 slot.detail,
                 self.slot_row,
-                tone=NorthStarPanelTone.SCOREBOARD,
+                tone=header_status_state_panel_tone(slot.state),
             )
             card.setProperty('dashboardRole', 'command-readiness-card')
             card.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
