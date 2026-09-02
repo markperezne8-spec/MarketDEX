@@ -117,7 +117,6 @@ class MainWindow(QMainWindow):
         self.mission_control_header=MarketDEXWorkspaceHeader('MarketDEX OS','MISSION CONTROL — LIVE SQLITE BUSINESS SNAPSHOT')
         self.header_status_band=HeaderStatusBand(self._header_status_view_model)
         self.health_status_card=HealthStatusCard(self._health_status_view_model)
-        self.health_status_card.set_tone(NorthStarPanelTone.RISK)
         self.operational_status_strip=OperationalStatusStrip(self._operational_status_view_model)
         self.operational_status_strip.set_tone(NorthStarPanelTone.OPPORTUNITY)
         self.next_steps_panel=NextStepsPanel(self._next_steps_view_model)
