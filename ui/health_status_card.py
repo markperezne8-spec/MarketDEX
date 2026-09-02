@@ -19,6 +19,7 @@ class HealthStatusCard(MarketDEXDashboardPanel):
     def __init__(self, view_model: HealthStatusViewModel | None = None, parent=None) -> None:
         self.view_model = view_model or build_health_status_view_model(status_text=None)
         super().__init__('System Health', 'Read-only Health readiness', parent, tone=HEALTH_STATE_PANEL_TONES[self.view_model.state])
+        self.set_tone(HEALTH_STATE_PANEL_TONES[self.view_model.state])
         state_labels = {
             'available': ('Ready', StatusTone.POSITIVE),
             'unavailable': ('Unavailable', StatusTone.WARNING),
