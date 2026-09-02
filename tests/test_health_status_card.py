@@ -1,5 +1,6 @@
 from app.engines.health.status_view_model import build_health_status_view_model
 from PySide6.QtWidgets import QApplication, QPushButton
+from ui.design_system.tokens import NorthStarPanelTone
 from ui.health_status_card import HealthStatusCard
 from ui.main_window import MainWindow
 
@@ -54,6 +55,7 @@ def test_health_status_card_renders_injected_available_view_model():
     assert card.status_label.text() == 'Health ready'
     assert card.diagnostics_label.text() == 'runtime=MarketDEX\noverall=PASS'
     assert card.view_model is model
+    assert card.property('northStarTone') == NorthStarPanelTone.SCOREBOARD.value
 
 
 def test_health_status_card_renders_deterministic_empty_diagnostics():
@@ -62,6 +64,7 @@ def test_health_status_card_renders_deterministic_empty_diagnostics():
     card = HealthStatusCard(model)
     assert card.status_label.text() == 'Health status unavailable'
     assert card.state_badge.text() == 'Unavailable'
+    assert card.property('northStarTone') == NorthStarPanelTone.OPPORTUNITY.value
     assert card.diagnostics_label.text() == 'No diagnostic details available.'
 
 
@@ -75,6 +78,7 @@ def test_health_status_card_renders_error_safely_without_dialogs():
     card = HealthStatusCard(model)
 
     assert card.state_badge.text() == 'Error-safe'
+    assert card.property('northStarTone') == NorthStarPanelTone.RISK.value
     assert card.status_label.text() == 'Health status unavailable'
     assert card.error_label.text() == 'Health evidence unavailable'
     assert not card.error_label.isHidden()
