@@ -114,6 +114,7 @@ def test_mission_control_places_health_card_below_header_and_above_kpis():
     assert layout.getItemPosition(layout.indexOf(window.next_steps_panel)) == (3, 0, 1, 2)
     assert window.health_status_card.view_model is model
     assert window.health_status_card.state_badge.text() == 'Ready'
+    assert window.health_status_card.property('northStarTone') == NorthStarPanelTone.SCOREBOARD.value
 
     first_card = window.health_status_card
     window.refresh()
