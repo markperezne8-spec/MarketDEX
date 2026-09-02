@@ -152,7 +152,6 @@ def test_next_steps_panel_renders_default_unavailable_state():
     assert panel.state_badge.text() == 'Unavailable'
     assert panel.state_badge.property('tone') == StatusTone.WARNING.value
     assert panel.headline_label.text() == 'Action readiness unavailable'
-    assert panel.property('northStarTone') == NorthStarPanelTone.RISK.value
     assert panel.property('northStarTone') == NorthStarPanelTone.OPPORTUNITY.value
     assert [badge.text() for badge in panel.group_state_badges] == [
         'Unavailable',
