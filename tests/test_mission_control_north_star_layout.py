@@ -21,7 +21,7 @@ def test_mission_control_uses_a_three_column_north_star_command_deck():
     assert "self.mission_control_grid.setColumnStretch(1,7)" not in source
     assert "self.health_status_card.set_tone(NorthStarPanelTone.RISK)" not in source
     assert "self.operational_status_strip.set_tone(NorthStarPanelTone.OPPORTUNITY)" in source
-    assert "self.next_steps_panel.set_tone(NorthStarPanelTone.SCOREBOARD)" in source
+    assert "self.next_steps_panel.set_tone(NorthStarPanelTone.SCOREBOARD)" not in source
     assert "self.todays_top3_panel.set_tone(NorthStarPanelTone.OPPORTUNITY)" in source
     assert "self.capital_health_panel.set_tone(NorthStarPanelTone.SCOREBOARD)" in source
     assert "self.opportunity_risk_panel.set_tone(NorthStarPanelTone.RISK)" in source
