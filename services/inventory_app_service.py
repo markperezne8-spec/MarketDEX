@@ -5,6 +5,8 @@ from core.event_repository import EventRepository
 from repositories.inventory_repository import InventoryRepository
 from services.base_service import AuthoritativeService
 
+LISTING_STATUSES = ('Not Listed', 'Ready to List', 'Listed', 'Sold', 'Hold')
+
 
 class InventoryAppService(AuthoritativeService):
     service_name = 'inventory_app_service'
