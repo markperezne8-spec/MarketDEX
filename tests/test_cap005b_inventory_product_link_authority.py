@@ -15,7 +15,7 @@ def test_cap005b_linkage_uses_runtime_schema_v26_and_survives_restart(tmp_path):
     after = service.quantities(product_id)
 
     restarted = InventoryProductLinkService(database_path)
-    assert RUNTIME_SCHEMA_VERSION == 27
+    assert RUNTIME_SCHEMA_VERSION == 28
     assert before == (0, 0)
     assert after == (3, 3)
     assert restarted.quantities(product_id) == (3, 3)
