@@ -33,7 +33,7 @@ def test_tcg_inventory_details_persist_and_are_listed(tmp_path):
     service.update_business_details(asset_id='asset-1', storage_location='Binder A', notes='Centering checked', request_id='detail-1')
     service.update_tcg_details(asset_id='asset-1', product_name='Charizard ex 199/165', set_name='151', item_condition='Near Mint', market_price_minor=18500, request_id='tcg-1')
     reopened = InventoryAppService(database_path)
-    row = reopened.list_inventory()[0]
+    row = reopened.list_inventory(include_details=True)[0]
     detail = reopened.get_asset_detail('asset-1')
     assert row['set_name'] == '151'
     assert row['item_condition'] == 'Near Mint'
