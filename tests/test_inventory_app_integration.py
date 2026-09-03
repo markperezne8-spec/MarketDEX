@@ -75,9 +75,9 @@ def test_listing_details_persist_filters_and_queue_after_reopen(tmp_path):
     service.add_asset(asset_id='asset-3', asset_name='Pikachu', asset_type='SINGLE', quantity=3, total_cost_minor=9000, request_id='add-3')
     service.update_tcg_details(asset_id='asset-1', product_name='Charizard ex', set_name='151', item_condition='Near Mint', market_price_minor=18500, request_id='tcg-1')
     service.update_tcg_details(asset_id='asset-3', product_name='Pikachu', set_name='151', item_condition='Near Mint', market_price_minor=9500, request_id='tcg-3')
-    service.update_listing_details(asset_id='asset-1', listing_status='Ready to List', marketplace='eBay', asking_price_minor=18500, sku='CHAR-151-NM', storage_location='Binder A', listing_title='Charizard ex 199/165 Near Mint', listing_notes='Photograph front and back', request_id='listing-1')
+    service.update_listing_details(asset_id='asset-1', listing_status='Ready to List', marketplace='eBay', asking_price_minor=18500, sku='CHAR-151-NM', storage_location='Binder A', listing_title='Charizard ex 199/165 Near Mint', listing_notes='Photograph front and back', photos_ready='Ready', photo_reference='charizard-front-back.jpg', request_id='listing-1')
     service.update_listing_details(asset_id='asset-2', listing_status='Listed', marketplace='TCGplayer', asking_price_minor=27500, sku='ETB-CR-001', storage_location='Shelf 2', listing_title='Chaos Rising Elite Trainer Box', listing_notes='Sealed', request_id='listing-2')
-    service.update_listing_details(asset_id='asset-3', listing_status='Ready to List', marketplace='TCGplayer', asking_price_minor=9500, sku='PIKA-001', storage_location='Binder B', listing_title='Pikachu Near Mint', listing_notes='Ready for photos', request_id='listing-3')
+    service.update_listing_details(asset_id='asset-3', listing_status='Ready to List', marketplace='TCGplayer', asking_price_minor=9500, sku='PIKA-001', storage_location='Binder B', listing_title='Pikachu Near Mint', listing_notes='Ready for photos', photos_ready='Ready', photo_reference='pikachu-front-back.jpg', request_id='listing-3')
     reopened = InventoryAppService(tmp_path / 'marketdex.sqlite3')
     detail = reopened.get_asset_detail('asset-1')
     assert detail['listing_status'] == 'Ready to List'
@@ -87,6 +87,8 @@ def test_listing_details_persist_filters_and_queue_after_reopen(tmp_path):
     assert detail['storage_location'] == 'Binder A'
     assert detail['listing_title'] == 'Charizard ex 199/165 Near Mint'
     assert detail['listing_notes'] == 'Photograph front and back'
+    assert detail['photos_ready'] == 'Ready'
+    assert detail['photo_reference'] == 'charizard-front-back.jpg'
     assert [row['asset_id'] for row in reopened.list_inventory(include_details=True, listing_queue=True)] == ['asset-1', 'asset-3']
     assert [row['asset_id'] for row in reopened.list_inventory(include_details=True, listing_status='Ready to List', marketplace='eBay')] == ['asset-1']
     assert [row['asset_id'] for row in reopened.list_inventory(include_details=True, listing_status='Listed', marketplace='TCGplayer')] == ['asset-2']
@@ -112,17 +114,21 @@ def test_listing_readiness_blocks_incomplete_items_and_persists_after_completion
 
     initial = service.get_listing_readiness('asset-1')
     assert initial['readiness_state'] == 'BLOCKED'
-    assert initial['readiness_blocker_count'] == 6
+    assert initial['readiness_blocker_count'] == 7
     assert 'Condition must be evaluated' in initial['readiness_blockers']
     assert 'Marketplace is not selected' in initial['readiness_blockers']
     assert 'Asking price must be greater than $0.00' in initial['readiness_blockers']
+    assert 'Photo readiness is not evaluated' in initial['readiness_blockers']
 
     with pytest.raises(ValueError, match='Ready to List blocked:.*Marketplace is not selected'):
         service.update_listing_details(asset_id='asset-1', listing_status='Ready to List', request_id='ready-too-soon')
 
+    with pytest.raises(ValueError, match='valid photo readiness value'):
+        service.update_listing_details(asset_id='asset-1', photos_ready='Unknown', request_id='bad-photos')
+
     service.update_tcg_details(asset_id='asset-1', product_name='Charizard ex', set_name='151', item_condition='Near Mint', market_price_minor=18500, request_id='tcg-1')
     service.update_business_details(asset_id='asset-1', storage_location='Binder A', request_id='business-1')
-    service.update_listing_details(asset_id='asset-1', listing_status='Ready to List', marketplace='eBay', asking_price_minor=18500, sku='CHAR-151-NM', storage_location='Binder A', listing_title='Charizard ex Near Mint', listing_notes='Front and back photos', request_id='listing-1')
+    service.update_listing_details(asset_id='asset-1', listing_status='Ready to List', marketplace='eBay', asking_price_minor=18500, sku='CHAR-151-NM', storage_location='Binder A', listing_title='Charizard ex Near Mint', listing_notes='Front and back photos', photos_ready='Ready', photo_reference='charizard-front-back.jpg', request_id='listing-1')
 
     reopened = InventoryAppService(database_path)
     readiness = reopened.get_listing_readiness('asset-1')
