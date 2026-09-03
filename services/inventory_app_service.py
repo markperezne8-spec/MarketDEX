@@ -113,6 +113,33 @@ class InventoryAppService(AuthoritativeService):
     def delete_asset(self, *, asset_id, request_id):
         return self.archive_asset(asset_id=asset_id, request_id=request_id)
 
+    def list_item_activity(self, asset_id):
+        self.get_asset_detail(asset_id)
+        with self.database.read_connection() as connection:
+            rows=connection.execute("SELECT recorded_at,adjustment_type,quantity_delta,reason,resulting_quantity FROM inventory_adjustment_activity WHERE asset_id=? ORDER BY recorded_at DESC,activity_id DESC", (asset_id,)).fetchall()
+        return [dict(row) for row in rows]
+
+    def record_adjustment(self, *, asset_id, adjustment_type, quantity_delta, reason, request_id):
+        adjustment_type=str(adjustment_type or '').strip().upper(); quantity_delta=int(quantity_delta); reason=str(reason or '').strip()
+        allowed={'ADD_STOCK','REMOVE_STOCK','CORRECTION','DAMAGED','SOLD_OUTSIDE_PLATFORM'}
+        if adjustment_type not in allowed: raise ValueError('Choose an adjustment type')
+        if not reason: raise ValueError('Enter an adjustment reason')
+        if quantity_delta == 0: raise ValueError('Enter a quantity change')
+        if adjustment_type == 'ADD_STOCK' and quantity_delta < 0: raise ValueError('Add stock must increase quantity')
+        if adjustment_type in {'REMOVE_STOCK','DAMAGED','SOLD_OUTSIDE_PLATFORM'} and quantity_delta > 0: raise ValueError('This adjustment type must decrease quantity')
+        detail=self.get_asset_detail(asset_id)
+        if detail['state'] != 'COMPLETED': raise ValueError('Archived inventory cannot be adjusted')
+        if int(detail['quantity']) + quantity_delta < 0: raise ValueError('Adjustment would make quantity negative')
+        event=self._new_event('INVENTORY_TYPED_ADJUSTMENT',request_id,{'asset_id':asset_id,'adjustment_type':adjustment_type,'quantity_delta':quantity_delta,'reason':reason})
+        with self.database.transaction() as connection:
+            self._append_event_and_audit(connection,event,'record_inventory_adjustment')
+            self.inventory.apply(connection,asset_id=asset_id,quantity_delta=quantity_delta,cost_delta_minor=0,event_id=event.event_id,recorded_at=event.committed_at)
+            resulting=connection.execute("SELECT quantity FROM inventory_authority WHERE asset_id=?",(asset_id,)).fetchone()['quantity']
+            connection.execute("INSERT INTO inventory_movements(movement_id,asset_id,event_id,quantity_delta,cost_delta_minor,movement_type,recorded_at) VALUES (?,?,?,?,?,?,?)",(f'movement-{event.event_id}',asset_id,event.event_id,quantity_delta,0,adjustment_type,event.committed_at))
+            connection.execute("INSERT INTO inventory_adjustment_activity(activity_id,asset_id,event_id,adjustment_type,quantity_delta,reason,resulting_quantity,recorded_at) VALUES (?,?,?,?,?,?,?,?)",(f'activity-{event.event_id}',asset_id,event.event_id,adjustment_type,quantity_delta,reason,resulting,event.committed_at))
+            connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)",(event.event_id,'INVENTORY_ADJUSTMENT',asset_id,'VERIFIED',event.committed_at)); self._verify_event(connection,event)
+        return self.get_asset_detail(asset_id)
+
     def adjust_asset(self, *, asset_id, quantity_delta, cost_delta_minor, request_id):
         quantity_delta = int(quantity_delta); cost_delta_minor = int(cost_delta_minor)
         if quantity_delta == 0 and cost_delta_minor == 0: raise ValueError('Enter a quantity or cost adjustment')
