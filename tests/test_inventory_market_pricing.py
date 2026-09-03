@@ -90,6 +90,14 @@ def test_stale_price_refresh_persists_without_changing_asking_price(tmp_path):
         total_cost_minor=500,
         request_id='add-1',
     )
+    inventory.update_tcg_details(
+        asset_id='asset-1',
+        product_name='Pikachu',
+        set_name='Base Set',
+        item_condition='Near Mint',
+        market_price_minor=1200,
+        request_id='tcg-1',
+    )
     inventory.update_listing_details(
         asset_id='asset-1',
         listing_status='Ready to List',
