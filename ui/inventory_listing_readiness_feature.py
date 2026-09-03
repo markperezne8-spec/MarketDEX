@@ -26,6 +26,13 @@ class ListingDetailsDialog(QDialog):
         super().__init__(parent)
         self.setWindowTitle('Inventory Listing Details')
         form = QFormLayout(self)
+        blockers = detail.get('readiness_blockers', [])
+        readiness_text = detail.get('readiness_state', 'NOT EVALUATED')
+        if blockers:
+            readiness_text += ' — ' + '; '.join(blockers)
+        self.readiness = QLabel(readiness_text)
+        self.readiness.setWordWrap(True)
+        form.addRow('Readiness', self.readiness)
         self.listing_status = QComboBox()
         self.listing_status.addItems(LISTING_STATUSES)
         self.listing_status.setCurrentText(detail.get('listing_status', 'Not Listed'))
@@ -154,7 +161,8 @@ def install_inventory_listing_readiness_feature(window):
                 window._money(row['total_cost_minor']),
                 window._money(row['market_price_minor']),
                 row['storage_location'],
-                row['notes'],
+                f"{row['notes']} • Readiness: {row.get('readiness_state', 'NOT EVALUATED')} • "
+                f"Blockers: {'; '.join(row.get('readiness_blockers', [])) or 'None'}",
             )
             for column, value in enumerate(values):
                 window.inventory_table.setItem(row_index, column, QTableWidgetItem(str(value)))
@@ -170,10 +178,12 @@ def install_inventory_listing_readiness_feature(window):
         if asset_id is None:
             return
         detail = window.inventory_service.get_asset_detail(asset_id)
+        blockers = '; '.join(detail.get('readiness_blockers', [])) or 'None'
         window.asset_detail.setText(
             window.asset_detail.text()
             + f"\nLISTING: {detail['listing_status']} • MARKETPLACE: {detail['marketplace'] or '—'} • ASKING: {window._money(detail['asking_price_minor'])} • SKU: {detail['sku'] or '—'}"
             + f"\nTITLE: {detail['listing_title'] or '—'} • LISTING NOTES: {detail['listing_notes'] or '—'}"
+            + f"\nREADINESS: {detail.get('readiness_state', 'NOT EVALUATED')} • BLOCKERS: {blockers}"
         )
 
     original_show_selected = window.show_selected
