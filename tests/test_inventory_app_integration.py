@@ -1,3 +1,4 @@
+import csv
 import pytest
 from core.event_repository import ReplayRejected
 from services.inventory_app_service import InventoryAppService
@@ -135,3 +136,32 @@ def test_listing_readiness_blocks_incomplete_items_and_persists_after_completion
     assert readiness == {'readiness_state': 'READY TO LIST', 'readiness_blockers': [], 'readiness_blocker_count': 0}
     assert reopened.get_asset_detail('asset-1')['listing_status'] == 'Ready to List'
     assert reopened.list_inventory(include_details=True)[0]['readiness_state'] == 'READY TO LIST'
+
+
+
+def test_listing_queue_csv_export_contains_only_ready_items(tmp_path):
+    service = InventoryAppService(tmp_path / 'marketdex.sqlite3')
+    service.add_asset(asset_id='asset-1', asset_name='Charizard ex', asset_type='SINGLE', quantity=2, total_cost_minor=12000, request_id='add-1')
+    service.add_asset(asset_id='asset-2', asset_name='Chaos Rising ETB', asset_type='SEALED', quantity=1, total_cost_minor=5000, request_id='add-2')
+    service.update_tcg_details(asset_id='asset-1', product_name='Charizard ex', set_name='151', item_condition='Near Mint', market_price_minor=18500, request_id='tcg-1')
+    service.update_listing_details(asset_id='asset-1', listing_status='Ready to List', marketplace='eBay', asking_price_minor=1850, sku='CHAR-151-NM', storage_location='Binder A', listing_title='Charizard ex Near Mint', listing_notes='Front and back', photos_ready='Ready', photo_reference='charizard-front-back.jpg', request_id='listing-1')
+    service.update_listing_details(asset_id='asset-2', listing_status='Listed', marketplace='TCGplayer', asking_price_minor=27500, sku='ETB-CR-001', storage_location='Shelf 2', listing_title='Chaos Rising Elite Trainer Box', listing_notes='Sealed', request_id='listing-2')
+
+    destination = service.export_listing_queue_csv(tmp_path / 'exports' / 'listing-queue')
+
+    assert destination.name == 'listing-queue.csv'
+    with destination.open(newline='', encoding='utf-8-sig') as handle:
+        rows = list(csv.DictReader(handle))
+    assert rows == [{
+        'Asset ID': 'asset-1',
+        'Listing Title': 'Charizard ex Near Mint',
+        'Marketplace': 'eBay',
+        'SKU': 'CHAR-151-NM',
+        'Condition': 'Near Mint',
+        'Asking Price': '18.50',
+        'Quantity': '2',
+        'Storage Location': 'Binder A',
+        'Photos Ready': 'Ready',
+        'Photo Reference': 'charizard-front-back.jpg',
+        'Listing Notes': 'Front and back',
+    }]
