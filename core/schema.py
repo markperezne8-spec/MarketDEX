@@ -83,4 +83,6 @@ CREATE TRIGGER IF NOT EXISTS order_closures_no_update BEFORE UPDATE ON order_clo
 CREATE TRIGGER IF NOT EXISTS order_closures_no_delete BEFORE DELETE ON order_closures BEGIN SELECT RAISE(ABORT,'order_closures is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS order_closure_history_no_update BEFORE UPDATE ON order_closure_history BEGIN SELECT RAISE(ABORT,'order_closure_history is append-only'); END;
 CREATE TRIGGER IF NOT EXISTS order_closure_history_no_delete BEFORE DELETE ON order_closure_history BEGIN SELECT RAISE(ABORT,'order_closure_history is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS inventory_market_price_observations_no_update BEFORE UPDATE ON inventory_market_price_observations BEGIN SELECT RAISE(ABORT,'inventory_market_price_observations is append-only'); END;
+CREATE TRIGGER IF NOT EXISTS inventory_market_price_observations_no_delete BEFORE DELETE ON inventory_market_price_observations BEGIN SELECT RAISE(ABORT,'inventory_market_price_observations is append-only'); END;
 '''
