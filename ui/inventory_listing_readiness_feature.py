@@ -2,6 +2,7 @@ from uuid import uuid4
 
 from PySide6.QtCore import QThread, QTimer, Signal
 from PySide6.QtWidgets import (
+    QAbstractItemView,
     QComboBox,
     QDialog,
     QDialogButtonBox,
@@ -14,6 +15,7 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QMessageBox,
     QPushButton,
+    QTableWidget,
     QTableWidgetItem,
 )
 
@@ -95,6 +97,47 @@ class ListingDetailsDialog(QDialog):
 
 
 
+class MarketPriceHistoryDialog(QDialog):
+    def __init__(self, rows, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle('Market Price History')
+        form = QFormLayout(self)
+        self.table = QTableWidget(len(rows), 6)
+        self.table.setHorizontalHeaderLabels(
+            ('Observed', 'Price', 'Status', 'Source', 'Match', 'Error')
+        )
+        self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.table.setAlternatingRowColors(True)
+        for row_index, row in enumerate(rows):
+            status = str(row.get('price_status', '') or '')
+            price = row.get('market_price_minor')
+            if status == PRICE_UPDATED and price is not None:
+                price_text = '{} ${:,.2f}'.format(
+                    row.get('currency', 'USD'), int(price) / 100
+                )
+            else:
+                price_text = 'Price unavailable'
+            values = (
+                row.get('observed_at', '') or '—',
+                price_text,
+                status.replace('_', ' ').title() or 'Unknown',
+                row.get('source_name', '') or '—',
+                row.get('match_reference', '') or '—',
+                row.get('error_message', '') or '—',
+            )
+            for column, value in enumerate(values):
+                self.table.setItem(row_index, column, QTableWidgetItem(str(value)))
+        self.table.resizeColumnsToContents()
+        form.addRow('Observations', self.table)
+        if not rows:
+            self.empty_state = QLabel('No market price observations recorded yet.')
+            form.addRow('', self.empty_state)
+        buttons = QDialogButtonBox(QDialogButtonBox.Close)
+        buttons.clicked.connect(lambda: self.reject())
+        form.addRow('', buttons)
+
+
 class ListingDraftDialog(QDialog):
     def __init__(self, detail, parent=None):
         super().__init__(parent)
@@ -134,6 +177,8 @@ class ListingDraftDialog(QDialog):
         form.addRow('Updated', self.market_price_updated)
         form.addRow('Source', self.market_price_source)
         form.addRow('', self.refresh_price_button)
+        self.market_price_history_button = QPushButton('View Price History')
+        form.addRow('', self.market_price_history_button)
         self.set_market_price_detail(detail)
         self.copy_title = QPushButton('Copy Title')
         self.copy_title.clicked.connect(lambda: QApplication.clipboard().setText(self.listing_title.text()))
@@ -192,6 +237,11 @@ def _online_market_summary(detail):
     source = detail.get('online_market_source_name') or 'TCGplayer API'
     updated = detail.get('online_market_updated_at') or 'Never'
     return f"{value} • Status: {status} • Updated: {updated} • Source: {source}"
+
+
+def _show_market_price_history(window, asset_id, parent=None):
+    rows = window.inventory_service.list_market_price_history(asset_id)
+    MarketPriceHistoryDialog(rows, parent or window).exec()
 
 
 def _finish_market_price_refresh(window, asset_id, result, dialog=None):
@@ -302,6 +352,9 @@ def edit_listing_draft(window):
     dialog = ListingDraftDialog(window.inventory_service.get_asset_detail(asset_id), window)
     dialog.refresh_price_button.clicked.connect(
         lambda: _start_market_price_refresh(window, asset_id, dialog=dialog)
+    )
+    dialog.market_price_history_button.clicked.connect(
+        lambda: _show_market_price_history(window, asset_id, parent=dialog)
     )
     if dialog.exec() != QDialog.Accepted:
         return
