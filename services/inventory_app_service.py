@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime, timezone
 from pathlib import Path
 from core.database_manager import DatabaseManager
 from core.event_repository import EventRepository
@@ -68,8 +69,8 @@ class InventoryAppService(AuthoritativeService):
         state_column = ',a.state' if include_state else ''
         detail_columns = ",COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor,COALESCE(NULLIF(l.sku,''),COALESCE(x.sku,'')) sku" if include_details else ''
         if include_details or listing_filter:
-            detail_columns += ",COALESCE(l.listing_status,'Not Listed') listing_status,COALESCE(l.marketplace,'') marketplace,COALESCE(l.asking_price_minor,0) asking_price_minor,COALESCE(l.sku,'') listing_sku,COALESCE(l.listing_title,'') listing_title,COALESCE(l.listing_notes,'') listing_notes,COALESCE(p.photos_ready,'Not Evaluated') photos_ready,COALESCE(p.photo_reference,'') photo_reference,COALESCE(s.shipping_path,'Not Evaluated') shipping_path,COALESCE(s.shipping_notes,'') shipping_notes,COALESCE(d.marketplace,'') draft_marketplace,COALESCE(d.listing_title,'') draft_listing_title,COALESCE(d.description_notes,'') draft_description_notes,COALESCE(d.asking_price_minor,0) draft_asking_price_minor,COALESCE(d.quantity,0) draft_quantity,COALESCE(d.sku,'') draft_sku,COALESCE(d.shipping_method,'') draft_shipping_method,COALESCE(d.draft_status,'') draft_status"
-        detail_joins = ' LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id LEFT JOIN inventory_import_details x ON x.asset_id=a.asset_id' if include_details else ''
+            detail_columns += ",COALESCE(l.listing_status,'Not Listed') listing_status,COALESCE(l.marketplace,'') marketplace,COALESCE(l.asking_price_minor,0) asking_price_minor,COALESCE(l.sku,'') listing_sku,COALESCE(l.listing_title,'') listing_title,COALESCE(l.listing_notes,'') listing_notes,COALESCE(p.photos_ready,'Not Evaluated') photos_ready,COALESCE(p.photo_reference,'') photo_reference,COALESCE(s.shipping_path,'Not Evaluated') shipping_path,COALESCE(s.shipping_notes,'') shipping_notes,COALESCE(d.marketplace,'') draft_marketplace,COALESCE(d.listing_title,'') draft_listing_title,COALESCE(d.description_notes,'') draft_description_notes,COALESCE(d.asking_price_minor,0) draft_asking_price_minor,COALESCE(d.quantity,0) draft_quantity,COALESCE(d.sku,'') draft_sku,COALESCE(d.shipping_method,'') draft_shipping_method,COALESCE(d.draft_status,'') draft_status,op.online_market_price_minor online_market_price_minor,COALESCE(op.currency,'USD') online_market_currency,COALESCE(op.source_name,'') online_market_source_name,COALESCE(op.source_url,'') online_market_source_url,COALESCE(op.last_updated,'') online_market_updated_at,COALESCE(op.price_status,'PRICE_UNAVAILABLE') online_market_price_status,COALESCE(op.error_message,'') online_market_error_message,COALESCE(op.match_reference,'') online_market_match_reference"
+        detail_joins = ' LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id LEFT JOIN inventory_import_details x ON x.asset_id=a.asset_id LEFT JOIN inventory_online_market_prices op ON op.asset_id=a.asset_id' if include_details else ''
         if include_details or listing_filter:
             detail_joins += ' LEFT JOIN inventory_listing_details l ON l.asset_id=a.asset_id'
         if include_details:
@@ -138,7 +139,7 @@ class InventoryAppService(AuthoritativeService):
 
     def get_asset_detail(self, asset_id):
         with self.database.read_connection() as connection:
-            row = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,a.state,i.quantity,i.total_cost_minor,i.verified_at,COALESCE(b.purchase_date,'') purchase_date,COALESCE(b.purchase_source,'') purchase_source,COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor,COALESCE(NULLIF(l.sku,''),COALESCE(x.sku,'')) sku,COALESCE(l.listing_status,'Not Listed') listing_status,COALESCE(l.marketplace,'') marketplace,COALESCE(l.asking_price_minor,0) asking_price_minor,COALESCE(l.listing_title,'') listing_title,COALESCE(l.listing_notes,'') listing_notes,COALESCE(p.photos_ready,'Not Evaluated') photos_ready,COALESCE(p.photo_reference,'') photo_reference,COALESCE(s.shipping_path,'Not Evaluated') shipping_path,COALESCE(s.shipping_notes,'') shipping_notes,COALESCE(d.marketplace,'') draft_marketplace,COALESCE(d.listing_title,'') draft_listing_title,COALESCE(d.description_notes,'') draft_description_notes,COALESCE(d.asking_price_minor,0) draft_asking_price_minor,COALESCE(d.quantity,0) draft_quantity,COALESCE(d.sku,'') draft_sku,COALESCE(d.shipping_method,'') draft_shipping_method,COALESCE(d.draft_status,'') draft_status FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id LEFT JOIN inventory_import_details x ON x.asset_id=a.asset_id LEFT JOIN inventory_listing_details l ON l.asset_id=a.asset_id LEFT JOIN inventory_listing_photo_evidence p ON p.asset_id=a.asset_id LEFT JOIN inventory_listing_shipping_evidence s ON s.asset_id=a.asset_id LEFT JOIN inventory_listing_drafts d ON d.asset_id=a.asset_id WHERE a.asset_id=?", (asset_id,)).fetchone()
+            row = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,a.state,i.quantity,i.total_cost_minor,i.verified_at,COALESCE(b.purchase_date,'') purchase_date,COALESCE(b.purchase_source,'') purchase_source,COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor,COALESCE(NULLIF(l.sku,''),COALESCE(x.sku,'')) sku,COALESCE(l.listing_status,'Not Listed') listing_status,COALESCE(l.marketplace,'') marketplace,COALESCE(l.asking_price_minor,0) asking_price_minor,COALESCE(l.listing_title,'') listing_title,COALESCE(l.listing_notes,'') listing_notes,COALESCE(p.photos_ready,'Not Evaluated') photos_ready,COALESCE(p.photo_reference,'') photo_reference,COALESCE(s.shipping_path,'Not Evaluated') shipping_path,COALESCE(s.shipping_notes,'') shipping_notes,COALESCE(d.marketplace,'') draft_marketplace,COALESCE(d.listing_title,'') draft_listing_title,COALESCE(d.description_notes,'') draft_description_notes,COALESCE(d.asking_price_minor,0) draft_asking_price_minor,COALESCE(d.quantity,0) draft_quantity,COALESCE(d.sku,'') draft_sku,COALESCE(d.shipping_method,'') draft_shipping_method,COALESCE(d.draft_status,'') draft_status,op.online_market_price_minor online_market_price_minor,COALESCE(op.currency,'USD') online_market_currency,COALESCE(op.source_name,'') online_market_source_name,COALESCE(op.source_url,'') online_market_source_url,COALESCE(op.last_updated,'') online_market_updated_at,COALESCE(op.price_status,'PRICE_UNAVAILABLE') online_market_price_status,COALESCE(op.error_message,'') online_market_error_message,COALESCE(op.match_reference,'') online_market_match_reference FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id LEFT JOIN inventory_import_details x ON x.asset_id=a.asset_id LEFT JOIN inventory_online_market_prices op ON op.asset_id=a.asset_id LEFT JOIN inventory_listing_details l ON l.asset_id=a.asset_id LEFT JOIN inventory_listing_photo_evidence p ON p.asset_id=a.asset_id LEFT JOIN inventory_listing_shipping_evidence s ON s.asset_id=a.asset_id LEFT JOIN inventory_listing_drafts d ON d.asset_id=a.asset_id LEFT JOIN inventory_online_market_prices op ON op.asset_id=a.asset_id WHERE a.asset_id=?", (asset_id,)).fetchone()
         if row is None: raise ValueError('Inventory asset not found')
         detail = dict(row)
         detail.update(_derive_listing_readiness(detail))
@@ -233,6 +234,37 @@ class InventoryAppService(AuthoritativeService):
             connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id,'INVENTORY_LISTING_DRAFT',asset_id,'VERIFIED',event.committed_at))
             self._verify_event(connection, event)
         return self.get_asset_detail(asset_id)
+
+
+    def record_online_market_price(self, *, asset_id, online_market_price_minor=None, currency='USD', source_name='', source_url='', last_updated=None, price_status='PRICE_UNAVAILABLE', error_message='', match_reference='', request_id):
+        detail = self.get_asset_detail(asset_id)
+        if detail['state'] != 'COMPLETED':
+            raise ValueError('Archived inventory market prices cannot be updated')
+        allowed_statuses = {'UPDATED', 'PRICE_UNAVAILABLE', 'CREDENTIALS_MISSING', 'NETWORK_ERROR', 'INVALID_MATCH'}
+        price = None if online_market_price_minor is None else int(online_market_price_minor)
+        if price is not None and price < 0:
+            raise ValueError('Online market price cannot be negative')
+        if price_status not in allowed_statuses:
+            raise ValueError('Unsupported online market price status')
+        recorded_at = str(last_updated or datetime.now(timezone.utc).isoformat())
+        values = {
+            'online_market_price_minor': price,
+            'currency': str(currency or 'USD').strip() or 'USD',
+            'source_name': str(source_name or '').strip(),
+            'source_url': str(source_url or '').strip(),
+            'last_updated': recorded_at,
+            'price_status': str(price_status).strip(),
+            'error_message': str(error_message or '').strip(),
+            'match_reference': str(match_reference or '').strip(),
+        }
+        event = self._new_event('INVENTORY_ONLINE_MARKET_PRICE_UPDATED', request_id, {'asset_id': asset_id, **values})
+        with self.database.transaction() as connection:
+            self._append_event_and_audit(connection, event, 'record_inventory_online_market_price')
+            connection.execute("INSERT INTO inventory_online_market_prices(asset_id,online_market_price_minor,currency,source_name,source_url,last_updated,price_status,error_message,match_reference,last_event_id,verified_at) VALUES (?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_id) DO UPDATE SET online_market_price_minor=excluded.online_market_price_minor,currency=excluded.currency,source_name=excluded.source_name,source_url=excluded.source_url,last_updated=excluded.last_updated,price_status=excluded.price_status,error_message=excluded.error_message,match_reference=excluded.match_reference,last_event_id=excluded.last_event_id,verified_at=excluded.verified_at", (asset_id, values['online_market_price_minor'], values['currency'], values['source_name'], values['source_url'], values['last_updated'], values['price_status'], values['error_message'], values['match_reference'], event.event_id, event.committed_at))
+            connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id, 'INVENTORY_ONLINE_MARKET_PRICE', asset_id, 'VERIFIED', event.committed_at))
+            self._verify_event(connection, event)
+        return self.get_asset_detail(asset_id)
+
 
     def update_listing_details(self, *, asset_id, listing_status='Not Listed', marketplace='', asking_price_minor=0, sku='', storage_location='', listing_title='', listing_notes='', photos_ready=None, photo_reference=None, shipping_path=None, shipping_notes=None, request_id):
         detail = self.get_asset_detail(asset_id)
