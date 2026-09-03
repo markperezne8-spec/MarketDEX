@@ -6,6 +6,10 @@ def unit_cost_minor(row):
     return 0 if quantity <= 0 else round(int(row['total_cost_minor']) / quantity)
 
 
+def unit_cost_column_index(headers):
+    return headers.index('Unit Cost') if 'Unit Cost' in headers else len(headers)
+
+
 def intake_quality(detail):
     fields = ('purchase_date', 'purchase_source', 'storage_location', 'notes')
     completed = sum(bool(str(detail.get(field) or '').strip()) for field in fields)
@@ -14,8 +18,12 @@ def intake_quality(detail):
 
 def install_inventory_cost_feature(window):
     table = window.inventory_table
-    table.setColumnCount(5)
-    table.setHorizontalHeaderLabels(['Asset', 'Type', 'Qty', 'Total Cost', 'Unit Cost'])
+    headers = [table.horizontalHeaderItem(index).text() if table.horizontalHeaderItem(index) is not None else '' for index in range(table.columnCount())]
+    unit_cost_column = unit_cost_column_index(headers)
+    if unit_cost_column == len(headers):
+        table.insertColumn(unit_cost_column)
+        headers.append('Unit Cost')
+    table.setHorizontalHeaderLabels(headers)
 
     quality = QLabel('INTAKE QUALITY: Select one inventory asset.')
     quality.setWordWrap(True)
@@ -29,7 +37,7 @@ def install_inventory_cost_feature(window):
     def refresh_inventory():
         original_refresh_inventory()
         for row_index, row in enumerate(window.inventory_rows):
-            table.setItem(row_index, 4, QTableWidgetItem(window._money(unit_cost_minor(row))))
+            table.setItem(row_index, unit_cost_column, QTableWidgetItem(window._money(unit_cost_minor(row))))
         table.resizeColumnsToContents()
 
     def show_selected():
