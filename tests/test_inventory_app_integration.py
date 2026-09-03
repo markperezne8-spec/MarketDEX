@@ -65,3 +65,38 @@ def test_typed_inventory_adjustments_persist_activity_and_block_negative_quantit
     history=reopened.list_item_activity('asset-1'); assert [(row['adjustment_type'],row['quantity_delta'],row['reason'],row['resulting_quantity']) for row in history]==[('SOLD_OUTSIDE_PLATFORM',-1,'Cash sale at show',4),('ADD_STOCK',3,'Bought local collection',5)]
     with pytest.raises(ValueError,match='negative'): reopened.record_adjustment(asset_id='asset-1',adjustment_type='DAMAGED',quantity_delta=-5,reason='Water damage',request_id='adjust-3')
     with pytest.raises(ValueError,match='reason'): reopened.record_adjustment(asset_id='asset-1',adjustment_type='CORRECTION',quantity_delta=1,reason='',request_id='adjust-4')
+
+
+
+def test_listing_details_persist_filters_and_queue_after_reopen(tmp_path):
+    service = InventoryAppService(tmp_path / 'marketdex.sqlite3')
+    service.add_asset(asset_id='asset-1', asset_name='Charizard ex', asset_type='SINGLE', quantity=2, total_cost_minor=12000, request_id='add-1')
+    service.add_asset(asset_id='asset-2', asset_name='Chaos Rising ETB', asset_type='SEALED', quantity=1, total_cost_minor=5000, request_id='add-2')
+    service.add_asset(asset_id='asset-3', asset_name='Pikachu', asset_type='SINGLE', quantity=3, total_cost_minor=9000, request_id='add-3')
+    service.update_listing_details(asset_id='asset-1', listing_status='Ready to List', marketplace='eBay', asking_price_minor=18500, sku='CHAR-151-NM', storage_location='Binder A', listing_title='Charizard ex 199/165 Near Mint', listing_notes='Photograph front and back', request_id='listing-1')
+    service.update_listing_details(asset_id='asset-2', listing_status='Listed', marketplace='TCGplayer', asking_price_minor=27500, sku='ETB-CR-001', storage_location='Shelf 2', listing_title='Chaos Rising Elite Trainer Box', listing_notes='Sealed', request_id='listing-2')
+    service.update_listing_details(asset_id='asset-3', listing_status='Ready to List', marketplace='TCGplayer', asking_price_minor=9500, sku='PIKA-001', storage_location='Binder B', listing_title='Pikachu Near Mint', listing_notes='Ready for photos', request_id='listing-3')
+    reopened = InventoryAppService(tmp_path / 'marketdex.sqlite3')
+    detail = reopened.get_asset_detail('asset-1')
+    assert detail['listing_status'] == 'Ready to List'
+    assert detail['marketplace'] == 'eBay'
+    assert detail['asking_price_minor'] == 18500
+    assert detail['sku'] == 'CHAR-151-NM'
+    assert detail['storage_location'] == 'Binder A'
+    assert detail['listing_title'] == 'Charizard ex 199/165 Near Mint'
+    assert detail['listing_notes'] == 'Photograph front and back'
+    assert [row['asset_id'] for row in reopened.list_inventory(include_details=True, listing_queue=True)] == ['asset-1', 'asset-3']
+    assert [row['asset_id'] for row in reopened.list_inventory(include_details=True, listing_status='Ready to List', marketplace='eBay')] == ['asset-1']
+    assert [row['asset_id'] for row in reopened.list_inventory(include_details=True, listing_status='Listed', marketplace='TCGplayer')] == ['asset-2']
+
+
+def test_existing_inventory_listing_defaults_and_validation(tmp_path):
+    service = InventoryAppService(tmp_path / 'marketdex.sqlite3')
+    service.add_asset(asset_id='asset-1', asset_name='Charizard ex', asset_type='SINGLE', quantity=2, total_cost_minor=12000, request_id='add-1')
+    assert service.get_asset_detail('asset-1')['listing_status'] == 'Not Listed'
+    with pytest.raises(ValueError, match='valid listing status'):
+        service.update_listing_details(asset_id='asset-1', listing_status='Unknown', request_id='bad-status')
+    with pytest.raises(ValueError, match='negative'):
+        service.update_listing_details(asset_id='asset-1', asking_price_minor=-1, request_id='bad-price')
+    with pytest.raises(ValueError, match='listing detail change'):
+        service.update_listing_details(asset_id='asset-1', request_id='no-change')
