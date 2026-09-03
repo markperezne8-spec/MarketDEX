@@ -19,7 +19,7 @@ class InventoryAppService(AuthoritativeService):
         if sort_order not in {'ASC','DESC'}: raise ValueError('Unsupported inventory sort order')
         state_column = ',a.state' if include_state else ''
         with self.database.read_connection() as connection:
-            rows = connection.execute(f"SELECT a.asset_id,a.asset_name,a.asset_type{state_column},i.quantity,i.total_cost_minor FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id WHERE a.state=? ORDER BY a.asset_name COLLATE NOCASE,a.asset_id", (state,)).fetchall()
+            rows = connection.execute(f"SELECT a.asset_id,a.asset_name,a.asset_type{state_column},i.quantity,i.total_cost_minor,COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id WHERE a.state=? ORDER BY a.asset_name COLLATE NOCASE,a.asset_id", (state,)).fetchall()
         inventory = [dict(row) for row in rows]
         if search_text: inventory = [row for row in inventory if search_text in row['asset_name'].casefold()]
         if asset_type != 'ALL': inventory = [row for row in inventory if row['asset_type'] == asset_type]
@@ -50,7 +50,7 @@ class InventoryAppService(AuthoritativeService):
 
     def get_asset_detail(self, asset_id):
         with self.database.read_connection() as connection:
-            row = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,a.state,i.quantity,i.total_cost_minor,i.verified_at,COALESCE(b.purchase_date,'') purchase_date,COALESCE(b.purchase_source,'') purchase_source,COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id WHERE a.asset_id=?", (asset_id,)).fetchone()
+            row = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,a.state,i.quantity,i.total_cost_minor,i.verified_at,COALESCE(b.purchase_date,'') purchase_date,COALESCE(b.purchase_source,'') purchase_source,COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id WHERE a.asset_id=?", (asset_id,)).fetchone()
         if row is None: raise ValueError('Inventory asset not found')
         return dict(row)
 
@@ -72,6 +72,19 @@ class InventoryAppService(AuthoritativeService):
             self._append_event_and_audit(connection, event, 'update_inventory_business_details')
             connection.execute("INSERT INTO inventory_business_details(asset_id,purchase_date,purchase_source,storage_location,notes,last_event_id,verified_at) VALUES (?,?,?,?,?,?,?) ON CONFLICT(asset_id) DO UPDATE SET purchase_date=excluded.purchase_date,purchase_source=excluded.purchase_source,storage_location=excluded.storage_location,notes=excluded.notes,last_event_id=excluded.last_event_id,verified_at=excluded.verified_at", (asset_id,values['purchase_date'],values['purchase_source'],values['storage_location'],values['notes'],event.event_id,event.committed_at))
             connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id,'INVENTORY_BUSINESS_DETAILS',asset_id,'VERIFIED',event.committed_at)); self._verify_event(connection, event)
+        return self.get_asset_detail(asset_id)
+
+    def update_tcg_details(self, *, asset_id, product_name='', set_name='', item_condition='', market_price_minor=0, request_id):
+        detail = self.get_asset_detail(asset_id)
+        if detail['state'] != 'COMPLETED': raise ValueError('Archived inventory TCG details cannot be edited')
+        values = {'product_name':str(product_name or '').strip(),'set_name':str(set_name or '').strip(),'item_condition':str(item_condition or '').strip(),'market_price_minor':int(market_price_minor or 0)}
+        if values['market_price_minor'] < 0: raise ValueError('Market price cannot be negative')
+        if all(detail[key] == value for key, value in values.items()): raise ValueError('Enter a TCG inventory detail change')
+        event = self._new_event('INVENTORY_TCG_DETAILS_UPDATED', request_id, {'asset_id':asset_id, **values})
+        with self.database.transaction() as connection:
+            self._append_event_and_audit(connection, event, 'update_inventory_tcg_details')
+            connection.execute("INSERT INTO inventory_market_details(asset_id,product_name,set_name,item_condition,market_price_minor,last_event_id,verified_at) VALUES (?,?,?,?,?,?,?) ON CONFLICT(asset_id) DO UPDATE SET product_name=excluded.product_name,set_name=excluded.set_name,item_condition=excluded.item_condition,market_price_minor=excluded.market_price_minor,last_event_id=excluded.last_event_id,verified_at=excluded.verified_at", (asset_id,values['product_name'],values['set_name'],values['item_condition'],values['market_price_minor'],event.event_id,event.committed_at))
+            connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id,'INVENTORY_TCG_DETAILS',asset_id,'VERIFIED',event.committed_at)); self._verify_event(connection, event)
         return self.get_asset_detail(asset_id)
 
     def adjust_asset(self, *, asset_id, quantity_delta, cost_delta_minor, request_id):
