@@ -3,7 +3,7 @@ os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 
 from PySide6.QtWidgets import QApplication, QDialogButtonBox
 
-from ui.inventory_listing_readiness_feature import ListingDraftDialog
+from ui.inventory_listing_readiness_feature import ListingDraftDialog, MarketPriceHistoryDialog
 
 
 APP = QApplication.instance() or QApplication([])
@@ -51,6 +51,40 @@ def test_listing_draft_market_pricing_section_shows_unavailable_state():
     assert dialog.market_price_value.text() == 'Price unavailable'
     assert 'TCGPLAYER_BEARER_TOKEN' in dialog.market_price_status.text()
     assert dialog.market_price_updated.text() == 'Never'
+    dialog.close()
+    dialog.deleteLater()
+    APP.processEvents()
+
+
+def test_market_price_history_dialog_renders_observations():
+    dialog = MarketPriceHistoryDialog(
+        [
+            {
+                'market_price_minor': 1234,
+                'currency': 'USD',
+                'price_status': 'UPDATED',
+                'source_name': 'TCGplayer API',
+                'observed_at': '2026-09-03T12:00:00+00:00',
+                'match_reference': 'product-123',
+                'error_message': '',
+            },
+            {
+                'market_price_minor': None,
+                'currency': 'USD',
+                'price_status': 'NETWORK_ERROR',
+                'source_name': 'TCGplayer API',
+                'observed_at': '2026-09-03T13:00:00+00:00',
+                'match_reference': '',
+                'error_message': 'Offline',
+            },
+        ]
+    )
+
+    assert dialog.table.rowCount() == 2
+    assert dialog.table.item(0, 1).text() == 'USD $12.34'
+    assert dialog.table.item(0, 2).text() == 'Updated'
+    assert dialog.table.item(1, 1).text() == 'Price unavailable'
+    assert dialog.table.item(1, 5).text() == 'Offline'
     dialog.close()
     dialog.deleteLater()
     APP.processEvents()

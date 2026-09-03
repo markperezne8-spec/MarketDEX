@@ -41,3 +41,8 @@ Never commit the token to GitHub or place it in source code.
 - Condition-specific market price: https://api.tcgplayer.com/pricing/marketprices/{productconditionId}
 
 Documentation: https://docs.tcgplayer.com/docs/getting-started
+
+## Market price history warehouse
+
+Each manual or automatic refresh appends one observation to SQLite, including successful prices and unavailable/error results. The latest result remains in the current online market-price snapshot for fast Draft display, while the **View Price History** action opens the retained observation ledger. This history is local, survives application restart, and never changes the draft or inventory asking price.
+
