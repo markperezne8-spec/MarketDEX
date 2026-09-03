@@ -6,6 +6,35 @@ from repositories.inventory_repository import InventoryRepository
 from services.base_service import AuthoritativeService
 
 LISTING_STATUSES = ('Not Listed', 'Ready to List', 'Listed', 'Sold', 'Hold')
+LISTING_READINESS_STATES = ('READY TO LIST', 'PREPARATION NEEDED', 'BLOCKED', 'NOT EVALUATED')
+
+
+def _derive_listing_readiness(detail):
+    blockers = []
+    if not str(detail.get('asset_name', '') or '').strip():
+        blockers.append('Product identity is missing')
+    if int(detail.get('quantity', 0) or 0) <= 0:
+        blockers.append('Quantity must be greater than zero')
+    if str(detail.get('item_condition', '') or '').strip().casefold() in {'', 'unknown', 'not evaluated'}:
+        blockers.append('Condition must be evaluated')
+    if not str(detail.get('marketplace', '') or '').strip():
+        blockers.append('Marketplace is not selected')
+    if int(detail.get('asking_price_minor', 0) or 0) <= 0:
+        blockers.append('Asking price must be greater than $0.00')
+    if not str(detail.get('sku', '') or '').strip():
+        blockers.append('SKU is missing')
+    if not str(detail.get('listing_title', '') or '').strip():
+        blockers.append('Listing title is missing')
+    if not str(detail.get('storage_location', '') or '').strip():
+        blockers.append('Storage location is missing')
+    hard_blockers = {'Product identity is missing', 'Quantity must be greater than zero', 'Condition must be evaluated'}
+    if not blockers:
+        state = 'READY TO LIST'
+    elif hard_blockers.intersection(blockers):
+        state = 'BLOCKED'
+    else:
+        state = 'PREPARATION NEEDED'
+    return {'readiness_state': state, 'readiness_blockers': blockers, 'readiness_blocker_count': len(blockers)}
 
 
 class InventoryAppService(AuthoritativeService):
@@ -23,7 +52,7 @@ class InventoryAppService(AuthoritativeService):
         if listing_queue: listing_status = 'Ready to List'
         listing_filter = listing_queue or listing_status != 'ALL' or marketplace != 'ALL'
         state_column = ',a.state' if include_state else ''
-        detail_columns = ",COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor,COALESCE(x.sku,'') sku" if include_details else ''
+        detail_columns = ",COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor,COALESCE(NULLIF(l.sku,''),COALESCE(x.sku,'')) sku" if include_details else ''
         if include_details or listing_filter:
             detail_columns += ",COALESCE(l.listing_status,'Not Listed') listing_status,COALESCE(l.marketplace,'') marketplace,COALESCE(l.asking_price_minor,0) asking_price_minor,COALESCE(l.sku,'') listing_sku,COALESCE(l.listing_title,'') listing_title,COALESCE(l.listing_notes,'') listing_notes"
         detail_joins = ' LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id LEFT JOIN inventory_import_details x ON x.asset_id=a.asset_id' if include_details else ''
@@ -32,6 +61,9 @@ class InventoryAppService(AuthoritativeService):
         with self.database.read_connection() as connection:
             rows = connection.execute(f"SELECT a.asset_id,a.asset_name,a.asset_type{state_column},i.quantity,i.total_cost_minor{detail_columns} FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id{detail_joins} WHERE a.state=? ORDER BY a.asset_name COLLATE NOCASE,a.asset_id", (state,)).fetchall()
         inventory = [dict(row) for row in rows]
+        if include_details:
+            for row in inventory:
+                row.update(_derive_listing_readiness(row))
         if search_text:
             inventory = [row for row in inventory if search_text in ' '.join(str(row.get(key, '')) for key in ('asset_name','product_name','set_name','asset_type','storage_location')).casefold()]
         if asset_type != 'ALL': inventory = [row for row in inventory if row['asset_type'] == asset_type]
@@ -71,7 +103,9 @@ class InventoryAppService(AuthoritativeService):
         with self.database.read_connection() as connection:
             row = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,a.state,i.quantity,i.total_cost_minor,i.verified_at,COALESCE(b.purchase_date,'') purchase_date,COALESCE(b.purchase_source,'') purchase_source,COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor,COALESCE(NULLIF(l.sku,''),COALESCE(x.sku,'')) sku,COALESCE(l.listing_status,'Not Listed') listing_status,COALESCE(l.marketplace,'') marketplace,COALESCE(l.asking_price_minor,0) asking_price_minor,COALESCE(l.listing_title,'') listing_title,COALESCE(l.listing_notes,'') listing_notes FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id LEFT JOIN inventory_import_details x ON x.asset_id=a.asset_id LEFT JOIN inventory_listing_details l ON l.asset_id=a.asset_id WHERE a.asset_id=?", (asset_id,)).fetchone()
         if row is None: raise ValueError('Inventory asset not found')
-        return dict(row)
+        detail = dict(row)
+        detail.update(_derive_listing_readiness(detail))
+        return detail
 
     def add_asset(self, *, asset_id, asset_name, asset_type, quantity, total_cost_minor, request_id):
         asset_id = str(asset_id).strip(); asset_name = str(asset_name).strip(); asset_type = str(asset_type).strip().upper(); quantity = int(quantity); total_cost_minor = int(total_cost_minor)
@@ -125,12 +159,20 @@ class InventoryAppService(AuthoritativeService):
             connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id,'INVENTORY_ASSET_UPDATE',asset_id,'VERIFIED',event.committed_at)); self._verify_event(connection, event)
         return self.get_asset_detail(asset_id)
 
+    def get_listing_readiness(self, asset_id):
+        detail = self.get_asset_detail(asset_id)
+        return {key: detail[key] for key in ('readiness_state', 'readiness_blockers', 'readiness_blocker_count')}
+
     def update_listing_details(self, *, asset_id, listing_status='Not Listed', marketplace='', asking_price_minor=0, sku='', storage_location='', listing_title='', listing_notes='', request_id):
         detail = self.get_asset_detail(asset_id)
         if detail['state'] != 'COMPLETED': raise ValueError('Archived inventory listing details cannot be edited')
         values = {'listing_status':str(listing_status or '').strip(),'marketplace':str(marketplace or '').strip(),'asking_price_minor':int(asking_price_minor or 0),'sku':str(sku or '').strip(),'storage_location':str(storage_location or '').strip(),'listing_title':str(listing_title or '').strip(),'listing_notes':str(listing_notes or '').strip()}
         if values['listing_status'] not in LISTING_STATUSES: raise ValueError('Choose a valid listing status')
         if values['asking_price_minor'] < 0: raise ValueError('Asking price cannot be negative')
+        candidate = {**detail, **values}
+        readiness = _derive_listing_readiness(candidate)
+        if values['listing_status'] == 'Ready to List' and readiness['readiness_blockers']:
+            raise ValueError('Ready to List blocked: ' + '; '.join(readiness['readiness_blockers']))
         if all(detail.get(key, '') == value for key, value in values.items()): raise ValueError('Enter a listing detail change')
         event = self._new_event('INVENTORY_LISTING_DETAILS_UPDATED', request_id, {'asset_id':asset_id, **values})
         with self.database.transaction() as connection:
