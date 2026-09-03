@@ -1,5 +1,6 @@
 from uuid import uuid4
 
+from PySide6.QtCore import QThread, QTimer, Signal
 from PySide6.QtWidgets import (
     QComboBox,
     QDialog,
@@ -17,11 +18,28 @@ from PySide6.QtWidgets import (
 )
 
 from services.inventory_app_service import LISTING_STATUSES, SHIPPING_PATHS, DRAFT_MARKETPLACES, DRAFT_STATUSES
+from services.market_pricing_service import MarketPricingService, PRICE_UPDATED
 
 
 LISTING_FILTER_STATUSES = ('ALL',) + LISTING_STATUSES
 LISTING_MARKETPLACES = ('ALL', 'eBay', 'TCGplayer', 'Other')
 DRAFT_FILTER_STATUSES = ('ALL',) + DRAFT_STATUSES
+
+
+
+class MarketPriceWorker(QThread):
+    result_ready = Signal(object)
+
+    def __init__(self, pricing_service, asset_id):
+        super().__init__()
+        self.pricing_service = pricing_service
+        self.asset_id = asset_id
+
+    def run(self):
+        try:
+            self.result_ready.emit(self.pricing_service.refresh_price(self.asset_id))
+        except Exception as exc:
+            self.result_ready.emit({'market_price_worker_error': str(exc)})
 
 
 class ListingDetailsDialog(QDialog):
@@ -105,6 +123,18 @@ class ListingDraftDialog(QDialog):
         self.draft_status.setCurrentText(detail.get('draft_status') or 'Draft')
         for label, widget in (('Marketplace', self.marketplace), ('Listing Title', self.listing_title), ('Description / Notes', self.description_notes), ('Asking Price', self.asking_price), ('Quantity', self.quantity), ('SKU', self.sku), ('Shipping Method', self.shipping_method), ('Draft Status', self.draft_status)):
             form.addRow(label, widget)
+        self.market_price_value = QLabel()
+        self.market_price_status = QLabel()
+        self.market_price_updated = QLabel()
+        self.market_price_source = QLabel()
+        self.market_price_source.setWordWrap(True)
+        self.refresh_price_button = QPushButton('Refresh Price')
+        form.addRow('Market Price', self.market_price_value)
+        form.addRow('Price Status', self.market_price_status)
+        form.addRow('Updated', self.market_price_updated)
+        form.addRow('Source', self.market_price_source)
+        form.addRow('', self.refresh_price_button)
+        self.set_market_price_detail(detail)
         self.copy_title = QPushButton('Copy Title')
         self.copy_title.clicked.connect(lambda: QApplication.clipboard().setText(self.listing_title.text()))
         self.copy_description = QPushButton('Copy Description')
@@ -119,12 +149,95 @@ class ListingDraftDialog(QDialog):
         form.addRow(dialog_buttons)
 
 
+    def set_market_price_detail(self, detail):
+        status = detail.get('online_market_price_status', 'PRICE_UNAVAILABLE')
+        price_minor = detail.get('online_market_price_minor')
+        currency = detail.get('online_market_currency', 'USD')
+        if status == PRICE_UPDATED and price_minor is not None:
+            self.market_price_value.setText(f'{currency} ${int(price_minor) / 100:,.2f}')
+            self.market_price_status.setText('Updated')
+        else:
+            self.market_price_value.setText('Price unavailable')
+            error = detail.get('online_market_error_message', '') or status.replace('_', ' ').title()
+            self.market_price_status.setText(f'Price unavailable — {error}')
+        self.market_price_updated.setText(detail.get('online_market_updated_at') or 'Never')
+        source = detail.get('online_market_source_name') or 'TCGplayer API'
+        self.market_price_source.setText(source)
+        self.market_price_source.setToolTip(detail.get('online_market_source_url', ''))
+
+
 def _reconnect(signal, callback):
     try:
         signal.disconnect()
     except (RuntimeError, TypeError):
         pass
     signal.connect(callback)
+
+
+
+def _market_price_service(window):
+    service = getattr(window, 'market_pricing_service', None)
+    if service is None:
+        service = MarketPricingService(window.inventory_service)
+        window.market_pricing_service = service
+    return service
+
+
+def _online_market_summary(detail):
+    status = detail.get('online_market_price_status', 'PRICE_UNAVAILABLE')
+    if status == PRICE_UPDATED and detail.get('online_market_price_minor') is not None:
+        value = f"{detail.get('online_market_currency', 'USD')} ${int(detail['online_market_price_minor']) / 100:,.2f}"
+    else:
+        value = 'Price unavailable'
+    source = detail.get('online_market_source_name') or 'TCGplayer API'
+    updated = detail.get('online_market_updated_at') or 'Never'
+    return f"{value} • Status: {status} • Updated: {updated} • Source: {source}"
+
+
+def _finish_market_price_refresh(window, asset_id, result, dialog=None):
+    if dialog is not None:
+        if 'market_price_worker_error' in result:
+            dialog.market_price_status.setText(
+                f"Price unavailable — {result['market_price_worker_error']}"
+            )
+        else:
+            dialog.set_market_price_detail(result)
+        dialog.refresh_price_button.setEnabled(True)
+    window.refresh()
+
+
+def _start_market_price_refresh(window, asset_id, dialog=None, force=True):
+    if asset_id is None:
+        return
+    workers = getattr(window, '_market_price_workers', None)
+    if workers is None:
+        workers = {}
+        window._market_price_workers = workers
+    if asset_id in workers:
+        return
+    if dialog is not None:
+        dialog.refresh_price_button.setEnabled(False)
+        dialog.market_price_status.setText('Refreshing…')
+    worker = MarketPriceWorker(_market_price_service(window), asset_id)
+    workers[asset_id] = worker
+    worker.result_ready.connect(
+        lambda result: _finish_market_price_refresh(window, asset_id, result, dialog)
+    )
+    worker.finished.connect(lambda: workers.pop(asset_id, None))
+    worker.start()
+
+
+def _schedule_stale_market_price_refresh(window):
+    pricing_service = _market_price_service(window)
+    if not getattr(pricing_service.provider, 'token', ''):
+        return
+    rows = window.inventory_service.list_inventory(
+        include_details=True,
+        listing_status='Ready to List',
+    )
+    for row in rows:
+        if pricing_service.is_stale(row):
+            _start_market_price_refresh(window, row['asset_id'], force=False)
 
 
 def edit_listing_details(window):
@@ -161,6 +274,35 @@ def edit_listing_draft(window):
     if asset_id is None:
         return
     dialog = ListingDraftDialog(window.inventory_service.get_asset_detail(asset_id), window)
+    if dialog.exec() != QDialog.Accepted:
+        return
+    try:
+        window.inventory_service.update_listing_draft(
+            asset_id=asset_id,
+            marketplace=dialog.marketplace.currentText(),
+            listing_title=dialog.listing_title.text(),
+            description_notes=dialog.description_notes.text(),
+            asking_price_minor=round(dialog.asking_price.value() * 100),
+            quantity=int(dialog.quantity.value()),
+            sku=dialog.sku.text(),
+            shipping_method=dialog.shipping_method.currentText(),
+            draft_status=dialog.draft_status.currentText(),
+            request_id=f'ui-draft-{uuid4().hex}',
+        )
+        window.refresh()
+    except Exception as exc:
+        QMessageBox.critical(window, 'Listing Draft Blocked', str(exc))
+
+
+
+def edit_listing_draft(window):
+    asset_id = window.selected_asset_id()
+    if asset_id is None:
+        return
+    dialog = ListingDraftDialog(window.inventory_service.get_asset_detail(asset_id), window)
+    dialog.refresh_price_button.clicked.connect(
+        lambda: _start_market_price_refresh(window, asset_id, dialog=dialog)
+    )
     if dialog.exec() != QDialog.Accepted:
         return
     try:
@@ -231,6 +373,12 @@ def install_inventory_listing_readiness_feature(window):
     window.inventory_listing_draft_edit_button.setEnabled(False)
     window.inventory_listing_draft_edit_button.clicked.connect(lambda: edit_listing_draft(window))
     filter_bar.addWidget(window.inventory_listing_draft_edit_button)
+    window.inventory_market_price_refresh_button = QPushButton('Refresh Price')
+    window.inventory_market_price_refresh_button.setEnabled(False)
+    window.inventory_market_price_refresh_button.clicked.connect(
+        lambda: _start_market_price_refresh(window, window.selected_asset_id())
+    )
+    filter_bar.addWidget(window.inventory_market_price_refresh_button)
     window.inventory_listing_details_button = QPushButton('Listing Details')
     window.inventory_listing_details_button.setEnabled(False)
     window.inventory_listing_details_button.clicked.connect(lambda: edit_listing_details(window))
@@ -293,12 +441,14 @@ def install_inventory_listing_readiness_feature(window):
         label = 'listing drafts' if drafts else ('listing queue' if queue else ('archived' if window.inventory_view == 'ARCHIVED' else 'active'))
         window.inventory_result.setText(f"Showing {len(window.inventory_rows):,} {label} inventory asset(s) • {window.inventory_sort.currentText()} {window.inventory_sort_order.currentText()}")
         window.show_selected()
+        QTimer.singleShot(0, lambda: _schedule_stale_market_price_refresh(window))
 
     def show_selected():
         original_show_selected()
         asset_id = window.selected_asset_id()
         window.inventory_listing_details_button.setEnabled(bool(asset_id and window.inventory_view == 'ACTIVE'))
         window.inventory_listing_draft_edit_button.setEnabled(bool(asset_id and window.inventory_view == 'ACTIVE'))
+        window.inventory_market_price_refresh_button.setEnabled(bool(asset_id and window.inventory_view == 'ACTIVE'))
         if asset_id is None:
             return
         detail = window.inventory_service.get_asset_detail(asset_id)
@@ -310,6 +460,7 @@ def install_inventory_listing_readiness_feature(window):
             + f"\nREADINESS: {detail.get('readiness_state', 'NOT EVALUATED')} • BLOCKERS: {blockers}"
             + f"\nPHOTOS: {detail.get('photos_ready', 'Not Evaluated')} • PHOTO REFERENCE: {detail.get('photo_reference', '') or '—'}"
             + f"\nSHIPPING: {detail.get('shipping_path', 'Not Evaluated')} • SHIPPING NOTES: {detail.get('shipping_notes', '') or '—'}"
+            + f"\nONLINE MARKET: {_online_market_summary(detail)}"
         )
 
     original_show_selected = window.show_selected
