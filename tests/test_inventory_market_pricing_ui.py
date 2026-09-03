@@ -6,8 +6,10 @@ from PySide6.QtWidgets import QApplication, QDialogButtonBox
 from ui.inventory_listing_readiness_feature import ListingDraftDialog
 
 
+APP = QApplication.instance() or QApplication([])
+
+
 def test_listing_draft_market_pricing_section_shows_updated_state():
-    app = QApplication.instance() or QApplication([])
     dialog = ListingDraftDialog(
         {
             'quantity': 2,
@@ -32,10 +34,13 @@ def test_listing_draft_market_pricing_section_shows_updated_state():
     assert dialog.refresh_price_button.text() == 'Refresh Price'
     assert dialog.findChild(QDialogButtonBox).button(QDialogButtonBox.Save) is not None
     dialog.close()
+    dialog.deleteLater()
+    APP.processEvents()
+    dialog.deleteLater()
+    APP.processEvents()
 
 
 def test_listing_draft_market_pricing_section_shows_unavailable_state():
-    app = QApplication.instance() or QApplication([])
     dialog = ListingDraftDialog(
         {
             'quantity': 1,
