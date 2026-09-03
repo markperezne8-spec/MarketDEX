@@ -54,3 +54,14 @@ def test_inventory_edit_search_filter_totals_delete_and_persistence(tmp_path):
     assert reopened.delete_asset(asset_id='asset-1', request_id='delete-1')['state'] == 'CANCELLED'
     assert reopened.list_inventory(include_details=True) == []
     assert reopened.list_archived_inventory(include_details=True)[0]['storage_location'] == 'Binder A'
+
+
+def test_typed_inventory_adjustments_persist_activity_and_block_negative_quantity(tmp_path):
+    database_path=tmp_path/'marketdex.sqlite3'; service=InventoryAppService(database_path)
+    service.add_asset(asset_id='asset-1',asset_name='Card',asset_type='SINGLE',quantity=2,total_cost_minor=1000,request_id='add-1')
+    service.record_adjustment(asset_id='asset-1',adjustment_type='ADD_STOCK',quantity_delta=3,reason='Bought local collection',request_id='adjust-1')
+    service.record_adjustment(asset_id='asset-1',adjustment_type='SOLD_OUTSIDE_PLATFORM',quantity_delta=-1,reason='Cash sale at show',request_id='adjust-2')
+    reopened=InventoryAppService(database_path); assert reopened.get_asset_detail('asset-1')['quantity']==4; assert reopened.summarize_inventory(reopened.list_inventory())['total_units']==4
+    history=reopened.list_item_activity('asset-1'); assert [(row['adjustment_type'],row['quantity_delta'],row['reason'],row['resulting_quantity']) for row in history]==[('SOLD_OUTSIDE_PLATFORM',-1,'Cash sale at show',4),('ADD_STOCK',3,'Bought local collection',5)]
+    with pytest.raises(ValueError,match='negative'): reopened.record_adjustment(asset_id='asset-1',adjustment_type='DAMAGED',quantity_delta=-5,reason='Water damage',request_id='adjust-3')
+    with pytest.raises(ValueError,match='reason'): reopened.record_adjustment(asset_id='asset-1',adjustment_type='CORRECTION',quantity_delta=1,reason='',request_id='adjust-4')
