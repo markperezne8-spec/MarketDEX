@@ -328,12 +328,12 @@ def test_mission_control_places_next_steps_after_operational_strip_and_above_kpi
     assert window.inventory_panel.layout().itemAt(0).widget() is window.mission_control_surface
     window._apply_mission_control_layout(wide=True)
     layout = window.mission_control_grid
-    assert layout.getItemPosition(layout.indexOf(window.next_steps_panel)) == (3, 0, 1, 2)
+    assert layout.getItemPosition(layout.indexOf(window.next_steps_panel)) == (3, 0, 1, 3)
     assert layout.getItemPosition(layout.indexOf(window.todays_top3_panel)) == (4, 0, 1, 1)
     assert layout.getItemPosition(layout.indexOf(window.capital_health_panel)) == (4, 1, 1, 1)
-    assert layout.getItemPosition(layout.indexOf(window.opportunity_risk_panel)) == (5, 0, 1, 1)
-    assert layout.getItemPosition(layout.indexOf(window.business_scoreboard_panel)) == (5, 1, 1, 1)
-    assert layout.getItemPosition(layout.indexOf(window.dashboard_grid_shell)) == (6, 0, 1, 2)
+    assert layout.getItemPosition(layout.indexOf(window.opportunity_risk_panel)) == (4, 2, 1, 1)
+    assert layout.getItemPosition(layout.indexOf(window.business_scoreboard_panel)) == (5, 0, 1, 3)
+    assert layout.getItemPosition(layout.indexOf(window.dashboard_grid_shell)) == (6, 0, 1, 3)
     assert window.dashboard_grid_shell.property('visualContract') == (
         'm1.14e-north-star-dashboard-grid-shell'
     )
