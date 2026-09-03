@@ -9,6 +9,8 @@ LISTING_STATUSES = ('Not Listed', 'Ready to List', 'Listed', 'Sold', 'Hold')
 LISTING_READINESS_STATES = ('READY TO LIST', 'PREPARATION NEEDED', 'BLOCKED', 'NOT EVALUATED')
 PHOTO_READINESS_STATES = ('Not Evaluated', 'Not Ready', 'Ready')
 SHIPPING_PATHS = ('Not Evaluated', 'Standard Mail', 'Tracked Mail', 'Other')
+DRAFT_MARKETPLACES = ('eBay', 'TCGplayer')
+DRAFT_STATUSES = ('Draft', 'Ready', 'Listed', 'Archived')
 
 
 def _derive_listing_readiness(detail):
@@ -66,12 +68,12 @@ class InventoryAppService(AuthoritativeService):
         state_column = ',a.state' if include_state else ''
         detail_columns = ",COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor,COALESCE(NULLIF(l.sku,''),COALESCE(x.sku,'')) sku" if include_details else ''
         if include_details or listing_filter:
-            detail_columns += ",COALESCE(l.listing_status,'Not Listed') listing_status,COALESCE(l.marketplace,'') marketplace,COALESCE(l.asking_price_minor,0) asking_price_minor,COALESCE(l.sku,'') listing_sku,COALESCE(l.listing_title,'') listing_title,COALESCE(l.listing_notes,'') listing_notes,COALESCE(p.photos_ready,'Not Evaluated') photos_ready,COALESCE(p.photo_reference,'') photo_reference,COALESCE(s.shipping_path,'Not Evaluated') shipping_path,COALESCE(s.shipping_notes,'') shipping_notes"
+            detail_columns += ",COALESCE(l.listing_status,'Not Listed') listing_status,COALESCE(l.marketplace,'') marketplace,COALESCE(l.asking_price_minor,0) asking_price_minor,COALESCE(l.sku,'') listing_sku,COALESCE(l.listing_title,'') listing_title,COALESCE(l.listing_notes,'') listing_notes,COALESCE(p.photos_ready,'Not Evaluated') photos_ready,COALESCE(p.photo_reference,'') photo_reference,COALESCE(s.shipping_path,'Not Evaluated') shipping_path,COALESCE(s.shipping_notes,'') shipping_notes,COALESCE(d.marketplace,'') draft_marketplace,COALESCE(d.listing_title,'') draft_listing_title,COALESCE(d.description_notes,'') draft_description_notes,COALESCE(d.asking_price_minor,0) draft_asking_price_minor,COALESCE(d.quantity,0) draft_quantity,COALESCE(d.sku,'') draft_sku,COALESCE(d.shipping_method,'') draft_shipping_method,COALESCE(d.draft_status,'') draft_status"
         detail_joins = ' LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id LEFT JOIN inventory_import_details x ON x.asset_id=a.asset_id' if include_details else ''
         if include_details or listing_filter:
             detail_joins += ' LEFT JOIN inventory_listing_details l ON l.asset_id=a.asset_id'
         if include_details:
-            detail_joins += ' LEFT JOIN inventory_listing_photo_evidence p ON p.asset_id=a.asset_id LEFT JOIN inventory_listing_shipping_evidence s ON s.asset_id=a.asset_id'
+            detail_joins += ' LEFT JOIN inventory_listing_photo_evidence p ON p.asset_id=a.asset_id LEFT JOIN inventory_listing_shipping_evidence s ON s.asset_id=a.asset_id LEFT JOIN inventory_listing_drafts d ON d.asset_id=a.asset_id'
         with self.database.read_connection() as connection:
             rows = connection.execute(f"SELECT a.asset_id,a.asset_name,a.asset_type{state_column},i.quantity,i.total_cost_minor{detail_columns} FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id{detail_joins} WHERE a.state=? ORDER BY a.asset_name COLLATE NOCASE,a.asset_id", (state,)).fetchall()
         inventory = [dict(row) for row in rows]
@@ -197,6 +199,40 @@ class InventoryAppService(AuthoritativeService):
     def get_listing_readiness(self, asset_id):
         detail = self.get_asset_detail(asset_id)
         return {key: detail[key] for key in ('readiness_state', 'readiness_blockers', 'readiness_blocker_count')}
+
+    def list_listing_drafts(self, *, marketplace='ALL', draft_status='ALL'):
+        if marketplace != 'ALL' and marketplace not in DRAFT_MARKETPLACES: raise ValueError('Unsupported draft marketplace')
+        if draft_status != 'ALL' and draft_status not in DRAFT_STATUSES: raise ValueError('Unsupported draft status')
+        rows = [row for row in self.list_inventory(include_details=True) if row.get('draft_status')]
+        if marketplace != 'ALL': rows = [row for row in rows if row.get('draft_marketplace') == marketplace]
+        if draft_status != 'ALL': rows = [row for row in rows if row.get('draft_status') == draft_status]
+        return rows
+
+    def update_listing_draft(self, *, asset_id, marketplace=None, listing_title=None, description_notes=None, asking_price_minor=None, quantity=None, sku=None, shipping_method=None, draft_status='Draft', request_id):
+        detail = self.get_asset_detail(asset_id)
+        if detail['state'] != 'COMPLETED': raise ValueError('Archived inventory listing drafts cannot be edited')
+        if detail.get('listing_status') != 'Ready to List': raise ValueError('Only Ready to List inventory can have a draft')
+        values = {
+            'marketplace': detail.get('marketplace', '') if marketplace is None else str(marketplace or '').strip(),
+            'listing_title': detail.get('listing_title', '') if listing_title is None else str(listing_title or '').strip(),
+            'description_notes': detail.get('listing_notes', '') if description_notes is None else str(description_notes or '').strip(),
+            'asking_price_minor': int(detail.get('asking_price_minor', 0) if asking_price_minor is None else asking_price_minor),
+            'quantity': int(detail.get('quantity', 0) if quantity is None else quantity),
+            'sku': detail.get('sku', '') if sku is None else str(sku or '').strip(),
+            'shipping_method': detail.get('shipping_path', 'Not Evaluated') if shipping_method is None else str(shipping_method or '').strip(),
+            'draft_status': str(draft_status or '').strip(),
+        }
+        if values['marketplace'] not in DRAFT_MARKETPLACES: raise ValueError('Choose eBay or TCGplayer for the draft marketplace')
+        if values['draft_status'] not in DRAFT_STATUSES: raise ValueError('Choose a valid draft status')
+        if values['quantity'] <= 0 or values['quantity'] > int(detail.get('quantity', 0)): raise ValueError('Draft quantity must be greater than zero and cannot exceed inventory quantity')
+        if values['asking_price_minor'] < 0: raise ValueError('Draft asking price cannot be negative')
+        event = self._new_event('INVENTORY_LISTING_DRAFT_UPDATED', request_id, {'asset_id': asset_id, **values})
+        with self.database.transaction() as connection:
+            self._append_event_and_audit(connection, event, 'update_inventory_listing_draft')
+            connection.execute("INSERT INTO inventory_listing_drafts(draft_id,asset_id,marketplace,listing_title,description_notes,asking_price_minor,quantity,sku,shipping_method,draft_status,last_event_id,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_id) DO UPDATE SET marketplace=excluded.marketplace,listing_title=excluded.listing_title,description_notes=excluded.description_notes,asking_price_minor=excluded.asking_price_minor,quantity=excluded.quantity,sku=excluded.sku,shipping_method=excluded.shipping_method,draft_status=excluded.draft_status,last_event_id=excluded.last_event_id,updated_at=excluded.updated_at", (f"draft-{asset_id}",asset_id,values['marketplace'],values['listing_title'],values['description_notes'],values['asking_price_minor'],values['quantity'],values['sku'],values['shipping_method'],values['draft_status'],event.event_id,event.committed_at))
+            connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id,'INVENTORY_LISTING_DRAFT',asset_id,'VERIFIED',event.committed_at))
+            self._verify_event(connection, event)
+        return self.get_asset_detail(asset_id)
 
     def update_listing_details(self, *, asset_id, listing_status='Not Listed', marketplace='', asking_price_minor=0, sku='', storage_location='', listing_title='', listing_notes='', photos_ready=None, photo_reference=None, shipping_path=None, shipping_notes=None, request_id):
         detail = self.get_asset_detail(asset_id)
