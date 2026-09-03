@@ -183,6 +183,7 @@ def install_inventory_listing_readiness_feature(window):
         return
     window.inventory_listing_readiness_installed = True
     window.inventory_listing_queue = False
+    window.inventory_listing_draft_workspace = False
 
     filter_bar = QHBoxLayout()
     filter_bar.addWidget(QLabel('Listing Status'))
@@ -193,6 +194,17 @@ def install_inventory_listing_readiness_feature(window):
     window.inventory_listing_marketplace_filter = QComboBox()
     window.inventory_listing_marketplace_filter.addItems(LISTING_MARKETPLACES)
     filter_bar.addWidget(window.inventory_listing_marketplace_filter)
+    window.inventory_listing_draft_button = QPushButton('Listing Drafts')
+    window.inventory_listing_draft_button.setCheckable(True)
+    window.inventory_listing_draft_button.clicked.connect(lambda: toggle_listing_drafts(window))
+    filter_bar.addWidget(window.inventory_listing_draft_button)
+    window.inventory_listing_draft_status_filter = QComboBox()
+    window.inventory_listing_draft_status_filter.addItems(('ALL', 'Draft', 'Ready', 'Listed', 'Archived'))
+    filter_bar.addWidget(window.inventory_listing_draft_status_filter)
+    window.inventory_listing_draft_edit_button = QPushButton('Listing Draft')
+    window.inventory_listing_draft_edit_button.setEnabled(False)
+    window.inventory_listing_draft_edit_button.clicked.connect(lambda: edit_listing_draft(window))
+    filter_bar.addWidget(window.inventory_listing_draft_edit_button)
     window.inventory_listing_details_button = QPushButton('Listing Details')
     window.inventory_listing_details_button.setEnabled(False)
     window.inventory_listing_details_button.clicked.connect(lambda: edit_listing_details(window))
@@ -211,7 +223,14 @@ def install_inventory_listing_readiness_feature(window):
     def refresh_inventory():
         listing = window.inventory_service.list_archived_inventory if window.inventory_view == 'ARCHIVED' else window.inventory_service.list_inventory
         queue = bool(window.inventory_listing_queue and window.inventory_view == 'ACTIVE')
-        window.inventory_rows = listing(
+        drafts = bool(window.inventory_listing_draft_workspace and window.inventory_view == 'ACTIVE')
+        if drafts:
+            window.inventory_rows = window.inventory_service.list_listing_drafts(
+                marketplace=window.inventory_listing_marketplace_filter.currentText(),
+                draft_status=window.inventory_listing_draft_status_filter.currentText(),
+            )
+        else:
+            window.inventory_rows = listing(
             search_text=window.inventory_search.text(),
             asset_type=window.inventory_type_filter.currentText(),
             item_condition=window.inventory_condition_filter.currentText(),
@@ -220,8 +239,8 @@ def install_inventory_listing_readiness_feature(window):
             include_details=True,
             listing_status=window.inventory_listing_status_filter.currentText(),
             marketplace=window.inventory_listing_marketplace_filter.currentText(),
-            listing_queue=queue,
-        )
+                listing_queue=queue,
+            )
         window.inventory_table.setRowCount(len(window.inventory_rows))
         summary = window.inventory_service.summarize_inventory(window.inventory_rows)
         window.inventory_summary['asset_count'].setText(f"{summary['asset_count']:,}")
@@ -245,7 +264,7 @@ def install_inventory_listing_readiness_feature(window):
             for column, value in enumerate(values):
                 window.inventory_table.setItem(row_index, column, QTableWidgetItem(str(value)))
         window.inventory_table.resizeColumnsToContents()
-        label = 'listing queue' if queue else ('archived' if window.inventory_view == 'ARCHIVED' else 'active')
+        label = 'listing drafts' if drafts else ('listing queue' if queue else ('archived' if window.inventory_view == 'ARCHIVED' else 'active'))
         window.inventory_result.setText(f"Showing {len(window.inventory_rows):,} {label} inventory asset(s) • {window.inventory_sort.currentText()} {window.inventory_sort_order.currentText()}")
         window.show_selected()
 
@@ -253,6 +272,7 @@ def install_inventory_listing_readiness_feature(window):
         original_show_selected()
         asset_id = window.selected_asset_id()
         window.inventory_listing_details_button.setEnabled(bool(asset_id and window.inventory_view == 'ACTIVE'))
+        window.inventory_listing_draft_edit_button.setEnabled(bool(asset_id and window.inventory_view == 'ACTIVE'))
         if asset_id is None:
             return
         detail = window.inventory_service.get_asset_detail(asset_id)
@@ -278,6 +298,7 @@ def install_inventory_listing_readiness_feature(window):
         (window.inventory_sort_order.currentTextChanged, refresh_inventory),
         (window.inventory_listing_status_filter.currentTextChanged, refresh_inventory),
         (window.inventory_listing_marketplace_filter.currentTextChanged, refresh_inventory),
+        (window.inventory_listing_draft_status_filter.currentTextChanged, refresh_inventory),
     ):
         _reconnect(signal, callback)
     _reconnect(window.inventory_table.itemSelectionChanged, window.show_selected)
