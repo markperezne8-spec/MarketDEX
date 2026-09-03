@@ -138,10 +138,16 @@ def test_stale_price_refresh_persists_without_changing_asking_price(tmp_path):
     refreshed = service.refresh_stale_prices()
 
     assert len(refreshed) == 1
-    saved = inventory.get_asset_detail('asset-1')
+    reopened = InventoryAppService(tmp_path / 'marketdex.sqlite3')
+    saved = reopened.get_asset_detail('asset-1')
     assert saved['online_market_price_minor'] == 3100
     assert saved['online_market_price_status'] == PRICE_UPDATED
     assert saved['asking_price_minor'] == 2500
+    history = reopened.list_market_price_history('asset-1')
+    assert len(history) == 2
+    assert history[0]['market_price_minor'] == 3100
+    assert history[0]['source_name'] == 'Mock TCGplayer API'
+    assert history[1]['market_price_minor'] == 1800
 
 
 def test_missing_credentials_is_explicit_and_does_not_call_network():
@@ -186,3 +192,43 @@ def test_unavailable_product_price_is_distinguished_from_invalid_match():
 
     assert result.price_status == PRICE_UNAVAILABLE
     assert 'No market price' in result.error_message
+
+
+def test_market_price_history_retains_unavailable_status_and_error(tmp_path):
+    inventory = InventoryAppService(tmp_path / 'marketdex.sqlite3')
+    inventory.add_asset(
+        asset_id='asset-2',
+        asset_name='Mew',
+        asset_type='SINGLE',
+        quantity=1,
+        total_cost_minor=100,
+        request_id='add-2',
+    )
+    inventory.record_online_market_price(
+        asset_id='asset-2',
+        online_market_price_minor=None,
+        currency='USD',
+        source_name='TCGplayer API',
+        source_url='https://api.tcgplayer.com/catalog/products',
+        last_updated='2026-09-03T12:00:00+00:00',
+        price_status=NETWORK_ERROR,
+        error_message='Offline',
+        request_id='price-error',
+    )
+
+    reopened = InventoryAppService(tmp_path / 'marketdex.sqlite3')
+    history = reopened.list_market_price_history('asset-2')
+
+    assert history == [{
+        'observation_id': history[0]['observation_id'],
+        'asset_id': 'asset-2',
+        'market_price_minor': None,
+        'currency': 'USD',
+        'source_name': 'TCGplayer API',
+        'source_url': 'https://api.tcgplayer.com/catalog/products',
+        'observed_at': '2026-09-03T12:00:00+00:00',
+        'price_status': NETWORK_ERROR,
+        'error_message': 'Offline',
+        'match_reference': '',
+    }]
+    assert reopened.get_asset_detail('asset-2')['asking_price_minor'] == 0
