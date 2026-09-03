@@ -14,7 +14,7 @@ class InventoryWorkspaceControlLayout(QWidget):
         *,
         action_widgets: tuple[QWidget, ...],
         search_widget: QWidget,
-        filter_widget: QWidget,
+        filter_widget: QWidget | tuple[QWidget, ...],
         sort_widget: QWidget,
         sort_order_widget: QWidget,
         parent: QWidget | None = None,
@@ -42,7 +42,8 @@ class InventoryWorkspaceControlLayout(QWidget):
         query.setContentsMargins(0, 0, 0, 0)
         query.setSpacing(8)
         query.addWidget(search_widget, 1)
-        query.addWidget(filter_widget)
+        for widget in (filter_widget if isinstance(filter_widget, tuple) else (filter_widget,)):
+            query.addWidget(widget)
         query.addWidget(QLabel("Sort by"))
         query.addWidget(sort_widget)
         query.addWidget(sort_order_widget)
