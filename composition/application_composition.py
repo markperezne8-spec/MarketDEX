@@ -177,7 +177,8 @@ class ApplicationComposition:
         return self.report_query.query(report_request)
 
     def build_main_window(self) -> MainWindow:
-        window = MainWindow(self.mission_control, self.inventory, market_pricing_service=self.market_pricing)
+        window = MainWindow(self.mission_control, self.inventory)
+        window.market_pricing_service = self.market_pricing
         install_features(window)
         product_registry_workspace = ProductRegistryWorkspace(
             self.product_registry_lookup,
