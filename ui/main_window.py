@@ -289,12 +289,17 @@ class MainWindow(QMainWindow):
         self.inventory_view='ARCHIVED' if self.inventory_view=='ACTIVE' else 'ACTIVE'; self.view_button.setText('View Active' if self.inventory_view=='ARCHIVED' else 'View Archived'); self.refresh_inventory()
 
     def import_inventory(self):
-        source,_=QFileDialog.getOpenFileName(self,'Import MarketDEX Inventory CSV','','CSV Files (*.csv)')
+        source,_=QFileDialog.getOpenFileName(self,'Import Inventory CSV','','CSV Files (*.csv)')
         if not source:return
         try:
-            rows=self.inventory_import_service.validate_csv(source); answer=QMessageBox.question(self,'Confirm Inventory Import',f"Import {len(rows):,} validated asset(s) as authoritative inventory events?",QMessageBox.Yes|QMessageBox.No)
+            preview=self.inventory_import_service.preview_csv(source)
+            message=f"Rows: {preview['total_rows']:,}\nReady to import: {len(preview['valid_rows']):,}\nSkipped: {preview['skipped_rows']:,}"
+            if preview['errors']: message+=f"\n\nFirst errors:\n"+'\n'.join(preview['errors'][:5])
+            answer=QMessageBox.question(self,'Confirm Inventory Import',message+"\n\nImport valid rows only? Existing inventory will not be changed.",QMessageBox.Yes|QMessageBox.No)
             if answer!=QMessageBox.Yes:return
-            imported=self.inventory_import_service.import_csv(source,f'ui-import-{uuid4().hex}'); self.refresh(); QMessageBox.information(self,'Inventory Imported',f'Imported {len(imported):,} asset(s) into MarketDEX authority.')
+            result=self.inventory_import_service.import_csv(source,f'ui-import-{uuid4().hex}'); self.refresh()
+            errors='\n'.join(result['errors'][:10]) or 'None'
+            QMessageBox.information(self,'Inventory Import Results',f"Total rows: {result['total_rows']:,}\nImported: {result['imported_rows']:,}\nSkipped: {result['skipped_rows']:,}\n\nErrors:\n{errors}")
         except Exception as exc:QMessageBox.critical(self,'Import Blocked',str(exc))
 
     def export_inventory(self):
