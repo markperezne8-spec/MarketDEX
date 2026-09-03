@@ -107,6 +107,27 @@ class InventoryAppService(AuthoritativeService):
             for row in rows: writer.writerow([row['asset_id'],row['asset_name'],row['asset_type'],int(row['quantity']),f"{int(row['total_cost_minor'])/100:.2f}"])
         return destination
 
+    def export_listing_queue_csv(self, destination):
+        destination = Path(destination)
+        if destination.suffix.lower() != '.csv':
+            destination = destination.with_suffix('.csv')
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        rows = [
+            row for row in self.list_inventory(include_details=True, listing_queue=True)
+            if row.get('listing_status') == 'Ready to List' and row.get('readiness_state') == 'READY TO LIST'
+        ]
+        with destination.open('w', newline='', encoding='utf-8-sig') as handle:
+            writer = csv.writer(handle)
+            writer.writerow(['Asset ID', 'Listing Title', 'Marketplace', 'SKU', 'Condition', 'Asking Price', 'Quantity', 'Storage Location', 'Photos Ready', 'Photo Reference', 'Listing Notes'])
+            for row in rows:
+                writer.writerow([
+                    row['asset_id'], row.get('listing_title', ''), row.get('marketplace', ''), row.get('sku', ''),
+                    row.get('item_condition', ''), f"{int(row.get('asking_price_minor', 0)) / 100:.2f}", int(row['quantity']),
+                    row.get('storage_location', ''), row.get('photos_ready', 'Not Evaluated'), row.get('photo_reference', ''),
+                    row.get('listing_notes', ''),
+                ])
+        return destination
+
     def get_asset_detail(self, asset_id):
         with self.database.read_connection() as connection:
             row = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,a.state,i.quantity,i.total_cost_minor,i.verified_at,COALESCE(b.purchase_date,'') purchase_date,COALESCE(b.purchase_source,'') purchase_source,COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor,COALESCE(NULLIF(l.sku,''),COALESCE(x.sku,'')) sku,COALESCE(l.listing_status,'Not Listed') listing_status,COALESCE(l.marketplace,'') marketplace,COALESCE(l.asking_price_minor,0) asking_price_minor,COALESCE(l.listing_title,'') listing_title,COALESCE(l.listing_notes,'') listing_notes,COALESCE(p.photos_ready,'Not Evaluated') photos_ready,COALESCE(p.photo_reference,'') photo_reference FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id LEFT JOIN inventory_import_details x ON x.asset_id=a.asset_id LEFT JOIN inventory_listing_details l ON l.asset_id=a.asset_id LEFT JOIN inventory_listing_photo_evidence p ON p.asset_id=a.asset_id WHERE a.asset_id=?", (asset_id,)).fetchone()
