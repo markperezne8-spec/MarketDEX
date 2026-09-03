@@ -6,6 +6,7 @@ from app.engines.mission_control.next_steps import (
     NextStepReadinessViewModel,
     build_next_step_readiness_view_model,
 )
+from ui.design_system.tokens import NorthStarPanelTone
 from ui.design_system.widgets import (
     MarketDEXDashboardPanel,
     MarketDEXStatusBadge,
@@ -20,6 +21,8 @@ NEXT_STEP_STATE_LABELS = {
     'error': ('Error-safe', StatusTone.NEGATIVE),
 }
 
+NEXT_STEPS_PANEL_TONES = {'ready': NorthStarPanelTone.SCOREBOARD, 'unavailable': NorthStarPanelTone.OPPORTUNITY, 'partial': NorthStarPanelTone.OPPORTUNITY, 'error': NorthStarPanelTone.RISK}
+
 
 class NextStepsPanel(MarketDEXDashboardPanel):
     """Compact read-only Mission Control action readiness surface."""
@@ -29,12 +32,8 @@ class NextStepsPanel(MarketDEXDashboardPanel):
         view_model: NextStepReadinessViewModel | None = None,
         parent=None,
     ) -> None:
-        super().__init__(
-            'Next Steps',
-            'Read-only action readiness',
-            parent,
-        )
         self.view_model = view_model or build_next_step_readiness_view_model()
+        super().__init__('Next Steps', 'Read-only action readiness', parent, tone=NEXT_STEPS_PANEL_TONES[self.view_model.state])
         state_label, state_tone = NEXT_STEP_STATE_LABELS[self.view_model.state]
         self.state_badge = MarketDEXStatusBadge(state_label, state_tone, self)
         self.add_header_action(self.state_badge)

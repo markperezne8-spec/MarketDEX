@@ -11,6 +11,7 @@ from app.engines.mission_control.operational_status import (
     build_operational_status_view_model,
     operational_status_evidence,
 )
+from ui.design_system.tokens import NorthStarPanelTone
 from ui.design_system.widgets import StatusTone
 from ui.main_window import MainWindow, MISSION_CONTROL_TWO_COLUMN_MINIMUM_WIDTH
 from ui.next_steps_panel import NextStepsPanel
@@ -122,6 +123,7 @@ def test_next_steps_panel_renders_injected_view_model_in_order():
     assert panel.state_badge.property('tone') == StatusTone.POSITIVE.value
     assert panel.headline_label.text() == 'Action readiness ready'
     assert panel.view_model is model
+    assert panel.property('northStarTone') == NorthStarPanelTone.SCOREBOARD.value
     assert [badge.text() for badge in panel.group_state_badges] == [
         'Ready',
         'Ready',
@@ -150,6 +152,7 @@ def test_next_steps_panel_renders_default_unavailable_state():
     assert panel.state_badge.text() == 'Unavailable'
     assert panel.state_badge.property('tone') == StatusTone.WARNING.value
     assert panel.headline_label.text() == 'Action readiness unavailable'
+    assert panel.property('northStarTone') == NorthStarPanelTone.OPPORTUNITY.value
     assert [badge.text() for badge in panel.group_state_badges] == [
         'Unavailable',
         'Unavailable',
