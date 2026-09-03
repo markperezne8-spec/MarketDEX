@@ -170,3 +170,28 @@ def test_listing_queue_csv_export_contains_only_ready_items(tmp_path):
         'Shipping Path': 'Standard Mail',
         'Shipping Notes': 'PWE under $20',
     }]
+
+
+
+def test_listing_draft_persists_filters_and_copy_fields(tmp_path):
+    database_path = tmp_path / 'marketdex.sqlite3'
+    service = InventoryAppService(database_path)
+    service.add_asset(asset_id='asset-1', asset_name='Charizard ex', asset_type='SINGLE', quantity=2, total_cost_minor=12000, request_id='add-1')
+    service.update_tcg_details(asset_id='asset-1', product_name='Charizard ex', set_name='151', item_condition='Near Mint', market_price_minor=18500, request_id='tcg-1')
+    service.update_listing_details(asset_id='asset-1', listing_status='Ready to List', marketplace='eBay', asking_price_minor=18500, sku='CHAR-151-NM', storage_location='Binder A', listing_title='Charizard ex Near Mint', photos_ready='Ready', shipping_path='Standard Mail', request_id='listing-1')
+    service.update_listing_draft(asset_id='asset-1', marketplace='eBay', listing_title='Charizard ex 199/165 NM', description_notes='Ships in sleeve and top loader.', asking_price_minor=1899, quantity=1, sku='DRAFT-CHAR-001', shipping_method='Standard Mail', draft_status='Ready', request_id='draft-1')
+    reopened = InventoryAppService(database_path)
+    detail = reopened.get_asset_detail('asset-1')
+    assert detail['draft_marketplace'] == 'eBay'
+    assert detail['draft_listing_title'] == 'Charizard ex 199/165 NM'
+    assert detail['draft_description_notes'] == 'Ships in sleeve and top loader.'
+    assert detail['draft_asking_price_minor'] == 1899
+    assert detail['draft_quantity'] == 1
+    assert detail['draft_sku'] == 'DRAFT-CHAR-001'
+    assert detail['draft_shipping_method'] == 'Standard Mail'
+    assert detail['draft_status'] == 'Ready'
+    assert [row['asset_id'] for row in reopened.list_listing_drafts(marketplace='eBay', draft_status='Ready')] == ['asset-1']
+    with pytest.raises(ValueError, match='eBay or TCGplayer'):
+        reopened.update_listing_draft(asset_id='asset-1', marketplace='Other', request_id='draft-bad-market')
+    with pytest.raises(ValueError, match='cannot exceed inventory quantity'):
+        reopened.update_listing_draft(asset_id='asset-1', quantity=3, request_id='draft-bad-quantity')

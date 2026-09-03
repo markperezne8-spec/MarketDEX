@@ -4,6 +4,7 @@ from PySide6.QtWidgets import (
     QComboBox,
     QDialog,
     QDialogButtonBox,
+    QApplication,
     QDoubleSpinBox,
     QFileDialog,
     QFormLayout,
@@ -15,11 +16,12 @@ from PySide6.QtWidgets import (
     QTableWidgetItem,
 )
 
-from services.inventory_app_service import LISTING_STATUSES, SHIPPING_PATHS
+from services.inventory_app_service import LISTING_STATUSES, SHIPPING_PATHS, DRAFT_MARKETPLACES, DRAFT_STATUSES
 
 
 LISTING_FILTER_STATUSES = ('ALL',) + LISTING_STATUSES
 LISTING_MARKETPLACES = ('ALL', 'eBay', 'TCGplayer', 'Other')
+DRAFT_FILTER_STATUSES = ('ALL',) + DRAFT_STATUSES
 
 
 class ListingDetailsDialog(QDialog):
@@ -72,6 +74,49 @@ class ListingDetailsDialog(QDialog):
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         form.addRow(buttons)
+
+
+
+class ListingDraftDialog(QDialog):
+    def __init__(self, detail, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle('Inventory Listing Draft')
+        form = QFormLayout(self)
+        self.marketplace = QComboBox()
+        self.marketplace.addItems(DRAFT_MARKETPLACES)
+        self.marketplace.setCurrentText(detail.get('draft_marketplace') or detail.get('marketplace', 'eBay') or 'eBay')
+        self.listing_title = QLineEdit(detail.get('draft_listing_title') or detail.get('listing_title', ''))
+        self.description_notes = QLineEdit(detail.get('draft_description_notes') or detail.get('listing_notes', ''))
+        self.asking_price = QDoubleSpinBox()
+        self.asking_price.setRange(0, 1000000)
+        self.asking_price.setDecimals(2)
+        self.asking_price.setPrefix(chr(36))
+        self.asking_price.setValue(int(detail.get('draft_asking_price_minor', detail.get('asking_price_minor', 0))) / 100)
+        self.quantity = QDoubleSpinBox()
+        self.quantity.setRange(1, max(1, int(detail.get('quantity', 1))))
+        self.quantity.setDecimals(0)
+        self.quantity.setValue(int(detail.get('draft_quantity') or detail.get('quantity', 1)))
+        self.sku = QLineEdit(detail.get('draft_sku') or detail.get('sku', ''))
+        self.shipping_method = QComboBox()
+        self.shipping_method.addItems(SHIPPING_PATHS)
+        self.shipping_method.setCurrentText(detail.get('draft_shipping_method') or detail.get('shipping_path', 'Not Evaluated'))
+        self.draft_status = QComboBox()
+        self.draft_status.addItems(DRAFT_STATUSES)
+        self.draft_status.setCurrentText(detail.get('draft_status') or 'Draft')
+        for label, widget in (('Marketplace', self.marketplace), ('Listing Title', self.listing_title), ('Description / Notes', self.description_notes), ('Asking Price', self.asking_price), ('Quantity', self.quantity), ('SKU', self.sku), ('Shipping Method', self.shipping_method), ('Draft Status', self.draft_status)):
+            form.addRow(label, widget)
+        self.copy_title = QPushButton('Copy Title')
+        self.copy_title.clicked.connect(lambda: QApplication.clipboard().setText(self.listing_title.text()))
+        self.copy_description = QPushButton('Copy Description')
+        self.copy_description.clicked.connect(lambda: QApplication.clipboard().setText(self.description_notes.text()))
+        copy_buttons = QHBoxLayout()
+        copy_buttons.addWidget(self.copy_title)
+        copy_buttons.addWidget(self.copy_description)
+        form.addRow(copy_buttons)
+        dialog_buttons = QDialogButtonBox(QDialogButtonBox.Save | QDialogButtonBox.Cancel)
+        dialog_buttons.accepted.connect(self.accept)
+        dialog_buttons.rejected.connect(self.reject)
+        form.addRow(dialog_buttons)
 
 
 def _reconnect(signal, callback):
@@ -236,4 +281,14 @@ def install_inventory_listing_readiness_feature(window):
     ):
         _reconnect(signal, callback)
     _reconnect(window.inventory_table.itemSelectionChanged, window.show_selected)
+    window.refresh_inventory()
+
+
+def toggle_listing_drafts(window):
+    window.inventory_listing_draft_workspace = not window.inventory_listing_draft_workspace
+    if window.inventory_listing_draft_workspace:
+        window.inventory_listing_queue = False; window.inventory_listing_queue_button.setChecked(False)
+        window.inventory_view = 'ACTIVE'; window.view_button.setText('View Archived')
+    window.inventory_listing_draft_button.setChecked(window.inventory_listing_draft_workspace)
+    window.inventory_listing_draft_button.setText('Show All Inventory' if window.inventory_listing_draft_workspace else 'Listing Drafts')
     window.refresh_inventory()
