@@ -144,7 +144,7 @@ jobs:
           cache: pip
           cache-dependency-path: requirements.txt
       - run: pip install -q -r requirements.txt pytest
-      - run: pytest -q --tb=short tests/test_inventory_app_integration.py tests/test_inventory_metadata_defaults.py tests/test_inventory_sort_integration.py
+      - run: pytest -q --tb=short tests/test_inventory_app_integration.py tests/test_inventory_bulk_csv_import.py tests/test_inventory_metadata_defaults.py tests/test_inventory_sort_integration.py
 
   pricing:
     name: Pricing
