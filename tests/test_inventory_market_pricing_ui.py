@@ -36,8 +36,6 @@ def test_listing_draft_market_pricing_section_shows_updated_state():
     dialog.close()
     dialog.deleteLater()
     APP.processEvents()
-    dialog.deleteLater()
-    APP.processEvents()
 
 
 def test_listing_draft_market_pricing_section_shows_unavailable_state():
@@ -54,3 +52,5 @@ def test_listing_draft_market_pricing_section_shows_unavailable_state():
     assert 'TCGPLAYER_BEARER_TOKEN' in dialog.market_price_status.text()
     assert dialog.market_price_updated.text() == 'Never'
     dialog.close()
+    dialog.deleteLater()
+    APP.processEvents()
