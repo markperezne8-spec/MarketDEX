@@ -155,6 +155,32 @@ def edit_listing_details(window):
         QMessageBox.critical(window, 'Listing Details Blocked', str(exc))
 
 
+
+def edit_listing_draft(window):
+    asset_id = window.selected_asset_id()
+    if asset_id is None:
+        return
+    dialog = ListingDraftDialog(window.inventory_service.get_asset_detail(asset_id), window)
+    if dialog.exec() != QDialog.Accepted:
+        return
+    try:
+        window.inventory_service.update_listing_draft(
+            asset_id=asset_id,
+            marketplace=dialog.marketplace.currentText(),
+            listing_title=dialog.listing_title.text(),
+            description_notes=dialog.description_notes.text(),
+            asking_price_minor=round(dialog.asking_price.value() * 100),
+            quantity=int(dialog.quantity.value()),
+            sku=dialog.sku.text(),
+            shipping_method=dialog.shipping_method.currentText(),
+            draft_status=dialog.draft_status.currentText(),
+            request_id=f'ui-draft-{uuid4().hex}',
+        )
+        window.refresh()
+    except Exception as exc:
+        QMessageBox.critical(window, 'Listing Draft Blocked', str(exc))
+
+
 def export_listing_queue(window):
     destination, _ = QFileDialog.getSaveFileName(
         window, 'Export Listing Queue CSV', 'listing-queue.csv', 'CSV Files (*.csv)'
