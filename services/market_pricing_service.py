@@ -334,9 +334,11 @@ class MarketPricingService:
                 price_status=NETWORK_ERROR,
                 error_message=f'Market pricing request failed: {exc}',
             )
+        payload = result.as_dict()
+        payload['online_market_price_minor'] = payload.pop('market_price_minor')
         return self.inventory_service.record_online_market_price(
             asset_id=asset_id,
-            **result.as_dict(),
+            **payload,
             request_id=f'market-price-{asset_id}-{uuid4().hex}',
         )
 
