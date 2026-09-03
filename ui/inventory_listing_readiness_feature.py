@@ -5,6 +5,7 @@ from PySide6.QtWidgets import (
     QDialog,
     QDialogButtonBox,
     QDoubleSpinBox,
+    QFileDialog,
     QFormLayout,
     QHBoxLayout,
     QLabel,
@@ -101,6 +102,19 @@ def edit_listing_details(window):
         QMessageBox.critical(window, 'Listing Details Blocked', str(exc))
 
 
+def export_listing_queue(window):
+    destination, _ = QFileDialog.getSaveFileName(
+        window, 'Export Listing Queue CSV', 'listing-queue.csv', 'CSV Files (*.csv)'
+    )
+    if not destination:
+        return
+    try:
+        exported = window.inventory_service.export_listing_queue_csv(destination)
+        QMessageBox.information(window, 'Listing Queue Exported', f'CSV saved to {exported}')
+    except Exception as exc:
+        QMessageBox.critical(window, 'Listing Queue Export Blocked', str(exc))
+
+
 def toggle_listing_queue(window):
     window.inventory_listing_queue = not window.inventory_listing_queue
     if window.inventory_listing_queue:
@@ -134,6 +148,9 @@ def install_inventory_listing_readiness_feature(window):
     window.inventory_listing_queue_button.setCheckable(True)
     window.inventory_listing_queue_button.clicked.connect(lambda: toggle_listing_queue(window))
     filter_bar.addWidget(window.inventory_listing_queue_button)
+    window.inventory_listing_export_button = QPushButton('Export Queue CSV')
+    window.inventory_listing_export_button.clicked.connect(lambda: export_listing_queue(window))
+    filter_bar.addWidget(window.inventory_listing_export_button)
     filter_bar.addStretch(1)
     panel_layout = window.inventory_panel.layout()
     panel_layout.insertLayout(panel_layout.indexOf(window.inventory_workspace_controls) + 1, filter_bar)
