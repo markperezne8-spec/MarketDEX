@@ -25,6 +25,7 @@ from reports.purchase_source_performance_query import PurchaseSourcePerformanceQ
 from reports.purchase_source_performance_query import PurchaseSourcePerformanceQueryResponse
 from services.collection_position_service import CollectionPositionService
 from services.inventory_app_service import InventoryAppService
+from services.market_pricing_service import MarketPricingService, TCGplayerMarketPriceProvider
 from services.inventory_detail_read import InventoryDetailReadAdapter
 from services.inventory_product_link_read import InventoryProductLinkReadAdapter
 from services.mission_control_service import MissionControlService
@@ -59,6 +60,7 @@ class ApplicationComposition:
         self.database_path = Path(self.database_path)
         self.mission_control = MissionControlService(self.database_path)
         self.inventory = InventoryAppService(self.database_path)
+        self.market_pricing = MarketPricingService(self.inventory, TCGplayerMarketPriceProvider())
         self.sale_completion_repository = register_sale_completion_repository(self.inventory.database)
         self.sale_completion_query = SaleCompletionQueryService(self.sale_completion_repository)
         self.inventory_acquisition_projection_repository = SqliteInventoryAcquisitionProjectionRepository(
@@ -175,7 +177,7 @@ class ApplicationComposition:
         return self.report_query.query(report_request)
 
     def build_main_window(self) -> MainWindow:
-        window = MainWindow(self.mission_control, self.inventory)
+        window = MainWindow(self.mission_control, self.inventory, market_pricing_service=self.market_pricing)
         install_features(window)
         product_registry_workspace = ProductRegistryWorkspace(
             self.product_registry_lookup,
