@@ -49,5 +49,5 @@ def test_mission_control_migration_does_not_expand_into_inventory_summary_cards(
 
     # FDN-002 is deliberately limited to the workspace header and the eight
     # Mission Control KPI cards. Inventory summary presentation remains unchanged.
-    assert "for label,key in (('Assets','asset_count'),('Units','total_units'),('Filtered Cost','total_cost_minor'))" in source
+    assert "for label,key in (('Assets','asset_count'),('Units','total_units'),('Total Cost','total_cost_minor'),('Market Value','total_market_value_minor'),('Est. Profit','estimated_profit_minor'))" in source
     assert "box=QGroupBox(label)" in source
