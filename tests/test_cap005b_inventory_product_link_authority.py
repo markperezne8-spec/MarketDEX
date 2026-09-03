@@ -6,7 +6,7 @@ from core.database_manager import DatabaseManager, RUNTIME_SCHEMA_VERSION
 from services.inventory_product_link_service import InventoryProductLinkService
 
 
-def test_cap005b_linkage_uses_runtime_schema_v25_and_survives_restart(tmp_path):
+def test_cap005b_linkage_uses_runtime_schema_v26_and_survives_restart(tmp_path):
     database_path = tmp_path / 'marketdex.db'
     service = InventoryProductLinkService(database_path)
     product_id = service.ensure_acceptance_authority()
@@ -15,7 +15,7 @@ def test_cap005b_linkage_uses_runtime_schema_v25_and_survives_restart(tmp_path):
     after = service.quantities(product_id)
 
     restarted = InventoryProductLinkService(database_path)
-    assert RUNTIME_SCHEMA_VERSION == 25
+    assert RUNTIME_SCHEMA_VERSION == 26
     assert before == (0, 0)
     assert after == (3, 3)
     assert restarted.quantities(product_id) == (3, 3)

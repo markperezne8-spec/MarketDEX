@@ -33,6 +33,12 @@ class ListingDetailsDialog(QDialog):
         self.readiness = QLabel(readiness_text)
         self.readiness.setWordWrap(True)
         form.addRow('Readiness', self.readiness)
+        self.photos_ready = QComboBox()
+        self.photos_ready.addItems(('Not Evaluated', 'Not Ready', 'Ready'))
+        self.photos_ready.setCurrentText(detail.get('photos_ready', 'Not Evaluated'))
+        self.photo_reference = QLineEdit(detail.get('photo_reference', ''))
+        form.addRow('Photos Ready', self.photos_ready)
+        form.addRow('Photo Reference', self.photo_reference)
         self.listing_status = QComboBox()
         self.listing_status.addItems(LISTING_STATUSES)
         self.listing_status.setCurrentText(detail.get('listing_status', 'Not Listed'))
@@ -86,6 +92,8 @@ def edit_listing_details(window):
             storage_location=dialog.storage_location.text(),
             listing_title=dialog.listing_title.text(),
             listing_notes=dialog.listing_notes.text(),
+            photos_ready=dialog.photos_ready.currentText(),
+            photo_reference=dialog.photo_reference.text(),
             request_id=f'ui-listing-{uuid4().hex}',
         )
         window.refresh()
@@ -184,6 +192,7 @@ def install_inventory_listing_readiness_feature(window):
             + f"\nLISTING: {detail['listing_status']} • MARKETPLACE: {detail['marketplace'] or '—'} • ASKING: {window._money(detail['asking_price_minor'])} • SKU: {detail['sku'] or '—'}"
             + f"\nTITLE: {detail['listing_title'] or '—'} • LISTING NOTES: {detail['listing_notes'] or '—'}"
             + f"\nREADINESS: {detail.get('readiness_state', 'NOT EVALUATED')} • BLOCKERS: {blockers}"
+            + f"\nPHOTOS: {detail.get('photos_ready', 'Not Evaluated')} • PHOTO REFERENCE: {detail.get('photo_reference', '') or '—'}"
         )
 
     original_show_selected = window.show_selected
