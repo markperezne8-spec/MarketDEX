@@ -261,9 +261,23 @@ class InventoryAppService(AuthoritativeService):
         with self.database.transaction() as connection:
             self._append_event_and_audit(connection, event, 'record_inventory_online_market_price')
             connection.execute("INSERT INTO inventory_online_market_prices(asset_id,online_market_price_minor,currency,source_name,source_url,last_updated,price_status,error_message,match_reference,last_event_id,verified_at) VALUES (?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_id) DO UPDATE SET online_market_price_minor=excluded.online_market_price_minor,currency=excluded.currency,source_name=excluded.source_name,source_url=excluded.source_url,last_updated=excluded.last_updated,price_status=excluded.price_status,error_message=excluded.error_message,match_reference=excluded.match_reference,last_event_id=excluded.last_event_id,verified_at=excluded.verified_at", (asset_id, values['online_market_price_minor'], values['currency'], values['source_name'], values['source_url'], values['last_updated'], values['price_status'], values['error_message'], values['match_reference'], event.event_id, event.committed_at))
+            connection.execute("INSERT INTO inventory_market_price_observations(observation_id,asset_id,market_price_minor,currency,source_name,source_url,observed_at,price_status,error_message,match_reference,event_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)", (f"market-observation-{event.event_id}", asset_id, values['online_market_price_minor'], values['currency'], values['source_name'], values['source_url'], values['last_updated'], values['price_status'], values['error_message'], values['match_reference'], event.event_id))
             connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id, 'INVENTORY_ONLINE_MARKET_PRICE', asset_id, 'VERIFIED', event.committed_at))
             self._verify_event(connection, event)
         return self.get_asset_detail(asset_id)
+
+
+    def list_market_price_history(self, asset_id, limit=100):
+        self.get_asset_detail(asset_id)
+        limit = int(limit)
+        if limit <= 0 or limit > 1000:
+            raise ValueError('Market price history limit must be between 1 and 1000')
+        with self.database.read_connection() as connection:
+            rows = connection.execute(
+                "SELECT observation_id,asset_id,market_price_minor,currency,source_name,source_url,observed_at,price_status,error_message,match_reference FROM inventory_market_price_observations WHERE asset_id=? ORDER BY observed_at DESC, rowid DESC LIMIT ?",
+                (asset_id, limit),
+            ).fetchall()
+        return [dict(row) for row in rows]
 
 
     def update_listing_details(self, *, asset_id, listing_status='Not Listed', marketplace='', asking_price_minor=0, sku='', storage_location='', listing_title='', listing_notes='', photos_ready=None, photo_reference=None, shipping_path=None, shipping_notes=None, request_id):
