@@ -18,8 +18,8 @@ class InventoryAppService(AuthoritativeService):
         if sort_key not in sort_fields: raise ValueError('Unsupported inventory sort key')
         if sort_order not in {'ASC','DESC'}: raise ValueError('Unsupported inventory sort order')
         state_column = ',a.state' if include_state else ''
-        detail_columns = ",COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor" if include_details else ''
-        detail_joins = ' LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id' if include_details else ''
+        detail_columns = ",COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor,COALESCE(x.sku,'') sku" if include_details else ''
+        detail_joins = ' LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id LEFT JOIN inventory_import_details x ON x.asset_id=a.asset_id' if include_details else ''
         with self.database.read_connection() as connection:
             rows = connection.execute(f"SELECT a.asset_id,a.asset_name,a.asset_type{state_column},i.quantity,i.total_cost_minor{detail_columns} FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id{detail_joins} WHERE a.state=? ORDER BY a.asset_name COLLATE NOCASE,a.asset_id", (state,)).fetchall()
         inventory = [dict(row) for row in rows]
@@ -54,7 +54,7 @@ class InventoryAppService(AuthoritativeService):
 
     def get_asset_detail(self, asset_id):
         with self.database.read_connection() as connection:
-            row = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,a.state,i.quantity,i.total_cost_minor,i.verified_at,COALESCE(b.purchase_date,'') purchase_date,COALESCE(b.purchase_source,'') purchase_source,COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id WHERE a.asset_id=?", (asset_id,)).fetchone()
+            row = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,a.state,i.quantity,i.total_cost_minor,i.verified_at,COALESCE(b.purchase_date,'') purchase_date,COALESCE(b.purchase_source,'') purchase_source,COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id LEFT JOIN inventory_import_details x ON x.asset_id=a.asset_id WHERE a.asset_id=?", (asset_id,)).fetchone()
         if row is None: raise ValueError('Inventory asset not found')
         return dict(row)
 
