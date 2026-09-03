@@ -34,6 +34,14 @@ class AddAssetDialog(QDialog):
         super().__init__(parent); self.setWindowTitle('Add Inventory Asset'); form=QFormLayout(self); self.name=QLineEdit(); self.asset_type=QComboBox(); self.asset_type.addItems(['SINGLE','SEALED','SLAB','ACCESSORY']); self.quantity=QSpinBox(); self.quantity.setRange(0,100000); self.quantity.setValue(1); self.cost=QDoubleSpinBox(); self.cost.setRange(0,1000000); self.cost.setDecimals(2); self.cost.setPrefix('$'); self.product_name=QLineEdit(); self.set_name=QLineEdit(); self.item_condition=QComboBox(); self.item_condition.addItems(['','Near Mint','Lightly Played','Moderately Played','Heavily Played','Damaged','Sealed']); self.market_price=QDoubleSpinBox(); self.market_price.setRange(0,1000000); self.market_price.setDecimals(2); self.market_price.setPrefix('$'); self.purchase_date=QLineEdit(); self.purchase_date.setPlaceholderText('YYYY-MM-DD'); self.purchase_source=QLineEdit(); self.storage_location=QLineEdit(); self.notes=QLineEdit(); form.addRow('Item Name',self.name); form.addRow('Set / Product',self.set_name); form.addRow('Category',self.asset_type); form.addRow('Condition',self.item_condition); form.addRow('Quantity',self.quantity); form.addRow('Total Cost',self.cost); form.addRow('Market Price',self.market_price); form.addRow('Purchase Date',self.purchase_date); form.addRow('Purchase Source',self.purchase_source); form.addRow('Storage Location',self.storage_location); form.addRow('Notes',self.notes); buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); form.addRow(buttons)
 
 
+class EditAssetDialog(AddAssetDialog):
+    def __init__(self, detail, parent=None):
+        super().__init__(parent); self.setWindowTitle('Edit Inventory Item')
+        self.name.setText(detail['asset_name']); self.asset_type.setCurrentText(detail['asset_type']); self.quantity.setValue(int(detail['quantity'])); self.cost.setValue(int(detail['total_cost_minor']) / 100)
+        self.product_name.setText(detail['product_name']); self.set_name.setText(detail['set_name']); self.item_condition.setCurrentText(detail['item_condition']); self.market_price.setValue(int(detail['market_price_minor']) / 100)
+        self.purchase_date.setText(detail['purchase_date']); self.purchase_source.setText(detail['purchase_source']); self.storage_location.setText(detail['storage_location']); self.notes.setText(detail['notes'])
+
+
 class AdjustAssetDialog(QDialog):
     def __init__(self,detail,parent=None):
         super().__init__(parent); self.setWindowTitle('Adjust Inventory Asset'); form=QFormLayout(self); form.addRow('Asset',QLabel(detail['asset_name'])); form.addRow('Current Quantity',QLabel(str(detail['quantity']))); form.addRow('Current Cost',QLabel(f"${detail['total_cost_minor']/100:,.2f}")); self.quantity_delta=QSpinBox(); self.quantity_delta.setRange(-100000,100000); self.quantity_delta.setPrefix('Delta '); self.cost_delta=QDoubleSpinBox(); self.cost_delta.setRange(-1000000,1000000); self.cost_delta.setDecimals(2); self.cost_delta.setPrefix('Delta $'); form.addRow('Quantity Adjustment',self.quantity_delta); form.addRow('Cost Adjustment',self.cost_delta); buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); form.addRow(buttons)
@@ -64,20 +72,22 @@ class MainWindow(QMainWindow):
         import_button=QPushButton('Import CSV'); import_button.clicked.connect(self.import_inventory)
         export_button=QPushButton('Export CSV'); export_button.clicked.connect(self.export_inventory)
         self.view_button=QPushButton('View Archived'); self.view_button.clicked.connect(self.toggle_inventory_view)
+        self.edit_button=QPushButton('Edit Selected'); self.edit_button.setEnabled(False); self.edit_button.clicked.connect(self.edit_selected)
         self.adjust_button=QPushButton('Adjust Selected'); self.adjust_button.setEnabled(False); self.adjust_button.clicked.connect(self.adjust_selected)
         self.bulk_adjust_button=QPushButton('Bulk Adjust'); self.bulk_adjust_button.setEnabled(False); self.bulk_adjust_button.clicked.connect(self.bulk_adjust_selected)
-        self.archive_button=QPushButton('Archive Selected'); self.archive_button.setEnabled(False); self.archive_button.clicked.connect(self.archive_selected)
+        self.archive_button=QPushButton('Delete Selected'); self.archive_button.setEnabled(False); self.archive_button.clicked.connect(self.delete_selected)
         self.restore_button=QPushButton('Restore Selected'); self.restore_button.setEnabled(False); self.restore_button.clicked.connect(self.restore_selected)
         add_button=QPushButton('+ Add Asset'); add_button.clicked.connect(self.add_asset)
-        self.inventory_search=QLineEdit(); self.inventory_search.setPlaceholderText('Search inventory by asset name...'); self.inventory_search.textChanged.connect(self.refresh_inventory)
+        self.inventory_search=QLineEdit(); self.inventory_search.setPlaceholderText('Search name, set/product, category, or storage...'); self.inventory_search.textChanged.connect(self.refresh_inventory)
         self.inventory_type_filter=QComboBox(); self.inventory_type_filter.addItems(['ALL','SINGLE','SEALED','SLAB','ACCESSORY']); self.inventory_type_filter.currentTextChanged.connect(self.refresh_inventory)
+        self.inventory_condition_filter=QComboBox(); self.inventory_condition_filter.addItems(['ALL','Near Mint','Lightly Played','Moderately Played','Heavily Played','Damaged','Sealed']); self.inventory_condition_filter.currentTextChanged.connect(self.refresh_inventory)
         self.inventory_sort=QComboBox(); self.inventory_sort.addItems(['NAME','TYPE','QUANTITY','TOTAL COST']); self.inventory_sort.currentTextChanged.connect(self.refresh_inventory)
         self.inventory_sort_order=QComboBox(); self.inventory_sort_order.addItems(['ASC','DESC']); self.inventory_sort_order.currentTextChanged.connect(self.refresh_inventory)
-        self.inventory_workspace_controls=InventoryWorkspaceControlLayout(action_widgets=(import_button,export_button,self.view_button,self.adjust_button,self.bulk_adjust_button,self.archive_button,self.restore_button,add_button),search_widget=self.inventory_search,filter_widget=self.inventory_type_filter,sort_widget=self.inventory_sort,sort_order_widget=self.inventory_sort_order,parent=panel)
+        self.inventory_workspace_controls=InventoryWorkspaceControlLayout(action_widgets=(import_button,export_button,self.view_button,self.edit_button,self.adjust_button,self.bulk_adjust_button,self.archive_button,self.restore_button,add_button),search_widget=self.inventory_search,filter_widget=(self.inventory_type_filter,self.inventory_condition_filter),sort_widget=self.inventory_sort,sort_order_widget=self.inventory_sort_order,parent=panel)
         self.inventory_header=self.inventory_workspace_controls
         layout.addWidget(self.inventory_workspace_controls)
         summary_bar=QHBoxLayout(); self.inventory_summary={}
-        for label,key in (('Assets','asset_count'),('Units','total_units'),('Filtered Cost','total_cost_minor')): box=QGroupBox(label); box_layout=QVBoxLayout(box); value=QLabel('--'); value.setStyleSheet('font-size:18px;font-weight:700'); box_layout.addWidget(value); self.inventory_summary[key]=value; summary_bar.addWidget(box)
+        for label,key in (('Assets','asset_count'),('Units','total_units'),('Total Cost','total_cost_minor'),('Market Value','total_market_value_minor'),('Est. Profit','estimated_profit_minor')): box=QGroupBox(label); box_layout=QVBoxLayout(box); value=QLabel('--'); value.setStyleSheet('font-size:18px;font-weight:700'); box_layout.addWidget(value); self.inventory_summary[key]=value; summary_bar.addWidget(box)
         layout.addLayout(summary_bar); self.inventory_table=QTableWidget(0,9); self.inventory_table.setHorizontalHeaderLabels(['Item','Set / Product','Category','Condition','Qty','Cost','Market Price','Storage','Notes']); self.inventory_table.setEditTriggers(QTableWidget.NoEditTriggers); self.inventory_table.setSelectionBehavior(QTableWidget.SelectRows); self.inventory_table.setSelectionMode(QAbstractItemView.ExtendedSelection); self.inventory_table.itemSelectionChanged.connect(self.show_selected); self.inventory_table.setMinimumHeight(180); self.inventory_table.setMaximumHeight(320); layout.addWidget(self.inventory_table); self.inventory_result=QLabel(''); layout.addWidget(self.inventory_result); self.asset_detail=QLabel('Select an inventory asset to view details.'); self.asset_detail.setWordWrap(True); layout.addWidget(self.asset_detail); self.refresh_button=QPushButton('Refresh MarketDEX'); self.refresh_button.clicked.connect(self.refresh); layout.addWidget(self.refresh_button); self.footer=QLabel('Loading MarketDEX business authority...'); self.footer.setWordWrap(True); layout.addWidget(self.footer); self.setCentralWidget(root); self.refresh()
 
     @staticmethod
@@ -270,7 +280,7 @@ class MainWindow(QMainWindow):
         return tile
 
     def refresh_inventory(self):
-        listing=self.inventory_service.list_archived_inventory if self.inventory_view=='ARCHIVED' else self.inventory_service.list_inventory; self.inventory_rows=listing(search_text=self.inventory_search.text(),asset_type=self.inventory_type_filter.currentText(),sort_key=self.inventory_sort.currentText(),sort_order=self.inventory_sort_order.currentText(),include_details=True); self.inventory_table.setRowCount(len(self.inventory_rows)); summary=self.inventory_service.summarize_inventory(self.inventory_rows); self.inventory_summary['asset_count'].setText(f"{summary['asset_count']:,}"); self.inventory_summary['total_units'].setText(f"{summary['total_units']:,}"); self.inventory_summary['total_cost_minor'].setText(self._money(summary['total_cost_minor']))
+        listing=self.inventory_service.list_archived_inventory if self.inventory_view=='ARCHIVED' else self.inventory_service.list_inventory; self.inventory_rows=listing(search_text=self.inventory_search.text(),asset_type=self.inventory_type_filter.currentText(),item_condition=self.inventory_condition_filter.currentText(),sort_key=self.inventory_sort.currentText(),sort_order=self.inventory_sort_order.currentText(),include_details=True); self.inventory_table.setRowCount(len(self.inventory_rows)); summary=self.inventory_service.summarize_inventory(self.inventory_rows); self.inventory_summary['asset_count'].setText(f"{summary['asset_count']:,}"); self.inventory_summary['total_units'].setText(f"{summary['total_units']:,}"); self.inventory_summary['total_cost_minor'].setText(self._money(summary['total_cost_minor'])); self.inventory_summary['total_market_value_minor'].setText(self._money(summary.get('total_market_value_minor', 0))); self.inventory_summary['estimated_profit_minor'].setText(self._money(summary.get('estimated_profit_minor', -int(summary['total_cost_minor']))))
         for row_index,row in enumerate(self.inventory_rows):
             for column,value in enumerate((row['asset_name'],row['set_name'] or row['product_name'],row['asset_type'],row['item_condition'],row['quantity'],self._money(row['total_cost_minor']),self._money(row['market_price_minor']),row['storage_location'],row['notes'])): self.inventory_table.setItem(row_index,column,QTableWidgetItem(str(value)))
         self.inventory_table.resizeColumnsToContents(); label='archived' if self.inventory_view=='ARCHIVED' else 'active'; self.inventory_result.setText(f"Showing {len(self.inventory_rows):,} {label} inventory asset(s) • {self.inventory_sort.currentText()} {self.inventory_sort_order.currentText()}"); self.show_selected()
@@ -305,7 +315,7 @@ class MainWindow(QMainWindow):
     def selected_asset_id(self): selected=self.selected_asset_ids(); return selected[0] if len(selected)==1 else None
 
     def show_selected(self):
-        selected=self.selected_asset_ids(); active=self.inventory_view=='ACTIVE'; self.adjust_button.setEnabled(active and len(selected)==1); self.bulk_adjust_button.setEnabled(active and len(selected)>1); self.archive_button.setEnabled(active and len(selected)==1); self.restore_button.setEnabled(not active and len(selected)==1)
+        selected=self.selected_asset_ids(); active=self.inventory_view=='ACTIVE'; self.edit_button.setEnabled(active and len(selected)==1); self.adjust_button.setEnabled(active and len(selected)==1); self.bulk_adjust_button.setEnabled(active and len(selected)>1); self.archive_button.setEnabled(active and len(selected)==1); self.restore_button.setEnabled(not active and len(selected)==1)
         if not selected: self.asset_detail.setText('Select an inventory asset to view details.'); return
         if len(selected)>1: self.asset_detail.setText(f'SELECTED: {len(selected):,} inventory assets'); return
         detail=self.inventory_service.get_asset_detail(selected[0]); self.asset_detail.setText(f"SELECTED: {detail['asset_name']}  •  {detail['asset_type']}  •  Qty {detail['quantity']}  •  Cost {self._money(detail['total_cost_minor'])}  •  {detail['state']}\nPURCHASE: {self._detail_value(detail['purchase_date'])}  •  SOURCE: {self._detail_value(detail['purchase_source'])}\nTCG: {self._detail_value(detail['set_name'] or detail['product_name'])}  •  CONDITION: {self._detail_value(detail['item_condition'])}  •  MARKET: {self._money(detail['market_price_minor'])}\nSTORAGE: {self._detail_value(detail['storage_location'])}\nNOTES: {self._detail_value(detail['notes'])}")
@@ -323,6 +333,17 @@ class MainWindow(QMainWindow):
             if any(str(value or '').strip() for key,value in tcg_values.items() if key != 'market_price_minor') or tcg_values['market_price_minor']: self.inventory_service.update_tcg_details(asset_id=asset_id,request_id=f'ui-add-tcg-details-{uuid4().hex}',**tcg_values)
             self.refresh()
         except Exception as exc:QMessageBox.critical(self,'Add Asset Failed',str(exc))
+
+    def edit_selected(self):
+        asset_id=self.selected_asset_id()
+        if asset_id is None:return
+        dialog=EditAssetDialog(self.inventory_service.get_asset_detail(asset_id),self)
+        if dialog.exec()!=QDialog.Accepted:return
+        if not dialog.name.text().strip(): QMessageBox.warning(self,'Item Required','Enter an item name.'); return
+        try:
+            self.inventory_service.update_asset(asset_id=asset_id,asset_name=dialog.name.text(),asset_type=dialog.asset_type.currentText(),quantity=dialog.quantity.value(),total_cost_minor=round(dialog.cost.value()*100),product_name=dialog.product_name.text() or dialog.name.text(),set_name=dialog.set_name.text(),item_condition=dialog.item_condition.currentText(),market_price_minor=round(dialog.market_price.value()*100),purchase_date=dialog.purchase_date.text(),purchase_source=dialog.purchase_source.text(),storage_location=dialog.storage_location.text(),notes=dialog.notes.text(),request_id=f'ui-edit-{uuid4().hex}')
+            self.refresh()
+        except Exception as exc:QMessageBox.critical(self,'Edit Item Failed',str(exc))
 
     def adjust_selected(self):
         asset_id=self.selected_asset_id()
@@ -342,12 +363,12 @@ class MainWindow(QMainWindow):
         try: adjusted=self.inventory_service.bulk_adjust_assets(asset_ids=asset_ids,quantity_delta=quantity_delta,cost_delta_minor=cost_delta_minor,request_prefix=f'ui-bulk-adjust-{uuid4().hex}'); self.refresh(); QMessageBox.information(self,'Bulk Adjustment Complete',f'Adjusted {len(adjusted):,} inventory assets through authoritative events.')
         except Exception as exc:QMessageBox.critical(self,'Bulk Adjustment Blocked',str(exc))
 
-    def archive_selected(self):
+    def delete_selected(self):
         asset_id=self.selected_asset_id()
         if asset_id is None:return
-        detail=self.inventory_service.get_asset_detail(asset_id); answer=QMessageBox.warning(self,'Archive Inventory Asset',f"Archive {detail['asset_name']}?\n\nIt will leave the active inventory view. Authority events, inventory history, movements, and audit evidence are preserved.",QMessageBox.Yes|QMessageBox.No)
+        detail=self.inventory_service.get_asset_detail(asset_id); answer=QMessageBox.warning(self,'Delete Inventory Item',f"Delete {detail['asset_name']} from active inventory?\n\nThis requires confirmation. Its authority events, inventory history, movements, and audit evidence are preserved in Archived Inventory.",QMessageBox.Yes|QMessageBox.No)
         if answer!=QMessageBox.Yes:return
-        try:self.inventory_service.archive_asset(asset_id=asset_id,request_id=f'ui-archive-{uuid4().hex}'); self.refresh(); QMessageBox.information(self,'Inventory Archived','Asset archived. Historical authority evidence was preserved.')
+        try:self.inventory_service.archive_asset(asset_id=asset_id,request_id=f'ui-delete-{uuid4().hex}'); self.refresh(); QMessageBox.information(self,'Inventory Deleted','Item removed from active inventory. Historical authority evidence was preserved.')
         except Exception as exc:QMessageBox.critical(self,'Archive Blocked',str(exc))
 
     def restore_selected(self):

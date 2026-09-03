@@ -12,8 +12,8 @@ class InventoryAppService(AuthoritativeService):
     def __init__(self, database_path):
         self.path = Path(database_path); database = DatabaseManager(self.path); database.initialize(); super().__init__(database, EventRepository()); self.inventory = InventoryRepository()
 
-    def _list_inventory_state(self, state, search_text='', asset_type='ALL', sort_key='NAME', sort_order='ASC', include_state=False, include_details=False):
-        search_text = str(search_text or '').strip().casefold(); asset_type = str(asset_type or 'ALL').strip().upper(); sort_key = str(sort_key or 'NAME').strip().upper(); sort_order = str(sort_order or 'ASC').strip().upper()
+    def _list_inventory_state(self, state, search_text='', asset_type='ALL', item_condition='ALL', sort_key='NAME', sort_order='ASC', include_state=False, include_details=False):
+        search_text = str(search_text or '').strip().casefold(); asset_type = str(asset_type or 'ALL').strip().upper(); item_condition = str(item_condition or 'ALL').strip(); sort_key = str(sort_key or 'NAME').strip().upper(); sort_order = str(sort_order or 'ASC').strip().upper()
         sort_fields = {'NAME':'asset_name','TYPE':'asset_type','QUANTITY':'quantity','TOTAL COST':'total_cost_minor'}
         if sort_key not in sort_fields: raise ValueError('Unsupported inventory sort key')
         if sort_order not in {'ASC','DESC'}: raise ValueError('Unsupported inventory sort order')
@@ -23,22 +23,24 @@ class InventoryAppService(AuthoritativeService):
         with self.database.read_connection() as connection:
             rows = connection.execute(f"SELECT a.asset_id,a.asset_name,a.asset_type{state_column},i.quantity,i.total_cost_minor{detail_columns} FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id{detail_joins} WHERE a.state=? ORDER BY a.asset_name COLLATE NOCASE,a.asset_id", (state,)).fetchall()
         inventory = [dict(row) for row in rows]
-        if search_text: inventory = [row for row in inventory if search_text in row['asset_name'].casefold()]
+        if search_text:
+            inventory = [row for row in inventory if search_text in ' '.join(str(row.get(key, '')) for key in ('asset_name','product_name','set_name','asset_type','storage_location')).casefold()]
         if asset_type != 'ALL': inventory = [row for row in inventory if row['asset_type'] == asset_type]
+        if item_condition != 'ALL': inventory = [row for row in inventory if row.get('item_condition', '') == item_condition]
         field = sort_fields[sort_key]
         def sort_value(row):
             value = row[field]; return value.casefold() if isinstance(value, str) else value
         return sorted(inventory, key=lambda row:(sort_value(row), row['asset_id']), reverse=sort_order == 'DESC')
 
-    def list_inventory(self, search_text='', asset_type='ALL', sort_key='NAME', sort_order='ASC', include_details=False):
-        return self._list_inventory_state('COMPLETED', search_text, asset_type, sort_key, sort_order, include_details=include_details)
+    def list_inventory(self, search_text='', asset_type='ALL', item_condition='ALL', sort_key='NAME', sort_order='ASC', include_details=False):
+        return self._list_inventory_state('COMPLETED', search_text, asset_type, item_condition, sort_key, sort_order, include_details=include_details)
 
-    def list_archived_inventory(self, search_text='', asset_type='ALL', sort_key='NAME', sort_order='ASC', include_details=False):
-        return self._list_inventory_state('CANCELLED', search_text, asset_type, sort_key, sort_order, include_state=True, include_details=include_details)
+    def list_archived_inventory(self, search_text='', asset_type='ALL', item_condition='ALL', sort_key='NAME', sort_order='ASC', include_details=False):
+        return self._list_inventory_state('CANCELLED', search_text, asset_type, item_condition, sort_key, sort_order, include_state=True, include_details=include_details)
 
     @staticmethod
     def summarize_inventory(rows):
-        rows = list(rows); return {'asset_count':len(rows),'total_units':sum(int(row['quantity']) for row in rows),'total_cost_minor':sum(int(row['total_cost_minor']) for row in rows)}
+        rows = list(rows); total_cost_minor = sum(int(row['total_cost_minor']) for row in rows); total_market_value_minor = sum(int(row.get('market_price_minor', 0)) * int(row['quantity']) for row in rows); return {'asset_count':len(rows),'total_units':sum(int(row['quantity']) for row in rows),'total_cost_minor':total_cost_minor,'total_market_value_minor':total_market_value_minor,'estimated_profit_minor':total_market_value_minor-total_cost_minor}
 
     @staticmethod
     def export_inventory_csv(rows, destination):
@@ -88,6 +90,28 @@ class InventoryAppService(AuthoritativeService):
             connection.execute("INSERT INTO inventory_market_details(asset_id,product_name,set_name,item_condition,market_price_minor,last_event_id,verified_at) VALUES (?,?,?,?,?,?,?) ON CONFLICT(asset_id) DO UPDATE SET product_name=excluded.product_name,set_name=excluded.set_name,item_condition=excluded.item_condition,market_price_minor=excluded.market_price_minor,last_event_id=excluded.last_event_id,verified_at=excluded.verified_at", (asset_id,values['product_name'],values['set_name'],values['item_condition'],values['market_price_minor'],event.event_id,event.committed_at))
             connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id,'INVENTORY_TCG_DETAILS',asset_id,'VERIFIED',event.committed_at)); self._verify_event(connection, event)
         return self.get_asset_detail(asset_id)
+
+    def update_asset(self, *, asset_id, asset_name, asset_type, quantity, total_cost_minor, product_name='', set_name='', item_condition='', market_price_minor=0, purchase_date='', purchase_source='', storage_location='', notes='', request_id):
+        detail = self.get_asset_detail(asset_id); asset_name = str(asset_name or '').strip(); asset_type = str(asset_type or '').strip().upper(); quantity = int(quantity); total_cost_minor = int(total_cost_minor); market_price_minor = int(market_price_minor or 0)
+        if detail['state'] != 'COMPLETED': raise ValueError('Archived inventory cannot be edited')
+        if not asset_name or not asset_type or quantity < 0 or total_cost_minor < 0 or market_price_minor < 0: raise ValueError('Complete valid inventory details are required')
+        values = {'asset_name':asset_name,'asset_type':asset_type,'quantity':quantity,'total_cost_minor':total_cost_minor,'product_name':str(product_name or '').strip(),'set_name':str(set_name or '').strip(),'item_condition':str(item_condition or '').strip(),'market_price_minor':market_price_minor,'purchase_date':str(purchase_date or '').strip(),'purchase_source':str(purchase_source or '').strip(),'storage_location':str(storage_location or '').strip(),'notes':str(notes or '').strip()}
+        if all(detail.get(key) == value for key, value in values.items()): raise ValueError('Enter an inventory item change')
+        event = self._new_event('INVENTORY_ASSET_UPDATED', request_id, {'asset_id':asset_id, **values})
+        with self.database.transaction() as connection:
+            self._append_event_and_audit(connection, event, 'update_inventory_asset')
+            connection.execute("UPDATE assets SET asset_name=?,asset_type=? WHERE asset_id=?", (values['asset_name'],values['asset_type'],asset_id))
+            quantity_delta = quantity - int(detail['quantity']); cost_delta_minor = total_cost_minor - int(detail['total_cost_minor'])
+            if quantity_delta or cost_delta_minor:
+                self.inventory.apply(connection, asset_id=asset_id, quantity_delta=quantity_delta, cost_delta_minor=cost_delta_minor, event_id=event.event_id, recorded_at=event.committed_at)
+                connection.execute("INSERT INTO inventory_movements(movement_id,asset_id,event_id,quantity_delta,cost_delta_minor,movement_type,recorded_at) VALUES (?,?,?,?,?,?,?)", (f'movement-{event.event_id}',asset_id,event.event_id,quantity_delta,cost_delta_minor,'ASSET_EDIT',event.committed_at))
+            connection.execute("INSERT INTO inventory_business_details(asset_id,purchase_date,purchase_source,storage_location,notes,last_event_id,verified_at) VALUES (?,?,?,?,?,?,?) ON CONFLICT(asset_id) DO UPDATE SET purchase_date=excluded.purchase_date,purchase_source=excluded.purchase_source,storage_location=excluded.storage_location,notes=excluded.notes,last_event_id=excluded.last_event_id,verified_at=excluded.verified_at", (asset_id,values['purchase_date'],values['purchase_source'],values['storage_location'],values['notes'],event.event_id,event.committed_at))
+            connection.execute("INSERT INTO inventory_market_details(asset_id,product_name,set_name,item_condition,market_price_minor,last_event_id,verified_at) VALUES (?,?,?,?,?,?,?) ON CONFLICT(asset_id) DO UPDATE SET product_name=excluded.product_name,set_name=excluded.set_name,item_condition=excluded.item_condition,market_price_minor=excluded.market_price_minor,last_event_id=excluded.last_event_id,verified_at=excluded.verified_at", (asset_id,values['product_name'],values['set_name'],values['item_condition'],values['market_price_minor'],event.event_id,event.committed_at))
+            connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id,'INVENTORY_ASSET_UPDATE',asset_id,'VERIFIED',event.committed_at)); self._verify_event(connection, event)
+        return self.get_asset_detail(asset_id)
+
+    def delete_asset(self, *, asset_id, request_id):
+        return self.archive_asset(asset_id=asset_id, request_id=request_id)
 
     def adjust_asset(self, *, asset_id, quantity_delta, cost_delta_minor, request_id):
         quantity_delta = int(quantity_delta); cost_delta_minor = int(cost_delta_minor)

@@ -41,3 +41,16 @@ def test_tcg_inventory_details_persist_and_are_listed(tmp_path):
     assert row['storage_location'] == 'Binder A'
     assert row['notes'] == 'Centering checked'
     assert detail['product_name'] == 'Charizard ex 199/165'
+
+
+def test_inventory_edit_search_filter_totals_delete_and_persistence(tmp_path):
+    database_path = tmp_path / 'marketdex.sqlite3'; service = InventoryAppService(database_path)
+    service.add_asset(asset_id='asset-1', asset_name='Charizard ex', asset_type='SINGLE', quantity=1, total_cost_minor=10000, request_id='add-1')
+    service.update_asset(asset_id='asset-1', asset_name='Charizard ex 199/165', asset_type='SINGLE', quantity=2, total_cost_minor=20000, product_name='Charizard ex 199/165', set_name='151', item_condition='Near Mint', market_price_minor=17500, storage_location='Binder A', notes='For sale', request_id='edit-1')
+    reopened = InventoryAppService(database_path)
+    rows = reopened.list_inventory(search_text='binder a', item_condition='Near Mint', include_details=True)
+    assert [row['asset_name'] for row in rows] == ['Charizard ex 199/165']
+    assert reopened.summarize_inventory(rows) == {'asset_count':1,'total_units':2,'total_cost_minor':20000,'total_market_value_minor':35000,'estimated_profit_minor':15000}
+    assert reopened.delete_asset(asset_id='asset-1', request_id='delete-1')['state'] == 'CANCELLED'
+    assert reopened.list_inventory(include_details=True) == []
+    assert reopened.list_archived_inventory(include_details=True)[0]['storage_location'] == 'Binder A'
