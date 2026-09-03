@@ -1,4 +1,5 @@
 import os
+import sqlite3
 from datetime import datetime, timedelta, timezone
 from urllib.error import URLError
 
@@ -232,3 +233,9 @@ def test_market_price_history_retains_unavailable_status_and_error(tmp_path):
         'match_reference': '',
     }]
     assert reopened.get_asset_detail('asset-2')['asking_price_minor'] == 0
+    with pytest.raises(sqlite3.IntegrityError, match='append-only'):
+        with reopened.database.transaction() as connection:
+            connection.execute(
+                'DELETE FROM inventory_market_price_observations WHERE asset_id=?',
+                ('asset-2',),
+            )
