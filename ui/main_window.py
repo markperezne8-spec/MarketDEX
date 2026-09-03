@@ -44,7 +44,7 @@ class EditAssetDialog(AddAssetDialog):
 
 class AdjustAssetDialog(QDialog):
     def __init__(self,detail,parent=None):
-        super().__init__(parent); self.setWindowTitle('Adjust Inventory Asset'); form=QFormLayout(self); form.addRow('Asset',QLabel(detail['asset_name'])); form.addRow('Current Quantity',QLabel(str(detail['quantity']))); form.addRow('Current Cost',QLabel(f"${detail['total_cost_minor']/100:,.2f}")); self.quantity_delta=QSpinBox(); self.quantity_delta.setRange(-100000,100000); self.quantity_delta.setPrefix('Delta '); self.cost_delta=QDoubleSpinBox(); self.cost_delta.setRange(-1000000,1000000); self.cost_delta.setDecimals(2); self.cost_delta.setPrefix('Delta $'); form.addRow('Quantity Adjustment',self.quantity_delta); form.addRow('Cost Adjustment',self.cost_delta); buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); form.addRow(buttons)
+        super().__init__(parent); self.setWindowTitle('Adjust Inventory Asset'); form=QFormLayout(self); form.addRow('Asset',QLabel(detail['asset_name'])); form.addRow('Current Quantity',QLabel(str(detail['quantity']))); form.addRow('Current Cost',QLabel(f"${detail['total_cost_minor']/100:,.2f}")); self.quantity_delta=QSpinBox(); self.quantity_delta.setRange(-100000,100000); self.quantity_delta.setPrefix('Delta '); self.cost_delta=QDoubleSpinBox(); self.cost_delta.setRange(-1000000,1000000); self.cost_delta.setDecimals(2); self.cost_delta.setPrefix('Delta $'); self.adjustment_type=QComboBox(); self.adjustment_type.addItems(['ADD_STOCK','REMOVE_STOCK','CORRECTION','DAMAGED','SOLD_OUTSIDE_PLATFORM']); self.reason=QLineEdit(); self.reason.setPlaceholderText('Required reason'); form.addRow('Type',self.adjustment_type); form.addRow('Quantity Adjustment',self.quantity_delta); form.addRow('Reason',self.reason); form.addRow('Cost Adjustment',self.cost_delta); buttons=QDialogButtonBox(QDialogButtonBox.Save|QDialogButtonBox.Cancel); buttons.accepted.connect(self.accept); buttons.rejected.connect(self.reject); form.addRow(buttons)
 
 
 class BulkAdjustDialog(QDialog):
@@ -74,6 +74,7 @@ class MainWindow(QMainWindow):
         self.view_button=QPushButton('View Archived'); self.view_button.clicked.connect(self.toggle_inventory_view)
         self.edit_button=QPushButton('Edit Selected'); self.edit_button.setEnabled(False); self.edit_button.clicked.connect(self.edit_selected)
         self.adjust_button=QPushButton('Adjust Selected'); self.adjust_button.setEnabled(False); self.adjust_button.clicked.connect(self.adjust_selected)
+        self.history_button=QPushButton('Item History'); self.history_button.setEnabled(False); self.history_button.clicked.connect(self.show_item_history)
         self.bulk_adjust_button=QPushButton('Bulk Adjust'); self.bulk_adjust_button.setEnabled(False); self.bulk_adjust_button.clicked.connect(self.bulk_adjust_selected)
         self.archive_button=QPushButton('Delete Selected'); self.archive_button.setEnabled(False); self.archive_button.clicked.connect(self.delete_selected)
         self.restore_button=QPushButton('Restore Selected'); self.restore_button.setEnabled(False); self.restore_button.clicked.connect(self.restore_selected)
@@ -320,10 +321,10 @@ class MainWindow(QMainWindow):
     def selected_asset_id(self): selected=self.selected_asset_ids(); return selected[0] if len(selected)==1 else None
 
     def show_selected(self):
-        selected=self.selected_asset_ids(); active=self.inventory_view=='ACTIVE'; self.edit_button.setEnabled(active and len(selected)==1); self.adjust_button.setEnabled(active and len(selected)==1); self.bulk_adjust_button.setEnabled(active and len(selected)>1); self.archive_button.setEnabled(active and len(selected)==1); self.restore_button.setEnabled(not active and len(selected)==1)
+        selected=self.selected_asset_ids(); active=self.inventory_view=='ACTIVE'; self.edit_button.setEnabled(active and len(selected)==1); self.adjust_button.setEnabled(active and len(selected)==1); self.history_button.setEnabled(len(selected)==1); self.bulk_adjust_button.setEnabled(active and len(selected)>1); self.archive_button.setEnabled(active and len(selected)==1); self.restore_button.setEnabled(not active and len(selected)==1)
         if not selected: self.asset_detail.setText('Select an inventory asset to view details.'); return
         if len(selected)>1: self.asset_detail.setText(f'SELECTED: {len(selected):,} inventory assets'); return
-        detail=self.inventory_service.get_asset_detail(selected[0]); self.asset_detail.setText(f"SELECTED: {detail['asset_name']}  •  {detail['asset_type']}  •  Qty {detail['quantity']}  •  Cost {self._money(detail['total_cost_minor'])}  •  {detail['state']}\nPURCHASE: {self._detail_value(detail['purchase_date'])}  •  SOURCE: {self._detail_value(detail['purchase_source'])}\nTCG: {self._detail_value(detail['set_name'] or detail['product_name'])}  •  CONDITION: {self._detail_value(detail['item_condition'])}  •  MARKET: {self._money(detail['market_price_minor'])}\nSTORAGE: {self._detail_value(detail['storage_location'])}\nNOTES: {self._detail_value(detail['notes'])}")
+        detail=self.inventory_service.get_asset_detail(selected[0]); activity=self.inventory_service.list_item_activity(selected[0]); activity_text='No quantity adjustments recorded yet.' if not activity else '\n'.join(f"{row['recorded_at']} • {row['adjustment_type']} • {int(row['quantity_delta']):+,} • Qty {row['resulting_quantity']} — {row['reason']}" for row in activity); self.asset_detail.setText(f"SELECTED: {detail['asset_name']}  •  {detail['asset_type']}  •  Qty {detail['quantity']}  •  Cost {self._money(detail['total_cost_minor'])}  •  {detail['state']}\nPURCHASE: {self._detail_value(detail['purchase_date'])}  •  SOURCE: {self._detail_value(detail['purchase_source'])}\nTCG: {self._detail_value(detail['set_name'] or detail['product_name'])}  •  CONDITION: {self._detail_value(detail['item_condition'])}  •  MARKET: {self._money(detail['market_price_minor'])}\nSTORAGE: {self._detail_value(detail['storage_location'])}\nNOTES: {self._detail_value(detail['notes'])}\nACTIVITY:\n{activity_text}")
 
     def add_asset(self):
         dialog=AddAssetDialog(self)
@@ -355,8 +356,15 @@ class MainWindow(QMainWindow):
         if asset_id is None:return
         dialog=AdjustAssetDialog(self.inventory_service.get_asset_detail(asset_id),self)
         if dialog.exec()!=QDialog.Accepted:return
-        try:self.inventory_service.adjust_asset(asset_id=asset_id,quantity_delta=dialog.quantity_delta.value(),cost_delta_minor=round(dialog.cost_delta.value()*100),request_id=f'ui-adjust-{uuid4().hex}'); self.refresh()
+        try:self.inventory_service.record_adjustment(asset_id=asset_id,adjustment_type=dialog.adjustment_type.currentText(),quantity_delta=dialog.quantity_delta.value(),reason=dialog.reason.text(),request_id=f'ui-adjust-{uuid4().hex}'); self.refresh()
         except Exception as exc:QMessageBox.critical(self,'Adjustment Blocked',str(exc))
+
+    def show_item_history(self):
+        asset_id=self.selected_asset_id()
+        if asset_id is None:return
+        rows=self.inventory_service.list_item_activity(asset_id); detail=self.inventory_service.get_asset_detail(asset_id)
+        message='No quantity adjustments recorded yet.' if not rows else '\n'.join(f"{row['recorded_at']} • {row['adjustment_type']} • {int(row['quantity_delta']):+,} • Qty {row['resulting_quantity']}\n{row['reason']}" for row in rows)
+        QMessageBox.information(self,'Item Activity History',f"{detail['asset_name']}\n\n{message}")
 
     def bulk_adjust_selected(self):
         asset_ids=self.selected_asset_ids()
