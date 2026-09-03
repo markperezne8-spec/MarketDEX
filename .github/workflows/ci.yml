@@ -173,7 +173,7 @@ jobs:
       - run: timeout 180s sudo apt-get update -o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 && timeout 180s sudo apt-get install -y --no-install-recommends libegl1
       - run: pip install -q -r requirements.txt pytest
       - name: Run Listing gate
-        run: pytest -q --tb=short --junitxml=listing-results.xml tests/test_listing_plan_repository.py tests/test_operator_sale_completion.py tests/test_listing_workspace_ci_note.py
+        run: pytest -q --tb=short --junitxml=listing-results.xml tests/test_listing_plan_repository.py tests/test_operator_sale_completion.py tests/test_listing_workspace_ci_note.py tests/test_inventory_market_pricing.py tests/test_inventory_market_pricing_ui.py
       - name: Upload Listing test results
         if: always()
         uses: actions/upload-artifact@v4
