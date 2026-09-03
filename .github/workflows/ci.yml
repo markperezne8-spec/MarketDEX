@@ -158,7 +158,7 @@ jobs:
           cache-dependency-path: requirements.txt
       - run: timeout 180s sudo apt-get update -o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 && timeout 180s sudo apt-get install -y --no-install-recommends libegl1
       - run: pip install -q -r requirements.txt pytest
-      - run: pytest -q --tb=short tests/test_inventory_profit_feature.py tests/test_inventory_price_guidance_feature.py tests/test_inventory_business_scenarios.py
+      - run: pytest -q --tb=short tests/test_inventory_cost_intake_feature.py tests/test_inventory_profit_feature.py tests/test_inventory_price_guidance_feature.py tests/test_inventory_business_scenarios.py
 
   listing:
     name: Listing
