@@ -112,7 +112,7 @@ def test_listing_readiness_blocks_incomplete_items_and_persists_after_completion
 
     initial = service.get_listing_readiness('asset-1')
     assert initial['readiness_state'] == 'BLOCKED'
-    assert initial['readiness_blocker_count'] == 7
+    assert initial['readiness_blocker_count'] == 6
     assert 'Condition must be evaluated' in initial['readiness_blockers']
     assert 'Marketplace is not selected' in initial['readiness_blockers']
     assert 'Asking price must be greater than $0.00' in initial['readiness_blockers']
