@@ -15,7 +15,7 @@ from PySide6.QtWidgets import (
     QTableWidgetItem,
 )
 
-from services.inventory_app_service import LISTING_STATUSES
+from services.inventory_app_service import LISTING_STATUSES, SHIPPING_PATHS
 
 
 LISTING_FILTER_STATUSES = ('ALL',) + LISTING_STATUSES
@@ -40,6 +40,12 @@ class ListingDetailsDialog(QDialog):
         self.photo_reference = QLineEdit(detail.get('photo_reference', ''))
         form.addRow('Photos Ready', self.photos_ready)
         form.addRow('Photo Reference', self.photo_reference)
+        self.shipping_path = QComboBox()
+        self.shipping_path.addItems(SHIPPING_PATHS)
+        self.shipping_path.setCurrentText(detail.get('shipping_path', 'Not Evaluated'))
+        self.shipping_notes = QLineEdit(detail.get('shipping_notes', ''))
+        form.addRow('Shipping Path', self.shipping_path)
+        form.addRow('Shipping Notes', self.shipping_notes)
         self.listing_status = QComboBox()
         self.listing_status.addItems(LISTING_STATUSES)
         self.listing_status.setCurrentText(detail.get('listing_status', 'Not Listed'))
@@ -95,6 +101,8 @@ def edit_listing_details(window):
             listing_notes=dialog.listing_notes.text(),
             photos_ready=dialog.photos_ready.currentText(),
             photo_reference=dialog.photo_reference.text(),
+            shipping_path=dialog.shipping_path.currentText(),
+            shipping_notes=dialog.shipping_notes.text(),
             request_id=f'ui-listing-{uuid4().hex}',
         )
         window.refresh()
@@ -210,6 +218,7 @@ def install_inventory_listing_readiness_feature(window):
             + f"\nTITLE: {detail['listing_title'] or '—'} • LISTING NOTES: {detail['listing_notes'] or '—'}"
             + f"\nREADINESS: {detail.get('readiness_state', 'NOT EVALUATED')} • BLOCKERS: {blockers}"
             + f"\nPHOTOS: {detail.get('photos_ready', 'Not Evaluated')} • PHOTO REFERENCE: {detail.get('photo_reference', '') or '—'}"
+            + f"\nSHIPPING: {detail.get('shipping_path', 'Not Evaluated')} • SHIPPING NOTES: {detail.get('shipping_notes', '') or '—'}"
         )
 
     original_show_selected = window.show_selected

@@ -8,6 +8,7 @@ from services.base_service import AuthoritativeService
 LISTING_STATUSES = ('Not Listed', 'Ready to List', 'Listed', 'Sold', 'Hold')
 LISTING_READINESS_STATES = ('READY TO LIST', 'PREPARATION NEEDED', 'BLOCKED', 'NOT EVALUATED')
 PHOTO_READINESS_STATES = ('Not Evaluated', 'Not Ready', 'Ready')
+SHIPPING_PATHS = ('Not Evaluated', 'Standard Mail', 'Tracked Mail', 'Other')
 
 
 def _derive_listing_readiness(detail):
@@ -33,6 +34,11 @@ def _derive_listing_readiness(detail):
         blockers.append('Photo readiness is not evaluated')
     elif photos_ready != 'Ready':
         blockers.append('Photos are not ready')
+    shipping_path = str(detail.get('shipping_path', 'Not Evaluated') or '').strip()
+    if shipping_path == 'Not Evaluated':
+        blockers.append('Shipping path is not reviewed')
+    elif shipping_path not in SHIPPING_PATHS:
+        blockers.append('Shipping path is not recognized')
     hard_blockers = {'Product identity is missing', 'Quantity must be greater than zero', 'Condition must be evaluated'}
     if not blockers:
         state = 'READY TO LIST'
@@ -60,12 +66,12 @@ class InventoryAppService(AuthoritativeService):
         state_column = ',a.state' if include_state else ''
         detail_columns = ",COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor,COALESCE(NULLIF(l.sku,''),COALESCE(x.sku,'')) sku" if include_details else ''
         if include_details or listing_filter:
-            detail_columns += ",COALESCE(l.listing_status,'Not Listed') listing_status,COALESCE(l.marketplace,'') marketplace,COALESCE(l.asking_price_minor,0) asking_price_minor,COALESCE(l.sku,'') listing_sku,COALESCE(l.listing_title,'') listing_title,COALESCE(l.listing_notes,'') listing_notes,COALESCE(p.photos_ready,'Not Evaluated') photos_ready,COALESCE(p.photo_reference,'') photo_reference"
+            detail_columns += ",COALESCE(l.listing_status,'Not Listed') listing_status,COALESCE(l.marketplace,'') marketplace,COALESCE(l.asking_price_minor,0) asking_price_minor,COALESCE(l.sku,'') listing_sku,COALESCE(l.listing_title,'') listing_title,COALESCE(l.listing_notes,'') listing_notes,COALESCE(p.photos_ready,'Not Evaluated') photos_ready,COALESCE(p.photo_reference,'') photo_reference,COALESCE(s.shipping_path,'Not Evaluated') shipping_path,COALESCE(s.shipping_notes,'') shipping_notes"
         detail_joins = ' LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id LEFT JOIN inventory_import_details x ON x.asset_id=a.asset_id' if include_details else ''
         if include_details or listing_filter:
             detail_joins += ' LEFT JOIN inventory_listing_details l ON l.asset_id=a.asset_id'
         if include_details:
-            detail_joins += ' LEFT JOIN inventory_listing_photo_evidence p ON p.asset_id=a.asset_id'
+            detail_joins += ' LEFT JOIN inventory_listing_photo_evidence p ON p.asset_id=a.asset_id LEFT JOIN inventory_listing_shipping_evidence s ON s.asset_id=a.asset_id'
         with self.database.read_connection() as connection:
             rows = connection.execute(f"SELECT a.asset_id,a.asset_name,a.asset_type{state_column},i.quantity,i.total_cost_minor{detail_columns} FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id{detail_joins} WHERE a.state=? ORDER BY a.asset_name COLLATE NOCASE,a.asset_id", (state,)).fetchall()
         inventory = [dict(row) for row in rows]
@@ -118,19 +124,19 @@ class InventoryAppService(AuthoritativeService):
         ]
         with destination.open('w', newline='', encoding='utf-8-sig') as handle:
             writer = csv.writer(handle)
-            writer.writerow(['Asset ID', 'Listing Title', 'Marketplace', 'SKU', 'Condition', 'Asking Price', 'Quantity', 'Storage Location', 'Photos Ready', 'Photo Reference', 'Listing Notes'])
+            writer.writerow(['Asset ID', 'Listing Title', 'Marketplace', 'SKU', 'Condition', 'Asking Price', 'Quantity', 'Storage Location', 'Photos Ready', 'Photo Reference', 'Listing Notes', 'Shipping Path', 'Shipping Notes'])
             for row in rows:
                 writer.writerow([
                     row['asset_id'], row.get('listing_title', ''), row.get('marketplace', ''), row.get('sku', ''),
                     row.get('item_condition', ''), f"{int(row.get('asking_price_minor', 0)) / 100:.2f}", int(row['quantity']),
                     row.get('storage_location', ''), row.get('photos_ready', 'Not Evaluated'), row.get('photo_reference', ''),
-                    row.get('listing_notes', ''),
+                    row.get('listing_notes', ''), row.get('shipping_path', 'Not Evaluated'), row.get('shipping_notes', ''),
                 ])
         return destination
 
     def get_asset_detail(self, asset_id):
         with self.database.read_connection() as connection:
-            row = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,a.state,i.quantity,i.total_cost_minor,i.verified_at,COALESCE(b.purchase_date,'') purchase_date,COALESCE(b.purchase_source,'') purchase_source,COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor,COALESCE(NULLIF(l.sku,''),COALESCE(x.sku,'')) sku,COALESCE(l.listing_status,'Not Listed') listing_status,COALESCE(l.marketplace,'') marketplace,COALESCE(l.asking_price_minor,0) asking_price_minor,COALESCE(l.listing_title,'') listing_title,COALESCE(l.listing_notes,'') listing_notes,COALESCE(p.photos_ready,'Not Evaluated') photos_ready,COALESCE(p.photo_reference,'') photo_reference FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id LEFT JOIN inventory_import_details x ON x.asset_id=a.asset_id LEFT JOIN inventory_listing_details l ON l.asset_id=a.asset_id LEFT JOIN inventory_listing_photo_evidence p ON p.asset_id=a.asset_id WHERE a.asset_id=?", (asset_id,)).fetchone()
+            row = connection.execute("SELECT a.asset_id,a.asset_name,a.asset_type,a.state,i.quantity,i.total_cost_minor,i.verified_at,COALESCE(b.purchase_date,'') purchase_date,COALESCE(b.purchase_source,'') purchase_source,COALESCE(b.storage_location,'') storage_location,COALESCE(b.notes,'') notes,COALESCE(m.product_name,'') product_name,COALESCE(m.set_name,'') set_name,COALESCE(m.item_condition,'') item_condition,COALESCE(m.market_price_minor,0) market_price_minor,COALESCE(NULLIF(l.sku,''),COALESCE(x.sku,'')) sku,COALESCE(l.listing_status,'Not Listed') listing_status,COALESCE(l.marketplace,'') marketplace,COALESCE(l.asking_price_minor,0) asking_price_minor,COALESCE(l.listing_title,'') listing_title,COALESCE(l.listing_notes,'') listing_notes,COALESCE(p.photos_ready,'Not Evaluated') photos_ready,COALESCE(p.photo_reference,'') photo_reference,COALESCE(s.shipping_path,'Not Evaluated') shipping_path,COALESCE(s.shipping_notes,'') shipping_notes FROM assets a JOIN inventory_authority i ON i.asset_id=a.asset_id LEFT JOIN inventory_business_details b ON b.asset_id=a.asset_id LEFT JOIN inventory_market_details m ON m.asset_id=a.asset_id LEFT JOIN inventory_import_details x ON x.asset_id=a.asset_id LEFT JOIN inventory_listing_details l ON l.asset_id=a.asset_id LEFT JOIN inventory_listing_photo_evidence p ON p.asset_id=a.asset_id LEFT JOIN inventory_listing_shipping_evidence s ON s.asset_id=a.asset_id WHERE a.asset_id=?", (asset_id,)).fetchone()
         if row is None: raise ValueError('Inventory asset not found')
         detail = dict(row)
         detail.update(_derive_listing_readiness(detail))
@@ -192,14 +198,17 @@ class InventoryAppService(AuthoritativeService):
         detail = self.get_asset_detail(asset_id)
         return {key: detail[key] for key in ('readiness_state', 'readiness_blockers', 'readiness_blocker_count')}
 
-    def update_listing_details(self, *, asset_id, listing_status='Not Listed', marketplace='', asking_price_minor=0, sku='', storage_location='', listing_title='', listing_notes='', photos_ready=None, photo_reference=None, request_id):
+    def update_listing_details(self, *, asset_id, listing_status='Not Listed', marketplace='', asking_price_minor=0, sku='', storage_location='', listing_title='', listing_notes='', photos_ready=None, photo_reference=None, shipping_path=None, shipping_notes=None, request_id):
         detail = self.get_asset_detail(asset_id)
         if detail['state'] != 'COMPLETED': raise ValueError('Archived inventory listing details cannot be edited')
         photo_state = detail.get('photos_ready', 'Not Evaluated') if photos_ready is None else photos_ready
         photo_reference_value = detail.get('photo_reference', '') if photo_reference is None else photo_reference
-        values = {'listing_status':str(listing_status or '').strip(),'marketplace':str(marketplace or '').strip(),'asking_price_minor':int(asking_price_minor or 0),'sku':str(sku or '').strip(),'storage_location':str(storage_location or '').strip(),'listing_title':str(listing_title or '').strip(),'listing_notes':str(listing_notes or '').strip(),'photos_ready':str(photo_state or '').strip(),'photo_reference':str(photo_reference_value or '').strip()}
+        shipping_path_value = detail.get('shipping_path', 'Not Evaluated') if shipping_path is None else shipping_path
+        shipping_notes_value = detail.get('shipping_notes', '') if shipping_notes is None else shipping_notes
+        values = {'listing_status':str(listing_status or '').strip(),'marketplace':str(marketplace or '').strip(),'asking_price_minor':int(asking_price_minor or 0),'sku':str(sku or '').strip(),'storage_location':str(storage_location or '').strip(),'listing_title':str(listing_title or '').strip(),'listing_notes':str(listing_notes or '').strip(),'photos_ready':str(photo_state or '').strip(),'photo_reference':str(photo_reference_value or '').strip(),'shipping_path':str(shipping_path_value or '').strip(),'shipping_notes':str(shipping_notes_value or '').strip()}
         if values['listing_status'] not in LISTING_STATUSES: raise ValueError('Choose a valid listing status')
         if values['photos_ready'] not in PHOTO_READINESS_STATES: raise ValueError('Choose a valid photo readiness value')
+        if values['shipping_path'] not in SHIPPING_PATHS: raise ValueError('Choose a valid shipping path value')
         if values['asking_price_minor'] < 0: raise ValueError('Asking price cannot be negative')
         candidate = {**detail, **values}
         readiness = _derive_listing_readiness(candidate)
@@ -211,6 +220,7 @@ class InventoryAppService(AuthoritativeService):
             self._append_event_and_audit(connection, event, 'update_inventory_listing_details')
             connection.execute("INSERT INTO inventory_listing_details(asset_id,listing_status,marketplace,asking_price_minor,sku,listing_title,listing_notes,last_event_id,verified_at) VALUES (?,?,?,?,?,?,?,?,?) ON CONFLICT(asset_id) DO UPDATE SET listing_status=excluded.listing_status,marketplace=excluded.marketplace,asking_price_minor=excluded.asking_price_minor,sku=excluded.sku,listing_title=excluded.listing_title,listing_notes=excluded.listing_notes,last_event_id=excluded.last_event_id,verified_at=excluded.verified_at", (asset_id,values['listing_status'],values['marketplace'],values['asking_price_minor'],values['sku'],values['listing_title'],values['listing_notes'],event.event_id,event.committed_at))
             connection.execute("INSERT INTO inventory_listing_photo_evidence(asset_id,photos_ready,photo_reference,last_event_id,verified_at) VALUES (?,?,?,?,?) ON CONFLICT(asset_id) DO UPDATE SET photos_ready=excluded.photos_ready,photo_reference=excluded.photo_reference,last_event_id=excluded.last_event_id,verified_at=excluded.verified_at", (asset_id,values['photos_ready'],values['photo_reference'],event.event_id,event.committed_at))
+            connection.execute("INSERT INTO inventory_listing_shipping_evidence(asset_id,shipping_path,shipping_notes,last_event_id,verified_at) VALUES (?,?,?,?,?) ON CONFLICT(asset_id) DO UPDATE SET shipping_path=excluded.shipping_path,shipping_notes=excluded.shipping_notes,last_event_id=excluded.last_event_id,verified_at=excluded.verified_at", (asset_id,values['shipping_path'],values['shipping_notes'],event.event_id,event.committed_at))
             connection.execute("INSERT INTO inventory_business_details(asset_id,purchase_date,purchase_source,storage_location,notes,last_event_id,verified_at) VALUES (?,?,?,?,?,?,?) ON CONFLICT(asset_id) DO UPDATE SET storage_location=excluded.storage_location,last_event_id=excluded.last_event_id,verified_at=excluded.verified_at", (asset_id,detail['purchase_date'],detail['purchase_source'],values['storage_location'],detail['notes'],event.event_id,event.committed_at))
             connection.execute("INSERT INTO audit_events(event_id,authority_type,authority_id,verification_result,recorded_at) VALUES (?,?,?,?,?)", (event.event_id,'INVENTORY_LISTING_DETAILS',asset_id,'VERIFIED',event.committed_at))
             self._verify_event(connection, event)
