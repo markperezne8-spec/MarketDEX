@@ -88,3 +88,17 @@ def test_market_price_history_dialog_renders_observations():
     dialog.close()
     dialog.deleteLater()
     APP.processEvents()
+
+
+def test_empty_market_price_history_keeps_headers_readable():
+    dialog = MarketPriceHistoryDialog([])
+
+    assert dialog.table.rowCount() == 0
+    assert dialog.table.columnWidth(0) >= 160
+    assert dialog.table.columnWidth(5) >= 220
+    assert dialog.width() >= 1030
+    assert dialog.table.horizontalHeaderItem(0).text() == 'Observed'
+    assert dialog.table.horizontalHeaderItem(5).text() == 'Error'
+    dialog.close()
+    dialog.deleteLater()
+    APP.processEvents()
