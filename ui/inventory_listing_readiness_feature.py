@@ -128,7 +128,10 @@ class MarketPriceHistoryDialog(QDialog):
             )
             for column, value in enumerate(values):
                 self.table.setItem(row_index, column, QTableWidgetItem(str(value)))
-        self.table.resizeColumnsToContents()
+        self.table.setMinimumWidth(910)
+        for column, width in enumerate((160, 105, 150, 135, 140, 220)):
+            self.table.setColumnWidth(column, width)
+        self.resize(1030, 360)
         form.addRow('Observations', self.table)
         if not rows:
             self.empty_state = QLabel('No market price observations recorded yet.')
