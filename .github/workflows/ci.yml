@@ -143,6 +143,7 @@ jobs:
           python-version: '3.12'
           cache: pip
           cache-dependency-path: requirements.txt
+      - run: timeout 180s sudo apt-get update -o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 && timeout 180s sudo apt-get install -y --no-install-recommends libegl1
       - run: pip install -q -r requirements.txt pytest
       - run: pytest -q --tb=short tests/test_inventory_app_integration.py tests/test_inventory_bulk_csv_import.py tests/test_inventory_metadata_defaults.py tests/test_inventory_sort_integration.py tests/test_inventory_analytics.py tests/test_inventory_analytics_ui.py
 
